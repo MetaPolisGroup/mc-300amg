@@ -105,6 +105,8 @@
   --colors-textDisabled: #666171;
   --colors-textSubtle: #b8add2;
   --colors-disabled: #524b63;
+  --colors-violetAlt1: #434575;
+  --colors-violetAlt2: #66578d;
   --colors-gradientBubblegum: linear-gradient(139.73deg, #313d5c, #3d2a54);
   --colors-gradientInverseBubblegum: linear-gradient(
     139.73deg,
@@ -157,6 +159,8 @@
   --colors-textDisabled: #bdc2c4;
   --colors-textSubtle: #7a6eaa;
   --colors-disabled: #e9eaeb;
+  --colors-violetAlt1: #e2c9fb;
+  --colors-violetAlt2: #cdb8fa;
   --colors-gradientBubblegum: linear-gradient(139.73deg, #e5fdff, #f3efff);
   --colors-gradientInverseBubblegum: linear-gradient(
     139.73deg,

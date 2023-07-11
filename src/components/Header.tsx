@@ -5,7 +5,7 @@ import SubMenu from "./SubMenu";
 
 const Header = () => {
   return (
-    <header className="fixed top-0 left-0 h-20 w-full z-20 bg-[--colors-backgroundAlt]">
+    <header className="w-full z-20 bg-[--colors-backgroundAlt]">
       <nav className="flex justify-between items-center w-full h-full border-b border-[--colors-cardBorder] px-4">
         <div className="navbar">
           <div className="navbar-start lg:flex">

@@ -13,7 +13,7 @@ const NetworkSelector = () => {
         <span className="hidden text-[--colors-text] font-semibold lg:flex">
           BNB Smart Chain
         </span>
-        <Icons.ArrowDown />
+        <Icons.ArrowDown className="text-[--colors-text]" />
       </label>
     </div>
   );
