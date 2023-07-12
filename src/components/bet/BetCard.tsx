@@ -8,13 +8,12 @@ const BetCard = () => {
 
   return (
     <div
-      className={`w-full h-[100vh] flex justify-center items-center relative rotate-0 transition-transform duration-700 ${
-        showSetBetCard === true && "rotate-180"
+      className={`w-full h-[100vh] flex justify-center items-center relative transition-transform duration-700 preverve-3d ${
+        showSetBetCard === true && "rotateY-180"
       }`}
-      style={{ transformStyle: "preserve-3d" }}
     >
       <div
-        className={`card absolute z-20 w-80 shadow-xl ${
+        className={`card absolute z-20 w-80 shadow-xl backface-hidden ${
           showSetBetCard && "z-10"
         }`}
       >
@@ -25,7 +24,7 @@ const BetCard = () => {
           </div>
           <div className="text-[--colors-white]">#187808</div>
         </div>
-        <div className="card-body p-4 ">
+        <div className="card-body p-4">
           <div className="relative -mb-[0.55rem]">
             <div className="h-16 mx-auto w-60">
               <Icons.PayoutUp />
@@ -72,7 +71,7 @@ const BetCard = () => {
         </div>
       </div>
       <div
-        className={`card absolute z-10 w-80 shadow-xl ${
+        className={`card absolute z-10 w-80 shadow-xl backface-hidden translate-rotateY ${
           showSetBetCard && "z-20"
         }`}
       >

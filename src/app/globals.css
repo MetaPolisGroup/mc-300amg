@@ -174,3 +174,19 @@
   --colors-gradientGold: linear-gradient(180deg, #ffd800, #fdab32);
   --colors-gradientBold: linear-gradient(#53dee9, #7645d9);
 }
+
+.rotateY-180 {
+  transform: rotateY(180deg);
+}
+
+.preverve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.translate-rotateY {
+  transform: rotateY(180deg) translateZ(1px);
+}
