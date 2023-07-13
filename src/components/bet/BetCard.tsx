@@ -5,6 +5,7 @@ import { formatInputField } from "@/lib/utils";
 import { nanoid } from "nanoid";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
+import Image from "next/image";
 
 const BetCard = () => {
   const [showSetBetCard, setShowSetBetCard] = useState<boolean>(false);
