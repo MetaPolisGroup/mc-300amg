@@ -1,12 +1,14 @@
 "use client";
 import React, { useState } from "react";
-import { debounceInput, formatInputField } from "@/lib/utils";
+import { formatInputField } from "@/lib/utils";
 import { nanoid } from "nanoid";
 import { Icons } from "../Icons";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
 import { isEmpty } from "lodash";
 import { CONSTANTS } from "@/constants";
+import axios from "axios";
+import { toast } from "react-hot-toast";
 
 interface ISetBetPositionProps {
   showSetBetCard?: boolean;
@@ -25,6 +27,8 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   const balance = 0.00703629299999992;
 
   const [amount, setAmount] = useState<string>("");
+  const [percentage, setPercentage] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const changeUpOrDownHandler = (status: string) => {
     if (onEnterUpOrDown) return onEnterUpOrDown(status);
@@ -41,12 +45,31 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
     setAmount(value);
   };
 
+  const changePercentageHandler = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const {
+      target: { value },
+    } = event;
+
+    const amountModified = ((balance * +value) / 100).toString();
+
+    setPercentage(+value);
+    setAmount(amountModified);
+  };
+
   const validatorInputField = () => {
     let errorMessage = "";
     if (+amount < CONSTANTS.AMOUNT_REQUIRED && !isEmpty(amount))
       return (errorMessage = `A minimum amount of ${CONSTANTS.AMOUNT_REQUIRED} BNB is required`);
     if (balance < +amount) return (errorMessage = "Insufficient BNB balance");
     return errorMessage;
+  };
+
+  const choosePercentageAmountHandler = (value: number) => {
+    const amountModified = ((balance * value) / 100).toString();
+    setPercentage(value);
+    setAmount(amountModified);
   };
 
   const buttonName = () => {
@@ -63,6 +86,54 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
     if (+amount < balance) inActive = false;
     if (+amount === 0 || +amount < CONSTANTS.AMOUNT_REQUIRED) inActive = true;
     return inActive;
+  };
+
+  const placeBetHandler = async () => {
+    setIsLoading(true);
+    try {
+      await new Promise((resolve) => {
+        resolve(
+          setTimeout(() => {
+            setIsLoading(false);
+            toast.custom((t) => (
+              <div
+                className={`${
+                  t.visible ? "animate-enter" : "animate-leave"
+                } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+              >
+                <div className="flex bg-[--colors-success] p-4 rounded-l-lg">
+                  <Icons.CheckCircle className="text-[--colors-white]" />
+                </div>
+                <div className="flex-1 w-0 p-2">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0 pt-0.5"></div>
+                    <div className="ml-3 flex-1">
+                      <p className="text-sm font-medium text-[--colors-text]">
+                        Success!
+                      </p>
+                      <p className="mt-1 text-sm text-[--colors-text]">
+                        {upOrDownStatus} position entered
+                      </p>
+                      <p className="mt-1 text-sm text-[--colors-primary]">
+                        View on BscScan: 0x8439...
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex">
+                  <button
+                    onClick={() => toast.dismiss(t.id)}
+                    className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
+                  >
+                    <Icons.X className="text-[--colors-primary]" />
+                  </button>
+                </div>
+              </div>
+            ));
+          }, 5000)
+        );
+      });
+    } catch (error) {}
   };
 
   return (
@@ -129,19 +200,42 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
             Balance: {balance}
           </div>
         ) : null}
-        <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
-          <div className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full">
-            45%
+        <div className="w-full h-12 relative mb-6">
+          <div className="h-8">
+            <Icons.HeartIcon />
+          </div>
+
+          <input
+            type="range"
+            min={1}
+            max={100}
+            step={0.1}
+            value={percentage}
+            onChange={changePercentageHandler}
+            className="w-full bg-transparent"
+          />
+
+          <div
+            className={`-bottom-6 text-[--colors-text] text-xs absolute text-center min-w-[24px]`}
+            style={{
+              left:
+                percentage === 100
+                  ? `calc(${percentage}% - 5%)`
+                  : `${percentage}%`,
+            }}
+          >
+            {percentage}%
           </div>
         </div>
         <div className="flex items-center justify-between mb-4">
-          {BUTTONS_PERCENT.map((button_precent) => (
+          {BUTTONS_PERCENT.map((buttonPrecent) => (
             <Button
-              key={button_precent.id}
+              key={buttonPrecent.id}
               className="flex items-center rounded-2xl font-semibold justify-center h-5 py-0 px-2 bg-[--colors-tertiary] text-[--colors-primary] text-xs flex-1 hover:bg-[--colors-tertiary] hover:opacity-80 focus:ring-offset-0 focus:ring-0"
               disabled={isConnected ? false : true}
+              onClick={() => choosePercentageAmountHandler(buttonPrecent.value)}
             >
-              {button_precent.name}
+              {buttonPrecent.name}
             </Button>
           ))}
         </div>
@@ -157,7 +251,9 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
             <Button
               className="w-full bg-[--colors-primary] text-[--colors-white] hover:bg-[--colors-primary] hover:opacity-[0.8] rounded-2xl"
               type="button"
-              disabled={activeButton()}
+              disabled={activeButton() || isLoading}
+              onClick={placeBetHandler}
+              isLoading={isLoading}
             >
               {buttonName()}
             </Button>
