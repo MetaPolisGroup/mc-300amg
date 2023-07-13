@@ -113,6 +113,8 @@
     #3d2a54,
     #313d5c
   );
+  --colors-gradientCardHeaderFrom: #3b4155;
+  --colors-gradientCardHeaderTo: #3a3045;
   --colors-gradientCardHeader: linear-gradient(166.77deg, #3b4155, #3a3045);
   --colors-gradientBlue: linear-gradient(180deg, #00707f, #19778c);
   --colors-gradientViolet: linear-gradient(180deg, #6c4999, #6d4db2);
@@ -167,6 +169,8 @@
     #f3efff,
     #e5fdff
   );
+  --colors-gradientCardHeaderFrom: #f2ecf2;
+  --colors-gradientCardHeaderTo: #e8f2f6;
   --colors-gradientCardHeader: linear-gradient(111.68deg, #f2ecf2, #e8f2f6);
   --colors-gradientBlue: linear-gradient(180deg, #a7e8f1, #94e1f2);
   --colors-gradientViolet: linear-gradient(180deg, #e2c9fb, #cdb8fa);
