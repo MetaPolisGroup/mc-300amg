@@ -6,6 +6,7 @@ import { Icons } from "../Icons";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
 import { isEmpty } from "lodash";
+import { CONSTANTS } from "@/constants";
 
 interface ISetBetPositionProps {
   showSetBetCard?: boolean;
@@ -42,8 +43,8 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
 
   const validatorInputField = () => {
     let errorMessage = "";
-    if (+amount < 0.001 && !isEmpty(amount))
-      return (errorMessage = "A minimum amount of 0.001 BNB is required");
+    if (+amount < CONSTANTS.AMOUNT_REQUIRED && !isEmpty(amount))
+      return (errorMessage = `A minimum amount of ${CONSTANTS.AMOUNT_REQUIRED} BNB is required`);
     if (balance < +amount) return (errorMessage = "Insufficient BNB balance");
     return errorMessage;
   };
@@ -51,7 +52,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   const buttonName = () => {
     let name = "Confirm";
 
-    if (Number(amount) === 0 || +amount < 0.001)
+    if (Number(amount) === 0 || +amount < CONSTANTS.AMOUNT_REQUIRED)
       return (name = "Enter an amount");
     if (balance < +amount) return (name = "Insufficient BNB balance");
     return name;
@@ -60,7 +61,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   const activeButton = () => {
     let inActive = true;
     if (+amount < balance) inActive = false;
-    if (+amount === 0 || +amount < 0.001) inActive = true;
+    if (+amount === 0 || +amount < CONSTANTS.AMOUNT_REQUIRED) inActive = true;
     return inActive;
   };
 

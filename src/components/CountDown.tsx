@@ -9,32 +9,37 @@ import Button from "./ui/Button";
 interface ICountDown {
   title: string;
   min: number;
+  onAction?: {
+    setIsShowDrawer?: (value: boolean) => void;
+  };
 }
 
-const LIST_BTN_FEATURE = [
-  {
-    id: "question",
-    icon: <Icons.HelpCircle />,
-    disabled: false,
-    onAction: () => {},
-  },
-  {
-    id: "cup",
-    icon: <Icons.Trophy />,
-    disabled: false,
-    onAction: () => {},
-  },
-  {
-    id: "loop",
-    icon: <Icons.RotateCcw />,
-    disabled: true,
-    onAction: () => {},
-  },
-];
-
-const CountDown: React.FC<ICountDown> = ({ title, min }) => {
+const CountDown: React.FC<ICountDown> = ({ title, min, onAction }) => {
   const [minute, setMinute] = useState<number>(min);
   const [second, setSecond] = useState<number>(0);
+
+  const LIST_BTN_FEATURE = [
+    {
+      id: "question",
+      icon: <Icons.HelpCircle />,
+      disabled: false,
+      onAction: () => {},
+    },
+    {
+      id: "cup",
+      icon: <Icons.Trophy />,
+      disabled: false,
+      onAction: () => {},
+    },
+    {
+      id: "loop",
+      icon: <Icons.History />,
+      disabled: false,
+      onAction: () => {
+        return onAction?.setIsShowDrawer?.(true);
+      },
+    },
+  ];
 
   useEffect(() => {
     let countDown = setTimeout(() => {
@@ -77,6 +82,11 @@ const CountDown: React.FC<ICountDown> = ({ title, min }) => {
             !feature.disabled &&
               "bg-[--colors-textSubtle] hover:bg-[--colors-textSubtle] hover:opacity-80"
           )}
+          onClick={() => {
+            if (!feature.disabled) {
+              feature.onAction();
+            }
+          }}
         >
           {feature.icon}
         </Button>
