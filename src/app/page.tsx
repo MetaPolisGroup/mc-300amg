@@ -27,7 +27,7 @@ export default function Home() {
           <BetCard />
         </div>
 
-        <DrawerHistory open={isShowDrawer} onClose={setIsShowDrawer} />
+        {/* <DrawerHistory open={isShowDrawer} onClose={setIsShowDrawer} /> */}
       </div>
     </main>
   );
