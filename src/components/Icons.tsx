@@ -38,6 +38,7 @@ export const Icons = {
           filterUnits="userSpaceOnUse"
           colorInterpolationFilters="sRGB"
         >
+
           <feFlood floodOpacity="0" result="BacgroundImageFix"></feFlood>
           <feBlend
             mode="normal"
