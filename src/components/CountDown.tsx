@@ -2,12 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 
-import Button from "./ui/Button";
-
-import { Trophy } from "lucide-react";
-import { RotateCcw } from "lucide-react";
-import { HelpCircle } from "lucide-react";
 import clsx from "clsx";
+import { Icons } from "./Icons";
+import Button from "./ui/Button";
 
 interface ICountDown {
   title: string;
@@ -17,19 +14,19 @@ interface ICountDown {
 const LIST_BTN_FEATURE = [
   {
     id: "question",
-    icon: <HelpCircle />,
+    icon: <Icons.HelpCircle />,
     disabled: false,
     onAction: () => {},
   },
   {
     id: "cup",
-    icon: <Trophy />,
+    icon: <Icons.Trophy />,
     disabled: false,
     onAction: () => {},
   },
   {
     id: "loop",
-    icon: <RotateCcw />,
+    icon: <Icons.RotateCcw />,
     disabled: true,
     onAction: () => {},
   },
