@@ -7,6 +7,7 @@ export const Icons = {
   UserPlus,
   ArrowDown,
   PlayCircle,
+  ArrowLeft,
   PayoutUp: () => (
     <svg
       height="65px"
@@ -125,7 +126,6 @@ export const Icons = {
       </defs>
     </svg>
   ),
-  ArrowLeft,
   BNBIcon: () => (
     <svg
       viewBox="0 0 96 96"
