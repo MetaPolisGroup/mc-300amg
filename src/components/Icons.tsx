@@ -2,10 +2,17 @@ import { UserPlus } from "lucide-react";
 import { ArrowDown } from "lucide-react";
 import { PlayCircle } from "lucide-react";
 
+import { Trophy } from "lucide-react";
+import { RotateCcw } from "lucide-react";
+import { HelpCircle } from "lucide-react";
+
 export const Icons = {
+  Trophy,
   UserPlus,
   ArrowDown,
+  RotateCcw,
   PlayCircle,
+  HelpCircle,
   PayoutUp: () => (
     <svg
       height="65px"
