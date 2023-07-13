@@ -2,10 +2,38 @@
 
 import React, { useEffect, useState } from "react";
 
+import Button from "./ui/Button";
+
+import { Trophy } from "lucide-react";
+import { RotateCcw } from "lucide-react";
+import { HelpCircle } from "lucide-react";
+import clsx from "clsx";
+
 interface ICountDown {
   title: string;
   min: number;
 }
+
+const LIST_BTN_FEATURE = [
+  {
+    id: "question",
+    icon: <HelpCircle />,
+    disabled: false,
+    onAction: () => {},
+  },
+  {
+    id: "cup",
+    icon: <Trophy />,
+    disabled: false,
+    onAction: () => {},
+  },
+  {
+    id: "loop",
+    icon: <RotateCcw />,
+    disabled: true,
+    onAction: () => {},
+  },
+];
 
 const CountDown: React.FC<ICountDown> = ({ title, min }) => {
   const [minute, setMinute] = useState<number>(min);
@@ -40,12 +68,35 @@ const CountDown: React.FC<ICountDown> = ({ title, min }) => {
     );
   };
 
+  const renderListFeature = () => {
+    return LIST_BTN_FEATURE.map((feature) => {
+      return (
+        <Button
+          key={feature.id}
+          className={clsx(
+            "w-12 h-12 !rounded-2xl !p-2",
+            feature.disabled &&
+              "cursor-no-drop !active:border-none focus:!border-none hidden md:flex",
+            !feature.disabled &&
+              "bg-[--colors-textSubtle] hover:bg-[--colors-textSubtle] hover:opacity-80"
+          )}
+        >
+          {feature.icon}
+        </Button>
+      );
+    });
+  };
+
   return (
-    <div className="bg-[--colors-backgroundAlt] p-1 px-1 rounded-3xl text-[--colors-light-white] flex gap-0 items-center flex-col md:flex-row rounded-bl-[3rem] min-w-[68px] md:rounded-bl-3xl md:gap-2 md:min-w-fit md:p-2 md:px-3">
-      <div className="text-[--colors-secondary] text-base font-semibold rounded-bl-[3rem] flex-col md:flex-row md:text-lg">
-        {renderTime()}
+    <div className="flex items-center gap-2">
+      <div className="bg-[--colors-backgroundAlt] p-1 px-1 rounded-3xl text-[--colors-light-white] flex gap-0 items-center flex-col md:flex-row rounded-bl-[3rem] min-w-[68px] md:rounded-bl-3xl md:gap-2 md:min-w-fit md:p-2 md:px-3">
+        <div className="text-[--colors-secondary] text-base font-semibold rounded-bl-[3rem] flex-col md:flex-row md:text-lg">
+          {renderTime()}
+        </div>
+        <div className="text-xs">{title}</div>
       </div>
-      <div className="text-xs">{title}</div>
+
+      {renderListFeature()}
     </div>
   );
 };
