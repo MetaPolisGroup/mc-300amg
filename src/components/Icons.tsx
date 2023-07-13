@@ -13,11 +13,16 @@ import {
   Instagram,
   GithubIcon,
   ArrowLeft,
+  History,
+  Settings,
+  ChevronRight,
 } from "lucide-react";
 
 export const Icons = {
   Trophy,
+  History,
   UserPlus,
+  Settings,
   ArrowDown,
   RotateCcw,
   PlayCircle,
@@ -29,6 +34,7 @@ export const Icons = {
   Instagram,
   GithubIcon,
   Twitter,
+  ChevronRight,
   PayoutUp: () => (
     <svg
       height="65px"

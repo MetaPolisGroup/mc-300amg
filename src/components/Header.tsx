@@ -2,6 +2,7 @@ import React from "react";
 import ConnectButton from "./ConnectButton";
 import NetworkSelector from "./NetworkSelector";
 import SubMenu from "./SubMenu";
+import { Icons } from "./Icons";
 
 const Header = () => {
   return (
@@ -47,6 +48,7 @@ const Header = () => {
             </ul>
           </div>
           <div className="navbar-end gap-2">
+            <Icons.Settings className="hover:cursor-pointer text-[--colors-textSubtle]" />
             <NetworkSelector />
             <ConnectButton />
           </div>
