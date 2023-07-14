@@ -1,16 +1,29 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React from "react";
 const darkIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
 </svg>`;
 
 const lightIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
 </svg>`;
-const switchToggle = document.querySelector("#switch-toggle");
 let isDarkmode = false;
+let switchToggle: Element | null = null;
+let switchToggle1: Element | null = null;
+const ItemList: React.FC<{ content: string }> = ({ content }) => (
+  <li className="relative group w-max cursor-pointer">
+    <a className="text-white text-hover">{content}</a>
+    <span className="absolute -bottom-[2px] left-0 w-0 transition-all h-1 bg-[--colors-secondary] rounded group-hover:w-full" />
+  </li>
+);
 
 export default function Footer() {
+  React.useEffect(() => {
+    if (!switchToggle || !switchToggle1) {
+      switchToggle = document.querySelector("#switch-toggle");
+      switchToggle1 = document.querySelector("#switch-toggle1");
+    }
+  }, []);
   function toggleTheme() {
     isDarkmode = !isDarkmode;
     localStorage.setItem("isDarkmode", JSON.stringify(isDarkmode));
@@ -18,17 +31,23 @@ export default function Footer() {
   }
 
   function switchTheme() {
-    if (isDarkmode) {
-      switchToggle!.classList.remove("bg-yellow-500", "-translate-x-2");
-      switchToggle!.classList.add("bg-gray-700", "translate-x-full");
+    if (isDarkmode && switchToggle) {
+      switchToggle.classList.remove("bg-yellow-500", "-translate-x-2");
+      switchToggle.classList.add("bg-gray-700", "translate-x-full");
+      switchToggle1?.classList.remove("bg-yellow-500", "-translate-x-2");
+      switchToggle1?.classList.add("bg-gray-700", "translate-x-full");
       setTimeout(() => {
         switchToggle!.innerHTML = darkIcon;
+        switchToggle1!.innerHTML = darkIcon;
       }, 250);
     } else {
-      switchToggle!.classList.add("bg-yellow-500", "-translate-x-2");
-      switchToggle!.classList.remove("bg-gray-700", "translate-x-full");
+      switchToggle?.classList.add("bg-yellow-500", "-translate-x-2");
+      switchToggle?.classList.remove("bg-gray-700", "translate-x-full");
+      switchToggle1?.classList.add("bg-yellow-500", "-translate-x-2");
+      switchToggle1?.classList.remove("bg-gray-700", "translate-x-full");
       setTimeout(() => {
         switchToggle!.innerHTML = lightIcon;
+        switchToggle1!.innerHTML = lightIcon;
       }, 250);
     }
   }
@@ -42,29 +61,14 @@ export default function Footer() {
               ABOUT
             </h2>
             <nav className="list-none mb-10 leading-8">
-              <li className="relative">
-                <a className="text-white  text-hover">Contact</a>
-              </li>
-              <li className="relative">
-                <a className="text-white  text-hover">Brand</a>
-              </li>
-              <li className="relative">
-                <a className="text-white  text-hover">Blog</a>
-              </li>
-              <li className="relative">
-                <a className="text-white  text-hover">Community</a>
-              </li>
-              <li className="relative">
-                <a className="text-white  text-hover">Litepaper</a>
-              </li>
-              <li className="relative">
-                <a className="text-white  text-hover">
-                  CAKE Emission Projection
-                </a>
-              </li>
-              <li className="relative">
-                <a className="text-white text-hover">Terms Of Service</a>
-              </li>
+              <ItemList content="Contact" />
+              <ItemList content="Brand" />
+              <ItemList content="Blog" />
+              <ItemList content="Community" />
+              <ItemList content="Litepaper" />
+              <ItemList content="" />
+              <ItemList content="CAKE Emission Projection" />
+              <ItemList content="Terms Of Service" />
             </nav>
           </div>
           <div className="lg:w-1/3 md:w-1/2 text-left w-full px-4">
@@ -72,15 +76,9 @@ export default function Footer() {
               HELP
             </h2>
             <nav className="list-none mb-10 leading-8">
-              <li className="relative">
-                <a className="text-white text-hover">Customer Support</a>
-              </li>
-              <li className="relative">
-                <a className="text-white text-hover">Troubleshooting</a>
-              </li>
-              <li className="relative">
-                <a className="text-white text-hover">Guides</a>
-              </li>
+              <ItemList content="Customer Support" />
+              <ItemList content="Troubleshooting" />
+              <ItemList content="Guides" />
             </nav>
           </div>
           <div className="lg:w-1/3 md:w-1/2 text-left w-full px-4">
@@ -88,21 +86,11 @@ export default function Footer() {
               DEVELOPERS
             </h2>
             <nav className="list-none mb-10 leading-8">
-              <li className="relative">
-                <a className="text-white text-hover">Github</a>
-              </li>
-              <li className="relative">
-                <a className="text-white text-hover">Documentation</a>
-              </li>
-              <li className="relative">
-                <a className="text-white text-hover">Bug Bounty</a>
-              </li>
-              <li className="relative">
-                <a className="text-white text-hover">Audits</a>
-              </li>
-              <li className="relative">
-                <a className="text-white text-hover">Careers</a>
-              </li>
+              <ItemList content="Github" />
+              <ItemList content="Documentation" />
+              <ItemList content="Bug Bounty" />
+              <ItemList content="Audits" />
+              <ItemList content="Careers" />
             </nav>
           </div>
         </div>
@@ -147,7 +135,7 @@ export default function Footer() {
               onClick={toggleTheme}
             >
               <div
-                id="switch-toggle"
+                id="switch-toggle1"
                 className="w-12 h-12 relative rounded-full transition duration-500 transform bg-yellow-500 -translate-x-2 p-1 text-white"
               >
                 <svg
@@ -157,9 +145,9 @@ export default function Footer() {
                   stroke="currentColor"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
                   />
                 </svg>
@@ -178,8 +166,8 @@ export default function Footer() {
               >
                 <circle cx="48" cy="48" r="48" fill="#53DEE9"></circle>
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M47.858 79.875c-9.342-.007-16.866-2.249-22.124-6.275-5.321-4.075-8.144-9.857-8.144-16.4 0-6.304 2.817-10.85 6.004-13.923 2.497-2.408 5.253-3.95 7.172-4.838a99.818 99.818 0 01-1.46-4.876c-.648-2.41-1.284-5.237-1.284-7.309 0-2.452.535-4.915 1.977-6.829 1.523-2.021 3.816-3.104 6.574-3.104 2.156 0 3.986.8 5.42 2.179 1.369 1.318 2.28 3.07 2.91 4.895 1.106 3.208 1.537 7.238 1.657 11.26h2.643c.12-4.022.551-8.052 1.657-11.26.63-1.825 1.541-3.577 2.91-4.895 1.434-1.38 3.264-2.18 5.42-2.18 2.758 0 5.051 1.084 6.574 3.105 1.442 1.914 1.977 4.377 1.977 6.83 0 2.071-.636 4.898-1.284 7.308a99.707 99.707 0 01-1.46 4.876c1.919.888 4.675 2.43 7.172 4.838 3.187 3.073 6.004 7.619 6.004 13.923 0 6.543-2.823 12.325-8.144 16.4-5.257 4.026-12.782 6.268-22.124 6.275h-.047z"
                   fill="#633001"
                 ></path>
@@ -204,8 +192,8 @@ export default function Footer() {
                     y2="96"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#53DEE9"></stop>
-                    <stop offset="1" stop-color="#1FC7D4"></stop>
+                    <stop stopColor="#53DEE9"></stop>
+                    <stop offset="1" stopColor="#1FC7D4"></stop>
                   </linearGradient>
                 </defs>
               </svg>
@@ -273,8 +261,8 @@ export default function Footer() {
             style={{ cursor: "pointer" }}
           >
             <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
+              fillRule="evenodd"
+              clipRule="evenodd"
               d="M9.97 0C4.464 0 0 4.465 0 9.97c0 4.403 2.875 8.134 6.789 9.48.49.06.673-.245.673-.49v-1.712c-2.753.611-3.364-1.346-3.364-1.346-.428-1.162-1.101-1.468-1.101-1.468-.917-.611.061-.611.061-.611.979.06 1.53 1.04 1.53 1.04.917 1.528 2.323 1.1 2.874.856a2.13 2.13 0 01.611-1.346c-2.201-.245-4.526-1.1-4.526-4.954 0-1.101.367-1.957 1.04-2.691-.061-.184-.428-1.223.122-2.569 0 0 .857-.245 2.753 1.04.795-.245 1.651-.306 2.507-.306.857 0 1.713.122 2.508.306 1.896-1.285 2.752-1.04 2.752-1.04.55 1.346.184 2.385.123 2.63a3.956 3.956 0 011.04 2.691c0 3.853-2.325 4.648-4.527 4.893.367.306.673.918.673 1.835v2.752c0 .245.184.55.673.49A9.98 9.98 0 0020 9.97C19.939 4.464 15.474 0 9.97 0z"
             ></path>
           </svg>
@@ -318,9 +306,9 @@ export default function Footer() {
                 stroke="currentColor"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
                 />
               </svg>
@@ -339,8 +327,8 @@ export default function Footer() {
             >
               <circle cx="48" cy="48" r="48" fill="#53DEE9"></circle>
               <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
+                fillRule="evenodd"
+                clipRule="evenodd"
                 d="M47.858 79.875c-9.342-.007-16.866-2.249-22.124-6.275-5.321-4.075-8.144-9.857-8.144-16.4 0-6.304 2.817-10.85 6.004-13.923 2.497-2.408 5.253-3.95 7.172-4.838a99.818 99.818 0 01-1.46-4.876c-.648-2.41-1.284-5.237-1.284-7.309 0-2.452.535-4.915 1.977-6.829 1.523-2.021 3.816-3.104 6.574-3.104 2.156 0 3.986.8 5.42 2.179 1.369 1.318 2.28 3.07 2.91 4.895 1.106 3.208 1.537 7.238 1.657 11.26h2.643c.12-4.022.551-8.052 1.657-11.26.63-1.825 1.541-3.577 2.91-4.895 1.434-1.38 3.264-2.18 5.42-2.18 2.758 0 5.051 1.084 6.574 3.105 1.442 1.914 1.977 4.377 1.977 6.83 0 2.071-.636 4.898-1.284 7.308a99.707 99.707 0 01-1.46 4.876c1.919.888 4.675 2.43 7.172 4.838 3.187 3.073 6.004 7.619 6.004 13.923 0 6.543-2.823 12.325-8.144 16.4-5.257 4.026-12.782 6.268-22.124 6.275h-.047z"
                 fill="#633001"
               ></path>
@@ -365,8 +353,8 @@ export default function Footer() {
                   y2="96"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#53DEE9"></stop>
-                  <stop offset="1" stop-color="#1FC7D4"></stop>
+                  <stop stopColor="#53DEE9"></stop>
+                  <stop offset="1" stopColor="#1FC7D4"></stop>
                 </linearGradient>
               </defs>
             </svg>
