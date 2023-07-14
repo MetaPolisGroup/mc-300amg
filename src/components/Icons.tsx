@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import {
   UserPlus,
   ArrowDown,
@@ -20,21 +19,6 @@ import {
   CheckCircle,
   X,
 } from "lucide-react";
-=======
-import { UserPlus } from "lucide-react";
-import { ArrowDown } from "lucide-react";
-import { PlayCircle } from "lucide-react";
-import { ArrowLeft } from "lucide-react";
-import { CheckCircle } from "lucide-react";
-import { Trophy } from "lucide-react";
-import { History } from "lucide-react";
-import { Settings } from "lucide-react";
-import { RotateCcw } from "lucide-react";
-import { X } from "lucide-react";
-import { HelpCircle } from "lucide-react";
-import { ArrowRight } from "lucide-react";
-import { ChevronRight } from "lucide-react";
->>>>>>> main
 
 export const Icons = {
   Trophy,
@@ -44,7 +28,6 @@ export const Icons = {
   ArrowDown,
   RotateCcw,
   PlayCircle,
-<<<<<<< HEAD
   ArrowRight,
   HelpCircle,
   SunDim,
@@ -56,18 +39,7 @@ export const Icons = {
   ChevronRight,
   CheckCircle,
   X,
-<<<<<<< HEAD
 
-=======
-  ArrowLeft,
-  HelpCircle,
-  ArrowRight,
-  ChevronRight,
-  CheckCircle,
-  X,
->>>>>>> main
-=======
->>>>>>> 2ac6ba86eb7bed6cd342a3b92a6f15b2853d58f3
   PayoutUp: () => (
     <svg
       height="65px"
@@ -186,7 +158,6 @@ export const Icons = {
       </defs>
     </svg>
   ),
-<<<<<<< HEAD
   Telegram: () => (
     <svg
       viewBox="0 0 20 20"
@@ -218,8 +189,6 @@ export const Icons = {
     </svg>
   ),
   ArrowLeft,
-=======
->>>>>>> main
   BNBIcon: () => (
     <svg
       viewBox="0 0 96 96"

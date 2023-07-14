@@ -38,8 +38,6 @@ export const formatInputField = (event: any) => {
     event.preventDefault();
   }
 };
-<<<<<<< HEAD
-=======
 
 import { debounce } from "lodash";
 
@@ -49,4 +47,3 @@ export const debounceInput = debounce(
   },
   200
 );
->>>>>>> main

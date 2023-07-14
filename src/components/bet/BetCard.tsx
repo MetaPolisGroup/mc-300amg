@@ -16,8 +16,6 @@ const BetCard = () => {
     if (status === "UP") setUpOrDownStatus("UP");
     if (status === "DOWN") setUpOrDownStatus("DOWN");
   };
-<<<<<<< HEAD
-=======
 
   const changeUpOrDownHandler = (status: string) => {
     setUpOrDownStatus(status);
@@ -26,7 +24,6 @@ const BetCard = () => {
   const backwardHandler = (status: boolean) => {
     setShowSetBetCard(status);
   };
->>>>>>> main
 
   return (
     <div
@@ -81,7 +78,6 @@ const BetCard = () => {
                 Enter DOWN
               </Button>
             </div>
-<<<<<<< HEAD
           </div>
           <div className="relative -mt-[0.55rem]">
             <div className="h-16 mx-auto w-60">
@@ -153,8 +149,6 @@ const BetCard = () => {
               placeholder="0.0"
               onKeyDown={formatInputField}
             />
-=======
->>>>>>> main
           </div>
           <div className="text-[--colors-textSubtle] font-medium text-sm text-right">
             Balance: 0.00703629299999992
