@@ -5,6 +5,7 @@ import { formatInputField } from "@/lib/utils";
 import { nanoid } from "nanoid";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
+import SetBetPosition from "./SetBetPosition";
 
 const BetCard = () => {
   const [showSetBetCard, setShowSetBetCard] = useState<boolean>(false);
@@ -15,15 +16,26 @@ const BetCard = () => {
     if (status === "UP") setUpOrDownStatus("UP");
     if (status === "DOWN") setUpOrDownStatus("DOWN");
   };
+<<<<<<< HEAD
+=======
+
+  const changeUpOrDownHandler = (status: string) => {
+    setUpOrDownStatus(status);
+  };
+
+  const backwardHandler = (status: boolean) => {
+    setShowSetBetCard(status);
+  };
+>>>>>>> main
 
   return (
     <div
-      className={`w-full h-[100vh] flex justify-center items-center relative transition-transform duration-700 preverve-3d ${
+      className={`w-full h-[80vh] flex justify-center items-center relative transition-transform duration-700 preverve-3d ${
         showSetBetCard === true && "rotateY-180"
       }`}
     >
       <div
-        className={`card absolute z-20 w-80 shadow-xl backface-hidden ${
+        className={`card z-20 w-80 shadow-xl backface-hidden ${
           showSetBetCard && "z-10"
         }`}
       >
@@ -69,6 +81,7 @@ const BetCard = () => {
                 Enter DOWN
               </Button>
             </div>
+<<<<<<< HEAD
           </div>
           <div className="relative -mt-[0.55rem]">
             <div className="h-16 mx-auto w-60">
@@ -140,6 +153,8 @@ const BetCard = () => {
               placeholder="0.0"
               onKeyDown={formatInputField}
             />
+=======
+>>>>>>> main
           </div>
           <div className="text-[--colors-textSubtle] font-medium text-sm text-right">
             Balance: 0.00703629299999992
@@ -179,6 +194,13 @@ const BetCard = () => {
           </p>
         </div>
       </div>
+
+      <SetBetPosition
+        showSetBetCard={showSetBetCard}
+        upOrDownStatus={upOrDownStatus}
+        onEnterUpOrDown={changeUpOrDownHandler}
+        onBackward={backwardHandler}
+      />
     </div>
   );
 };
