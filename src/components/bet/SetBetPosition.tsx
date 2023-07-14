@@ -7,7 +7,6 @@ import Input from "../ui/Input";
 import Button from "../ui/Button";
 import { isEmpty } from "lodash";
 import { CONSTANTS } from "@/constants";
-import axios from "axios";
 import { toast } from "react-hot-toast";
 
 interface ISetBetPositionProps {
@@ -15,6 +14,11 @@ interface ISetBetPositionProps {
   upOrDownStatus?: string;
   onEnterUpOrDown?: (status: string) => void;
   onBackward?: (status: boolean) => void;
+  onPlaceBet?: (
+    id: string,
+    status: Pick<IBetData, "status"> | undefined | string,
+    value: string
+  ) => void;
 }
 
 const SetBetPosition: React.FC<ISetBetPositionProps> = ({
@@ -22,6 +26,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   upOrDownStatus,
   onEnterUpOrDown,
   onBackward,
+  onPlaceBet,
 }) => {
   const isConnected = true;
   const balance = 0.00703629299999992;
@@ -130,6 +135,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
                 </div>
               </div>
             ));
+            if (onPlaceBet) onPlaceBet("#187808", upOrDownStatus, amount);
           }, 5000)
         );
       });
@@ -138,7 +144,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
 
   return (
     <div
-      className={`card absolute z-10 w-80 shadow-xl backface-hidden translate-rotateY bg-[--colors-backgroundAlt] ${
+      className={`card absolute z-10 w-80 h-[404px] shadow-xl backface-hidden translate-rotateY bg-[--colors-backgroundAlt] ${
         showSetBetCard && "z-20"
       }`}
     >
