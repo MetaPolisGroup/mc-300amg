@@ -6,6 +6,7 @@ import CountDown from "@/components/CountDown";
 import BetCard from "@/components/bet/BetCard";
 import CoinCurrency from "@/components/CoinCurrency";
 import DrawerHistory from "@/components/DrawerHistory";
+import Card from "@/components/bet/Card";
 
 export default function Home() {
   const [isShowDrawer, setIsShowDrawer] = useState<boolean>(false);
@@ -24,9 +25,8 @@ export default function Home() {
               <CountDown min={5} title="5m" onAction={{ setIsShowDrawer }} />
             </div>
           </div>
-          <BetCard />
+          <Card />
         </div>
-
         {/* <DrawerHistory open={isShowDrawer} onClose={setIsShowDrawer} /> */}
       </div>
     </main>
