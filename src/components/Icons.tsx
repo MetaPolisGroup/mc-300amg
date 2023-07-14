@@ -1,16 +1,24 @@
-import { UserPlus } from "lucide-react";
-import { ArrowDown } from "lucide-react";
-import { PlayCircle } from "lucide-react";
-import { ArrowLeft } from "lucide-react";
-import { CheckCircle } from "lucide-react";
-import { Trophy } from "lucide-react";
-import { History } from "lucide-react";
-import { Settings } from "lucide-react";
-import { RotateCcw } from "lucide-react";
-import { X } from "lucide-react";
-import { HelpCircle } from "lucide-react";
-import { ArrowRight } from "lucide-react";
-import { ChevronRight } from "lucide-react";
+import {
+  UserPlus,
+  ArrowDown,
+  ArrowRight,
+  PlayCircle,
+  Trophy,
+  RotateCcw,
+  HelpCircle,
+  SunDim,
+  MoonStar,
+  ArrowUp,
+  Twitter,
+  Instagram,
+  GithubIcon,
+  ArrowLeft,
+  History,
+  Settings,
+  ChevronRight,
+  CheckCircle,
+  X,
+} from "lucide-react";
 
 export const Icons = {
   Trophy,
@@ -20,12 +28,18 @@ export const Icons = {
   ArrowDown,
   RotateCcw,
   PlayCircle,
-  ArrowLeft,
-  HelpCircle,
   ArrowRight,
+  HelpCircle,
+  SunDim,
+  MoonStar,
+  ArrowUp,
+  Instagram,
+  GithubIcon,
+  Twitter,
   ChevronRight,
   CheckCircle,
   X,
+
   PayoutUp: () => (
     <svg
       height="65px"
@@ -144,6 +158,37 @@ export const Icons = {
       </defs>
     </svg>
   ),
+  Telegram: () => (
+    <svg
+      viewBox="0 0 20 20"
+      width="25px"
+      xmlns="http://www.w3.org/2000/svg"
+      className="sc-231a1e38-0 fVYtuI"
+      style={{ cursor: "pointer" }}
+    >
+      <path
+        d="M10 0C4.478 0 0 4.478 0 9.99 0 15.511 4.478 20 10 20s10-4.488 10-10.01C20 4.477 15.522 0 10 0zm4.925 6.28c-.064.927-1.78 7.856-1.78 7.856s-.107.406-.48.416a.644.644 0 01-.49-.192c-.395-.33-1.29-.97-2.132-1.556a.953.953 0 01-.107.096c-.192.17-.48.416-.789.714a10.7 10.7 0 00-.373.352l-.01.01a2.214 2.214 0 01-.193.171c-.415.341-.458.053-.458-.096l.224-2.441v-.021l.01-.022c.011-.032.033-.043.033-.043s4.36-3.88 4.477-4.296c.01-.021-.021-.042-.074-.021-.288.096-5.31 3.273-5.864 3.625-.032.02-.128.01-.128.01l-2.441-.8s-.288-.117-.192-.383c.021-.053.053-.107.17-.181.544-.384 10-3.785 10-3.785s.267-.085.427-.032c.074.032.117.064.16.17.01.043.021.128.021.224 0 .054-.01.118-.01.224z"
+        fill="var(--colors-textSubtle)"
+        color="var(--colors-textSubtle)"
+      ></path>
+    </svg>
+  ),
+  Reddit: () => (
+    <svg
+      viewBox="0 0 20 20"
+      xmlns="http://www.w3.org/2000/svg"
+      width="25px"
+      className="sc-231a1e38-0 gUXTeE"
+      fill="var(--colors-textSubtle)"
+      color="var(--colors-textSubtle)"
+      style={{ cursor: "pointer" }}
+    >
+      <path d="M12.09 13.412c-.448.447-1.408.607-2.09.607-.682 0-1.642-.16-2.09-.607a.27.27 0 00-.383 0 .27.27 0 000 .383c.714.704 2.068.757 2.473.757.405 0 1.76-.053 2.473-.767a.27.27 0 000-.384.28.28 0 00-.383.01zM8.753 11.034c0-.576-.47-1.045-1.045-1.045-.576 0-1.045.47-1.045 1.045 0 .576.47 1.045 1.045 1.045.576 0 1.045-.47 1.045-1.045z"></path>
+      <path d="M10 0C4.478 0 0 4.478 0 10s4.478 10 10 10 10-4.467 10-10c-.01-5.522-4.478-10-10-10zm5.8 11.333c.02.138.032.287.032.437 0 2.25-2.612 4.062-5.832 4.062-3.22 0-5.832-1.813-5.832-4.062 0-.15.011-.299.032-.437A1.447 1.447 0 013.337 10 1.463 1.463 0 015.81 8.945c1.013-.736 2.41-1.194 3.966-1.237 0-.021.736-3.486.736-3.486 0-.064.042-.128.096-.16a.263.263 0 01.202-.043l2.42.523c.17-.342.523-.587.928-.587A1.04 1.04 0 0115.203 5a1.04 1.04 0 01-1.045 1.045 1.034 1.034 0 01-1.034-.992l-2.175-.469-.661 3.124c1.535.053 2.91.522 3.902 1.237a1.454 1.454 0 012.473 1.044 1.48 1.48 0 01-.863 1.344z"></path>
+      <path d="M12.292 10c-.576 0-1.045.47-1.045 1.045s.47 1.045 1.045 1.045c.576 0 1.045-.47 1.045-1.045A1.06 1.06 0 0012.292 10z"></path>
+    </svg>
+  ),
+  ArrowLeft,
   BNBIcon: () => (
     <svg
       viewBox="0 0 96 96"
