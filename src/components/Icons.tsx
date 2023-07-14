@@ -56,6 +56,7 @@ export const Icons = {
   ChevronRight,
   CheckCircle,
   X,
+<<<<<<< HEAD
 
 =======
   ArrowLeft,
@@ -65,6 +66,8 @@ export const Icons = {
   CheckCircle,
   X,
 >>>>>>> main
+=======
+>>>>>>> 2ac6ba86eb7bed6cd342a3b92a6f15b2853d58f3
   PayoutUp: () => (
     <svg
       height="65px"
