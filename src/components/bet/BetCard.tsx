@@ -41,6 +41,10 @@ const BetCard = () => {
           <div className="text-[--colors-white]">#187808</div>
         </div>
         <div className="card-body p-4">
+          <div className="absolute flex gap-2 z-20 border-2 rounded-2xl border-[--colors-secondary] px-3 py-1">
+            <Icons.CheckCircle />
+            <span>ENTERED</span>
+          </div>
           <div className="relative -mb-[0.55rem]">
             <div className="h-16 mx-auto w-60">
               <Icons.PayoutUp />
@@ -56,11 +60,20 @@ const BetCard = () => {
           </div>
           <div className="rounded-2xl bg-gradient-to-r from-[#53dee9] to-[#7645d9] p-[2px]">
             <div className="bg-[--colors-backgroundAlt] rounded-xl p-4 flex flex-col gap-2">
+              <Button
+                className="flex w-full gap-1 bg-[--colors-success] text-[--colors-white] hover:bg-[--colors-success] hover:opacity-[0.8] rounded-2xl"
+                type="button"
+                disabled={true}
+              >
+                <Icons.ArrowDown className="rotate-180" />
+                <span>UP Entered</span>
+              </Button>
+
               <div className="flex items-center justify-between text-[--colors-text] font-semibold text-base">
                 <span>Prize Pool:</span>
                 <span>0.00005 BNB</span>
               </div>
-              <Button
+              {/* <Button
                 className="bg-[--colors-success] text-[--colors-white] hover:bg-[--colors-success] hover:opacity-[0.8] rounded-2xl"
                 type="button"
                 onClick={() => enterUpOrDownHandler("UP")}
@@ -73,7 +86,7 @@ const BetCard = () => {
                 onClick={() => enterUpOrDownHandler("DOWN")}
               >
                 Enter DOWN
-              </Button>
+              </Button> */}
             </div>
           </div>
           <div className="relative -mt-[0.55rem]">
