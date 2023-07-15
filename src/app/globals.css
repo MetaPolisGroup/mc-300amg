@@ -194,3 +194,8 @@
 .translate-rotateY {
   transform: rotateY(180deg) translateZ(1px);
 }
+
+.swiper-wrapper {
+  height: 100% !important;
+  align-items: center !important;
+}

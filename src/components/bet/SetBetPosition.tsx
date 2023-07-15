@@ -144,7 +144,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
 
   return (
     <div
-      className={`card absolute z-10 w-80 h-[404px] shadow-xl backface-hidden translate-rotateY bg-[--colors-backgroundAlt] ${
+      className={`card absolute z-10 w-80 shadow-xl backface-hidden translate-rotateY bg-[--colors-backgroundAlt] ${
         showSetBetCard && "z-20"
       }`}
     >
