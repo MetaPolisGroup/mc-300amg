@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Icons } from "../Icons";
-import { formatInputField } from "@/lib/utils";
+import { formatInputField } from "@/utils/format-inputField";
 import { nanoid } from "nanoid";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
@@ -39,7 +39,7 @@ const BetCard = () => {
 
   return (
     <div
-      className={`w-full flex justify-center items-center relative transition-transform duration-700 preverve-3d ${
+      className={`w-full flex h-[485px] justify-center items-center relative transition-transform duration-700 preverve-3d ${
         showSetBetCard === true && "rotateY-180"
       }`}
     >

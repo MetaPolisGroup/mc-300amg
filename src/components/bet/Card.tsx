@@ -18,7 +18,7 @@ const Card = () => {
         slidesPerView={4}
         onSlideChange={() => console.log("slide change")}
         onSwiper={(swiper) => console.log(swiper)}
-        autoHeight={true}
+        // autoHeight={true}
         // centeredSlides={true}
         breakpoints={{
           // when window width is >= 320px
