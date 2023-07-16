@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/merge-class";
 import { VariantProps, cva } from "class-variance-authority";
 import React, { FC, InputHTMLAttributes } from "react";
 
