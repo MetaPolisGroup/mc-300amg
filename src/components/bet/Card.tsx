@@ -15,33 +15,27 @@ const Card = () => {
   return (
     <div className="flex h-[80vh] justify-center items-center">
       <Swiper
-        slidesPerView={4}
         onSlideChange={() => console.log("slide change")}
         onSwiper={(swiper) => console.log(swiper)}
         // autoHeight={true}
-        // centeredSlides={true}
+        centeredSlides={true}
+        initialSlide={3}
         breakpoints={{
           // when window width is >= 320px
           320: {
             slidesPerView: 1,
-            spaceBetween: 20,
+            spaceBetween: 16,
           },
           // when window width is >= 480px
           480: {
             slidesPerView: 1,
-            spaceBetween: 30,
+            spaceBetween: 16,
           },
           // when window width is >= 640px
           640: {
-            slidesPerView: 4,
-            spaceBetween: 40,
+            slidesPerView: 3,
+            spaceBetween: 16,
           },
-        }}
-        style={{
-          display: "flex",
-          width: "100%",
-          justifyContent: "center",
-          alignItems: "center",
         }}
       >
         <SwiperSlide>

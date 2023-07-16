@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { formatInputField } from "@/lib/utils";
+import { formatInputField } from "@/utils/format-inputField";
 import { nanoid } from "nanoid";
 import { Icons } from "../Icons";
 import Input from "../ui/Input";
