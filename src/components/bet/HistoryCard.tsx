@@ -1,6 +1,5 @@
 import React from "react";
 import { Icons } from "../Icons";
-import { isEmpty } from "lodash";
 
 const HistoryCard = () => {
   return (
