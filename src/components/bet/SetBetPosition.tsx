@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { formatInputField } from "@/utils/format-inputField";
 import { nanoid } from "nanoid";
 import { Icons } from "../Icons";
@@ -8,6 +8,7 @@ import Button from "../ui/Button";
 import { isEmpty } from "lodash";
 import { CONSTANTS } from "@/constants";
 import { toast } from "react-hot-toast";
+import { useAccount, useBalance } from "wagmi";
 
 interface ISetBetPositionProps {
   showSetBetCard?: boolean;
@@ -28,8 +29,17 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   onBackward,
   onPlaceBet,
 }) => {
-  const isConnected = true;
-  const balance = 0.00703629299999992;
+  // Fix hydrate by using isClient
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+  const { isConnected, address } = useAccount();
+  const { data } = useBalance({
+    address: address,
+    formatUnits: "gwei",
+  });
+  const balance = Number(data?.value);
 
   const [amount, setAmount] = useState<string>("");
   const [percentage, setPercentage] = useState<number>(0);
@@ -57,7 +67,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
       target: { value },
     } = event;
 
-    const amountModified = ((balance * +value) / 100).toString();
+    const amountModified = ((balance! * +value) / 100).toString();
 
     setPercentage(+value);
     setAmount(amountModified);
@@ -67,12 +77,12 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
     let errorMessage = "";
     if (+amount < CONSTANTS.AMOUNT_REQUIRED && !isEmpty(amount))
       return (errorMessage = `A minimum amount of ${CONSTANTS.AMOUNT_REQUIRED} BNB is required`);
-    if (balance < +amount) return (errorMessage = "Insufficient BNB balance");
+    if (balance! < +amount) return (errorMessage = "Insufficient BNB balance");
     return errorMessage;
   };
 
   const choosePercentageAmountHandler = (value: number) => {
-    const amountModified = ((balance * value) / 100).toString();
+    const amountModified = ((balance! * value) / 100).toString();
     setPercentage(value);
     setAmount(amountModified);
   };
@@ -80,15 +90,17 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   const buttonName = () => {
     let name = "Confirm";
 
+    if (balance! < +amount || balance! === 0)
+      return (name = "Insufficient BNB balance");
+
     if (Number(amount) === 0 || +amount < CONSTANTS.AMOUNT_REQUIRED)
       return (name = "Enter an amount");
-    if (balance < +amount) return (name = "Insufficient BNB balance");
     return name;
   };
 
   const activeButton = () => {
     let inActive = true;
-    if (+amount < balance) inActive = false;
+    if (+amount < balance!) inActive = false;
     if (+amount === 0 || +amount < CONSTANTS.AMOUNT_REQUIRED) inActive = true;
     return inActive;
   };
@@ -184,7 +196,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
           <div className="flex items-center gap-1">
             <Icons.BNBIcon />
             <span className="text-[--colors-text] font-semibold text-base">
-              BNB
+              {data?.symbol}
             </span>
           </div>
         </div>
@@ -193,7 +205,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
             className="text-[--colors-white] text-right"
             placeholder="0.0"
             onKeyDown={formatInputField}
-            disabled={isConnected ? false : true}
+            disabled={isClient && (isConnected ? false : true)}
             onChange={changeAmountHandler}
             value={amount}
           />
@@ -201,11 +213,12 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
         <span className="text-[--colors-failure] font-medium mt-1 text-right text-xs">
           {validatorInputField()}
         </span>
-        {isConnected ? (
-          <div className="text-[--colors-textSubtle] font-medium text-sm text-right">
-            Balance: {balance}
-          </div>
-        ) : null}
+        {isClient &&
+          (isConnected ? (
+            <div className="text-[--colors-textSubtle] font-medium text-sm text-right">
+              Balance: {data?.formatted} {data?.symbol}
+            </div>
+          ) : null)}
         <div className="w-full h-12 relative mb-6">
           <div className="h-8">
             <Icons.HeartIcon />
@@ -217,8 +230,9 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
             max={100}
             step={0.1}
             value={percentage}
+            disabled={isClient && (isConnected ? false : true)}
             onChange={changePercentageHandler}
-            className="w-full bg-transparent"
+            className="w-full bg-transparent disabled:cursor-not-allowed"
           />
 
           <div
@@ -238,7 +252,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
             <Button
               key={buttonPrecent.id}
               className="flex items-center rounded-2xl font-semibold justify-center h-5 py-0 px-2 bg-[--colors-tertiary] text-[--colors-primary] text-xs flex-1 hover:bg-[--colors-tertiary] hover:opacity-80 focus:ring-offset-0 focus:ring-0"
-              disabled={isConnected ? false : true}
+              disabled={isClient && (isConnected ? false : true)}
               onClick={() => choosePercentageAmountHandler(buttonPrecent.value)}
             >
               {buttonPrecent.name}
@@ -246,24 +260,26 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
           ))}
         </div>
         <div>
-          {!isConnected ? (
-            <Button
-              className="w-full bg-[--colors-primary] text-[--colors-white] hover:bg-[--colors-primary] hover:opacity-[0.8] rounded-2xl"
-              type="button"
-            >
-              Connect Wallet
-            </Button>
-          ) : (
-            <Button
-              className="w-full bg-[--colors-primary] text-[--colors-white] hover:bg-[--colors-primary] hover:opacity-[0.8] rounded-2xl"
-              type="button"
-              disabled={activeButton() || isLoading}
-              onClick={placeBetHandler}
-              isLoading={isLoading}
-            >
-              {buttonName()}
-            </Button>
-          )}
+          {isClient &&
+            (!isConnected ? (
+              <Button
+                className="w-full bg-[--colors-primary] text-[--colors-white] hover:bg-[--colors-primary] hover:opacity-[0.8] rounded-2xl"
+                type="button"
+                disabled
+              >
+                Please Connect Wallet
+              </Button>
+            ) : (
+              <Button
+                className="w-full bg-[--colors-primary] text-[--colors-white] hover:bg-[--colors-primary] hover:opacity-[0.8] rounded-2xl"
+                type="button"
+                disabled={activeButton() || isLoading}
+                onClick={placeBetHandler}
+                isLoading={isLoading}
+              >
+                {buttonName()}
+              </Button>
+            ))}
         </div>
         <p className="text-[--colors-textSubtle] font-medium text-xs">
           You won&apos;t be able to remove or change your position once you
