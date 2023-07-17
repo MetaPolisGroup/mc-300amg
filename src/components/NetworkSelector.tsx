@@ -10,7 +10,7 @@ const NetworkSelector = () => {
         className="flex w-20 gap-2 items-center justify-center bg-[--colors-tertiary] rounded-2xl pr-4 lg:w-full"
       >
         <Image src="/images/bnb.png" width={32} height={32} alt="bnb icon" />
-        <span className="hidden text-[--colors-text] font-semibold lg:flex">
+        <span className="hidden text-[--colors-text-special] font-semibold lg:flex">
           BNB Smart Chain
         </span>
         <Icons.ArrowDown className="text-[--colors-text]" />
