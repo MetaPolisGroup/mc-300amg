@@ -52,6 +52,7 @@ export default function RootLayout({
             <Provider>
               <Header />
               {children}
+              <Footer />
               {/* <Footer /> */}
             </Provider>
           </RainbowKitProvider>

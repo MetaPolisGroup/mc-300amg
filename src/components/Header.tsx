@@ -10,7 +10,10 @@ const Header = () => {
       <nav className="flex justify-between items-center w-full h-full border-b border-[--colors-cardBorder] px-4">
         <div className="navbar">
           <div className="navbar-start lg:flex">
-            <a className="normal-case text-xl" href="/">
+            <a
+              className="normal-case text-xl text-[--colors-textSubtle]"
+              href="/"
+            >
               daisyUI
             </a>
             <ul className="menu menu-horizontal px-5 gap-2 hidden lg:flex">
