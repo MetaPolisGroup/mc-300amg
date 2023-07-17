@@ -20,8 +20,8 @@ const { connectors } = getDefaultWallets({
 
 const wagmiConfig = createConfig({
   autoConnect: true,
-  connectors,
   publicClient,
+  connectors,
 });
 
 interface ProviderProps {
