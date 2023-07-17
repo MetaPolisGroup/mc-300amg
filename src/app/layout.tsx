@@ -1,8 +1,36 @@
+"use client";
 import Provider from "@/components/Provider";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+
+import "@rainbow-me/rainbowkit/styles.css";
+
+import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { configureChains, createConfig, WagmiConfig } from "wagmi";
+import { publicProvider } from "wagmi/providers/public";
+import { CONSTANTS } from "@/constants";
+
+// Walet connect
+const { chains, publicClient } = configureChains(
+  [CONSTANTS.CHAIN],
+  [publicProvider()]
+);
+
+const { connectors } = getDefaultWallets({
+  appName: "My RainbowKit App",
+  projectId: "YOUR_PROJECT_ID",
+  chains,
+});
+
+const wagmiConfig = createConfig({
+  autoConnect: true,
+  connectors,
+  publicClient,
+});
+
+// Others
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,11 +47,15 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="dark">
       <body className={`${inter.className}`}>
-        <Provider>
-          <Header />
-          {children}
-          <Footer />
-        </Provider>
+        <WagmiConfig config={wagmiConfig}>
+          <RainbowKitProvider chains={chains}>
+            <Provider>
+              <Header />
+              {children}
+              <Footer />
+            </Provider>
+          </RainbowKitProvider>
+        </WagmiConfig>
       </body>
     </html>
   );

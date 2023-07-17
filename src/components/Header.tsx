@@ -1,6 +1,6 @@
 import React from "react";
-import ConnectButton from "./ConnectButton";
 import NetworkSelector from "./NetworkSelector";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import SubMenu from "./SubMenu";
 import { Icons } from "./Icons";
 
