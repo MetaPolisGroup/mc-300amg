@@ -2,23 +2,28 @@ import { Chain } from "wagmi";
 export const chain: {
   [key: string]: Chain;
 } = {
-  //   bscTestnet: {
-  //     id: 97,
-  //     name: "BSC",
-  //     network: "BSC Testnet",
-  //     nativeCurrency: {
-  //       decimals: 18,
-  //       name: "TBNB",
-  //       symbol: "TBNB",
-  //     },
-  //     rpcUrls: {
-  //       default: "https://data-seed-prebsc-1-s1.binance.org:8545/",
-  //     },
-  //     blockExplorers: {
-  //       default: { name: "Bscscan", url: "https://testnet.bscscan.com/" },
-  //     },
-  //     testnet: true,
-  //   },
+  bscTestnet: {
+    id: 97,
+    name: "BSC",
+    network: "BSC Testnet",
+    nativeCurrency: {
+      decimals: 18,
+      name: "TBNB",
+      symbol: "TBNB",
+    },
+    rpcUrls: {
+      default: {
+        http: ["https://data-seed-prebsc-1-s1.binance.org:8545/"],
+      },
+      public: {
+        http: ["https://data-seed-prebsc-1-s1.binance.org:8545/"],
+      },
+    },
+    blockExplorers: {
+      default: { name: "Bscscan", url: "https://testnet.bscscan.com/" },
+    },
+    testnet: true,
+  },
   sepolia: {
     id: 11155111,
     name: "Sepolia",
