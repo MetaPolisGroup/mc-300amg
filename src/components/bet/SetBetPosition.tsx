@@ -9,6 +9,7 @@ import { isEmpty } from "lodash";
 import { CONSTANTS } from "@/constants";
 import { toast } from "react-hot-toast";
 import { useAccount, useBalance } from "wagmi";
+import { ethers } from "ethers";
 
 interface ISetBetPositionProps {
   showSetBetCard?: boolean;
@@ -37,9 +38,9 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   const { isConnected, address } = useAccount();
   const { data } = useBalance({
     address: address,
-    formatUnits: "gwei",
+    formatUnits: "ether",
   });
-  const balance = Number(data?.value);
+  const balance = isClient ? Number(ethers.formatEther(data?.value!)) : 0;
 
   const [amount, setAmount] = useState<string>("");
   const [percentage, setPercentage] = useState<number>(0);
@@ -196,7 +197,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
           <div className="flex items-center gap-1">
             <Icons.BNBIcon />
             <span className="text-[--colors-text] font-semibold text-base">
-              {data?.symbol}
+              {isClient && data?.symbol}
             </span>
           </div>
         </div>
