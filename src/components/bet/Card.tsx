@@ -15,9 +15,7 @@ const Card = () => {
   return (
     <div className="flex h-[80vh] justify-center items-center">
       <Swiper
-        onSlideChange={() => console.log("slide change")}
-        onSwiper={(swiper) => console.log(swiper)}
-        // autoHeight={true}
+        modules={[Navigation]}
         centeredSlides={true}
         initialSlide={3}
         breakpoints={{
