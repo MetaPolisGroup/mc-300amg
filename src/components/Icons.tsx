@@ -29,6 +29,7 @@ export const Icons = {
   RotateCcw,
   PlayCircle,
   ArrowRight,
+  ArrowLeft,
   HelpCircle,
   SunDim,
   MoonStar,
@@ -249,7 +250,6 @@ export const Icons = {
       <path d="M12.292 10c-.576 0-1.045.47-1.045 1.045s.47 1.045 1.045 1.045c.576 0 1.045-.47 1.045-1.045A1.06 1.06 0 0012.292 10z"></path>
     </svg>
   ),
-  ArrowLeft,
   BNBIcon: () => (
     <svg
       viewBox="0 0 96 96"
