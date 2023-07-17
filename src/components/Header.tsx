@@ -1,9 +1,10 @@
 "use client";
 import React from "react";
 import NetworkSelector from "./NetworkSelector";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import SubMenu from "./SubMenu";
 import { Icons } from "./Icons";
+import ConnectWallet from "./ConnectWallet";
+
 import Popup, { PopupRef } from "./ui/Modal";
 import style from "./header.module.css";
 import { motion } from "framer-motion";
@@ -157,7 +158,7 @@ const Header = () => {
               }
             />
             <NetworkSelector />
-            <ConnectButton />
+            <ConnectWallet />
           </div>
         </div>
       </nav>
