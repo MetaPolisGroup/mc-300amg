@@ -1,8 +1,8 @@
 import React from "react";
 import NetworkSelector from "./NetworkSelector";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import SubMenu from "./SubMenu";
 import { Icons } from "./Icons";
+import ConnectWallet from "./ConnectWallet";
 
 const Header = () => {
   return (
@@ -53,7 +53,7 @@ const Header = () => {
           <div className="navbar-end gap-2">
             <Icons.Settings className="hover:cursor-pointer text-[--colors-textSubtle]" />
             <NetworkSelector />
-            <ConnectButton />
+            <ConnectWallet />
           </div>
         </div>
       </nav>
