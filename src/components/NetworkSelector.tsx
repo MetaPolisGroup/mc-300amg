@@ -1,8 +1,15 @@
+"use client";
 import Image from "next/image";
-import React from "react";
-import { Icons } from "./Icons";
+import React, { useEffect, useState } from "react";
+import { useNetwork } from "wagmi";
 
 const NetworkSelector = () => {
+  const { chain } = useNetwork();
+  const [isClient, setIsClient] = useState<boolean>(false);
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <div className="dropdown dropdown-hover">
       <label
@@ -11,9 +18,9 @@ const NetworkSelector = () => {
       >
         <Image src="/images/bnb.png" width={32} height={32} alt="bnb icon" />
         <span className="hidden text-[--colors-text-special] font-semibold lg:flex">
-          BNB Smart Chain
+          {isClient && chain && chain.network}
         </span>
-        <Icons.ArrowDown className="text-[--colors-text]" />
+        {/* <Icons.ArrowDown className="text-[--colors-text]" /> */}
       </label>
     </div>
   );
