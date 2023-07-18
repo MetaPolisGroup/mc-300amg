@@ -3,14 +3,18 @@ import React, { useEffect, useState } from "react";
 import { formatInputField } from "@/utils/format-inputField";
 import { nanoid } from "nanoid";
 import { Icons } from "../Icons";
-import Input from "../ui/Input";
-import Button from "../ui/Button";
 import { isEmpty } from "lodash";
 import { CONSTANTS } from "@/constants";
 import { toast } from "react-hot-toast";
-import { WalletClient, useAccount, useBalance, useWalletClient } from "wagmi";
+import {
+  useAccount,
+  useBalance,
+  useContractRead,
+  useContractWrite,
+} from "wagmi";
 import { ethers } from "ethers";
-import provider from "@/constants/provider";
+import Input from "../ui/Input";
+import Button from "../ui/Button";
 
 interface ISetBetPositionProps {
   showSetBetCard?: boolean;
@@ -33,16 +37,41 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
 }) => {
   const { isConnected, address } = useAccount();
 
-  const contract = new ethers.Contract(
-    CONSTANTS.ADDRESS.PREDICTION,
-    CONSTANTS.ABI.PREDICTION,
-    CONSTANTS.PROVIDER
-  );
   // Fix hydrate by using isClient
-  const [isClient, setIsClient] = useState(false);
+  const [isClient, setIsClient] = useState<boolean>(false);
+  const [amount, setAmount] = useState<string>("");
+  const [percentage, setPercentage] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const { data } = useBalance({
     address: address,
     formatUnits: "ether",
+  });
+
+  const { data: getRoundData } = useContractRead({
+    address: CONSTANTS.ADDRESS.PREDICTION,
+    abi: CONSTANTS.ABI.PREDICTION,
+    functionName: "currentEpoch",
+  });
+
+  const {
+    data: betBull,
+    isSuccess: isSuccessBetBull,
+    write: writeBetBull,
+  } = useContractWrite({
+    address: CONSTANTS.ADDRESS.PREDICTION,
+    abi: CONSTANTS.ABI.PREDICTION,
+    functionName: "betBull",
+  });
+
+  const {
+    data: betBear,
+    isSuccess: isSuccessBetBear,
+    write: writeBetBear,
+  } = useContractWrite({
+    address: CONSTANTS.ADDRESS.PREDICTION,
+    abi: CONSTANTS.ABI.PREDICTION,
+    functionName: "betBear",
   });
 
   useEffect(() => {
@@ -50,10 +79,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   }, []);
 
   const balance =
-    isClient && isConnected ? +ethers.formatEther(data?.value!) : 0;
-  const [amount, setAmount] = useState<string>("");
-  const [percentage, setPercentage] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+    isClient && isConnected ? ethers.formatEther(data?.value!) : 0;
 
   const changeUpOrDownHandler = (status: string) => {
     if (onEnterUpOrDown) return onEnterUpOrDown(status);
@@ -77,7 +103,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
       target: { value },
     } = event;
 
-    const amountModified = ((balance! * +value) / 100).toString();
+    const amountModified = ((+balance! * +value) / 100).toString();
 
     setPercentage(+value);
     setAmount(amountModified);
@@ -87,12 +113,12 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
     let errorMessage = "";
     if (+amount < CONSTANTS.AMOUNT_REQUIRED && !isEmpty(amount))
       return (errorMessage = `A minimum amount of ${CONSTANTS.AMOUNT_REQUIRED} BNB is required`);
-    if (balance! < +amount) return (errorMessage = "Insufficient BNB balance");
+    if (+balance! < +amount) return (errorMessage = "Insufficient BNB balance");
     return errorMessage;
   };
 
   const choosePercentageAmountHandler = (value: number) => {
-    const amountModified = ((balance! * value) / 100).toString();
+    const amountModified = ((+balance! * value) / 100).toString();
     setPercentage(value);
     setAmount(amountModified);
   };
@@ -100,7 +126,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   const buttonName = () => {
     let name = "Confirm";
 
-    if (balance! < +amount || balance! === 0)
+    if (+balance! < +amount || balance! === 0)
       return (name = "Insufficient BNB balance");
 
     if (Number(amount) === 0 || +amount < CONSTANTS.AMOUNT_REQUIRED)
@@ -110,7 +136,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
 
   const activeButton = () => {
     let inActive = true;
-    if (+amount < balance!) inActive = false;
+    if (+amount < +balance!) inActive = false;
     if (+amount === 0 || +amount < CONSTANTS.AMOUNT_REQUIRED) inActive = true;
     return inActive;
   };
@@ -120,97 +146,99 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
     try {
       // betBull is Bet up
 
-      const currentRound = await contract?.currentEpoch();
+      const currentRound = getRoundData?.toString();
+
       if (currentRound) {
         if (upOrDownStatus === "UP") {
-          alert(currentRound);
-          const betBull = await contract?.betBull(currentRound.toString(), {
-            value: ethers.parseUnits(amount, "ether").toString(),
+          writeBetBull({
+            args: [currentRound],
+            value: ethers.parseUnits(amount, "ether"),
           });
-          await betBull.wait();
-          console.log("done");
-          setIsLoading(false);
-          toast.custom((t) => (
-            <div
-              className={`${
-                t.visible ? "animate-enter" : "animate-leave"
-              } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-            >
-              <div className="flex bg-[--colors-success] p-4 rounded-l-lg">
-                <Icons.CheckCircle className="text-[--colors-white]" />
-              </div>
-              <div className="flex-1 w-0 p-2">
-                <div className="flex items-start">
-                  <div className="flex-shrink-0 pt-0.5"></div>
-                  <div className="ml-3 flex-1">
-                    <p className="text-sm font-medium text-[--colors-text]">
-                      Success!
-                    </p>
-                    <p className="mt-1 text-sm text-[--colors-text]">
-                      {upOrDownStatus} position entered
-                    </p>
-                    <p className="mt-1 text-sm text-[--colors-primary]">
-                      View on BscScan: 0x8439...
-                    </p>
+          if (isSuccessBetBull) {
+            setIsLoading(false);
+            toast.custom((t) => (
+              <div
+                className={`${
+                  t.visible ? "animate-enter" : "animate-leave"
+                } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+              >
+                <div className="flex bg-[--colors-success] p-4 rounded-l-lg">
+                  <Icons.CheckCircle className="text-[--colors-white]" />
+                </div>
+                <div className="flex-1 w-0 p-2">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0 pt-0.5"></div>
+                    <div className="ml-3 flex-1">
+                      <p className="text-sm font-medium text-[--colors-text]">
+                        Success!
+                      </p>
+                      <p className="mt-1 text-sm text-[--colors-text]">
+                        {upOrDownStatus} position entered
+                      </p>
+                      <p className="mt-1 text-sm text-[--colors-primary]">
+                        View on BscScan: 0x8439...
+                      </p>
+                    </div>
                   </div>
                 </div>
+                <div className="flex">
+                  <button
+                    onClick={() => toast.dismiss(t.id)}
+                    className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
+                  >
+                    <Icons.X className="text-[--colors-primary]" />
+                  </button>
+                </div>
               </div>
-              <div className="flex">
-                <button
-                  onClick={() => toast.dismiss(t.id)}
-                  className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
-                >
-                  <Icons.X className="text-[--colors-primary]" />
-                </button>
-              </div>
-            </div>
-          ));
-          if (onPlaceBet)
-            onPlaceBet(currentRound.toString(), upOrDownStatus, amount);
+            ));
+            if (onPlaceBet) onPlaceBet(currentRound, upOrDownStatus, amount);
+          }
         }
         if (upOrDownStatus === "DOWN") {
-          const betBear = await contract?.betBear(currentRound.toString(), {
-            value: ethers.parseUnits(amount, "ether").toString(),
+          writeBetBear({
+            args: [currentRound],
+            value: ethers.parseUnits(amount, "ether"),
           });
-          await betBear.wait();
-          setIsLoading(false);
-          toast.custom((t) => (
-            <div
-              className={`${
-                t.visible ? "animate-enter" : "animate-leave"
-              } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-            >
-              <div className="flex bg-[--colors-success] p-4 rounded-l-lg">
-                <Icons.CheckCircle className="text-[--colors-white]" />
-              </div>
-              <div className="flex-1 w-0 p-2">
-                <div className="flex items-start">
-                  <div className="flex-shrink-0 pt-0.5"></div>
-                  <div className="ml-3 flex-1">
-                    <p className="text-sm font-medium text-[--colors-text]">
-                      Success!
-                    </p>
-                    <p className="mt-1 text-sm text-[--colors-text]">
-                      {upOrDownStatus} position entered
-                    </p>
-                    <p className="mt-1 text-sm text-[--colors-primary]">
-                      View on BscScan: 0x8439...
-                    </p>
+
+          if (isSuccessBetBear) {
+            setIsLoading(false);
+            toast.custom((t) => (
+              <div
+                className={`${
+                  t.visible ? "animate-enter" : "animate-leave"
+                } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+              >
+                <div className="flex bg-[--colors-success] p-4 rounded-l-lg">
+                  <Icons.CheckCircle className="text-[--colors-white]" />
+                </div>
+                <div className="flex-1 w-0 p-2">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0 pt-0.5"></div>
+                    <div className="ml-3 flex-1">
+                      <p className="text-sm font-medium text-[--colors-text]">
+                        Success!
+                      </p>
+                      <p className="mt-1 text-sm text-[--colors-text]">
+                        {upOrDownStatus} position entered
+                      </p>
+                      <p className="mt-1 text-sm text-[--colors-primary]">
+                        View on BscScan: 0x8439...
+                      </p>
+                    </div>
                   </div>
                 </div>
+                <div className="flex">
+                  <button
+                    onClick={() => toast.dismiss(t.id)}
+                    className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
+                  >
+                    <Icons.X className="text-[--colors-primary]" />
+                  </button>
+                </div>
               </div>
-              <div className="flex">
-                <button
-                  onClick={() => toast.dismiss(t.id)}
-                  className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
-                >
-                  <Icons.X className="text-[--colors-primary]" />
-                </button>
-              </div>
-            </div>
-          ));
-          if (onPlaceBet)
-            onPlaceBet(currentRound.toString(), upOrDownStatus, amount);
+            ));
+            if (onPlaceBet) onPlaceBet(currentRound, upOrDownStatus, amount);
+          }
         }
       }
     } catch (error) {

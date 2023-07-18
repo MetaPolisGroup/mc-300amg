@@ -1,15 +1,16 @@
 import React from "react";
 import { Icons } from "../Icons";
+import Button from "../ui/Button";
 
 const HistoryCard = () => {
   return (
     <div className={`w-full flex justify-center items-center relative`}>
       <div
         className={
-          "card z-20 w-80 bg-[--colors-backgroundAlt] shadow-xl opacity-70 transition-all hover:opacity-100"
+          "card z-20 w-80 bg-[--colors-backgroundAlt] group shadow-xl transition-all hover:opacity-100"
         }
       >
-        <div className="flex justify-between items-center bg-[--colors-cardBorder] h-9 p-2 rounded-t-2xl">
+        <div className="flex justify-between items-center opacity-70 bg-[--colors-cardBorder] h-9 p-2 rounded-t-2xl group-hover:opacity-100">
           <div className="flex items-center gap-2">
             <Icons.Ban className="text-[--colors-textDisabled]" />
             <span className="text-[--colors-textDisabled]">Expired</span>
@@ -17,7 +18,7 @@ const HistoryCard = () => {
           <div className="text-[--colors-textDisabled]">#187808</div>
         </div>
 
-        <div className="card-body p-4">
+        <div className="card-body p-4 opacity-70 group-hover:opacity-100">
           {/* {!isEmpty(dataBetted) &&
             (dataBetted?.status === "UP" ? (
               <div className="absolute flex gap-2 z-20 border-2 rounded-2xl border-[--colors-secondary] px-2 py-[2px] ">
@@ -90,6 +91,12 @@ const HistoryCard = () => {
                 <span className="text-[--colors-secondary]">ENTERED</span>
               </div>
             ) : null)} */}
+        </div>
+        <div className="absolute bottom-[0.05rem] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100">
+          <Icons.TrophyIcon className="text-[--colors-gold]" />
+          <Button className="bg-[--colors-primary] hover:bg-[--colors-primary] hover:opacity-70">
+            Collect Winnings
+          </Button>
         </div>
       </div>
     </div>
