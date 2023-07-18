@@ -134,7 +134,7 @@ export default function Footer() {
               </nav>
             </div>
           </div>
-          <div className="w-64 flex-shrink-0 md:mx-0 md:h-[250px] flex items-start md:justify-center justify-start text-center md:text-left md:mt-0  order-first md:order-none mb-14 ">
+          <div className="w-64 md:mx-0 md:h-[250px] flex items-start md:justify-end lg:justify-center justify-start text-center md:text-left md:mt-0  order-first md:order-none mb-14 ">
             <h1 className="text-[--colors-secondary] text-3xl">Logo</h1>
           </div>
 
