@@ -129,7 +129,12 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
   };
 
   return (
-    <div className={clsx(open && "w-[385px]", !open && "w-0")}>
+    <div
+      className={clsx(
+        open && "w-[385px] transition-transform translate-x-0",
+        !open && "w-0 transition-transform transform translate-x-full"
+      )}
+    >
       <div
         className="p-4"
         style={{ background: "var(--colors-gradientBubblegum)" }}
