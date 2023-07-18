@@ -1,6 +1,7 @@
 import { ChainType } from "../chain";
 
 export const predictionAddr = {
-  [ChainType.BSCTESTNET]: "0x95968e39E7938b825AD7282E89ce8F89f649c95E",
+  [ChainType.BSCTESTNET]:
+    "0xa31A85a9E342c30b352F7464d37E04C82B92E03b" as `0x${string}`,
   [ChainType.BSC]: "",
 };

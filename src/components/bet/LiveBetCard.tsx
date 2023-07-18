@@ -3,16 +3,12 @@ import { Icons } from "../Icons";
 import { isEmpty } from "lodash";
 
 const LiveBetCard = () => {
-  const dataBetted = {
-    id: "",
-    status: "DOWN",
-    value: "0.00004",
-  };
+  const dataBetted: any = {};
   return (
     <div
       className={`w-full flex justify-center items-center relative transition-transform duration-700 preverve-3d`}
     >
-      <div className={"card z-20 bg-[--colors-backgroundAlt] shadow-xl"}>
+      <div className={"card w-80 z-20 bg-[--colors-backgroundAlt] shadow-xl"}>
         <div className="flex justify-between items-center bg-[--colors-backgroundAlt] h-9 p-2 rounded-t-2xl">
           <div className="flex items-center gap-2">
             <Icons.PlayCircle className="text-[--colors-secondary]" />

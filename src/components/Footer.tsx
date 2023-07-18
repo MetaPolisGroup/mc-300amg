@@ -1,67 +1,9 @@
 "use client";
 import React from "react";
 import { Icons } from "./Icons";
-import { themeChange } from "theme-change";
-
-let isDarkmode = false;
-let switchToggle: Element | null = null;
-let switchToggle1: Element | null = null;
-const ItemList: React.FC<{ content: string; style?: React.CSSProperties }> = ({
-  content,
-  style,
-}) => (
-  <li className="relative group w-max cursor-pointer">
-    <a
-      style={{
-        ...style,
-        color: style ? "var(--colors-warning)" : "var(--colors-text)",
-      }}
-    >
-      {content}
-    </a>
-    <span
-      className={`absolute -bottom-[2px] left-0 w-0 transition-all h-1 ${
-        style ? "bg-[--colors-warning]" : "bg-[--colors-secondary]"
-      } rounded group-hover:w-full`}
-    />
-  </li>
-);
+import ChangeMode from "./ui/ChangeMode";
 
 export default function Footer() {
-  React.useEffect(() => {
-    if (!switchToggle || !switchToggle1) {
-      switchToggle = document.querySelector("#switch-toggle");
-      switchToggle1 = document.querySelector("#switch-toggle1");
-    }
-    themeChange(false);
-  }, []);
-  function toggleTheme() {
-    isDarkmode = !isDarkmode;
-    localStorage.setItem("isDarkmode", JSON.stringify(isDarkmode));
-    switchTheme();
-  }
-
-  function switchTheme() {
-    if (isDarkmode && switchToggle) {
-      switchToggle.classList.remove("bg-yellow-500", "-translate-x-1");
-      switchToggle.classList.add("bg-gray-700", "translate-x-full");
-      switchToggle1?.classList.remove("bg-yellow-500", "-translate-x-1");
-      switchToggle1?.classList.add("bg-gray-700", "translate-x-full");
-      setTimeout(() => {
-        switchToggle!.innerHTML = darkIcon;
-        switchToggle1!.innerHTML = darkIcon;
-      }, 250);
-    } else {
-      switchToggle?.classList.add("bg-yellow-500", "-translate-x-1");
-      switchToggle?.classList.remove("bg-gray-700", "translate-x-full");
-      switchToggle1?.classList.add("bg-yellow-500", "-translate-x-1");
-      switchToggle1?.classList.remove("bg-gray-700", "translate-x-full");
-      setTimeout(() => {
-        switchToggle!.innerHTML = lightIcon;
-        switchToggle1!.innerHTML = lightIcon;
-      }, 250);
-    }
-  }
   const [showElement, setShowElement] = React.useState(false);
 
   React.useEffect(() => {
@@ -87,7 +29,6 @@ export default function Footer() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
   return (
     <footer className="bg-[--colors-backgroundAlt]">
       <div className="relative container px-5 pt-14 mx-auto">
@@ -134,24 +75,13 @@ export default function Footer() {
               </nav>
             </div>
           </div>
-          <div className="w-64 flex-shrink-0 md:mx-0 md:h-[250px] flex items-start md:justify-center justify-start text-center md:text-left md:mt-0  order-first md:order-none mb-14 ">
+          <div className="w-64 md:mx-0 md:h-[250px] flex items-start md:justify-end lg:justify-center justify-start text-center md:text-left md:mt-0  order-first md:order-none mb-14 ">
             <h1 className="text-[--colors-secondary] text-3xl">Logo</h1>
           </div>
 
           <div className="md:hidden border-t-[1px] border-b-[1px] border-[#383241] mb-5 container -order-2 md:order-none md:justify-between items-center  py-10 flex md:flex-row md:flex-nowrap flex-wrap flex-col">
-            <div className="md:mb-5 flex gap-5 items-center mt-5 md:w-3/6 w-full">
-              <button
-                className="w-20 h-10 rounded-full bg-white flex items-center transition duration-300 focus:outline-none shadow"
-                onClick={toggleTheme}
-                data-toggle-theme="dark,light"
-              >
-                <div
-                  id="switch-toggle1"
-                  className="w-10 h-10 relative rounded-full transition duration-500 transform bg-yellow-500 -translate-x-2 p-1 text-white"
-                >
-                  <Icons.SunIcon />
-                </div>
-              </button>
+            <div className="mr-auto mt-5">
+              <ChangeMode />
             </div>
             <div className="flex items-center gap-5 order-first md:order-none justify-between  w-full md:w-[45%] lg:w-[30%]">
               <div className="flex items-center gap-2">
@@ -201,20 +131,7 @@ export default function Footer() {
       </div>
 
       <div className="hidden container md:order-none md:justify-between items-center px-6 mx-auto pb-14 md:flex md:flex-row md:flex-nowrap flex-wrap flex-col">
-        <div className="md:mb-5 flex gap-5 items-center mt-5 md:w-3/6 w-full">
-          <button
-            className="w-20 h-10 rounded-full bg-white flex items-center transition duration-300 focus:outline-none shadow"
-            onClick={toggleTheme}
-            data-toggle-theme="dark,light"
-          >
-            <div
-              id="switch-toggle"
-              className="w-10 h-10 relative rounded-full transition duration-500 transform bg-yellow-500 -translate-x-2 p-1 text-white"
-            >
-              <Icons.SunIcon />
-            </div>
-          </button>
-        </div>
+        <ChangeMode />
         <div className="flex items-center gap-5 order-first md:order-none justify-between  w-full md:w-[45%] lg:w-[30%]">
           <div className="flex items-center gap-2">
             <Icons.RabbitIcon />
@@ -230,10 +147,23 @@ export default function Footer() {
   );
 }
 
-const darkIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-</svg>`;
-
-const lightIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-</svg>`;
+const ItemList: React.FC<{ content: string; style?: React.CSSProperties }> = ({
+  content,
+  style,
+}) => (
+  <li className="relative group w-max cursor-pointer">
+    <a
+      style={{
+        ...style,
+        color: style ? "var(--colors-warning)" : "var(--colors-text)",
+      }}
+    >
+      {content}
+    </a>
+    <span
+      className={`absolute -bottom-[2px] left-0 w-0 transition-all h-1 ${
+        style ? "bg-[--colors-warning]" : "bg-[--colors-secondary]"
+      } rounded group-hover:w-full`}
+    />
+  </li>
+);

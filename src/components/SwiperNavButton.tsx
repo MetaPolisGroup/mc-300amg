@@ -14,7 +14,10 @@ const SwiperNavButton: FC<ISwiperNavButtonProps> = ({ swiperRef }) => {
       >
         <Icons.ArrowLeft className="text-[--colors-primary]" />
       </button>
-      <div className="absolute left-1/2 -m-8">
+      <div
+        className="absolute left-1/2 -m-8 cursor-pointer"
+        onClick={() => swiperRef?.current?.slideTo(3)}
+      >
         <Icons.PancakeIcon />
       </div>
       <button
