@@ -33,11 +33,10 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
 }) => {
   const { isConnected, address } = useAccount();
 
-  const signer = CONSTANTS.PROVIDER.getSigner(address);
   const contract = new ethers.Contract(
     CONSTANTS.ADDRESS.PREDICTION,
     CONSTANTS.ABI.PREDICTION,
-    signer as any
+    CONSTANTS.PROVIDER
   );
   // Fix hydrate by using isClient
   const [isClient, setIsClient] = useState(false);
@@ -124,6 +123,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
       const currentRound = await contract?.currentEpoch();
       if (currentRound) {
         if (upOrDownStatus === "UP") {
+          alert(currentRound);
           const betBull = await contract?.betBull(currentRound.toString(), {
             value: ethers.parseUnits(amount, "ether").toString(),
           });
