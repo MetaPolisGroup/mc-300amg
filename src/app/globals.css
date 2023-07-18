@@ -101,6 +101,7 @@
   --colors-inputSecondary: #262130;
   --colors-tertiary: #353547;
   --colors-text: #f4eeff;
+  --colors-text-special: #f4eeff;
   --colors-text99: #f4eeff99;
   --colors-textDisabled: #666171;
   --colors-textSubtle: #b8add2;
@@ -157,6 +158,7 @@
   --colors-inputSecondary: #d7caec;
   --colors-tertiary: #eff4f5;
   --colors-text: #f4eeff;
+  --colors-text-special: #280d5f;
   --colors-text99: #280d5f99;
   --colors-textDisabled: #bdc2c4;
   --colors-textSubtle: #7a6eaa;
@@ -177,6 +179,27 @@
   --colors-gradientVioletAlt: linear-gradient(180deg, #cbd7ef, #9a9fd0);
   --colors-gradientGold: linear-gradient(180deg, #ffd800, #fdab32);
   --colors-gradientBold: linear-gradient(#53dee9, #7645d9);
+}
+
+::-webkit-scrollbar {
+  width: 0.25rem;
+  height: 0.25rem;
+}
+
+::-webkit-scrollbar-track {
+  --bg-opacity: 1;
+  background-color: #1c1d1d;
+  background-color: rgba(247, 250, 252, var(--bg-opacity));
+}
+
+::-webkit-scrollbar-thumb {
+  --bg-opacity: 1;
+  background-color: #edf2f7;
+  background-color: rgba(237, 242, 247, var(--bg-opacity));
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 0.25rem;
 }
 
 .rotateY-180 {

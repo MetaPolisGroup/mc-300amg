@@ -1,8 +1,8 @@
 import React from "react";
-import ConnectButton from "./ConnectButton";
 import NetworkSelector from "./NetworkSelector";
 import SubMenu from "./SubMenu";
 import { Icons } from "./Icons";
+import ConnectWallet from "./ConnectWallet";
 
 const Header = () => {
   return (
@@ -10,7 +10,10 @@ const Header = () => {
       <nav className="flex justify-between items-center w-full h-full border-b border-[--colors-cardBorder] px-4">
         <div className="navbar">
           <div className="navbar-start lg:flex">
-            <a className="normal-case text-xl" href="/">
+            <a
+              className="normal-case text-xl text-[--colors-textSubtle]"
+              href="/"
+            >
               daisyUI
             </a>
             <ul className="menu menu-horizontal px-5 gap-2 hidden lg:flex">
@@ -50,7 +53,7 @@ const Header = () => {
           <div className="navbar-end gap-2">
             <Icons.Settings className="hover:cursor-pointer text-[--colors-textSubtle]" />
             <NetworkSelector />
-            <ConnectButton />
+            <ConnectWallet />
           </div>
         </div>
       </nav>

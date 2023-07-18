@@ -1,12 +1,10 @@
 "use client";
-
 import { useState } from "react";
-
 import CountDown from "@/components/CountDown";
-import BetCard from "@/components/bet/BetCard";
 import CoinCurrency from "@/components/CoinCurrency";
 import DrawerHistory from "@/components/DrawerHistory";
 import Card from "@/components/bet/Card";
+import SwiperNavButton from "@/components/SwiperNavButton";
 
 export default function Home() {
   const [isShowDrawer, setIsShowDrawer] = useState<boolean>(false);
