@@ -187,19 +187,12 @@
 }
 
 ::-webkit-scrollbar-track {
-  --bg-opacity: 1;
-  background-color: #1c1d1d;
-  background-color: rgba(247, 250, 252, var(--bg-opacity));
+  background-color: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  --bg-opacity: 1;
-  background-color: #edf2f7;
-  background-color: rgba(237, 242, 247, var(--bg-opacity));
-}
-
-::-webkit-scrollbar-thumb {
-  border-radius: 0.25rem;
+  background-image: linear-gradient(-45deg, #6a5af9, #d66efd);
+  border-radius: 50px;
 }
 
 .rotateY-180 {
