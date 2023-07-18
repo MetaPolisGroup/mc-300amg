@@ -128,6 +128,48 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
     );
   };
 
+  const renderMainContent = () => {
+    if (!open) return null;
+
+    return (
+      <>
+        <div
+          className="p-4"
+          style={{ background: "var(--colors-gradientBubblegum)" }}
+        >
+          <div className="flex justify-between mb-8">
+            <div className="text-[--colors-light-white] text-xl font-bold">
+              History
+            </div>
+            <button
+              className="text-[--colors-primary] flex gap-2 text-base font-bold"
+              onClick={() => onClose(false)}
+            >
+              Close <Icons.ArrowRight className="w-5 h-5" />
+            </button>
+          </div>
+
+          {renderMode()}
+          {renderFilter()}
+        </div>
+
+        <div className="h-full bg-[--colors-backgroundAlt] text-[--colors-text]">
+          {renderContent()}
+
+          <div className="text-center p-6">
+            <p className="mb-2 text-xl font-bold">
+              No prediction history available
+            </p>
+            <p className="text-base font-medium">
+              If you are sure you should see history here, make sure you’re
+              connected to the correct wallet and try again.
+            </p>
+          </div>
+        </div>
+      </>
+    );
+  };
+
   return (
     <div
       className={clsx(
@@ -135,39 +177,7 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
         !open && "w-0 transition-transform transform translate-x-full"
       )}
     >
-      <div
-        className="p-4"
-        style={{ background: "var(--colors-gradientBubblegum)" }}
-      >
-        <div className="flex justify-between mb-8">
-          <div className="text-[--colors-light-white] text-xl font-bold">
-            History
-          </div>
-          <button
-            className="text-[--colors-primary] flex gap-2 text-base font-bold"
-            onClick={() => onClose(false)}
-          >
-            Close <Icons.ArrowRight className="w-5 h-5" />
-          </button>
-        </div>
-
-        {renderMode()}
-        {renderFilter()}
-      </div>
-
-      <div className="h-full bg-[--colors-backgroundAlt] text-[--colors-text]">
-        {renderContent()}
-
-        <div className="text-center p-6">
-          <p className="mb-2 text-xl font-bold">
-            No prediction history available
-          </p>
-          <p className="text-base font-medium">
-            If you are sure you should see history here, make sure you’re
-            connected to the correct wallet and try again.
-          </p>
-        </div>
-      </div>
+      {renderMainContent()}
     </div>
   );
 };

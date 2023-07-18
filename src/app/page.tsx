@@ -10,7 +10,7 @@ export default function Home() {
   const [isShowDrawer, setIsShowDrawer] = useState<boolean>(false);
 
   return (
-    <main className="bg-gradient-to-r from-[--colors-violetAlt1] to-[--colors-violetAlt2]">
+    <main className="bg-gradient-to-r from-[--colors-violetAlt1] to-[--colors-violetAlt2] overflow-hidden">
       <div className="flex">
         <div
           style={
@@ -26,7 +26,7 @@ export default function Home() {
           <Card />
         </div>
 
-        {/* <DrawerHistory open={isShowDrawer} onClose={setIsShowDrawer} /> */}
+        <DrawerHistory open={isShowDrawer} onClose={setIsShowDrawer} />
       </div>
     </main>
   );
