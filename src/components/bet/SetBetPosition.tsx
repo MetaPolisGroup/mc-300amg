@@ -50,7 +50,8 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
     setIsClient(true);
   }, []);
 
-  const balance = isClient ? +ethers.formatEther(data?.value!) : 0;
+  const balance =
+    isClient && isConnected ? +ethers.formatEther(data?.value!) : 0;
   const [amount, setAmount] = useState<string>("");
   const [percentage, setPercentage] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
