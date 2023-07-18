@@ -1,10 +1,25 @@
+"use client";
 import React from "react";
 import NetworkSelector from "./NetworkSelector";
 import SubMenu from "./SubMenu";
 import { Icons } from "./Icons";
 import ConnectWallet from "./ConnectWallet";
+import Button from "./ui/Button";
+import { publicClient } from "@/lib/contract-config";
+import { CONSTANTS } from "@/constants";
 
 const Header = () => {
+  const callRound = async () => {
+    const { request } = await publicClient.simulateContract({
+      account: privateKeyToAccount(
+        "7476c8c08f10b30ac5aead18e090ff99549c4f28d1b90efde543eb1158e41493"
+      ),
+      address: CONSTANTS.ADDRESS.PREDICTION,
+      abi: CONSTANTS.ABI.PREDICTION,
+      functionName: "executeRound",
+      args: [],
+    });
+  };
   return (
     <header className="w-full z-20 bg-[--colors-backgroundAlt]">
       <nav className="flex justify-between items-center w-full h-full border-b border-[--colors-cardBorder] px-4">
@@ -51,6 +66,7 @@ const Header = () => {
             </ul>
           </div>
           <div className="navbar-end gap-2">
+            <Button onClick={callRound}>Call Round</Button>
             <Icons.Settings className="hover:cursor-pointer text-[--colors-textSubtle]" />
             <NetworkSelector />
             <ConnectWallet />
@@ -63,3 +79,8 @@ const Header = () => {
 };
 
 export default Header;
+function privateKeyToAccount(
+  arg0: string
+): `0x${string}` | import("viem").Account | undefined {
+  throw new Error("Function not implemented.");
+}

@@ -13,6 +13,7 @@ import {
   useContractWrite,
 } from "wagmi";
 import { ethers } from "ethers";
+import { publicClient, walletClient } from "@/lib/contract-config";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
 
@@ -48,7 +49,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
     formatUnits: "ether",
   });
 
-  const { data: getRoundData } = useContractRead({
+  const { data: getRoundData, isError: isErrorRound } = useContractRead({
     address: CONSTANTS.ADDRESS.PREDICTION,
     abi: CONSTANTS.ABI.PREDICTION,
     functionName: "currentEpoch",
@@ -57,6 +58,8 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   const {
     data: betBull,
     isSuccess: isSuccessBetBull,
+    error: errorBetBull,
+    status: statusBetBull,
     write: writeBetBull,
   } = useContractWrite({
     address: CONSTANTS.ADDRESS.PREDICTION,
@@ -67,6 +70,8 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   const {
     data: betBear,
     isSuccess: isSuccessBetBear,
+    error: errorBetBear,
+    status: statusBetBear,
     write: writeBetBear,
   } = useContractWrite({
     address: CONSTANTS.ADDRESS.PREDICTION,
@@ -143,105 +148,139 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
 
   const placeBetHandler = async () => {
     setIsLoading(true);
+
     try {
       // betBull is Bet up
-
       const currentRound = getRoundData?.toString();
 
       if (currentRound) {
         if (upOrDownStatus === "UP") {
-          writeBetBull({
-            args: [currentRound],
+          const { request } = await publicClient.simulateContract({
+            account: address,
+            address: CONSTANTS.ADDRESS.PREDICTION,
+            abi: CONSTANTS.ABI.PREDICTION,
+            functionName: "betBull",
+            args: [8],
             value: ethers.parseUnits(amount, "ether"),
           });
-          if (isSuccessBetBull) {
-            setIsLoading(false);
-            toast.custom((t) => (
-              <div
-                className={`${
-                  t.visible ? "animate-enter" : "animate-leave"
-                } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-              >
-                <div className="flex bg-[--colors-success] p-4 rounded-l-lg">
-                  <Icons.CheckCircle className="text-[--colors-white]" />
-                </div>
-                <div className="flex-1 w-0 p-2">
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0 pt-0.5"></div>
-                    <div className="ml-3 flex-1">
-                      <p className="text-sm font-medium text-[--colors-text]">
-                        Success!
-                      </p>
-                      <p className="mt-1 text-sm text-[--colors-text]">
-                        {upOrDownStatus} position entered
-                      </p>
-                      <p className="mt-1 text-sm text-[--colors-primary]">
-                        View on BscScan: 0x8439...
-                      </p>
+          if (request) {
+            const hash = await walletClient.writeContract(request);
+            if (hash) {
+              const transaction = await publicClient.waitForTransactionReceipt({
+                hash,
+              });
+              console.log({ transaction });
+              if (transaction?.status === "success") {
+                setIsLoading(false);
+                toast.custom((t) => (
+                  <div
+                    className={`${
+                      t.visible ? "animate-enter" : "animate-leave"
+                    } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+                  >
+                    <div className="flex bg-[--colors-success] p-4 rounded-l-lg">
+                      <Icons.CheckCircle className="text-[--colors-white]" />
+                    </div>
+                    <div className="flex-1 w-0 p-2">
+                      <div className="flex items-start">
+                        <div className="flex-shrink-0 pt-0.5"></div>
+                        <div className="ml-3 flex-1">
+                          <p className="text-sm font-medium text-[--colors-text]">
+                            Success!
+                          </p>
+                          <p className="mt-1 text-sm text-[--colors-text]">
+                            {upOrDownStatus} position entered
+                          </p>
+                          <p className="mt-1 text-sm text-[--colors-primary]">
+                            View on BscScan: 0x8439...
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex">
+                      <button
+                        onClick={() => toast.dismiss(t.id)}
+                        className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
+                      >
+                        <Icons.X className="text-[--colors-primary]" />
+                      </button>
                     </div>
                   </div>
-                </div>
-                <div className="flex">
-                  <button
-                    onClick={() => toast.dismiss(t.id)}
-                    className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
-                  >
-                    <Icons.X className="text-[--colors-primary]" />
-                  </button>
-                </div>
-              </div>
-            ));
-            if (onPlaceBet) onPlaceBet(currentRound, upOrDownStatus, amount);
+                ));
+                if (onPlaceBet)
+                  onPlaceBet(currentRound, upOrDownStatus, amount);
+              }
+              if (transaction?.status === "reverted") {
+                setIsLoading(false);
+              }
+            }
           }
         }
         if (upOrDownStatus === "DOWN") {
-          writeBetBear({
-            args: [currentRound],
+          const { request } = await publicClient.simulateContract({
+            account: address,
+            address: CONSTANTS.ADDRESS.PREDICTION,
+            abi: CONSTANTS.ABI.PREDICTION,
+            functionName: "betBear",
+            args: [7],
             value: ethers.parseUnits(amount, "ether"),
           });
+          if (request) {
+            const hash = await walletClient.writeContract(request);
 
-          if (isSuccessBetBear) {
-            setIsLoading(false);
-            toast.custom((t) => (
-              <div
-                className={`${
-                  t.visible ? "animate-enter" : "animate-leave"
-                } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-              >
-                <div className="flex bg-[--colors-success] p-4 rounded-l-lg">
-                  <Icons.CheckCircle className="text-[--colors-white]" />
-                </div>
-                <div className="flex-1 w-0 p-2">
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0 pt-0.5"></div>
-                    <div className="ml-3 flex-1">
-                      <p className="text-sm font-medium text-[--colors-text]">
-                        Success!
-                      </p>
-                      <p className="mt-1 text-sm text-[--colors-text]">
-                        {upOrDownStatus} position entered
-                      </p>
-                      <p className="mt-1 text-sm text-[--colors-primary]">
-                        View on BscScan: 0x8439...
-                      </p>
+            if (hash) {
+              const transaction = await publicClient.waitForTransactionReceipt({
+                hash,
+              });
+              if (transaction?.status === "success") {
+                setIsLoading(false);
+                toast.custom((t) => (
+                  <div
+                    className={`${
+                      t.visible ? "animate-enter" : "animate-leave"
+                    } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+                  >
+                    <div className="flex bg-[--colors-success] p-4 rounded-l-lg">
+                      <Icons.CheckCircle className="text-[--colors-white]" />
+                    </div>
+                    <div className="flex-1 w-0 p-2">
+                      <div className="flex items-start">
+                        <div className="flex-shrink-0 pt-0.5"></div>
+                        <div className="ml-3 flex-1">
+                          <p className="text-sm font-medium text-[--colors-text]">
+                            Success!
+                          </p>
+                          <p className="mt-1 text-sm text-[--colors-text]">
+                            {upOrDownStatus} position entered
+                          </p>
+                          <p className="mt-1 text-sm text-[--colors-primary]">
+                            View on BscScan: 0x8439...
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex">
+                      <button
+                        onClick={() => toast.dismiss(t.id)}
+                        className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
+                      >
+                        <Icons.X className="text-[--colors-primary]" />
+                      </button>
                     </div>
                   </div>
-                </div>
-                <div className="flex">
-                  <button
-                    onClick={() => toast.dismiss(t.id)}
-                    className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
-                  >
-                    <Icons.X className="text-[--colors-primary]" />
-                  </button>
-                </div>
-              </div>
-            ));
-            if (onPlaceBet) onPlaceBet(currentRound, upOrDownStatus, amount);
+                ));
+                if (onPlaceBet)
+                  onPlaceBet(currentRound, upOrDownStatus, amount);
+              }
+              if (transaction?.status === "reverted") {
+                setIsLoading(false);
+              }
+            }
           }
         }
       }
     } catch (error) {
+      setIsLoading(false);
       console.log(error);
     }
   };
