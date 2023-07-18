@@ -28,6 +28,7 @@
     "eslint-config-next": "13.4.4",
     "ethers": "^6.6.3",
     "firebase": "9.22.2",
+    "framer-motion": "^10.12.22",
     "lodash": "^4.17.21",
     "lucide-react": "^0.233.0",
     "nanoid": "^4.0.2",
