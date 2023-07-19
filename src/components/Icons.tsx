@@ -24,6 +24,9 @@ import {
   TrophyIcon,
   Layers,
   BarChart3,
+  ChevronUp,
+  ChevronDown,
+  AlertCircle,
   XCircle,
 } from "lucide-react";
 
@@ -52,6 +55,9 @@ export const Icons = {
   TrophyIcon,
   Layers,
   BarChart3,
+  ChevronUp,
+  AlertCircle,
+  ChevronDown,
   XCircle,
   SunIcon: () => (
     <svg
