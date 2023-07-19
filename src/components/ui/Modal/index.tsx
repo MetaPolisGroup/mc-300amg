@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Modal from "./Modal";
 
@@ -23,6 +24,7 @@ export interface PopupProps {
   afterOpen?: () => void;
   afterClose?: () => void;
   closable?: boolean;
+  styleContent?:React.CSSProperties;
   content?: React.ReactNode;
   footer?: boolean;
   header?: boolean;
@@ -49,6 +51,8 @@ const PopupRender: React.ForwardRefRenderFunction<PopupRef, PopupProps> = (
     selector,
     content,
     className,
+    styleContent,
+    width,
   } = props;
   let { closable, footer, header } = props;
 
@@ -78,6 +82,8 @@ const PopupRender: React.ForwardRefRenderFunction<PopupRef, PopupProps> = (
         title={title}
         footer={footer}
         header={header}
+        width={width}
+        styleContent={styleContent}
         okText={labelOk}
         cancelText={labelCancel}
         onOk={(e) =>
