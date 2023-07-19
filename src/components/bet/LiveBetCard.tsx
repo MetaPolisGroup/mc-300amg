@@ -2,7 +2,11 @@ import React from "react";
 import { Icons } from "../Icons";
 import { isEmpty } from "lodash";
 
-const LiveBetCard = () => {
+interface ILiveBetCardProps {
+  currentRound: string;
+}
+
+const LiveBetCard: React.FC<ILiveBetCardProps> = ({ currentRound }) => {
   const dataBetted: any = {};
   return (
     <div
@@ -14,7 +18,7 @@ const LiveBetCard = () => {
             <Icons.PlayCircle className="text-[--colors-secondary]" />
             <span className="text-[--colors-secondary]">Live</span>
           </div>
-          <div className="text-[--colors-secondary]">#187808</div>
+          <div className="text-[--colors-secondary]">#{currentRound}</div>
         </div>
         <div className="w-full bg-[--colors-input] h-2.5 ">
           <div

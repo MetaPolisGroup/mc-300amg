@@ -1,8 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Icons } from "../Icons";
 import Button from "../ui/Button";
+import { publicClient } from "@/lib/contract-config";
+import { CONSTANTS } from "@/constants";
 
-const HistoryCard = () => {
+interface IHistoryProps {
+  currentRound: string;
+}
+
+const HistoryCard: React.FC<IHistoryProps> = ({ currentRound }) => {
+  const [historyRound, setHistoryRound] = useState<any>();
+
+  useEffect(() => {
+    if (+currentRound > 0) {
+      getHistoryRound();
+    }
+  }, [currentRound]);
+
+  const getHistoryRound = async () => {
+    const data = await publicClient.readContract({
+      address: CONSTANTS.ADDRESS.PREDICTION,
+      abi: CONSTANTS.ABI.PREDICTION,
+      functionName: "rounds",
+      args: [currentRound],
+    });
+    if (data) {
+      console.log({ data });
+      // setHistoryRound(data.toString());
+    }
+  };
+
   return (
     <div className={`w-full flex justify-center items-center relative`}>
       <div
@@ -15,7 +42,7 @@ const HistoryCard = () => {
             <Icons.Ban className="text-[--colors-textDisabled]" />
             <span className="text-[--colors-textDisabled]">Expired</span>
           </div>
-          <div className="text-[--colors-textDisabled]">#187808</div>
+          <div className="text-[--colors-textDisabled]">#{currentRound}</div>
         </div>
 
         <div className="card-body p-4 opacity-70 group-hover:opacity-100">

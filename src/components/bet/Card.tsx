@@ -67,25 +67,25 @@ const Card = () => {
           }}
         >
           <SwiperSlide>
-            <HistoryCard />
+            <HistoryCard currentRound={(+currentRound - 4).toString()} />
           </SwiperSlide>
           <SwiperSlide>
-            <HistoryCard />
+            <HistoryCard currentRound={(+currentRound - 3).toString()} />
           </SwiperSlide>
           <SwiperSlide>
-            <HistoryCard />
+            <HistoryCard currentRound={(+currentRound - 2).toString()} />
           </SwiperSlide>
           <SwiperSlide>
-            <LiveBetCard />
+            <LiveBetCard currentRound={(+currentRound - 1).toString()} />
           </SwiperSlide>
           <SwiperSlide>
             <BetCard currentRound={currentRound} />
           </SwiperSlide>
           <SwiperSlide>
-            <FutureCard />
+            <FutureCard currentRound={(+currentRound + 1).toString()} />
           </SwiperSlide>
           <SwiperSlide>
-            <FutureCard />
+            <FutureCard currentRound={(+currentRound + 2).toString()} />
           </SwiperSlide>
         </Swiper>
       </div>

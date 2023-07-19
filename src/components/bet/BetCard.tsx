@@ -61,10 +61,10 @@ const BetCard: React.FC<IBetCard> = ({ currentRound }) => {
           </div>
           <div className="text-[--colors-white]">#{currentRound}</div>
         </div>
-        <div className="card-body p-4">
+        <div className="card-body p-4 bg-[--colors-backgroundAlt] rounded-b-2xl">
           {!isEmpty(dataBetted) &&
             (dataBetted?.status === "UP" ? (
-              <div className="absolute flex gap-2 z-20 border-2 rounded-2xl border-[--colors-secondary] px-2 py-[2px] ">
+              <div className="absolute flex gap-2 z-20 border-2 rounded-2xl border-[--colors-backgroundAlt] px-2 py-[2px] ">
                 <Icons.CheckCircle className="text-[--colors-text]" />
                 <span className="text-[--colors-secondary]">ENTERED</span>
               </div>
