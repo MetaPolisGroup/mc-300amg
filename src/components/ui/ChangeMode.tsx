@@ -3,7 +3,15 @@ import { motion } from "framer-motion";
 import { Icons } from "../Icons";
 import { themeChange } from "theme-change";
 
-const ChangeMode = () => {
+interface IChangeModeProps {
+  HWrapper?: string | number;
+  WWrapper?: string | number;
+  H?: string | number;
+  W?: string | number;
+}
+
+const ChangeMode: React.FC<IChangeModeProps> = (props) => {
+  const { H, HWrapper, W, WWrapper } = props;
   const [isOn, setIsOn] = useState(false);
   const toggleSwitch = () => {
     setIsOn((prev) => !prev);
@@ -20,7 +28,9 @@ const ChangeMode = () => {
   return (
     <div
       onClick={toggleSwitch}
-      className={`transition-colors duration-500 flex-start flex h-[50px] w-[100px] rounded-[50px] ${
+      className={`transition-colors duration-500 flex-start flex h-[${
+        HWrapper ?? "50px"
+      }] w-[${WWrapper ?? "100px"}] rounded-[50px] ${
         isOn ? "bg-yellow-300" : "bg-black/90"
       } p-[5px] shadow-inner hover:cursor-pointer  ${
         isOn && "place-content-end"
@@ -28,7 +38,9 @@ const ChangeMode = () => {
       data-toggle-theme="dark,light"
     >
       <motion.div
-        className={`flex h-[40px] w-[40px] items-center justify-center rounded-full ${
+        className={`flex h-[${H ?? "40px"}] w-[${
+          W ?? "40px"
+        }] items-center justify-center rounded-full ${
           isOn ? "bg-yellow-500" : "bg-gray-800"
         }`}
         layout
