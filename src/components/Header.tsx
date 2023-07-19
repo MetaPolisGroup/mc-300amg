@@ -5,21 +5,48 @@ import SubMenu from "./SubMenu";
 import { Icons } from "./Icons";
 import ConnectWallet from "./ConnectWallet";
 import Button from "./ui/Button";
-import { publicClient } from "@/lib/contract-config";
+import { publicClient, walletClient } from "@/lib/contract-config";
 import { CONSTANTS } from "@/constants";
+import { privateKeyToAccount as privateKey } from "viem/accounts";
 
 const Header = () => {
   const callRound = async () => {
-    const { request } = await publicClient.simulateContract({
-      account: privateKeyToAccount(
-        "7476c8c08f10b30ac5aead18e090ff99549c4f28d1b90efde543eb1158e41493"
-      ),
+    const gasPrice = await publicClient.getGasPrice();
+    const gas = await publicClient.estimateContractGas({
+      type: "eip1559",
       address: CONSTANTS.ADDRESS.PREDICTION,
       abi: CONSTANTS.ABI.PREDICTION,
       functionName: "executeRound",
-      args: [],
+      args: ["11", "100000"],
+      account: privateKey(
+        "0x7476c8c08f10b30ac5aead18e090ff99549c4f28d1b90efde543eb1158e41493"
+      ),
     });
+    const { request } = await publicClient.simulateContract({
+      account: privateKey(
+        "0x7476c8c08f10b30ac5aead18e090ff99549c4f28d1b90efde543eb1158e41493"
+      ),
+
+      address: CONSTANTS.ADDRESS.PREDICTION,
+      abi: CONSTANTS.ABI.PREDICTION,
+      functionName: "executeRound",
+      args: ["11", "100000"],
+      gas,
+      type: "eip1559",
+      maxFeePerGas: gasPrice,
+      maxPriorityFeePerGas: gasPrice,
+    });
+    const hash = await walletClient.writeContract(request);
+    if (hash) {
+      const transaction = await publicClient.waitForTransactionReceipt({
+        hash,
+      });
+      if (transaction?.status === "success") {
+        console.log("success");
+      }
+    }
   };
+
   return (
     <header className="w-full z-20 bg-[--colors-backgroundAlt]">
       <nav className="flex justify-between items-center w-full h-full border-b border-[--colors-cardBorder] px-4">
