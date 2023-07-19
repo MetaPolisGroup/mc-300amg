@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
-import "./index.css";
+import style from "./index.module.css";
 
 interface IModalProps {
   show: boolean;
@@ -13,9 +13,11 @@ interface IModalProps {
     | undefined;
   title: React.ReactNode;
   header?: boolean;
+  width?: string | number;
   okText?: React.ReactNode;
   cancelText?: React.ReactNode;
   closeAble?: boolean;
+  styleContent?:React.CSSProperties;
 }
 
 interface ComponentModal extends React.FC<IModalProps> {}
@@ -33,64 +35,56 @@ const Modal: ComponentModal = (props) => {
     okText,
     cancelText,
     closeAble,
+    styleContent,
+    width,
   } = props;
 
   return (
     <AnimatePresence>
       {show && (
-        <motion.div className={`container-modal ${className ?? ""}`}>
+        <motion.div
+          className={`${style["container-modal"]} ${className ?? ""}`}
+        >
           <motion.div
             initial="hidden"
             animate="visible"
             exit="hidden"
             variants={overlayVariants}
             onClick={(e) => onCancel?.(e)}
-            className={`modal-overlay`}
+            className={`${style["modal-overlay"]}`}
           />
           <motion.div
-            className="modal"
+            className={style["modal"]}
+            style={{ width: width ?? "80%" }}
             initial={{ y: "100vh" }}
             animate={{ y: 0 }}
             exit={{ y: "100vh" }}
             transition={{ duration: 0.5 }}
           >
             {header && (
-              <div className="modal-header">
-                <div className="modal-title">{title}</div>
+              <div className={style["modal-header"]}>
+                <div className={style["modal-title"]}>{title}</div>
                 {closeAble && (
                   <div
-                    className="modal-close-icon"
+                    className={style["modal-close-icon"]}
                     onClick={(e) => onCancel?.(e)}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      style={{ fontSize: 35, fontWeight: 500 }}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
+                    X
                   </div>
                 )}
               </div>
             )}
-            <div className="modal-content">{children}</div>
+            <div className={style["modal-content"]} style={styleContent}>{children}</div>
             {footer && (
-              <div className="modal-footer">
+              <div className={style["modal-footer"]}>
                 <button
-                  className="modal-footer-button-left"
+                  className={style["modal-footer-button-left"]}
                   onClick={(e) => onCancel?.(e)}
                 >
                   {cancelText ?? "Cancel"}
                 </button>
                 <button
-                  className="modal-footer-button-right"
+                  className={style["modal-footer-button-right"]}
                   onClick={(e) => onOk?.(e)}
                 >
                   {okText ?? "Accept"}
