@@ -43,6 +43,7 @@
 }
 .modal-content {
   padding: 1rem;
+  border-radius: 0 0 30px 30px;
 }
 .modal-footer {
   padding: 1rem;
