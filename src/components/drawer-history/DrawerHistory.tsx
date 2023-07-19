@@ -3,11 +3,17 @@
 import React, { useState } from "react";
 
 import clsx from "clsx";
-import Item from "./Item";
+import HistoryItem from "./HistoryItem";
 import { isEmpty } from "lodash";
 import { Icons } from "../Icons";
 
-import { LIST_MODE, LIST_RADIO, MODE, RADIO, FAKE_DATA } from "./constants";
+import {
+  LIST_MODE,
+  LIST_RADIO,
+  MODE,
+  RADIO,
+  RESULT_STATUS,
+} from "@/constants/history";
 
 interface IDrawerHistory {
   open: boolean;
@@ -21,17 +27,22 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
 
   const handleSelectRadio = (value: string) => {
     setRadioChecked(value);
-    console.log(value);
 
     if (value === RADIO.COLLECTED) {
       return setDataHistory(
-        FAKE_DATA.filter((item) => item.is_collected === true)
+        FAKE_DATA.filter(
+          (item) =>
+            item.is_collected === true && item.result === RESULT_STATUS.WIN
+        )
       );
     }
 
     if (value === RADIO.UNCOLECTED) {
       return setDataHistory(
-        FAKE_DATA.filter((item) => item.is_collected === false)
+        FAKE_DATA.filter(
+          (item) =>
+            item.is_collected === false && item.result === RESULT_STATUS.WIN
+        )
       );
     }
 
@@ -130,7 +141,9 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
 
   const renderHistory = () => {
     if (mode.id === MODE.ROUNDS && !isEmpty(dataHistory)) {
-      return dataHistory.map((data) => <Item key={data.id} data={data} />);
+      return dataHistory.map((data) => (
+        <HistoryItem key={data.id} data={data} />
+      ));
     }
 
     return (
@@ -156,11 +169,11 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
           style={{ background: "var(--colors-gradientBubblegum)" }}
         >
           <div className="flex justify-between mb-8">
-            <div className="text-[--colors-light-white] text-xl font-bold">
+            <div className="text-[--colors-text] text-xl font-bold">
               History
             </div>
             <button
-              className="text-[--colors-primary] flex gap-2 text-base font-bold"
+              className="text-[--colors-primary] flex items-center gap-2 text-base font-bold"
               onClick={() => onClose(false)}
             >
               Close <Icons.ArrowRight className="w-5 h-5" />
@@ -172,7 +185,7 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
         </div>
 
         <div className="h-full bg-[--colors-backgroundAlt] text-[--colors-text]">
-          <div className="lg:overflow-y-auto lg:max-h-[75vh]">
+          <div className="overflow-y-auto max-h-[90vh] lg:max-h-[75vh]">
             {renderHeaderContent()}
 
             {renderHistory()}
@@ -195,3 +208,78 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
 };
 
 export default DrawerHistory;
+
+const FAKE_DATA = [
+  {
+    id: "FAKE_DATA1",
+    result: "WIN",
+    round: 188576,
+    is_collected: true,
+    winning_amount: "+0,0011",
+    user_history: {
+      direction: "DOWN",
+      position: "0,0010",
+      about: "0.26",
+      amount_to_collect: "0,0021",
+    },
+    round_history: {
+      closed_price: "259,2748",
+      result: "DOWN",
+      result_price: "-0,0835",
+      locked_price: "259,3582",
+      prize_pool: "12,6345",
+      up: "1,78",
+      up_value: "6,7620",
+      down: "2,15",
+      down_value: "5,8725",
+    },
+  },
+  {
+    id: "FAKE_DATA3",
+    result: "WIN",
+    round: 188576,
+    is_collected: false,
+    winning_amount: "+0,0011",
+    user_history: {
+      direction: "DOWN",
+      position: "0,0010",
+      about: "0.26",
+      amount_to_collect: "0,0021",
+    },
+    round_history: {
+      closed_price: "259,2748",
+      result: "DOWN",
+      result_price: "-0,0835",
+      locked_price: "259,3582",
+      prize_pool: "12,6345",
+      up: "1,78",
+      up_value: "6,7620",
+      down: "2,15",
+      down_value: "5,8725",
+    },
+  },
+  {
+    id: "FAKE_DATA2",
+    result: "LOSE",
+    round: 187792,
+    is_collected: true,
+    winning_amount: "-0,0010",
+    user_history: {
+      direction: "UP",
+      position: "0,0010",
+      about: "0.24",
+      amount_to_collect: "0,0021",
+    },
+    round_history: {
+      closed_price: "248,1627",
+      result: "DOWN",
+      result_price: "-0,1863",
+      locked_price: "248,3490",
+      prize_pool: "20,5997",
+      up: "3,16",
+      up_value: "6,5227",
+      down: "1,46",
+      down_value: "14,0770",
+    },
+  },
+];

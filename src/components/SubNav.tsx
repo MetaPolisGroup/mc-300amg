@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import clsx from "clsx";
 import { Icons } from "./Icons";
 
 interface ISubNav {
+  isShowHistory: boolean;
   onShowHistory: (value: boolean) => void;
 }
 
@@ -15,11 +16,15 @@ const MODE = {
   HISTORY: "HISTORY",
 };
 
-const SubNav: React.FC<ISubNav> = ({ onShowHistory }) => {
+const SubNav: React.FC<ISubNav> = ({ isShowHistory, onShowHistory }) => {
   const [mode, setMode] = useState<string>(MODE.CARD);
 
-  const classNameArrow = "text-[--colors-primary]";
   const classNameIconCenter = "w-[20px] h-[20px]";
+
+  useEffect(() => {
+    if (isShowHistory) return setMode(MODE.HISTORY);
+    if (!isShowHistory) return setMode(MODE.CARD);
+  }, [isShowHistory]);
 
   const handleAction = (action: string) => {
     if (action === MODE.CARD) {
@@ -80,10 +85,8 @@ const SubNav: React.FC<ISubNav> = ({ onShowHistory }) => {
   };
 
   return (
-    <div className="bg-[--colors-backgroundAlt] p-[15px] flex justify-between items-center  lg:hidden">
-      <Icons.ArrowLeft className={classNameArrow} />
+    <div className="bg-[--colors-backgroundAlt] p-[15px] flex justify-center items-center  lg:hidden">
       {renderButton()}
-      <Icons.ArrowRight className={classNameArrow} />
     </div>
   );
 };
