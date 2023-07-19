@@ -6,16 +6,13 @@ import { Icons } from "../Icons";
 import { isEmpty } from "lodash";
 import { CONSTANTS } from "@/constants";
 import { toast } from "react-hot-toast";
-import {
-  useAccount,
-  useBalance,
-  useContractRead,
-  useContractWrite,
-} from "wagmi";
+import { useAccount, useBalance, useContractRead } from "wagmi";
 import { ethers } from "ethers";
 import { publicClient, walletClient } from "@/lib/contract-config";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
+import { log } from "console";
+import { getEllipsisTxt } from "@/utils/formmater-address";
 
 interface ISetBetPositionProps {
   showSetBetCard?: boolean;
@@ -53,30 +50,6 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
     address: CONSTANTS.ADDRESS.PREDICTION,
     abi: CONSTANTS.ABI.PREDICTION,
     functionName: "currentEpoch",
-  });
-
-  const {
-    data: betBull,
-    isSuccess: isSuccessBetBull,
-    error: errorBetBull,
-    status: statusBetBull,
-    write: writeBetBull,
-  } = useContractWrite({
-    address: CONSTANTS.ADDRESS.PREDICTION,
-    abi: CONSTANTS.ABI.PREDICTION,
-    functionName: "betBull",
-  });
-
-  const {
-    data: betBear,
-    isSuccess: isSuccessBetBear,
-    error: errorBetBear,
-    status: statusBetBear,
-    write: writeBetBear,
-  } = useContractWrite({
-    address: CONSTANTS.ADDRESS.PREDICTION,
-    abi: CONSTANTS.ABI.PREDICTION,
-    functionName: "betBear",
   });
 
   useEffect(() => {
@@ -148,11 +121,10 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
 
   const placeBetHandler = async () => {
     setIsLoading(true);
-
     try {
       // betBull is Bet up
       const currentRound = getRoundData?.toString();
-
+      console.log(currentRound);
       if (currentRound) {
         if (upOrDownStatus === "UP") {
           const { request } = await publicClient.simulateContract({
@@ -160,7 +132,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
             address: CONSTANTS.ADDRESS.PREDICTION,
             abi: CONSTANTS.ABI.PREDICTION,
             functionName: "betBull",
-            args: [8],
+            args: [currentRound],
             value: ethers.parseUnits(amount, "ether"),
           });
           if (request) {
@@ -191,9 +163,14 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
                           <p className="mt-1 text-sm text-[--colors-text]">
                             {upOrDownStatus} position entered
                           </p>
-                          <p className="mt-1 text-sm text-[--colors-primary]">
-                            View on BscScan: 0x8439...
-                          </p>
+                          <a
+                            href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
+                            className="mt-1 text-sm text-[--colors-primary]"
+                            target="_blank"
+                          >
+                            View on BscScan:{" "}
+                            {getEllipsisTxt(transaction.transactionHash)}
+                          </a>
                         </div>
                       </div>
                     </div>
@@ -212,6 +189,46 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
               }
               if (transaction?.status === "reverted") {
                 setIsLoading(false);
+                toast.custom((t) => (
+                  <div
+                    className={`${
+                      t.visible ? "animate-enter" : "animate-leave"
+                    } max-w-md w-full bg-[--colorsi-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+                  >
+                    <div className="flex bg-[--colors-failure] p-4 rounded-l-lg">
+                      <Icons.XCircle className="text-[--colors-white]" />
+                    </div>
+                    <div className="flex-1 w-0 p-2">
+                      <div className="flex items-start">
+                        <div className="flex-shrink-0 pt-0.5"></div>
+                        <div className="ml-3 flex-1">
+                          <p className="text-sm font-medium text-[--colors-text]">
+                            Error!
+                          </p>
+                          <p className="mt-1 text-sm text-[--colors-text]">
+                            {upOrDownStatus} position entered
+                          </p>
+                          <a
+                            href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
+                            className="mt-1 text-sm text-[--colors-failure]"
+                            target="_blank"
+                          >
+                            View on BscScan:{" "}
+                            {getEllipsisTxt(transaction.transactionHash)}
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex">
+                      <button
+                        onClick={() => toast.dismiss(t.id)}
+                        className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
+                      >
+                        <Icons.X className="text-[--colors-primary]" />
+                      </button>
+                    </div>
+                  </div>
+                ));
               }
             }
           }
@@ -222,7 +239,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
             address: CONSTANTS.ADDRESS.PREDICTION,
             abi: CONSTANTS.ABI.PREDICTION,
             functionName: "betBear",
-            args: [7],
+            args: [currentRound],
             value: ethers.parseUnits(amount, "ether"),
           });
           if (request) {
@@ -232,6 +249,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
               const transaction = await publicClient.waitForTransactionReceipt({
                 hash,
               });
+              console.log({ transaction });
               if (transaction?.status === "success") {
                 setIsLoading(false);
                 toast.custom((t) => (
@@ -253,9 +271,14 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
                           <p className="mt-1 text-sm text-[--colors-text]">
                             {upOrDownStatus} position entered
                           </p>
-                          <p className="mt-1 text-sm text-[--colors-primary]">
-                            View on BscScan: 0x8439...
-                          </p>
+                          <a
+                            href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
+                            className="mt-1 text-sm text-[--colors-primary]"
+                            target="_blank"
+                          >
+                            View on BscScan:{" "}
+                            {getEllipsisTxt(transaction.transactionHash)}
+                          </a>
                         </div>
                       </div>
                     </div>
@@ -274,6 +297,46 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
               }
               if (transaction?.status === "reverted") {
                 setIsLoading(false);
+                toast.custom((t) => (
+                  <div
+                    className={`${
+                      t.visible ? "animate-enter" : "animate-leave"
+                    } max-w-md w-full bg-[--colorsi-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+                  >
+                    <div className="flex bg-[--colors-failure] p-4 rounded-l-lg">
+                      <Icons.XCircle className="text-[--colors-white]" />
+                    </div>
+                    <div className="flex-1 w-0 p-2">
+                      <div className="flex items-start">
+                        <div className="flex-shrink-0 pt-0.5"></div>
+                        <div className="ml-3 flex-1">
+                          <p className="text-sm font-medium text-[--colors-text]">
+                            Error!
+                          </p>
+                          <p className="mt-1 text-sm text-[--colors-text]">
+                            {upOrDownStatus} position entered
+                          </p>
+                          <a
+                            href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
+                            className="mt-1 text-sm text-[--colors-failure]"
+                            target="_blank"
+                          >
+                            View on BscScan:{" "}
+                            {getEllipsisTxt(transaction.transactionHash)}
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex">
+                      <button
+                        onClick={() => toast.dismiss(t.id)}
+                        className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
+                      >
+                        <Icons.X className="text-[--colors-primary]" />
+                      </button>
+                    </div>
+                  </div>
+                ));
               }
             }
           }

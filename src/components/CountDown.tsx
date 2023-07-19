@@ -101,7 +101,7 @@ const CountDown: React.FC<ICountDown> = ({ title, min, onAction }) => {
         <div className="text-[--colors-secondary] text-base font-semibold rounded-bl-[3rem] flex-col md:flex-row md:text-lg">
           {renderTime()}
         </div>
-        <div className="text-xs">{title}</div>
+        <div className="text-xs text-[--colors-text]">{title}</div>
         <Icons.Clock />
       </div>
 
