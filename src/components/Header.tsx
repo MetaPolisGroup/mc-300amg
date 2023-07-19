@@ -7,9 +7,7 @@ import Button from "./ui/Button";
 import { publicClient, walletClient } from "@/lib/contract-config";
 import { CONSTANTS } from "@/constants";
 import { privateKeyToAccount as privateKey } from "viem/accounts";
-
 import Popup, { PopupRef } from "./ui/Modal";
-import style from "./header.module.css";
 import { motion } from "framer-motion";
 import ChangeMode from "./ui/ChangeMode";
 import { Icons } from "./Icons";
@@ -122,10 +120,9 @@ const Header = () => {
             </ul>
           </div>
           <div className="navbar-end gap-2">
-            <Button onClick={callRound}>Call Round</Button>
+            {/* <Button onClick={callRound}>Call Round</Button> */}
             <Popup
               ref={settingPopup}
-              className={style["custom-modal"]}
               footer={false}
               width={485}
               title="Settings"
