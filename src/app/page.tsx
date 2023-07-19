@@ -2,7 +2,7 @@
 import { useState } from "react";
 import CountDown from "@/components/CountDown";
 import CoinCurrency from "@/components/CoinCurrency";
-import DrawerHistory from "@/components/drawer-history";
+import DrawerHistory from "@/components/drawer-history/DrawerHistory";
 import Card from "@/components/bet/Card";
 import SwiperNavButton from "@/components/SwiperNavButton";
 import SubNav from "@/components/SubNav";
@@ -32,7 +32,7 @@ export default function Home() {
         <DrawerHistory open={isShowDrawer} onClose={setIsShowDrawer} />
       </div>
 
-      <SubNav onShowHistory={setIsShowDrawer} />
+      <SubNav isShowHistory={isShowDrawer} onShowHistory={setIsShowDrawer} />
     </main>
   );
 }

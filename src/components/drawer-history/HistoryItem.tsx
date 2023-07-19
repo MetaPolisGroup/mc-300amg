@@ -4,13 +4,13 @@ import React, { useState } from "react";
 
 import { Icons } from "../Icons";
 import clsx from "clsx";
-import { RESULT_STATUS, USER_DIRECTION } from "./constants";
+import { RESULT_STATUS, USER_DIRECTION } from "@/constants/history";
 
 interface IItem {
   data: any;
 }
 
-const Item: React.FC<IItem> = ({ data }) => {
+const HistoryItem: React.FC<IItem> = ({ data }) => {
   const [isShowDetail, setIsShowDetail] = useState<boolean>(false);
 
   const isWin = data?.result === RESULT_STATUS.WIN ?? false;
@@ -195,7 +195,7 @@ const Item: React.FC<IItem> = ({ data }) => {
         <div className="flex gap-4">
           <div className="text-center">
             <div className="text-xs">Round</div>
-            <div className="text-[--colors-white] font-bold">{data?.round}</div>
+            <div className="text-[--colors-text] font-bold">{data?.round}</div>
           </div>
           <div className="text-center">
             <div className="text-xs">Your Result</div>
@@ -233,4 +233,4 @@ const Item: React.FC<IItem> = ({ data }) => {
   );
 };
 
-export default Item;
+export default HistoryItem;
