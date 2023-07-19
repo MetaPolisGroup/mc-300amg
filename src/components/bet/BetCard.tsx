@@ -1,15 +1,21 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Icons } from "../Icons";
 import { formatInputField } from "@/utils/format-inputField";
 import { nanoid } from "nanoid";
-import Input from "../ui/Input";
-import Button from "../ui/Button";
-import SetBetPosition from "./SetBetPosition";
 import { isEmpty } from "lodash";
+import { publicClient } from "@/lib/contract-config";
+import { CONSTANTS } from "@/constants";
+import Button from "../ui/Button";
+import Input from "../ui/Input";
+import SetBetPosition from "./SetBetPosition";
 import Tooltip from "../ui/Tooltip";
 
-const BetCard = () => {
+interface IBetCard {
+  currentRound: string;
+}
+
+const BetCard: React.FC<IBetCard> = ({ currentRound }) => {
   const [showSetBetCard, setShowSetBetCard] = useState<boolean>(false);
   const [upOrDownStatus, setUpOrDownStatus] = useState<string>("");
   const [dataBetted, setDataBetted] = useState<IBetData | null>(null);
@@ -53,7 +59,7 @@ const BetCard = () => {
             <Icons.PlayCircle className="text-[--colors-white]" />
             <span className="text-[--colors-white]">Next</span>
           </div>
-          <div className="text-[--colors-white]">#187808</div>
+          <div className="text-[--colors-white]">#{currentRound}</div>
         </div>
         <div className="card-body p-4">
           {!isEmpty(dataBetted) &&

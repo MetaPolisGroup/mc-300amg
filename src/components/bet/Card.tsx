@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import BetCard from "./BetCard";
 import LiveBetCard from "./LiveBetCard";
 import HistoryCard from "./HistoryCard";
@@ -12,8 +12,27 @@ import "swiper/css/effect-cards";
 import FutureCard from "./FutureCard";
 import SwiperNavButton from "../SwiperNavButton";
 import { Swiper as SwiperType } from "swiper";
+import { publicClient } from "@/lib/contract-config";
+import { CONSTANTS } from "@/constants";
 
 const Card = () => {
+  const [currentRound, setCurrentRound] = useState<string>("");
+
+  useEffect(() => {
+    getCurrentRound();
+  }, []);
+
+  const getCurrentRound = async () => {
+    const data = await publicClient.readContract({
+      address: CONSTANTS.ADDRESS.PREDICTION,
+      abi: CONSTANTS.ABI.PREDICTION,
+      functionName: "currentEpoch",
+      args: [],
+    });
+    if (data) {
+      setCurrentRound(data.toString());
+    }
+  };
   const swiperRef = useRef<SwiperType>();
   return (
     <React.Fragment>
@@ -60,7 +79,7 @@ const Card = () => {
             <LiveBetCard />
           </SwiperSlide>
           <SwiperSlide>
-            <BetCard />
+            <BetCard currentRound={currentRound} />
           </SwiperSlide>
           <SwiperSlide>
             <FutureCard />
