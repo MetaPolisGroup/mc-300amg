@@ -3,6 +3,7 @@ import React from "react";
 import { Icons } from "./Icons";
 
 const NetworkSelector = () => {
+
   return (
     <div className="dropdown dropdown-hover">
       <label
