@@ -3,40 +3,40 @@
 import React, { useState } from "react";
 
 import clsx from "clsx";
-import { Icons } from "./Icons";
+import Item from "./Item";
+import { isEmpty } from "lodash";
+import { Icons } from "../Icons";
+
+import { LIST_MODE, LIST_RADIO, MODE, RADIO, FAKE_DATA } from "./constants";
 
 interface IDrawerHistory {
   open: boolean;
   onClose: (value: boolean) => void;
 }
 
-const MODE = {
-  ROUNDS: "ROUNDS",
-  PNL: "PNL",
-};
-
-const RADIO = {
-  ALL: "All",
-  COLLECTED: "Collected",
-  UNCOLECTED: "Uncollected",
-};
-
-const LIST_MODE = [
-  {
-    id: MODE.ROUNDS,
-    title: "Rounds",
-  },
-  {
-    id: MODE.PNL,
-    title: "PNL",
-  },
-];
-
-const LIST_RADIO = [RADIO.ALL, RADIO.COLLECTED, RADIO.UNCOLECTED];
-
 const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
   const [mode, setMode] = useState<any>(LIST_MODE[0]);
+  const [dataHistory, setDataHistory] = useState(FAKE_DATA);
   const [radioChecked, setRadioChecked] = useState<string>(RADIO.ALL);
+
+  const handleSelectRadio = (value: string) => {
+    setRadioChecked(value);
+    console.log(value);
+
+    if (value === RADIO.COLLECTED) {
+      return setDataHistory(
+        FAKE_DATA.filter((item) => item.is_collected === true)
+      );
+    }
+
+    if (value === RADIO.UNCOLECTED) {
+      return setDataHistory(
+        FAKE_DATA.filter((item) => item.is_collected === false)
+      );
+    }
+
+    return setDataHistory(FAKE_DATA);
+  };
 
   const renderMode = () => {
     return (
@@ -78,7 +78,7 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
                 radio !== radioChecked &&
                   "border-[--colors-disabled] bg-[--colors-cardBorder]"
               )}
-              onClick={() => setRadioChecked(radio)}
+              onClick={() => handleSelectRadio(radio)}
             >
               <div
                 className={clsx(
@@ -89,7 +89,7 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
             </div>
             <div
               className="cursor-pointer"
-              onClick={() => setRadioChecked(radio)}
+              onClick={() => handleSelectRadio(radio)}
             >
               {radio}
             </div>
@@ -110,7 +110,7 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
     );
   };
 
-  const renderContent = () => {
+  const renderHeaderContent = () => {
     if (mode.id === MODE.PNL) {
       return null;
     }
@@ -124,6 +124,24 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
             <Icons.ChevronRight className="w-5 h-5" />
           </p>
         </div>
+      </div>
+    );
+  };
+
+  const renderHistory = () => {
+    if (mode.id === MODE.ROUNDS && !isEmpty(dataHistory)) {
+      return dataHistory.map((data) => <Item key={data.id} data={data} />);
+    }
+
+    return (
+      <div className="text-center p-6">
+        <p className="mb-2 text-xl font-bold">
+          No prediction history available
+        </p>
+        <p className="text-base font-medium">
+          If you are sure you should see history here, make sure you’re
+          connected to the correct wallet and try again.
+        </p>
       </div>
     );
   };
@@ -154,16 +172,10 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
         </div>
 
         <div className="h-full bg-[--colors-backgroundAlt] text-[--colors-text]">
-          {renderContent()}
+          <div className="lg:overflow-y-auto lg:max-h-[75vh]">
+            {renderHeaderContent()}
 
-          <div className="text-center p-6">
-            <p className="mb-2 text-xl font-bold">
-              No prediction history available
-            </p>
-            <p className="text-base font-medium">
-              If you are sure you should see history here, make sure you’re
-              connected to the correct wallet and try again.
-            </p>
+            {renderHistory()}
           </div>
         </div>
       </>
@@ -173,7 +185,7 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
   return (
     <div
       className={clsx(
-        open && "w-[385px] transition-transform translate-x-0",
+        open && "w-[100%] lg:w-[385px] transition-transform translate-x-0",
         !open && "w-0 transition-transform transform translate-x-full"
       )}
     >

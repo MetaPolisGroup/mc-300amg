@@ -23,6 +23,9 @@ import {
   MoonStar,
   Layers,
   BarChart3,
+  ChevronUp,
+  ChevronDown,
+  AlertCircle,
 } from "lucide-react";
 
 export const Icons = {
@@ -49,6 +52,9 @@ export const Icons = {
   Clock3,
   Layers,
   BarChart3,
+  ChevronUp,
+  AlertCircle,
+  ChevronDown,
   SunIcon: () => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
