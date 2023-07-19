@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { Icons } from "../Icons";
-import { themeChange } from "theme-change";
+import { useTheme } from "@/context/change-mode";
 
 interface IChangeModeProps {
   HWrapper?: string | number;
@@ -12,25 +12,19 @@ interface IChangeModeProps {
 
 const ChangeMode: React.FC<IChangeModeProps> = (props) => {
   const { H, HWrapper, W, WWrapper } = props;
-  const [isOn, setIsOn] = useState(false);
-  const toggleSwitch = () => {
-    setIsOn((prev) => !prev);
-    localStorage.setItem("isDarkmode", JSON.stringify(isOn));
-  };
+  const { isOn, toggleSwitch } = useTheme();
+
   const spring = {
     type: "spring",
     stiffness: 700,
     damping: 30,
   };
-  React.useEffect(() => {
-    themeChange(false);
-  }, []);
+
   return (
     <div
       onClick={toggleSwitch}
-      className={`transition-colors duration-500 flex-start flex h-[${
-        HWrapper ?? "50px"
-      }] w-[${WWrapper ?? "100px"}] rounded-[50px] ${
+      style={{ height: HWrapper ?? "50px", width: WWrapper ?? "100px" }}
+      className={`transition-colors duration-500 flex-start flex  rounded-[50px] ${
         isOn ? "bg-yellow-300" : "bg-black/90"
       } p-[5px] shadow-inner hover:cursor-pointer  ${
         isOn && "place-content-end"
@@ -38,8 +32,8 @@ const ChangeMode: React.FC<IChangeModeProps> = (props) => {
       data-toggle-theme="dark,light"
     >
       <motion.div
-        className={`flex h-[${H ?? "40px"}] w-[${
-          W ?? "40px"
+        style={{ height: H ?? "40px", width: W ?? "40px" }}
+        className={`flex
         }] items-center justify-center rounded-full ${
           isOn ? "bg-yellow-500" : "bg-gray-800"
         }`}

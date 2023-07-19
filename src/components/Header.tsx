@@ -49,6 +49,7 @@ const Header = () => {
       args: [],
     });
   };
+  
   return (
     <header className="w-full z-20 bg-[--colors-backgroundAlt]">
       <nav className="flex justify-between items-center w-full h-full border-b border-[--colors-cardBorder] px-4">
@@ -209,7 +210,7 @@ const SwitchElement: React.FC<{
   toggleSwitch: () => void;
 }> = ({ isOn, toggleSwitch }) => (
   <div
-    data-isOn={isOn}
+    data-ison={isOn}
     onClick={toggleSwitch}
     className={`flex-start flex h-[30px] w-[70px] rounded-[50px]  p-[5px] shadow-inner hover:cursor-pointer  ${
       isOn ? "place-content-end bg-[--colors-success]" : "bg-[--colors-input]"
