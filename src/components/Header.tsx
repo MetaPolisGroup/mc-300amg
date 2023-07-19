@@ -123,7 +123,6 @@ const Header = () => {
           </div>
           <div className="navbar-end gap-2">
             <Button onClick={callRound}>Call Round</Button>
-            <Icons.Settings className="hover:cursor-pointer text-[--colors-textSubtle]" />
             <Popup
               ref={settingPopup}
               className={style["custom-modal"]}
