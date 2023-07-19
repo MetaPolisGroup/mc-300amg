@@ -2,7 +2,6 @@
 import React from "react";
 import NetworkSelector from "./NetworkSelector";
 import SubMenu from "./SubMenu";
-import { Icons } from "./Icons";
 import ConnectWallet from "./ConnectWallet";
 import Button from "./ui/Button";
 import { publicClient } from "@/lib/contract-config";
@@ -12,6 +11,7 @@ import Popup, { PopupRef } from "./ui/Modal";
 import style from "./header.module.css";
 import { motion } from "framer-motion";
 import ChangeMode from "./ui/ChangeMode";
+import { Icons } from "./Icons";
 enum EActive {
   "Default" = 1,
   "Stand",
