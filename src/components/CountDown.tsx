@@ -1,10 +1,9 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
-
 import clsx from "clsx";
 import { Icons } from "./Icons";
 import Button from "./ui/Button";
+import { useRouter } from "next/navigation";
 
 interface ICountDown {
   title: string;
@@ -17,6 +16,7 @@ interface ICountDown {
 const CountDown: React.FC<ICountDown> = ({ title, min, onAction }) => {
   const [minute, setMinute] = useState<number>(min);
   const [second, setSecond] = useState<number>(0);
+  const router = useRouter();
 
   const LIST_BTN_FEATURE = [
     {
@@ -29,7 +29,9 @@ const CountDown: React.FC<ICountDown> = ({ title, min, onAction }) => {
       id: "cup",
       icon: <Icons.Trophy />,
       disabled: false,
-      onAction: () => {},
+      onAction: () => {
+        router.push("/prediction/leaderboard");
+      },
     },
     {
       id: "history",
