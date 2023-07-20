@@ -24,7 +24,7 @@ export interface PopupProps {
   afterOpen?: () => void;
   afterClose?: () => void;
   closable?: boolean;
-  styleContent?:React.CSSProperties;
+  styleContent?: React.CSSProperties;
   content?: React.ReactNode;
   footer?: boolean;
   header?: boolean;

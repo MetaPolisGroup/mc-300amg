@@ -4,7 +4,6 @@ import CountDown from "@/components/CountDown";
 import CoinCurrency from "@/components/CoinCurrency";
 import DrawerHistory from "@/components/drawer-history/DrawerHistory";
 import Card from "@/components/bet/Card";
-import SwiperNavButton from "@/components/SwiperNavButton";
 import SubNav from "@/components/SubNav";
 import clsx from "clsx";
 
@@ -28,10 +27,8 @@ export default function Home() {
           </div>
           <Card />
         </div>
-
         <DrawerHistory open={isShowDrawer} onClose={setIsShowDrawer} />
       </div>
-
       <SubNav isShowHistory={isShowDrawer} onShowHistory={setIsShowDrawer} />
     </main>
   );

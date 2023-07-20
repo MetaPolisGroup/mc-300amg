@@ -120,7 +120,7 @@ const Header = () => {
             </ul>
           </div>
           <div className="navbar-end gap-2">
-            {/* <Button onClick={callRound}>Call Round</Button> */}
+            <Button onClick={callRound}>Call Round</Button>
             <Popup
               ref={settingPopup}
               footer={false}
