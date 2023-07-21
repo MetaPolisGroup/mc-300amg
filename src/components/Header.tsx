@@ -132,6 +132,8 @@ const Header = () => {
             </ul>
           </div>
           <div className="navbar-end gap-2">
+            {/* <Button onClick={callRound}>Call Round</Button> */}
+            <ChangeMode HWrapper="30px" WWrapper="70px" H="20px" W="20px" />
             <Button onClick={callRound}>Call Round</Button>
             <Popup
               ref={settingPopup}
@@ -149,7 +151,7 @@ const Header = () => {
                     GLOBAL
                   </span>
                   <div className="leading-[3.5]">
-                    <div className="flex justify-between items-center">
+                    {/* <div className="flex justify-between items-center">
                       <span>Dark mode</span>
                       <div>
                         <ChangeMode
@@ -159,7 +161,7 @@ const Header = () => {
                           W="20px"
                         />
                       </div>
-                    </div>
+                    </div> */}
                     <div className="flex justify-between items-center">
                       <div className="flex items-center">
                         <span>Subgraph Health Indicator</span>
@@ -201,10 +203,12 @@ const Header = () => {
                 </React.Fragment>
               }
               selector={
-                <Icons.Settings
-                  onClick={() => settingPopup.current?.open()}
-                  className="hover:cursor-pointer text-[--colors-textSubtle]"
-                />
+                <div className="w-[30px]">
+                  <Icons.Settings
+                    onClick={() => settingPopup.current?.open()}
+                    className="hover:cursor-pointer text-[--colors-textSubtle]"
+                  />
+                </div>
               }
             />
             <NetworkSelector />
@@ -245,7 +249,7 @@ const SwitchElement: React.FC<{
   toggleSwitch: () => void;
 }> = ({ isOn, toggleSwitch }) => (
   <div
-    data-isOn={isOn}
+    data-ison={isOn}
     onClick={toggleSwitch}
     className={`flex-start flex h-[30px] w-[70px] rounded-[50px]  p-[5px] shadow-inner hover:cursor-pointer  ${
       isOn ? "place-content-end bg-[--colors-success]" : "bg-[--colors-input]"
