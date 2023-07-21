@@ -1,4 +1,3 @@
-"use client";
 import Provider from "@/components/Provider";
 import { Inter } from "next/font/google";
 import Header from "@/components/Header";
