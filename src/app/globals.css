@@ -65,6 +65,7 @@
   --colors-dark-failure33: #ed4b9e33;
   --colors-dark-primary: #1fc7d4;
   --colors-dark-primary0f: #1fc7d40f;
+  --radii-card: 24px;
 }
 
 [data-theme="dark"] {
@@ -218,4 +219,8 @@
 .swiper-wrapper {
   height: 100% !important;
   align-items: center !important;
+}
+
+.top-banner {
+  transform: translateX(0%) translateY(200%) rotate(-45deg);
 }

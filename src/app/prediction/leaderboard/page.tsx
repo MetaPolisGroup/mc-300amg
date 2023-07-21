@@ -1,5 +1,8 @@
 import { Icons } from "@/components/Icons";
-import Input from "@/components/ui/Input";
+import FilterLeaderboard from "@/components/leaderboard/FilterLeaderboard";
+import MyRanking from "@/components/leaderboard/MyRanking";
+import Ranking from "@/components/leaderboard/Ranking";
+import TopRanking from "@/components/leaderboard/TopRanking";
 import React from "react";
 
 const LeaderBoard = () => {
@@ -42,23 +45,12 @@ const LeaderBoard = () => {
       </div>
       <div className="bg-[--colors-background] p-6">
         <div className="max-w-[1200px] mx-auto">
-          <div className="text-[--colors-textSubtle]">
-            <p className="mb-2">Rank by</p>
-            <div className="flex flex-col-reverse gap-2 lg:flex-row lg:justify-between">
-              <select className="select select-bordered w-full max-w-xs">
-                <option>Normal</option>
-                <option>Normal Apple</option>
-                <option>Normal Orange</option>
-                <option>Normal Tomato</option>
-              </select>
-              <Input
-                className="w-full px-4 md:w-80 rounded-2xl"
-                placeholder="Search address"
-              />
-            </div>
-          </div>
+          <FilterLeaderboard />
+          <MyRanking />
+          <TopRanking />
         </div>
       </div>
+      <Ranking />
     </main>
   );
 };
