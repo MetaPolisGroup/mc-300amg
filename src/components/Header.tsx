@@ -12,6 +12,9 @@ import { motion } from "framer-motion";
 import ChangeMode from "./ui/ChangeMode";
 import { Icons } from "./Icons";
 import { createWalletClient, custom } from "viem";
+import NAV_HEADER from "@/constants/navConstants";
+import { isEmpty } from "lodash";
+
 enum EActive {
   "Default" = 1,
   "Stand",
@@ -86,52 +89,69 @@ const Header = () => {
     }
   };
 
+  const renderNavSubItem = (
+    listSubItem: {
+      title: string;
+      link: string;
+      subContent: () => React.ReactNode | null;
+    }[]
+  ) => {
+    return listSubItem.map((item, index) => {
+      return (
+        <li
+          key={`${item.title}_${index}`}
+          className="hover:bg-[--colors-tertiary] h-[48px] flex justify-between items-center flex-nowrap flex-row px-4"
+        >
+          <span className="p-0 font-semibold">{item.title}</span>
+          <span className="p-0">{item.subContent()}</span>
+        </li>
+      );
+    });
+  };
+
+  const renderNavItems = () => {
+    return NAV_HEADER.map((nav) => {
+      return (
+        <div key={nav.id} className="dropdown dropdown-hover">
+          <div className="p-2">
+            <label
+              tabIndex={0}
+              className="btn text-[--colors-textSubtle] gap-3 border-0 !m-0 py-4 px-5 !min-h-fit !normal-case !rounded-[20px] hover:bg-[--colors-tertiary] h-[48px] font-bold"
+            >
+              {nav.title()}
+              {nav.renderDot()}
+            </label>
+          </div>
+
+          {nav.items.length !== 0 ? (
+            <ul
+              tabIndex={0}
+              className="dropdown-content z-10 menu px-0 shadow bg-[--colors-backgroundAlt] text-[--colors-textSubtle] rounded-box min-w-[280px] border-2 border-solid border-[--colors-cardBorder]"
+            >
+              {renderNavSubItem(nav.items)}
+            </ul>
+          ) : null}
+        </div>
+      );
+    });
+  };
+
   return (
     <header className="w-full z-20 bg-[--colors-backgroundAlt]">
       <nav className="flex justify-between items-center w-full h-full border-b border-[--colors-cardBorder] px-4">
-        <div className="navbar">
-          <div className="navbar-start lg:flex">
+        <div className="navbar p-0">
+          <div className="navbar-start lg:flex !w-3/4">
             <a
               className="normal-case text-xl text-[--colors-textSubtle]"
               href="/"
             >
               daisyUI
             </a>
-            <ul className="menu menu-horizontal px-5 gap-2 hidden lg:flex">
-              <li className="text-[--colors-textSubtle] font-medium">
-                <a>Trade</a>
-              </li>
-              <li
-                tabIndex={0}
-                className="text-[--colors-textSubtle] font-medium"
-              >
-                <details>
-                  <summary>Earn</summary>
-                  {/* <ul className="p-2">
-                    <li>
-                      <a>Submenu 1</a>
-                    </li>
-                    <li>
-                      <a>Submenu 2</a>
-                    </li>
-                  </ul> */}
-                </details>
-              </li>
-              <li className="text-[--colors-textSubtle] font-medium">
-                <a>Win</a>
-              </li>
-              <li className="text-[--colors-textSubtle] font-medium">
-                <a>NFT</a>{" "}
-              </li>
-              <li className="text-[--colors-textSubtle] font-medium">
-                <a>Game</a>
-              </li>
-              <li className="text-[--colors-textSubtle] font-medium">
-                <a>...</a>
-              </li>
+            <ul className="menu menu-horizontal p-0 gap-2 hidden lg:flex items-center">
+              {renderNavItems()}
             </ul>
           </div>
-          <div className="navbar-end gap-2">
+          <div className="navbar-end gap-2 p-2 !w-1/4">
             {/* <Button onClick={callRound}>Call Round</Button> */}
             <ChangeMode HWrapper="30px" WWrapper="70px" H="20px" W="20px" />
             <Button onClick={callRound}>Call Round</Button>

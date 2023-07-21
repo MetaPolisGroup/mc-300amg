@@ -29,6 +29,8 @@ import {
   AlertCircle,
   XCircle,
   ChevronRightIcon,
+  LogOut,
+  Dot,
 } from "lucide-react";
 
 export const Icons = {
@@ -61,6 +63,8 @@ export const Icons = {
   AlertCircle,
   ChevronDown,
   XCircle,
+  LogOut,
+  Dot,
   LaurelLeft: (props: LucideProps) => (
     <svg
       viewBox="0 0 20 20"
