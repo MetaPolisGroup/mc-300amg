@@ -1,16 +1,17 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import NetworkSelector from "./NetworkSelector";
 import SubMenu from "./SubMenu";
 import ConnectWallet from "./ConnectWallet";
 import Button from "./ui/Button";
-import { publicClient, walletClient } from "@/lib/contract-config";
+import { publicClient } from "@/lib/contract-config";
 import { CONSTANTS } from "@/constants";
 import { privateKeyToAccount as privateKey } from "viem/accounts";
 import Popup, { PopupRef } from "./ui/Modal";
 import { motion } from "framer-motion";
 import ChangeMode from "./ui/ChangeMode";
 import { Icons } from "./Icons";
+import { createWalletClient, custom } from "viem";
 enum EActive {
   "Default" = 1,
   "Stand",
@@ -30,10 +31,21 @@ const spring = {
   damping: 30,
 };
 
+const isBrowser = () => typeof window !== "undefined";
+
 const Header = () => {
   const settingPopup = React.createRef<PopupRef>();
   const [isOn, setIsOn] = React.useState(false);
   const [isButton, setIsButton] = React.useState<EActive>();
+
+  let walletClient: any = null;
+  if (isBrowser()) {
+    walletClient = createWalletClient({
+      chain: CONSTANTS.CHAIN,
+      transport: custom(window.ethereum as any),
+    });
+  }
+
   const toggleSwitch = () => {
     setIsOn((prev) => !prev);
   };

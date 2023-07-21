@@ -8,11 +8,11 @@ import { CONSTANTS } from "@/constants";
 import { toast } from "react-hot-toast";
 import { useAccount, useBalance, useContractRead } from "wagmi";
 import { ethers } from "ethers";
-import { publicClient, walletClient } from "@/lib/contract-config";
+import { publicClient } from "@/lib/contract-config";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
-import { log } from "console";
 import { getEllipsisTxt } from "@/utils/formmater-address";
+import { createWalletClient, custom } from "viem";
 
 interface ISetBetPositionProps {
   showSetBetCard?: boolean;
@@ -26,6 +26,8 @@ interface ISetBetPositionProps {
   ) => void;
 }
 
+const isBrowser = () => typeof window !== "undefined";
+
 const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   showSetBetCard,
   upOrDownStatus,
@@ -34,6 +36,13 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   onPlaceBet,
 }) => {
   const { isConnected, address } = useAccount();
+  let walletClient: any = null;
+  if (isBrowser()) {
+    walletClient = createWalletClient({
+      chain: CONSTANTS.CHAIN,
+      transport: custom(window.ethereum as any),
+    });
+  }
 
   // Fix hydrate by using isClient
   const [isClient, setIsClient] = useState<boolean>(false);

@@ -123,7 +123,10 @@ export default function Footer() {
         {showElement && (
           <div
             className="fixed cursor-pointer right-[30px] bottom-[32px] md:right-[100px] md:bottom-[190px] flex w-[10%] md:w-[5%] items-center  justify-around py-3 bg-[--colors-primary] rounded-xl font-bold"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            onClick={() => {
+              if (typeof window !== "undefined")
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
           >
             <Icons.ArrowUp size={20} />
           </div>
