@@ -81,7 +81,7 @@ export default function Footer() {
 
           <div className="md:hidden border-t-[1px] border-b-[1px] border-[#383241] mb-5 container -order-2 md:order-none md:justify-between items-center  py-10 flex md:flex-row md:flex-nowrap flex-wrap flex-col">
             <div className="mr-auto mt-5">
-              <ChangeMode />
+              <ChangeMode HWrapper={"50px"} WWrapper={"100px"} />
             </div>
             <div className="flex items-center gap-5 order-first md:order-none justify-between  w-full md:w-[45%] lg:w-[30%]">
               <div className="flex items-center gap-2">
