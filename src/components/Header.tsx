@@ -121,6 +121,7 @@ const Header = () => {
           </div>
           <div className="navbar-end gap-2">
             {/* <Button onClick={callRound}>Call Round</Button> */}
+            <ChangeMode HWrapper="30px" WWrapper="70px" H="20px" W="20px" />
             <Popup
               ref={settingPopup}
               footer={false}
@@ -137,7 +138,7 @@ const Header = () => {
                     GLOBAL
                   </span>
                   <div className="leading-[3.5]">
-                    <div className="flex justify-between items-center">
+                    {/* <div className="flex justify-between items-center">
                       <span>Dark mode</span>
                       <div>
                         <ChangeMode
@@ -147,7 +148,7 @@ const Header = () => {
                           W="20px"
                         />
                       </div>
-                    </div>
+                    </div> */}
                     <div className="flex justify-between items-center">
                       <div className="flex items-center">
                         <span>Subgraph Health Indicator</span>
@@ -189,10 +190,12 @@ const Header = () => {
                 </React.Fragment>
               }
               selector={
-                <Icons.Settings
-                  onClick={() => settingPopup.current?.open()}
-                  className="hover:cursor-pointer text-[--colors-textSubtle]"
-                />
+                <div className="w-[30px]">
+                  <Icons.Settings
+                    onClick={() => settingPopup.current?.open()}
+                    className="hover:cursor-pointer text-[--colors-textSubtle]"
+                  />
+                </div>
               }
             />
             <NetworkSelector />
