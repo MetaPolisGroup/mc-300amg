@@ -1,7 +1,11 @@
 import React from "react";
 import { Icons } from "../Icons";
 
-const FutureCard = () => {
+interface IFutureCard {
+  currentRound: string;
+}
+
+const FutureCard: React.FC<IFutureCard> = ({ currentRound }) => {
   return (
     <div className={`w-full flex justify-center items-center relative`}>
       <div className={"card z-20 w-80 bg-[--colors-backgroundAlt] shadow-xl"}>
@@ -10,7 +14,9 @@ const FutureCard = () => {
             <Icons.Clock3 className="text-[--colors-text]" />
             <span className="text-[--colors-text]">Later</span>
           </div>
-          <div className="text-[--colors-textSubtle] text-xs">#187808</div>
+          <div className="text-[--colors-textSubtle] text-xs">
+            #{currentRound}
+          </div>
         </div>
 
         <div className="card-body p-4">

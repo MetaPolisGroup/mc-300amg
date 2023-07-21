@@ -1,13 +1,13 @@
 "use client";
-import { useState } from "react";
-import CountDown from "@/components/CountDown";
 import CoinCurrency from "@/components/CoinCurrency";
-import DrawerHistory from "@/components/drawer-history/DrawerHistory";
-import Card from "@/components/bet/Card";
+import CountDown from "@/components/CountDown";
 import SubNav from "@/components/SubNav";
+import Card from "@/components/bet/Card";
+import DrawerHistory from "@/components/drawer-history/DrawerHistory";
 import clsx from "clsx";
+import React, { useState } from "react";
 
-export default function Home() {
+const Prediction = () => {
   const [isShowDrawer, setIsShowDrawer] = useState<boolean>(false);
 
   return (
@@ -32,4 +32,6 @@ export default function Home() {
       <SubNav isShowHistory={isShowDrawer} onShowHistory={setIsShowDrawer} />
     </main>
   );
-}
+};
+
+export default Prediction;

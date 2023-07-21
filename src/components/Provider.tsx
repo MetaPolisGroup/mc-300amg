@@ -28,6 +28,7 @@ const connectors = connectorsForWallets([
     groupName: "Recommended",
     wallets: [
       metaMaskWallet({
+        projectId: "bd9d8fac308dbb3111f4f6027617462e",
         chains,
       } as MetaMaskWalletOptions),
     ],
