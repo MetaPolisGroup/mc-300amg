@@ -15,9 +15,10 @@ export const useTheme = () => useContext(ThemeContext);
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const storedValue = localStorage.getItem("isDarkmode");
   const [isOn, setIsOn] = useState<boolean>(
-    storedValue ? JSON.parse(storedValue) : false
+    localStorage.getItem("isDarkmode")
+      ? JSON.parse(localStorage.getItem("isDarkmode")!)
+      : false
   );
   const toggleSwitch = () => {
     setIsOn((prevIsOn) => {
