@@ -140,7 +140,7 @@ const Header = () => {
     <header className="w-full z-20 bg-[--colors-backgroundAlt]">
       <nav className="flex justify-between items-center w-full h-full border-b border-[--colors-cardBorder] px-4">
         <div className="navbar p-0">
-          <div className="navbar-start lg:flex !w-3/4">
+          <div className="navbar-start lg:flex !w-[75%]">
             <a
               className="normal-case text-xl text-[--colors-textSubtle]"
               href="/"
@@ -151,7 +151,7 @@ const Header = () => {
               {renderNavItems()}
             </ul>
           </div>
-          <div className="navbar-end gap-2 p-2 !w-1/4">
+          <div className="navbar-end gap-2 p-2 !w-[25%]">
             {/* <Button onClick={callRound}>Call Round</Button> */}
             <ChangeMode HWrapper="30px" WWrapper="70px" H="20px" W="20px" />
             <Button onClick={callRound}>Call Round</Button>
