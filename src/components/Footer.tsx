@@ -81,7 +81,7 @@ export default function Footer() {
 
           <div className="md:hidden border-t-[1px] border-b-[1px] border-[#383241] mb-5 container -order-2 md:order-none md:justify-between items-center  py-10 flex md:flex-row md:flex-nowrap flex-wrap flex-col">
             <div className="mr-auto mt-5">
-              <ChangeMode />
+              <ChangeMode HWrapper={"50px"} WWrapper={"100px"} />
             </div>
             <div className="flex items-center gap-5 order-first md:order-none justify-between  w-full md:w-[45%] lg:w-[30%]">
               <div className="flex items-center gap-2">
@@ -123,7 +123,10 @@ export default function Footer() {
         {showElement && (
           <div
             className="fixed cursor-pointer right-[30px] bottom-[32px] md:right-[100px] md:bottom-[190px] flex w-[10%] md:w-[5%] items-center  justify-around py-3 bg-[--colors-primary] rounded-xl font-bold"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            onClick={() => {
+              if (typeof window !== "undefined")
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
           >
             <Icons.ArrowUp size={20} />
           </div>

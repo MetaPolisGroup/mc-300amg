@@ -213,7 +213,7 @@ const HistoryItem: React.FC<IItem> = ({ data }) => {
         <div className="flex gap-2">
           {!data?.is_collected ? (
             <button
-              className="bg-[--colors-success] text-sm text-[--colors-white] px-2 py-1 rounded-2xl cursor-pointer hover:opacity-[0.8]"
+              className="bg-[--colors-primary] text-sm text-[--colors-white] px-4 py-1 rounded-2xl cursor-pointer hover:opacity-[0.8]"
               onClick={(e) => {
                 console.log("Collected");
                 e.stopPropagation();

@@ -30,6 +30,7 @@ import {
   XCircle,
   LogOut,
   Dot,
+  ChevronRightIcon,
 } from "lucide-react";
 
 export const Icons = {
@@ -44,6 +45,7 @@ export const Icons = {
   ArrowLeft,
   HelpCircle,
   SunDim,
+  ChevronRightIcon,
   MoonStar,
   ArrowUp,
   Instagram,
