@@ -193,6 +193,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
                     </div>
                   </div>
                 ));
+
                 if (onPlaceBet)
                   onPlaceBet(currentRound, upOrDownStatus, amount);
               }
@@ -202,7 +203,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
                   <div
                     className={`${
                       t.visible ? "animate-enter" : "animate-leave"
-                    } max-w-md w-full bg-[--colorsi-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+                    } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
                   >
                     <div className="flex bg-[--colors-failure] p-4 rounded-l-lg">
                       <Icons.XCircle className="text-[--colors-white]" />
@@ -310,7 +311,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
                   <div
                     className={`${
                       t.visible ? "animate-enter" : "animate-leave"
-                    } max-w-md w-full bg-[--colorsi-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+                    } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
                   >
                     <div className="flex bg-[--colors-failure] p-4 rounded-l-lg">
                       <Icons.XCircle className="text-[--colors-white]" />
