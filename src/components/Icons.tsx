@@ -28,6 +28,8 @@ import {
   ChevronDown,
   AlertCircle,
   XCircle,
+  LogOut,
+  Dot,
 } from "lucide-react";
 
 export const Icons = {
@@ -59,6 +61,8 @@ export const Icons = {
   AlertCircle,
   ChevronDown,
   XCircle,
+  LogOut,
+  Dot,
   SunIcon: () => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
