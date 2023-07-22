@@ -10,6 +10,7 @@ import Button from "../ui/Button";
 import Input from "../ui/Input";
 import SetBetPosition from "./SetBetPosition";
 import Tooltip from "../ui/Tooltip";
+import TooltipElement from "../ui/Tooltip";
 
 interface IBetCard {
   currentRound: string;
@@ -86,27 +87,27 @@ const BetCard: React.FC<IBetCard> = ({ currentRound }) => {
             <div className="bg-[--colors-backgroundAlt] rounded-xl p-4 flex flex-col gap-2">
               {!isEmpty(dataBetted) &&
                 (dataBetted?.status === "UP" ? (
-                  <Tooltip tooltipTitle={`${dataBetted.value} BNB`}>
+                  <TooltipElement title={`${dataBetted.value} BNB`}>
                     <Button
-                      className="flex relative group w-full gap-1 bg-[--colors-success] text-[--colors-white] hover:bg-[--colors-success] hover:opacity-[0.8] rounded-2xl"
+                      className="flex relative group w-[255px] gap-1 bg-[--colors-success] text-[--colors-white] hover:bg-[--colors-success] hover:opacity-[0.8] rounded-2xl"
                       type="button"
                       disabled={true}
                     >
                       <Icons.ArrowDown className="rotate-180" />
                       <span>UP Entered</span>
                     </Button>
-                  </Tooltip>
+                  </TooltipElement>
                 ) : (
-                  <Tooltip tooltipTitle={`${dataBetted.value} BNB`}>
+                  <TooltipElement title={`${dataBetted.value} BNB`}>
                     <Button
-                      className="flex relative group w-full gap-1 bg-[--colors-failure] text-[--colors-white] hover:bg-[--colors-failure] hover:opacity-[0.8] rounded-2xl"
+                      className="flex relative group w-[255px] gap-1 bg-[--colors-failure] text-[--colors-white] hover:bg-[--colors-failure] hover:opacity-[0.8] rounded-2xl"
                       type="button"
                       disabled={true}
                     >
                       <Icons.ArrowDown />
                       <span>DOWN Entered</span>
                     </Button>
-                  </Tooltip>
+                  </TooltipElement>
                 ))}
 
               <div className="flex items-center justify-between text-[--colors-text] font-semibold text-base">

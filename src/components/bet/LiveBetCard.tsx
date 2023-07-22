@@ -7,7 +7,7 @@ interface ILiveBetCardProps {
 }
 
 const LiveBetCard: React.FC<ILiveBetCardProps> = ({ currentRound }) => {
-  const dataBetted: any = {};
+  const dataBetted: any = null;
   return (
     <div
       className={`w-full flex justify-center items-center relative transition-transform duration-700 preverve-3d`}
