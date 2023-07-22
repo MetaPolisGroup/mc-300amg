@@ -15,6 +15,8 @@ import { Icons } from "./Icons";
 import NAV_HEADER from "@/constants/navConstants";
 
 import { createWalletClient, custom } from "viem";
+import Tooltip from "./ui/Tooltip";
+import TooltipElement from "./ui/Tooltip";
 enum EActive {
   "Default" = 1,
   "Stand",
@@ -152,7 +154,6 @@ const Header = () => {
             </ul>
           </div>
           <div className="navbar-end gap-2 p-2 !w-[25%]">
-            {/* <Button onClick={callRound}>Call Round</Button> */}
             <ChangeMode HWrapper="30px" WWrapper="70px" H="20px" W="20px" />
             <Button onClick={callRound}>Call Round</Button>
             <Popup
@@ -185,28 +186,37 @@ const Header = () => {
                     <div className="flex justify-between items-center">
                       <div className="flex items-center">
                         <span>Subgraph Health Indicator</span>
-                        <TooltipElement title="?" content="Tooltip" />
+                        <TooltipElement title="Tooltip">
+                          <Icons.HelpCircleIcon />
+                        </TooltipElement>
                       </div>
                       <SwitchElement isOn={isOn} toggleSwitch={toggleSwitch} />
                     </div>
                     <div className="flex justify-between items-center">
                       <div className="flex items-center">
                         <span>Show username</span>
-                        <TooltipElement title="?" content="Tooltip" />
+
+                        <TooltipElement title="Tooltip">
+                          <Icons.HelpCircleIcon />
+                        </TooltipElement>
                       </div>
                       <SwitchElement isOn={isOn} toggleSwitch={toggleSwitch} />
                     </div>
                     <div className="flex justify-between items-center">
                       <div className="flex items-center">
                         <span>Token Risk Scanning</span>
-                        <TooltipElement title="?" content="Tooltip" />
+                        <TooltipElement title="Tooltip">
+                          <Icons.HelpCircleIcon />
+                        </TooltipElement>
                       </div>
                       <SwitchElement isOn={isOn} toggleSwitch={toggleSwitch} />
                     </div>
                     <div className="flex justify-between items-center">
                       <div className="flex items-center">
                         <span>Default Transaction Speed (GWEI)</span>
-                        <TooltipElement title="?" content="Tooltip" />
+                        <TooltipElement title="Tooltip">
+                          <Icons.HelpCircleIcon />
+                        </TooltipElement>
                       </div>
                     </div>
                   </div>
@@ -242,11 +252,7 @@ const Header = () => {
 };
 
 export default Header;
-function privateKeyToAccount(
-  arg0: string
-): `0x${string}` | import("viem").Account | undefined {
-  throw new Error("Function not implemented.");
-}
+
 const ButtonElement: React.FC<{
   content?: React.ReactNode | string;
   action?: () => void;
@@ -280,29 +286,5 @@ const SwitchElement: React.FC<{
       layout
       transition={spring}
     />
-  </div>
-);
-
-const TooltipElement: React.FC<{
-  title: React.ReactNode | string;
-  content: React.ReactNode | string;
-}> = ({ content, title }) => (
-  <div className="group max-w-max relative mx-1 flex flex-col items-center justify-center rounded-full">
-    <p className="text-xs text-center py-[1px] px-[5px] border rounded-full">
-      {title}
-    </p>
-    <div className="[transform:perspective(50px)_translateZ(0)_rotateX(10deg)] group-hover:[transform:perspective(0px)_translateZ(0)_rotateX(0deg)] absolute bottom-0 mb-6 origin-bottom  rounded text-white opacity-0 transition-all duration-300 group-hover:opacity-100">
-      <div className="flex max-w-xs flex-col items-center">
-        <div className="rounded bg-[--colors-tertiary] text-[--colors-text-special] p-2 text-xs text-center shadow-lg">
-          {content}
-        </div>
-        <div
-          className=" h-2 w-4 bg-[--colors-tertiary]"
-          style={{
-            clipPath: "polygon(100% 50%, 0 0, 100% 0, 50% 100%, 0 0)",
-          }}
-        />
-      </div>
-    </div>
   </div>
 );
