@@ -1,11 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CountDown from "@/components/CountDown";
 import CoinCurrency from "@/components/CoinCurrency";
 import DrawerHistory from "@/components/drawer-history/DrawerHistory";
-import Card from "@/components/bet/Card";
+import Card from "@/components/bet-bo/Card";
 import SubNav from "@/components/SubNav";
 import clsx from "clsx";
+import { DocumentData } from "firebase/firestore";
 
 export default function Home() {
   const [isShowDrawer, setIsShowDrawer] = useState<boolean>(false);
@@ -22,7 +23,7 @@ export default function Home() {
           <div className="text-[--colors-failure] p-4">
             <div className="flex flex-nowrap justify-between">
               <CoinCurrency />
-              <CountDown min={5} title="5m" onAction={{ setIsShowDrawer }} />
+              <CountDown title="5m" onAction={{ setIsShowDrawer }} />
             </div>
           </div>
           <Card />

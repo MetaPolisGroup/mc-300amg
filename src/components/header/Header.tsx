@@ -1,17 +1,23 @@
 "use client";
 import React, { useEffect } from "react";
-import NetworkSelector from "./NetworkSelector";
-import SubMenu from "./SubMenu";
-import ConnectWallet from "./ConnectWallet";
-import Button from "./ui/Button";
+import NetworkSelector from "../NetworkSelector";
+import SubMenu from "../SubMenu";
+import ConnectWallet from "../ConnectWallet";
+import Button from "../ui/Button";
 import { publicClient } from "@/lib/contract-config";
 import { CONSTANTS } from "@/constants";
 import { privateKeyToAccount as privateKey } from "viem/accounts";
-import Popup, { PopupRef } from "./ui/Modal";
+import Popup, { PopupRef } from "../ui/Modal";
 import { motion } from "framer-motion";
-import ChangeMode from "./ui/ChangeMode";
-import { Icons } from "./Icons";
+import ChangeMode from "../ui/ChangeMode";
+import { Icons } from "../Icons";
+
+import NAV_HEADER from "@/constants/navConstants";
+
 import { createWalletClient, custom } from "viem";
+import Tooltip from "../ui/Tooltip";
+import TooltipElement from "../ui/Tooltip";
+import HeaderItem from "./HeaderItem";
 enum EActive {
   "Default" = 1,
   "Stand",
@@ -49,92 +55,67 @@ const Header = () => {
   const toggleSwitch = () => {
     setIsOn((prev) => !prev);
   };
-  const callRound = async () => {
-    const gasPrice = await publicClient.getGasPrice();
-    const gas = await publicClient.estimateContractGas({
-      type: "eip1559",
-      address: CONSTANTS.ADDRESS.PREDICTION,
-      abi: CONSTANTS.ABI.PREDICTION,
-      functionName: "executeRound",
-      args: ["11", "100000"],
-      account: privateKey(
-        "0x7476c8c08f10b30ac5aead18e090ff99549c4f28d1b90efde543eb1158e41493"
-      ),
-    });
-    const { request } = await publicClient.simulateContract({
-      account: privateKey(
-        "0x7476c8c08f10b30ac5aead18e090ff99549c4f28d1b90efde543eb1158e41493"
-      ),
+  // const callRound = async () => {
+  //   const gasPrice = await publicClient.getGasPrice();
+  //   const gas = await publicClient.estimateContractGas({
+  //     type: "eip1559",
+  //     address: CONSTANTS.ADDRESS.PREDICTION,
+  //     abi: CONSTANTS.ABI.PREDICTION,
+  //     functionName: "executeRound",
+  //     args: ["11", "100000"],
+  //     account: privateKey(
+  //       "0x7476c8c08f10b30ac5aead18e090ff99549c4f28d1b90efde543eb1158e41493"
+  //     ),
+  //   });
+  //   const { request } = await publicClient.simulateContract({
+  //     account: privateKey(
+  //       "0x7476c8c08f10b30ac5aead18e090ff99549c4f28d1b90efde543eb1158e41493"
+  //     ),
 
-      address: CONSTANTS.ADDRESS.PREDICTION,
-      abi: CONSTANTS.ABI.PREDICTION,
-      functionName: "executeRound",
-      args: ["11", "100000"],
-      gas,
-      type: "eip1559",
-      maxFeePerGas: gasPrice,
-      maxPriorityFeePerGas: gasPrice,
+  //     address: CONSTANTS.ADDRESS.PREDICTION,
+  //     abi: CONSTANTS.ABI.PREDICTION,
+  //     functionName: "executeRound",
+  //     args: ["11", "100000"],
+  //     gas,
+  //     type: "eip1559",
+  //     maxFeePerGas: gasPrice,
+  //     maxPriorityFeePerGas: gasPrice,
+  //   });
+  //   const hash = await walletClient.writeContract(request);
+  //   if (hash) {
+  //     const transaction = await publicClient.waitForTransactionReceipt({
+  //       hash,
+  //     });
+  //     if (transaction?.status === "success") {
+  //       console.log("success");
+  //     }
+  //   }
+  // };
+
+  const renderNavItems = () => {
+    return NAV_HEADER.map((nav) => {
+      return <HeaderItem key={nav.id} data={nav} />;
     });
-    const hash = await walletClient.writeContract(request);
-    if (hash) {
-      const transaction = await publicClient.waitForTransactionReceipt({
-        hash,
-      });
-      if (transaction?.status === "success") {
-        console.log("success");
-      }
-    }
   };
 
   return (
     <header className="w-full z-20 bg-[--colors-backgroundAlt]">
       <nav className="flex justify-between items-center w-full h-full border-b border-[--colors-cardBorder] px-4">
-        <div className="navbar">
-          <div className="navbar-start lg:flex">
+        <div className="navbar p-0 justify-between">
+          <div className="navbar-start lg:flex w-auto gap-1">
             <a
               className="normal-case text-xl text-[--colors-textSubtle]"
               href="/"
             >
               daisyUI
             </a>
-            <ul className="menu menu-horizontal px-5 gap-2 hidden lg:flex">
-              <li className="text-[--colors-textSubtle] font-medium">
-                <a>Trade</a>
-              </li>
-              <li
-                tabIndex={0}
-                className="text-[--colors-textSubtle] font-medium"
-              >
-                <details>
-                  <summary>Earn</summary>
-                  {/* <ul className="p-2">
-                    <li>
-                      <a>Submenu 1</a>
-                    </li>
-                    <li>
-                      <a>Submenu 2</a>
-                    </li>
-                  </ul> */}
-                </details>
-              </li>
-              <li className="text-[--colors-textSubtle] font-medium">
-                <a>Win</a>
-              </li>
-              <li className="text-[--colors-textSubtle] font-medium">
-                <a>NFT</a>{" "}
-              </li>
-              <li className="text-[--colors-textSubtle] font-medium">
-                <a>Game</a>
-              </li>
-              <li className="text-[--colors-textSubtle] font-medium">
-                <a>...</a>
-              </li>
+            <ul className="menu menu-horizontal p-0 flex-nowrap gap-1 xl:gap-2 hidden lg:flex items-center">
+              {renderNavItems()}
             </ul>
           </div>
-          <div className="navbar-end gap-2">
-            {/* <Button onClick={callRound}>Call Round</Button> */}
+          <div className="navbar-end gap-2 p-2 w-auto">
             <ChangeMode HWrapper="30px" WWrapper="70px" H="20px" W="20px" />
-            <Button onClick={callRound}>Call Round</Button>
+            {/* <Button onClick={callRound}>Call Round</Button> */}
             <Popup
               ref={settingPopup}
               footer={false}
@@ -165,28 +146,37 @@ const Header = () => {
                     <div className="flex justify-between items-center">
                       <div className="flex items-center">
                         <span>Subgraph Health Indicator</span>
-                        <TooltipElement title="?" content="Tooltip" />
+                        <TooltipElement title="Tooltip">
+                          <Icons.HelpCircleIcon />
+                        </TooltipElement>
                       </div>
                       <SwitchElement isOn={isOn} toggleSwitch={toggleSwitch} />
                     </div>
                     <div className="flex justify-between items-center">
                       <div className="flex items-center">
                         <span>Show username</span>
-                        <TooltipElement title="?" content="Tooltip" />
+
+                        <TooltipElement title="Tooltip">
+                          <Icons.HelpCircleIcon />
+                        </TooltipElement>
                       </div>
                       <SwitchElement isOn={isOn} toggleSwitch={toggleSwitch} />
                     </div>
                     <div className="flex justify-between items-center">
                       <div className="flex items-center">
                         <span>Token Risk Scanning</span>
-                        <TooltipElement title="?" content="Tooltip" />
+                        <TooltipElement title="Tooltip">
+                          <Icons.HelpCircleIcon />
+                        </TooltipElement>
                       </div>
                       <SwitchElement isOn={isOn} toggleSwitch={toggleSwitch} />
                     </div>
                     <div className="flex justify-between items-center">
                       <div className="flex items-center">
                         <span>Default Transaction Speed (GWEI)</span>
-                        <TooltipElement title="?" content="Tooltip" />
+                        <TooltipElement title="Tooltip">
+                          <Icons.HelpCircleIcon />
+                        </TooltipElement>
                       </div>
                     </div>
                   </div>
@@ -222,11 +212,7 @@ const Header = () => {
 };
 
 export default Header;
-function privateKeyToAccount(
-  arg0: string
-): `0x${string}` | import("viem").Account | undefined {
-  throw new Error("Function not implemented.");
-}
+
 const ButtonElement: React.FC<{
   content?: React.ReactNode | string;
   action?: () => void;
@@ -260,29 +246,5 @@ const SwitchElement: React.FC<{
       layout
       transition={spring}
     />
-  </div>
-);
-
-const TooltipElement: React.FC<{
-  title: React.ReactNode | string;
-  content: React.ReactNode | string;
-}> = ({ content, title }) => (
-  <div className="group max-w-max relative mx-1 flex flex-col items-center justify-center rounded-full">
-    <p className="text-xs text-center py-[1px] px-[5px] border rounded-full">
-      {title}
-    </p>
-    <div className="[transform:perspective(50px)_translateZ(0)_rotateX(10deg)] group-hover:[transform:perspective(0px)_translateZ(0)_rotateX(0deg)] absolute bottom-0 mb-6 origin-bottom  rounded text-white opacity-0 transition-all duration-300 group-hover:opacity-100">
-      <div className="flex max-w-xs flex-col items-center">
-        <div className="rounded bg-[--colors-tertiary] text-[--colors-text-special] p-2 text-xs text-center shadow-lg">
-          {content}
-        </div>
-        <div
-          className=" h-2 w-4 bg-[--colors-tertiary]"
-          style={{
-            clipPath: "polygon(100% 50%, 0 0, 100% 0, 50% 100%, 0 0)",
-          }}
-        />
-      </div>
-    </div>
   </div>
 );

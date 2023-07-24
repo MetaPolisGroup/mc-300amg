@@ -65,6 +65,7 @@
   --colors-dark-failure33: #ed4b9e33;
   --colors-dark-primary: #1fc7d4;
   --colors-dark-primary0f: #1fc7d40f;
+  --radii-card: 24px;
 }
 
 [data-theme="dark"] {
@@ -110,6 +111,8 @@
   --colors-violetAlt2: #66578d;
   --colors-bubblegum1: #313d5c;
   --colors-bubblegum2: #3d2a54;
+  --colors-tooltipBackground: #fff;
+  --colors-tooltipText: #000;
   --colors-gradientBubblegum: linear-gradient(139.73deg, #313d5c, #3d2a54);
   --colors-gradientInverseBubblegum: linear-gradient(
     139.73deg,
@@ -169,6 +172,8 @@
   --colors-violetAlt2: #cdb8fa;
   --colors-bubblegum1: #e5fdff;
   --colors-bubblegum2: #f3efff;
+  --colors-tooltipBackground: #000;
+  --colors-tooltipText: #fff;
   --colors-gradientBubblegum: linear-gradient(139.73deg, #e5fdff, #f3efff);
   --colors-gradientInverseBubblegum: linear-gradient(
     139.73deg,
@@ -218,4 +223,8 @@
 .swiper-wrapper {
   height: 100% !important;
   align-items: center !important;
+}
+
+.top-banner {
+  transform: translateX(0%) translateY(200%) rotate(-45deg);
 }

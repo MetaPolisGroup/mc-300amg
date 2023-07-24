@@ -3,7 +3,7 @@ import BetCard from "./BetCard";
 import LiveBetCard from "./LiveBetCard";
 import HistoryCard from "./HistoryCard";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -12,34 +12,46 @@ import "swiper/css/effect-cards";
 import FutureCard from "./FutureCard";
 import SwiperNavButton from "../SwiperNavButton";
 import { Swiper as SwiperType } from "swiper";
-import { publicClient } from "@/lib/contract-config";
-import { CONSTANTS } from "@/constants";
 import Popup, { PopupRef } from "../ui/Modal";
 import { Icons } from "../Icons";
+import { DocumentData } from "firebase/firestore";
 import Button from "../ui/Button";
+import getDataFileredByOnSnapshot from "@/helpers/getDataByOnSnapshot";
+import { useAccount } from "wagmi";
 
 const Card = () => {
+  const { address } = useAccount();
   const [currentRound, setCurrentRound] = useState<string>("");
   const [winningRound, setWinningRound] = useState<string>("");
+  const [nextBetData, setNextBetData] = useState<DocumentData[]>([]);
+  const [datasBetted, setDatasBetted] = useState<DocumentData[]>([]);
 
   const swiperRef = useRef<SwiperType>();
   const collectWinningsRef = createRef<PopupRef>();
 
   useEffect(() => {
-    getCurrentRound();
-  }, []);
+    getDataFileredByOnSnapshot(
+      "predictions",
+      [["locked", "==", false]],
+      (docs: DocumentData) => {
+        setNextBetData(docs as DocumentData[]);
+        setCurrentRound(docs?.[0]?.epoch);
+      },
+      undefined,
+      undefined
+    );
+    getDataFileredByOnSnapshot(
+      "bets",
+      [["user_address", "==", address as `0x${string}`]],
+      (docs: DocumentData) => {
+        setDatasBetted(docs as DocumentData[]);
+      }
+    );
+  }, [address]);
 
-  const getCurrentRound = async () => {
-    const data = await publicClient.readContract({
-      address: CONSTANTS.ADDRESS.PREDICTION,
-      abi: CONSTANTS.ABI.PREDICTION,
-      functionName: "currentEpoch",
-      args: [],
-    });
-    if (data) {
-      setCurrentRound(data.toString());
-    }
-  };
+  const dataBettedInCurrentRound = datasBetted.find(
+    (dataBetted: DocumentData) => dataBetted.epoch === currentRound
+  );
 
   const showCollectWinningHandler = (status: boolean, round: string) => {
     if (status === true) {
@@ -100,10 +112,17 @@ const Card = () => {
             />
           </SwiperSlide>
           <SwiperSlide>
-            <LiveBetCard currentRound={(+currentRound - 1).toString()} />
+            <LiveBetCard
+              liveRound={(+currentRound - 1).toString()}
+              nextBetData={nextBetData[0]}
+            />
           </SwiperSlide>
           <SwiperSlide>
-            <BetCard currentRound={currentRound} />
+            <BetCard
+              currentRound={currentRound}
+              nextBetData={nextBetData[0]}
+              dataBettedInCurrentRound={dataBettedInCurrentRound}
+            />
           </SwiperSlide>
           <SwiperSlide>
             <FutureCard currentRound={(+currentRound + 1).toString()} />

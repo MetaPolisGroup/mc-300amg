@@ -1,19 +1,25 @@
 import React from "react";
 
-interface ITooltipProps {
-  children: React.ReactNode;
-  tooltipTitle: string;
-}
-
-const Tooltip: React.FC<ITooltipProps> = ({ children, tooltipTitle }) => {
-  return (
-    <div className="relative w-full group">
-      {children}
-      <span className="invisible group-hover:visible absolute -top-12 z-40 left-4 bg-[--colors-contrast] p-2 rounded-2xl before:absolute before:-bottom-1 before:left-[50%] before:w-0 before:h-0 before:border-x-[5px] before:border-transparent before:border-t-[5px] before:border-t-[--colors-contrast]">
-        {tooltipTitle}
-      </span>
+const TooltipElement: React.FC<{
+  title?: React.ReactNode | string;
+  children?: React.ReactNode;
+}> = ({ title, children }) => (
+  <div className="group max-w-max relative mx-1 flex flex-col items-center justify-center rounded-full">
+    <p className="text-xs text-center py-[1px] px-[5px]">{children}</p>
+    <div className="[transform:perspective(50px)_translateZ(0)_rotateX(10deg)] group-hover:[transform:perspective(0px)_translateZ(0)_rotateX(0deg)] absolute bottom-0 mb-6 origin-bottom  rounded text-white opacity-0 transition-all duration-300 group-hover:opacity-100">
+      <div className="flex max-w-xs flex-col items-center">
+        <div className="rounded bg-[--colors-tertiary] text-[--colors-text-special] p-2 text-xs text-center shadow-lg">
+          {title}
+        </div>
+        <div
+          className=" h-2 w-4 bg-[--colors-tertiary]"
+          style={{
+            clipPath: "polygon(100% 50%, 0 0, 100% 0, 50% 100%, 0 0)",
+          }}
+        />
+      </div>
     </div>
-  );
-};
+  </div>
+);
 
-export default Tooltip;
+export default TooltipElement;

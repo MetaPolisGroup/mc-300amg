@@ -2,7 +2,7 @@
 import CoinCurrency from "@/components/CoinCurrency";
 import CountDown from "@/components/CountDown";
 import SubNav from "@/components/SubNav";
-import Card from "@/components/bet/Card";
+import Card from "@/components/bet-bo/Card";
 import DrawerHistory from "@/components/drawer-history/DrawerHistory";
 import clsx from "clsx";
 import React, { useState } from "react";
@@ -22,7 +22,7 @@ const Prediction = () => {
           <div className="text-[--colors-failure] p-4">
             <div className="flex flex-nowrap justify-between">
               <CoinCurrency />
-              <CountDown min={5} title="5m" onAction={{ setIsShowDrawer }} />
+              <CountDown title="5m" onAction={{ setIsShowDrawer }} />
             </div>
           </div>
           <Card />
