@@ -5,6 +5,7 @@ import getDataFileredByOnSnapshot from "@/helpers/getDataByOnSnapshot";
 import { DocumentData } from "firebase/firestore";
 import { ethers } from "ethers";
 import { useAccount } from "wagmi";
+import AnimatedNumber from "../AnimatedNumber";
 
 interface ILiveBetCardProps {
   liveRound: string;
@@ -15,29 +16,31 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
   liveRound,
   nextBetData,
 }) => {
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const [liveBetData, setLiveBetData] = useState<DocumentData[]>();
   const [liveBettedData, setLiveBettedData] = useState<DocumentData[]>();
   const [progressing, setProgressing] = useState<number>(0);
   useEffect(() => {
-    getDataFileredByOnSnapshot(
-      "predictions",
-      [["epoch", "==", liveRound]],
-      (docs: DocumentData) => {
-        setLiveBetData(docs as DocumentData[]);
-      }
-    );
-    getDataFileredByOnSnapshot(
-      "bets",
-      [
-        ["user_address", "==", address as `0x${string}`],
-        ["epoch", "==", liveRound],
-      ],
-      (docs: DocumentData) => {
-        setLiveBettedData(docs as DocumentData[]);
-      }
-    );
-  }, [liveRound, address]);
+    if (isConnected) {
+      getDataFileredByOnSnapshot(
+        "predictions",
+        [["epoch", "==", liveRound]],
+        (docs: DocumentData) => {
+          setLiveBetData(docs as DocumentData[]);
+        }
+      );
+      getDataFileredByOnSnapshot(
+        "bets",
+        [
+          ["user_address", "==", address as `0x${string}`],
+          ["epoch", "==", liveRound],
+        ],
+        (docs: DocumentData) => {
+          setLiveBettedData(docs as DocumentData[]);
+        }
+      );
+    }
+  }, [liveRound, address, isConnected]);
 
   useEffect(() => {
     const target = +nextBetData?.lockTimestamp * 1000;
@@ -97,9 +100,10 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
               </div>
               <div className="flex justify-between items-center">
                 <div
-                  className={`text-[--colors-success] font-semibold text-2xl min-h-[36px]`}
+                  className={`flex items-center gap-1 text-[--colors-success] font-semibold text-2xl min-h-[36px]`}
                 >
-                  $257.5794
+                  <span>$</span>
+                  <AnimatedNumber startNumber={227.5794} endNumber={222.3323} />
                 </div>
                 <div
                   className={`flex gap-1 justify-center items-center bg-[--colors-success] py-1 px-2 rounded`}
