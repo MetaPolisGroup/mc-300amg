@@ -24,6 +24,7 @@
     "axios": "^1.4.0",
     "class-variance-authority": "^0.6.0",
     "clsx": "^1.2.1",
+    "dayjs": "^1.11.9",
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.4",
     "ethers": "^6.6.3",

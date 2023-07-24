@@ -13,24 +13,24 @@ const HistoryCard: React.FC<IHistoryProps> = ({
   currentRound,
   showCollectWinningModal,
 }) => {
-  useEffect(() => {
-    if (+currentRound > 0) {
-      getHistoryRound();
-    }
-  }, [currentRound]);
+  // useEffect(() => {
+  //   if (+currentRound > 0) {
+  //     getHistoryRound();
+  //   }
+  // }, [currentRound]);
 
-  const getHistoryRound = async () => {
-    const data = await publicClient.readContract({
-      address: CONSTANTS.ADDRESS.PREDICTION,
-      abi: CONSTANTS.ABI.PREDICTION,
-      functionName: "rounds",
-      args: [currentRound],
-    });
-    if (data) {
-      console.log({ data });
-      // setHistoryRound(data.toString());
-    }
-  };
+  // const getHistoryRound = async () => {
+  //   const data = await publicClient.readContract({
+  //     address: CONSTANTS.ADDRESS.PREDICTION,
+  //     abi: CONSTANTS.ABI.PREDICTION,
+  //     functionName: "rounds",
+  //     args: [currentRound],
+  //   });
+  //   if (data) {
+  //     console.log({ data });
+  //     // setHistoryRound(data.toString());
+  //   }
+  // };
 
   return (
     <React.Fragment>
