@@ -15,29 +15,31 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
   liveRound,
   nextBetData,
 }) => {
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const [liveBetData, setLiveBetData] = useState<DocumentData[]>();
   const [liveBettedData, setLiveBettedData] = useState<DocumentData[]>();
   const [progressing, setProgressing] = useState<number>(0);
   useEffect(() => {
-    getDataFileredByOnSnapshot(
-      "predictions",
-      [["epoch", "==", liveRound]],
-      (docs: DocumentData) => {
-        setLiveBetData(docs as DocumentData[]);
-      }
-    );
-    getDataFileredByOnSnapshot(
-      "bets",
-      [
-        ["user_address", "==", address as `0x${string}`],
-        ["epoch", "==", liveRound],
-      ],
-      (docs: DocumentData) => {
-        setLiveBettedData(docs as DocumentData[]);
-      }
-    );
-  }, [liveRound, address]);
+    if (isConnected) {
+      getDataFileredByOnSnapshot(
+        "predictions",
+        [["epoch", "==", liveRound]],
+        (docs: DocumentData) => {
+          setLiveBetData(docs as DocumentData[]);
+        }
+      );
+      getDataFileredByOnSnapshot(
+        "bets",
+        [
+          ["user_address", "==", address as `0x${string}`],
+          ["epoch", "==", liveRound],
+        ],
+        (docs: DocumentData) => {
+          setLiveBettedData(docs as DocumentData[]);
+        }
+      );
+    }
+  }, [liveRound, address, isConnected]);
 
   useEffect(() => {
     const target = +nextBetData?.lockTimestamp * 1000;
