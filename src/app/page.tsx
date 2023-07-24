@@ -23,7 +23,7 @@ export default function Home() {
           <div className="text-[--colors-failure] p-4">
             <div className="flex flex-nowrap justify-between">
               <CoinCurrency />
-              <CountDown min={5} title="5m" onAction={{ setIsShowDrawer }} />
+              <CountDown title="5m" onAction={{ setIsShowDrawer }} />
             </div>
           </div>
           <Card />

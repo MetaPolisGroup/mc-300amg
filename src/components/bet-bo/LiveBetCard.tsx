@@ -1,13 +1,54 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Icons } from "../Icons";
 import { isEmpty } from "lodash";
+import getDataFileredByOnSnapshot from "@/helpers/getDataByOnSnapshot";
+import { DocumentData } from "firebase/firestore";
+import { ethers } from "ethers";
+import { useAccount } from "wagmi";
 
 interface ILiveBetCardProps {
-  currentRound: string;
+  liveRound: string;
+  nextBetData: DocumentData;
 }
 
-const LiveBetCard: React.FC<ILiveBetCardProps> = ({ currentRound }) => {
-  const dataBetted: any = null;
+const LiveBetCard: React.FC<ILiveBetCardProps> = ({
+  liveRound,
+  nextBetData,
+}) => {
+  const { address } = useAccount();
+  const [liveBetData, setLiveBetData] = useState<DocumentData[]>();
+  const [liveBettedData, setLiveBettedData] = useState<DocumentData[]>();
+  const [progressing, setProgressing] = useState<number>(0);
+  useEffect(() => {
+    getDataFileredByOnSnapshot(
+      "predictions",
+      [["epoch", "==", liveRound]],
+      (docs: DocumentData) => {
+        setLiveBetData(docs as DocumentData[]);
+      }
+    );
+    getDataFileredByOnSnapshot(
+      "bets",
+      [
+        ["user_address", "==", address as `0x${string}`],
+        ["epoch", "==", liveRound],
+      ],
+      (docs: DocumentData) => {
+        setLiveBettedData(docs as DocumentData[]);
+      }
+    );
+  }, [liveRound, address]);
+
+  useEffect(() => {
+    const target = +nextBetData?.lockTimestamp * 1000;
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const different = target - now;
+      setProgressing(Math.floor(different / 1000));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [nextBetData?.lockTimestamp]);
+
   return (
     <div
       className={`w-full flex justify-center items-center relative transition-transform duration-700 preverve-3d`}
@@ -18,17 +59,17 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({ currentRound }) => {
             <Icons.PlayCircle className="text-[--colors-secondary]" />
             <span className="text-[--colors-secondary]">Live</span>
           </div>
-          <div className="text-[--colors-secondary]">#{currentRound}</div>
+          <div className="text-[--colors-secondary]">#{liveRound}</div>
         </div>
         <div className="w-full bg-[--colors-input] h-2.5 ">
           <div
             className="bg-[--colors-secondary] h-2.5"
-            style={{ width: "45%" }}
+            style={{ width: `${(progressing * 100) / 300}%` }}
           />
         </div>
         <div className="card-body p-4">
-          {!isEmpty(dataBetted) &&
-            (dataBetted?.status === "UP" ? (
+          {!isEmpty(liveBettedData) &&
+            (liveBettedData?.[0]?.position === "UP" ? (
               <div className="absolute flex gap-2 z-20 border-2 rounded-2xl border-[--colors-secondary] px-2 py-[2px] ">
                 <Icons.CheckCircle className="text-[--colors-text]" />
                 <span className="text-[--colors-secondary]">ENTERED</span>
@@ -44,7 +85,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({ currentRound }) => {
                   UP
                 </div>
                 <div className="text-[--colors-white] font-semibold text-sm">
-                  1.41x Payout
+                  1 Payout
                 </div>
               </div>
             </div>
@@ -71,11 +112,21 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({ currentRound }) => {
               </div>
               <div className="flex items-center justify-between text-[--colors-text]">
                 <span className="font-medium text-sm">Locked Price:</span>
-                <span className="font-medium text-sm">$0.00005</span>
+                <span className="font-medium text-sm">
+                  ${" "}
+                  {liveBetData?.[0]?.lockPrice
+                    ? ethers.formatEther(liveBetData?.[0].lockPrice)
+                    : 0}
+                </span>
               </div>
               <div className="flex items-center justify-between text-[--colors-text] font-semibold text-base">
                 <span>Prize Pool:</span>
-                <span>0.00005 BNB</span>
+                <span>
+                  {liveBetData?.[0]?.totalAmount
+                    ? ethers.formatEther(liveBetData?.[0]?.totalAmount)
+                    : 0}{" "}
+                  BNB
+                </span>
               </div>
             </div>
           </div>
@@ -84,7 +135,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({ currentRound }) => {
               <Icons.PayoutDown />
               <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                 <div className="text-[--colors-textSubtle] font-semibold text-sm">
-                  1.41x Payout
+                  1 Payout
                 </div>
                 <div className="text-[--colors-failure] font-semibold uppercase text-xl">
                   DOWN
@@ -92,8 +143,8 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({ currentRound }) => {
               </div>
             </div>
           </div>
-          {!isEmpty(dataBetted) &&
-            (dataBetted?.status === "DOWN" ? (
+          {!isEmpty(liveBettedData) &&
+            (liveBettedData?.[0]?.position === "DOWN" ? (
               <div className="absolute right-0 bottom-2 flex gap-2 z-20 border-2 rounded-2xl border-[--colors-secondary] px-2 py-[2px] ">
                 <Icons.CheckCircle className="text-[--colors-text]" />
                 <span className="text-[--colors-secondary]">ENTERED</span>

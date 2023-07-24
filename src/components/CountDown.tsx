@@ -4,18 +4,21 @@ import clsx from "clsx";
 import { Icons } from "./Icons";
 import Button from "./ui/Button";
 import { useRouter } from "next/navigation";
+import getDataFileredByOnSnapshot from "@/helpers/getDataByOnSnapshot";
+import { DocumentData } from "firebase/firestore";
 
 interface ICountDown {
   title: string;
-  min: number;
   onAction?: {
     setIsShowDrawer?: (value: boolean) => void;
   };
 }
 
-const CountDown: React.FC<ICountDown> = ({ title, min, onAction }) => {
-  const [minute, setMinute] = useState<number>(min);
+const CountDown: React.FC<ICountDown> = ({ title, onAction }) => {
+  const [minute, setMinute] = useState<number>(0);
   const [second, setSecond] = useState<number>(0);
+  const [nextBetData, setNextBetData] = useState<DocumentData[]>([]);
+
   const router = useRouter();
 
   const LIST_BTN_FEATURE = [
@@ -45,30 +48,35 @@ const CountDown: React.FC<ICountDown> = ({ title, min, onAction }) => {
   ];
 
   useEffect(() => {
-    let countDown = setTimeout(() => {
-      if (minute === 0 && second === 0) {
-        setMinute(min - 1);
-        return setSecond(59);
+    getDataFileredByOnSnapshot(
+      "predictions",
+      [["locked", "==", false]],
+      (docs: DocumentData) => {
+        setNextBetData(docs as DocumentData[]);
       }
+    );
+  }, []);
 
-      if (second === 0) {
-        setMinute(minute - 1);
-        return setSecond(59);
-      }
-
-      return setSecond(second - 1);
+  useEffect(() => {
+    const target = +nextBetData?.[0]?.lockTimestamp * 1000;
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const different = target - now;
+      const m = Math.floor((different % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((different % (1000 * 60)) / 1000);
+      setMinute(m);
+      setSecond(s);
     }, 1000);
 
-    return () => {
-      clearTimeout(countDown);
-    };
-  }, [minute, second, min]);
+    return () => clearInterval(interval);
+  }, [nextBetData]);
 
   const renderTime = () => {
+    const _minute = minute < 10 ? `0${minute}` : minute;
     const _second = second < 10 ? `0${second}` : second;
     return (
       <>
-        {minute}:{_second}
+        {+_minute >= 0 && +_second >= 0 ? `${_minute}:${_second}` : "Closing"}
       </>
     );
   };

@@ -54,42 +54,42 @@ const Header = () => {
   const toggleSwitch = () => {
     setIsOn((prev) => !prev);
   };
-  const callRound = async () => {
-    const gasPrice = await publicClient.getGasPrice();
-    const gas = await publicClient.estimateContractGas({
-      type: "eip1559",
-      address: CONSTANTS.ADDRESS.PREDICTION,
-      abi: CONSTANTS.ABI.PREDICTION,
-      functionName: "executeRound",
-      args: ["11", "100000"],
-      account: privateKey(
-        "0x7476c8c08f10b30ac5aead18e090ff99549c4f28d1b90efde543eb1158e41493"
-      ),
-    });
-    const { request } = await publicClient.simulateContract({
-      account: privateKey(
-        "0x7476c8c08f10b30ac5aead18e090ff99549c4f28d1b90efde543eb1158e41493"
-      ),
+  // const callRound = async () => {
+  //   const gasPrice = await publicClient.getGasPrice();
+  //   const gas = await publicClient.estimateContractGas({
+  //     type: "eip1559",
+  //     address: CONSTANTS.ADDRESS.PREDICTION,
+  //     abi: CONSTANTS.ABI.PREDICTION,
+  //     functionName: "executeRound",
+  //     args: ["11", "100000"],
+  //     account: privateKey(
+  //       "0x7476c8c08f10b30ac5aead18e090ff99549c4f28d1b90efde543eb1158e41493"
+  //     ),
+  //   });
+  //   const { request } = await publicClient.simulateContract({
+  //     account: privateKey(
+  //       "0x7476c8c08f10b30ac5aead18e090ff99549c4f28d1b90efde543eb1158e41493"
+  //     ),
 
-      address: CONSTANTS.ADDRESS.PREDICTION,
-      abi: CONSTANTS.ABI.PREDICTION,
-      functionName: "executeRound",
-      args: ["11", "100000"],
-      gas,
-      type: "eip1559",
-      maxFeePerGas: gasPrice,
-      maxPriorityFeePerGas: gasPrice,
-    });
-    const hash = await walletClient.writeContract(request);
-    if (hash) {
-      const transaction = await publicClient.waitForTransactionReceipt({
-        hash,
-      });
-      if (transaction?.status === "success") {
-        console.log("success");
-      }
-    }
-  };
+  //     address: CONSTANTS.ADDRESS.PREDICTION,
+  //     abi: CONSTANTS.ABI.PREDICTION,
+  //     functionName: "executeRound",
+  //     args: ["11", "100000"],
+  //     gas,
+  //     type: "eip1559",
+  //     maxFeePerGas: gasPrice,
+  //     maxPriorityFeePerGas: gasPrice,
+  //   });
+  //   const hash = await walletClient.writeContract(request);
+  //   if (hash) {
+  //     const transaction = await publicClient.waitForTransactionReceipt({
+  //       hash,
+  //     });
+  //     if (transaction?.status === "success") {
+  //       console.log("success");
+  //     }
+  //   }
+  // };
 
   const renderNavSubItem = (
     listSubItem: {
@@ -155,7 +155,7 @@ const Header = () => {
           </div>
           <div className="navbar-end gap-2 p-2 !w-[25%]">
             <ChangeMode HWrapper="30px" WWrapper="70px" H="20px" W="20px" />
-            <Button onClick={callRound}>Call Round</Button>
+            {/* <Button onClick={callRound}>Call Round</Button> */}
             <Popup
               ref={settingPopup}
               footer={false}
