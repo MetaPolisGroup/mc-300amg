@@ -20,7 +20,7 @@ import getDataFileredByOnSnapshot from "@/helpers/getDataByOnSnapshot";
 import { useAccount } from "wagmi";
 
 const Card = () => {
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const [currentRound, setCurrentRound] = useState<string>("");
   const [winningRound, setWinningRound] = useState<string>("");
   const [nextBetData, setNextBetData] = useState<DocumentData[]>([]);
@@ -40,14 +40,16 @@ const Card = () => {
       undefined,
       undefined
     );
-    getDataFileredByOnSnapshot(
-      "bets",
-      [["user_address", "==", address as `0x${string}`]],
-      (docs: DocumentData) => {
-        setDatasBetted(docs as DocumentData[]);
-      }
-    );
-  }, [address]);
+    if (isConnected) {
+      getDataFileredByOnSnapshot(
+        "bets",
+        [["user_address", "==", address as `0x${string}`]],
+        (docs: DocumentData) => {
+          setDatasBetted(docs as DocumentData[]);
+        }
+      );
+    }
+  }, [address, isConnected]);
 
   const dataBettedInCurrentRound = datasBetted.find(
     (dataBetted: DocumentData) => dataBetted.epoch === currentRound
