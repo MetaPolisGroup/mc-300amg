@@ -5,6 +5,7 @@ import getDataFileredByOnSnapshot from "@/helpers/getDataByOnSnapshot";
 import { DocumentData } from "firebase/firestore";
 import { ethers } from "ethers";
 import { useAccount } from "wagmi";
+import AnimatedNumber from "../AnimatedNumber";
 
 interface ILiveBetCardProps {
   liveRound: string;
@@ -99,9 +100,10 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
               </div>
               <div className="flex justify-between items-center">
                 <div
-                  className={`text-[--colors-success] font-semibold text-2xl min-h-[36px]`}
+                  className={`flex items-center gap-1 text-[--colors-success] font-semibold text-2xl min-h-[36px]`}
                 >
-                  $257.5794
+                  <span>$</span>
+                  <AnimatedNumber startNumber={227.5794} endNumber={222.3323} />
                 </div>
                 <div
                   className={`flex gap-1 justify-center items-center bg-[--colors-success] py-1 px-2 rounded`}
