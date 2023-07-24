@@ -1,22 +1,19 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Icons } from "../Icons";
-import { formatInputField } from "@/utils/format-inputField";
-import { nanoid } from "nanoid";
 import { isEmpty } from "lodash";
-import { publicClient } from "@/lib/contract-config";
-import { CONSTANTS } from "@/constants";
 import Button from "../ui/Button";
-import Input from "../ui/Input";
 import SetBetPosition from "./SetBetPosition";
-import Tooltip from "../ui/Tooltip";
 import TooltipElement from "../ui/Tooltip";
+import { DocumentData } from "firebase/firestore";
+import dayjs from "dayjs";
 
 interface IBetCard {
   currentRound: string;
+  nextBetData: DocumentData;
 }
 
-const BetCard: React.FC<IBetCard> = ({ currentRound }) => {
+const BetCard: React.FC<IBetCard> = ({ currentRound, nextBetData }) => {
   const [showSetBetCard, setShowSetBetCard] = useState<boolean>(false);
   const [upOrDownStatus, setUpOrDownStatus] = useState<string>("");
   const [dataBetted, setDataBetted] = useState<IBetData | null>(null);
@@ -43,6 +40,10 @@ const BetCard: React.FC<IBetCard> = ({ currentRound }) => {
     });
     if (!isEmpty(id)) setShowSetBetCard(false);
   };
+  console.log({ nextBetData });
+
+  const lockTime = dayjs(nextBetData?.lockTimestamp).format("HH:mm:ss");
+  console.log(lockTime);
 
   return (
     <div
@@ -78,7 +79,7 @@ const BetCard: React.FC<IBetCard> = ({ currentRound }) => {
                   UP
                 </div>
                 <div className="text-[--colors-textSubtle] font-semibold text-sm">
-                  1.41x Payout
+                  1 Payout
                 </div>
               </div>
             </div>
@@ -112,7 +113,7 @@ const BetCard: React.FC<IBetCard> = ({ currentRound }) => {
 
               <div className="flex items-center justify-between text-[--colors-text] font-semibold text-base">
                 <span>Prize Pool:</span>
-                <span>0.00005 BNB</span>
+                <span>{nextBetData?.totalAmount} BNB</span>
               </div>
               {isEmpty(dataBetted) ? (
                 <>
@@ -120,6 +121,7 @@ const BetCard: React.FC<IBetCard> = ({ currentRound }) => {
                     className="bg-[--colors-success] text-[--colors-white] hover:bg-[--colors-success] hover:opacity-[0.8] rounded-2xl"
                     type="button"
                     onClick={() => enterUpOrDownHandler("UP")}
+                    disabled={nextBetData?.locked}
                   >
                     Enter UP
                   </Button>
@@ -127,6 +129,7 @@ const BetCard: React.FC<IBetCard> = ({ currentRound }) => {
                     className="bg-[--colors-failure] text-[--colors-white] hover:bg-[--colors-failure] hover:opacity-[0.8] rounded-2xl"
                     type="button"
                     onClick={() => enterUpOrDownHandler("DOWN")}
+                    disabled={nextBetData?.locked}
                   >
                     Enter DOWN
                   </Button>
@@ -139,7 +142,7 @@ const BetCard: React.FC<IBetCard> = ({ currentRound }) => {
               <Icons.PayoutDown />
               <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                 <div className="text-[--colors-textSubtle] font-semibold text-sm">
-                  1.41x Payout
+                  1 Payout
                 </div>
                 <div className="text-[--colors-failure] font-semibold uppercase text-xl">
                   DOWN

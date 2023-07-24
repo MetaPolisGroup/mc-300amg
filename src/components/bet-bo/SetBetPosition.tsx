@@ -55,7 +55,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
     formatUnits: "ether",
   });
 
-  const { data: getRoundData, isError: isErrorRound } = useContractRead({
+  const { data: getRoundData } = useContractRead({
     address: CONSTANTS.ADDRESS.PREDICTION,
     abi: CONSTANTS.ABI.PREDICTION,
     functionName: "currentEpoch",
@@ -66,7 +66,9 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   }, []);
 
   const balance =
-    isClient && isConnected ? ethers.formatEther(data?.value!) : 0;
+    isClient && isConnected && data?.value
+      ? ethers.formatEther(data?.value!)
+      : 0;
 
   const changeUpOrDownHandler = (status: string) => {
     if (onEnterUpOrDown) return onEnterUpOrDown(status);

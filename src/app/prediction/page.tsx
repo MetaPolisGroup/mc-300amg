@@ -2,7 +2,7 @@
 import CoinCurrency from "@/components/CoinCurrency";
 import CountDown from "@/components/CountDown";
 import SubNav from "@/components/SubNav";
-import Card from "@/components/bet/Card";
+import Card from "@/components/bet-bo/Card";
 import DrawerHistory from "@/components/drawer-history/DrawerHistory";
 import clsx from "clsx";
 import React, { useState } from "react";
