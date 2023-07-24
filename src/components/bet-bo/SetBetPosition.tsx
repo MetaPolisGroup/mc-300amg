@@ -19,11 +19,8 @@ interface ISetBetPositionProps {
   upOrDownStatus?: string;
   onEnterUpOrDown?: (status: string) => void;
   onBackward?: (status: boolean) => void;
-  onPlaceBet?: (
-    id: string,
-    status: Pick<IBetData, "status"> | undefined | string,
-    value: string
-  ) => void;
+  currentRound: string;
+  onPlacedBet?: (status: boolean) => void;
 }
 
 const isBrowser = () => typeof window !== "undefined";
@@ -33,7 +30,8 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   upOrDownStatus,
   onEnterUpOrDown,
   onBackward,
-  onPlaceBet,
+  currentRound,
+  onPlacedBet,
 }) => {
   const { isConnected, address } = useAccount();
   let walletClient: any = null;
@@ -53,12 +51,6 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   const { data } = useBalance({
     address: address,
     formatUnits: "ether",
-  });
-
-  const { data: getRoundData } = useContractRead({
-    address: CONSTANTS.ADDRESS.PREDICTION,
-    abi: CONSTANTS.ABI.PREDICTION,
-    functionName: "currentEpoch",
   });
 
   useEffect(() => {
@@ -134,223 +126,244 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
     setIsLoading(true);
     try {
       // betBull is Bet up
-      const currentRound = getRoundData?.toString();
-      console.log(currentRound);
-      if (currentRound) {
-        if (upOrDownStatus === "UP") {
-          const { request } = await publicClient.simulateContract({
-            account: address,
-            address: CONSTANTS.ADDRESS.PREDICTION,
-            abi: CONSTANTS.ABI.PREDICTION,
-            functionName: "betBull",
-            args: [currentRound],
-            value: ethers.parseUnits(amount, "ether"),
-          });
-          if (request) {
-            const hash = await walletClient.writeContract(request);
-            if (hash) {
-              const transaction = await publicClient.waitForTransactionReceipt({
-                hash,
-              });
-              console.log({ transaction });
-              if (transaction?.status === "success") {
-                setIsLoading(false);
-                toast.custom((t) => (
-                  <div
-                    className={`${
-                      t.visible ? "animate-enter" : "animate-leave"
-                    } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-                  >
-                    <div className="flex bg-[--colors-success] p-4 rounded-l-lg">
-                      <Icons.CheckCircle className="text-[--colors-white]" />
-                    </div>
-                    <div className="flex-1 w-0 p-2">
-                      <div className="flex items-start">
-                        <div className="flex-shrink-0 pt-0.5"></div>
-                        <div className="ml-3 flex-1">
-                          <p className="text-sm font-medium text-[--colors-text]">
-                            Success!
-                          </p>
-                          <p className="mt-1 text-sm text-[--colors-text]">
-                            {upOrDownStatus} position entered
-                          </p>
-                          <a
-                            href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
-                            className="mt-1 text-sm text-[--colors-primary]"
-                            target="_blank"
-                          >
-                            View on BscScan:{" "}
-                            {getEllipsisTxt(transaction.transactionHash)}
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <button
-                        onClick={() => toast.dismiss(t.id)}
-                        className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
-                      >
-                        <Icons.X className="text-[--colors-primary]" />
-                      </button>
-                    </div>
-                  </div>
-                ));
 
-                if (onPlaceBet)
-                  onPlaceBet(currentRound, upOrDownStatus, amount);
-              }
-              if (transaction?.status === "reverted") {
-                setIsLoading(false);
-                toast.custom((t) => (
-                  <div
-                    className={`${
-                      t.visible ? "animate-enter" : "animate-leave"
-                    } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-                  >
-                    <div className="flex bg-[--colors-failure] p-4 rounded-l-lg">
-                      <Icons.XCircle className="text-[--colors-white]" />
-                    </div>
-                    <div className="flex-1 w-0 p-2">
-                      <div className="flex items-start">
-                        <div className="flex-shrink-0 pt-0.5"></div>
-                        <div className="ml-3 flex-1">
-                          <p className="text-sm font-medium text-[--colors-text]">
-                            Error!
-                          </p>
-                          <p className="mt-1 text-sm text-[--colors-text]">
-                            {upOrDownStatus} position entered
-                          </p>
-                          <a
-                            href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
-                            className="mt-1 text-sm text-[--colors-failure]"
-                            target="_blank"
+      console.log({ currentRound });
+      const { request: reqToken } = await publicClient.simulateContract({
+        account: address,
+        address: CONSTANTS.ADDRESS.TOKEN,
+        abi: CONSTANTS.ABI.TOKEN,
+        functionName: "approve",
+        args: [
+          CONSTANTS.ADDRESS.PREDICTION,
+          ethers.parseUnits(amount, "ether"),
+        ],
+      });
+      if (reqToken) {
+        const hash = await walletClient.writeContract(reqToken);
+        if (hash) {
+          const transactionToken = await publicClient.waitForTransactionReceipt(
+            {
+              hash,
+            }
+          );
+          console.log({ transactionToken });
+          if (transactionToken?.status === "success") {
+            if (upOrDownStatus === "UP") {
+              const { request } = await publicClient.simulateContract({
+                account: address,
+                address: CONSTANTS.ADDRESS.PREDICTION,
+                abi: CONSTANTS.ABI.PREDICTION,
+                functionName: "betBull",
+                args: [currentRound, ethers.parseUnits(amount, "ether")],
+              });
+              if (request) {
+                const hash = await walletClient.writeContract(request);
+                if (hash) {
+                  const transaction =
+                    await publicClient.waitForTransactionReceipt({
+                      hash,
+                    });
+                  console.log({ transaction });
+                  if (transaction?.status === "success") {
+                    setIsLoading(false);
+                    toast.custom((t) => (
+                      <div
+                        className={`${
+                          t.visible ? "animate-enter" : "animate-leave"
+                        } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+                      >
+                        <div className="flex bg-[--colors-success] p-4 rounded-l-lg">
+                          <Icons.CheckCircle className="text-[--colors-white]" />
+                        </div>
+                        <div className="flex-1 w-0 p-2">
+                          <div className="flex items-start">
+                            <div className="flex-shrink-0 pt-0.5"></div>
+                            <div className="ml-3 flex-1">
+                              <p className="text-sm font-medium text-[--colors-text]">
+                                Success!
+                              </p>
+                              <p className="mt-1 text-sm text-[--colors-text]">
+                                {upOrDownStatus} position entered
+                              </p>
+                              <a
+                                href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
+                                className="mt-1 text-sm text-[--colors-primary]"
+                                target="_blank"
+                              >
+                                View on BscScan:{" "}
+                                {getEllipsisTxt(transaction.transactionHash)}
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex">
+                          <button
+                            onClick={() => toast.dismiss(t.id)}
+                            className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
                           >
-                            View on BscScan:{" "}
-                            {getEllipsisTxt(transaction.transactionHash)}
-                          </a>
+                            <Icons.X className="text-[--colors-primary]" />
+                          </button>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex">
-                      <button
-                        onClick={() => toast.dismiss(t.id)}
-                        className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
+                    ));
+                    if (onPlacedBet) onPlacedBet(false);
+                  }
+                  if (transaction?.status === "reverted") {
+                    setIsLoading(false);
+                    toast.custom((t) => (
+                      <div
+                        className={`${
+                          t.visible ? "animate-enter" : "animate-leave"
+                        } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
                       >
-                        <Icons.X className="text-[--colors-primary]" />
-                      </button>
-                    </div>
-                  </div>
-                ));
+                        <div className="flex bg-[--colors-failure] p-4 rounded-l-lg">
+                          <Icons.XCircle className="text-[--colors-white]" />
+                        </div>
+                        <div className="flex-1 w-0 p-2">
+                          <div className="flex items-start">
+                            <div className="flex-shrink-0 pt-0.5"></div>
+                            <div className="ml-3 flex-1">
+                              <p className="text-sm font-medium text-[--colors-text]">
+                                Error!
+                              </p>
+                              <p className="mt-1 text-sm text-[--colors-text]">
+                                {upOrDownStatus} position entered
+                              </p>
+                              <a
+                                href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
+                                className="mt-1 text-sm text-[--colors-failure]"
+                                target="_blank"
+                              >
+                                View on BscScan:{" "}
+                                {getEllipsisTxt(transaction.transactionHash)}
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex">
+                          <button
+                            onClick={() => toast.dismiss(t.id)}
+                            className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
+                          >
+                            <Icons.X className="text-[--colors-primary]" />
+                          </button>
+                        </div>
+                      </div>
+                    ));
+                  }
+                }
+              }
+            }
+            if (upOrDownStatus === "DOWN") {
+              const { request } = await publicClient.simulateContract({
+                account: address,
+                address: CONSTANTS.ADDRESS.PREDICTION,
+                abi: CONSTANTS.ABI.PREDICTION,
+                functionName: "betBear",
+                args: [currentRound, ethers.parseUnits(amount, "ether")],
+              });
+              if (request) {
+                const hash = await walletClient.writeContract(request);
+
+                if (hash) {
+                  const transaction =
+                    await publicClient.waitForTransactionReceipt({
+                      hash,
+                    });
+                  console.log({ transaction });
+                  if (transaction?.status === "success") {
+                    setIsLoading(false);
+                    toast.custom((t) => (
+                      <div
+                        className={`${
+                          t.visible ? "animate-enter" : "animate-leave"
+                        } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+                      >
+                        <div className="flex bg-[--colors-success] p-4 rounded-l-lg">
+                          <Icons.CheckCircle className="text-[--colors-white]" />
+                        </div>
+                        <div className="flex-1 w-0 p-2">
+                          <div className="flex items-start">
+                            <div className="flex-shrink-0 pt-0.5"></div>
+                            <div className="ml-3 flex-1">
+                              <p className="text-sm font-medium text-[--colors-text]">
+                                Success!
+                              </p>
+                              <p className="mt-1 text-sm text-[--colors-text]">
+                                {upOrDownStatus} position entered
+                              </p>
+                              <a
+                                href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
+                                className="mt-1 text-sm text-[--colors-primary]"
+                                target="_blank"
+                              >
+                                View on BscScan:{" "}
+                                {getEllipsisTxt(transaction.transactionHash)}
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex">
+                          <button
+                            onClick={() => toast.dismiss(t.id)}
+                            className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
+                          >
+                            <Icons.X className="text-[--colors-primary]" />
+                          </button>
+                        </div>
+                      </div>
+                    ));
+                    if (onPlacedBet) onPlacedBet(false);
+                  }
+                  if (transaction?.status === "reverted") {
+                    setIsLoading(false);
+                    toast.custom((t) => (
+                      <div
+                        className={`${
+                          t.visible ? "animate-enter" : "animate-leave"
+                        } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+                      >
+                        <div className="flex bg-[--colors-failure] p-4 rounded-l-lg">
+                          <Icons.XCircle className="text-[--colors-white]" />
+                        </div>
+                        <div className="flex-1 w-0 p-2">
+                          <div className="flex items-start">
+                            <div className="flex-shrink-0 pt-0.5"></div>
+                            <div className="ml-3 flex-1">
+                              <p className="text-sm font-medium text-[--colors-text]">
+                                Error!
+                              </p>
+                              <p className="mt-1 text-sm text-[--colors-text]">
+                                {upOrDownStatus} position entered
+                              </p>
+                              <a
+                                href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
+                                className="mt-1 text-sm text-[--colors-failure]"
+                                target="_blank"
+                              >
+                                View on BscScan:{" "}
+                                {getEllipsisTxt(transaction.transactionHash)}
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex">
+                          <button
+                            onClick={() => toast.dismiss(t.id)}
+                            className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
+                          >
+                            <Icons.X className="text-[--colors-primary]" />
+                          </button>
+                        </div>
+                      </div>
+                    ));
+                  }
+                }
               }
             }
           }
-        }
-        if (upOrDownStatus === "DOWN") {
-          const { request } = await publicClient.simulateContract({
-            account: address,
-            address: CONSTANTS.ADDRESS.PREDICTION,
-            abi: CONSTANTS.ABI.PREDICTION,
-            functionName: "betBear",
-            args: [currentRound],
-            value: ethers.parseUnits(amount, "ether"),
-          });
-          if (request) {
-            const hash = await walletClient.writeContract(request);
-
-            if (hash) {
-              const transaction = await publicClient.waitForTransactionReceipt({
-                hash,
-              });
-              console.log({ transaction });
-              if (transaction?.status === "success") {
-                setIsLoading(false);
-                toast.custom((t) => (
-                  <div
-                    className={`${
-                      t.visible ? "animate-enter" : "animate-leave"
-                    } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-                  >
-                    <div className="flex bg-[--colors-success] p-4 rounded-l-lg">
-                      <Icons.CheckCircle className="text-[--colors-white]" />
-                    </div>
-                    <div className="flex-1 w-0 p-2">
-                      <div className="flex items-start">
-                        <div className="flex-shrink-0 pt-0.5"></div>
-                        <div className="ml-3 flex-1">
-                          <p className="text-sm font-medium text-[--colors-text]">
-                            Success!
-                          </p>
-                          <p className="mt-1 text-sm text-[--colors-text]">
-                            {upOrDownStatus} position entered
-                          </p>
-                          <a
-                            href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
-                            className="mt-1 text-sm text-[--colors-primary]"
-                            target="_blank"
-                          >
-                            View on BscScan:{" "}
-                            {getEllipsisTxt(transaction.transactionHash)}
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <button
-                        onClick={() => toast.dismiss(t.id)}
-                        className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
-                      >
-                        <Icons.X className="text-[--colors-primary]" />
-                      </button>
-                    </div>
-                  </div>
-                ));
-                if (onPlaceBet)
-                  onPlaceBet(currentRound, upOrDownStatus, amount);
-              }
-              if (transaction?.status === "reverted") {
-                setIsLoading(false);
-                toast.custom((t) => (
-                  <div
-                    className={`${
-                      t.visible ? "animate-enter" : "animate-leave"
-                    } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-                  >
-                    <div className="flex bg-[--colors-failure] p-4 rounded-l-lg">
-                      <Icons.XCircle className="text-[--colors-white]" />
-                    </div>
-                    <div className="flex-1 w-0 p-2">
-                      <div className="flex items-start">
-                        <div className="flex-shrink-0 pt-0.5"></div>
-                        <div className="ml-3 flex-1">
-                          <p className="text-sm font-medium text-[--colors-text]">
-                            Error!
-                          </p>
-                          <p className="mt-1 text-sm text-[--colors-text]">
-                            {upOrDownStatus} position entered
-                          </p>
-                          <a
-                            href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
-                            className="mt-1 text-sm text-[--colors-failure]"
-                            target="_blank"
-                          >
-                            View on BscScan:{" "}
-                            {getEllipsisTxt(transaction.transactionHash)}
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <button
-                        onClick={() => toast.dismiss(t.id)}
-                        className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
-                      >
-                        <Icons.X className="text-[--colors-primary]" />
-                      </button>
-                    </div>
-                  </div>
-                ));
-              }
-            }
+          if (transactionToken?.status === "reverted") {
+            console.log("failed");
           }
         }
       }
