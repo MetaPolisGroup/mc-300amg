@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Icons } from "../Icons";
 import { useAccount } from "wagmi";
-import getDataFileredByOnSnapshot from "@/helpers/getDataByOnSnapshot";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { DocumentData } from "firebase/firestore";
 import { isEmpty } from "lodash";
 import { ethers } from "ethers";

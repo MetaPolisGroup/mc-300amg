@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { Icons } from "./Icons";
 import Button from "./ui/Button";
 import { useRouter } from "next/navigation";
-import getDataFileredByOnSnapshot from "@/helpers/getDataByOnSnapshot";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { DocumentData } from "firebase/firestore";
 
 interface ICountDown {

@@ -16,7 +16,7 @@ import Popup, { PopupRef } from "../ui/Modal";
 import { Icons } from "../Icons";
 import { DocumentData } from "firebase/firestore";
 import Button from "../ui/Button";
-import getDataFileredByOnSnapshot from "@/helpers/getDataByOnSnapshot";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { useAccount } from "wagmi";
 import ClaimModal from "./ClaimModal";
 

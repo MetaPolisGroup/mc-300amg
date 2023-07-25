@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Icons } from "../Icons";
 import { isEmpty } from "lodash";
-import getDataFileredByOnSnapshot from "@/helpers/getDataByOnSnapshot";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { DocumentData } from "firebase/firestore";
 import { ethers } from "ethers";
 import { useAccount } from "wagmi";
 import AnimatedNumber from "../AnimatedNumber";
 import CalculatingCard from "./CalculatingCard";
+import getAllData from "@/helpers/getAllDataByOnSnapshot";
 
 interface ILiveBetCardProps {
   liveRound: string;
@@ -20,7 +21,9 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
   const { address, isConnected } = useAccount();
   const [liveBetData, setLiveBetData] = useState<DocumentData[]>();
   const [liveBettedData, setLiveBettedData] = useState<DocumentData[]>();
+  const [chainlinkData, setChainlinkData] = useState<DocumentData[]>();
   const [progressing, setProgressing] = useState<number>(0);
+
   useEffect(() => {
     getDataFileredByOnSnapshot(
       "predictions",
@@ -41,6 +44,9 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
         }
       );
     }
+    getAllData("chainlink", (docs: DocumentData) => {
+      setChainlinkData(docs as DocumentData[]);
+    });
   }, [liveRound, address, isConnected]);
 
   useEffect(() => {
@@ -52,6 +58,9 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
     }, 1000);
     return () => clearInterval(interval);
   }, [nextBetData?.lockTimestamp]);
+
+  const ratePrice =
+    (chainlinkData?.[0]?.price - liveBetData?.[0]?.lockPrice) / 10 ** 8;
 
   return (
     <div
@@ -81,43 +90,78 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                 </div>
               ) : null)}
             <div className="relative -mb-[0.55rem]">
-              <div className="h-16 mx-auto w-60">
-                <Icons.PayoutUpSuccess />
-                <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
-                  <div
-                    className={`text-[--colors-white] font-semibold uppercase text-xl`}
-                  >
-                    UP
-                  </div>
-                  <div className="text-[--colors-white] font-semibold text-sm">
-                    1 Payout
+              {ratePrice > 0 ? (
+                <div className="h-16 mx-auto w-60">
+                  <Icons.PayoutUpSuccess />
+                  <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
+                    <div
+                      className={`text-[--colors-white] font-semibold uppercase text-xl`}
+                    >
+                      UP
+                    </div>
+                    <div className="text-[--colors-white] font-semibold text-sm">
+                      1 Payout
+                    </div>
                   </div>
                 </div>
-              </div>
+              ) : (
+                <div className="h-16 mx-auto w-60">
+                  <Icons.PayoutUp />
+                  <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
+                    <div
+                      className={`text-[--colors-success] font-semibold uppercase text-xl`}
+                    >
+                      UP
+                    </div>
+                    <div className="text-[--colors-textSubtle] font-semibold text-sm">
+                      1 Payout
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-            <div className="rounded-2xl bg-gradient-to-r from-[--colors-success] to-[--colors-success] p-[2px]">
+            <div
+              className={`rounded-2xl bg-gradient-to-r from-[${
+                ratePrice > 0 ? "--colors-success" : "--colors-failure"
+              }] to-[${
+                ratePrice > 0 ? "--colors-success" : "--colors-failure"
+              }] p-[2px]`}
+            >
               <div className="bg-[--colors-backgroundAlt] rounded-xl p-4 flex flex-col gap-1">
                 <div className="text-[--colors-textSubtle] font-semibold text-xs uppercase mb-2">
                   Last Price
                 </div>
                 <div className="flex justify-between items-center">
                   <div
-                    className={`flex items-center text-[--colors-success] font-semibold text-2xl min-h-[36px]`}
+                    className={`flex items-center text-[${
+                      ratePrice > 0 ? "--colors-success" : "--colors-failure"
+                    }] font-semibold text-2xl min-h-[36px]`}
                   >
                     <span>$</span>
                     <AnimatedNumber
-                      startNumber={227.5794}
-                      endNumber={222.3323}
+                      startNumber={liveBetData?.[0]?.lockPrice / 10 ** 8}
+                      endNumber={chainlinkData?.[0]?.price / 10 ** 8}
                     />
                   </div>
-                  <div
-                    className={`flex gap-1 justify-center items-center bg-[--colors-success] py-1 px-2 rounded`}
-                  >
-                    <Icons.ArrowDown className="text-[--colors-white] rotate-180" />
-                    <span className="text-[--colors-white] font-medium text-base uppercase ml-1">
-                      $0.1508
-                    </span>
-                  </div>
+                  {ratePrice > 0 ? (
+                    <div
+                      className={`flex gap-1 justify-center items-center bg-[--colors-success] py-1 px-2 rounded`}
+                    >
+                      <Icons.ArrowDown className="text-[--colors-white] rotate-180" />
+                      <span className="text-[--colors-white] font-medium text-base uppercase ml-1">
+                        ${ratePrice.toFixed(4)}
+                      </span>
+                    </div>
+                  ) : (
+                    <div
+                      className={`flex gap-1 justify-center items-center bg-[--colors-failure] py-1 px-2 rounded`}
+                    >
+                      <Icons.ArrowDown className="text-[--colors-white]" />
+                      <span className="text-[--colors-white] font-medium text-base uppercase ml-1">
+                        ${ratePrice.toFixed(4)}
+                      </span>
+                    </div>
+                  )}
                 </div>
                 <div className="flex items-center justify-between text-[--colors-text]">
                   <span className="font-medium text-sm">Locked Price:</span>
@@ -144,17 +188,31 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
               </div>
             </div>
             <div className="relative -mt-[0.55rem]">
-              <div className="h-16 mx-auto w-60">
-                <Icons.PayoutDown />
-                <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
-                  <div className="text-[--colors-textSubtle] font-semibold text-sm">
-                    1 Payout
-                  </div>
-                  <div className="text-[--colors-failure] font-semibold uppercase text-xl">
-                    DOWN
+              {ratePrice > 0 ? (
+                <div className="h-16 mx-auto w-60">
+                  <Icons.PayoutDown />
+                  <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
+                    <div className="text-[--colors-textSubtle] font-semibold text-sm">
+                      1 Payout
+                    </div>
+                    <div className="text-[--colors-failure] font-semibold uppercase text-xl">
+                      DOWN
+                    </div>
                   </div>
                 </div>
-              </div>
+              ) : (
+                <div className="h-16 mx-auto w-60">
+                  <Icons.PayoutDownFailure />
+                  <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
+                    <div className="text-[--colors-white] font-semibold text-sm">
+                      1 Payout
+                    </div>
+                    <div className="text-[--colors-white] font-semibold uppercase text-xl">
+                      DOWN
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
             {!isEmpty(liveBettedData) &&
               (liveBettedData?.[0]?.position === "DOWN" ? (
