@@ -1,36 +1,52 @@
-import React, { createRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Icons } from "../Icons";
+import { useAccount } from "wagmi";
+import getDataFileredByOnSnapshot from "@/helpers/getDataByOnSnapshot";
+import { DocumentData } from "firebase/firestore";
+import { isEmpty } from "lodash";
+import { ethers } from "ethers";
 import Button from "../ui/Button";
-import { publicClient } from "@/lib/contract-config";
-import { CONSTANTS } from "@/constants";
 
 interface IHistoryProps {
-  currentRound: string;
+  historyRound: string;
   showCollectWinningModal?: (status: boolean, round: string) => void;
 }
 
 const HistoryCard: React.FC<IHistoryProps> = ({
-  currentRound,
+  historyRound,
   showCollectWinningModal,
 }) => {
-  // useEffect(() => {
-  //   if (+currentRound > 0) {
-  //     getHistoryRound();
-  //   }
-  // }, [currentRound]);
+  const { isConnected, address } = useAccount();
+  const [historyBetted, setHistoryBetted] = useState<DocumentData[]>([]);
+  const [historyData, setHistoryData] = useState<DocumentData[]>([]);
+  useEffect(() => {
+    // Get all round history data
+    getDataFileredByOnSnapshot(
+      "predictions",
+      [["epoch", "==", historyRound]],
+      (docs: DocumentData) => {
+        setHistoryData(docs as DocumentData[]);
+      }
+    );
 
-  // const getHistoryRound = async () => {
-  //   const data = await publicClient.readContract({
-  //     address: CONSTANTS.ADDRESS.PREDICTION,
-  //     abi: CONSTANTS.ABI.PREDICTION,
-  //     functionName: "rounds",
-  //     args: [currentRound],
-  //   });
-  //   if (data) {
-  //     console.log({ data });
-  //     // setHistoryRound(data.toString());
-  //   }
-  // };
+    // Get round history data that user has been betted
+    if (isConnected && address && historyRound) {
+      getDataFileredByOnSnapshot(
+        "bets",
+        [
+          ["user_address", "==", address as `0x${string}`],
+          ["epoch", "==", historyRound],
+        ],
+        (docs: DocumentData) => {
+          setHistoryBetted(docs as DocumentData[]);
+        }
+      );
+    }
+  }, [isConnected, address, historyRound]);
+
+  // Determine this round up or down (UP: rate > 0, vice versa)
+  const ratePrice =
+    (historyData?.[0]?.closePrice - historyData?.[0]?.lockPrice) / 10 ** 8;
 
   return (
     <React.Fragment>
@@ -45,90 +61,169 @@ const HistoryCard: React.FC<IHistoryProps> = ({
               <Icons.Ban className="text-[--colors-textDisabled]" />
               <span className="text-[--colors-textDisabled]">Expired</span>
             </div>
-            <div className="text-[--colors-textDisabled]">#{currentRound}</div>
+            <div className="text-[--colors-textDisabled]">#{historyRound}</div>
           </div>
 
           <div className="card-body p-4 opacity-70 group-hover:opacity-100">
-            {/* {!isEmpty(dataBetted) &&
-            (dataBetted?.status === "UP" ? (
-              <div className="absolute flex gap-2 z-20 border-2 rounded-2xl border-[--colors-secondary] px-2 py-[2px] ">
-                <Icons.CheckCircle className="text-[--colors-text]" />
-                <span className="text-[--colors-secondary]">ENTERED</span>
-              </div>
-            ) : null)} */}
+            {!isEmpty(historyBetted) &&
+              (historyBetted?.[0]?.position === "UP" ? (
+                <div className="absolute flex gap-2 z-20 border-2 rounded-2xl border-[--colors-secondary] px-2 py-[2px] ">
+                  <Icons.CheckCircle className="text-[--colors-text]" />
+                  <span className="text-[--colors-secondary]">ENTERED</span>
+                </div>
+              ) : null)}
             <div className="relative -mb-[0.55rem]">
-              <div className="h-16 mx-auto w-60">
-                <Icons.PayoutUpSuccess />
-                <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
-                  <div
-                    className={`text-[--colors-white] font-semibold uppercase text-xl`}
-                  >
-                    UP
-                  </div>
-                  <div className="text-[--colors-white] font-semibold text-sm">
-                    1.41x Payout
+              {ratePrice > 0 ? (
+                <div className="h-16 mx-auto w-60">
+                  <Icons.PayoutUpSuccess />
+                  <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
+                    <div
+                      className={`text-[--colors-white] font-semibold uppercase text-xl`}
+                    >
+                      UP
+                    </div>
+                    <div className="text-[--colors-white] font-semibold text-sm">
+                      1 Payout
+                    </div>
                   </div>
                 </div>
-              </div>
+              ) : (
+                <div className="h-16 mx-auto w-60">
+                  <Icons.PayoutUp />
+                  <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
+                    <div
+                      className={`text-[--colors-success] font-semibold uppercase text-xl`}
+                    >
+                      UP
+                    </div>
+                    <div className="text-[--colors-textSubtle] font-semibold text-sm">
+                      1 Payout
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-            <div className="rounded-2xl bg-gradient-to-r from-[--colors-success] to-[--colors-success] p-[2px]">
+            <div
+              className={`rounded-2xl bg-gradient-to-r from-[${
+                ratePrice > 0 ? "--colors-success" : "--colors-failure"
+              }] to-[${
+                ratePrice > 0 ? "--colors-success" : "--colors-failure"
+              }] p-[2px]`}
+            >
               <div className="bg-[--colors-backgroundAlt] rounded-xl p-4 flex flex-col gap-1">
                 <div className="text-[--colors-textSubtle] font-semibold text-xs uppercase mb-2">
                   Last Price
                 </div>
                 <div className="flex justify-between items-center">
-                  <div
-                    className={`text-[--colors-success] font-semibold text-2xl min-h-[36px]`}
-                  >
-                    $257.5794
-                  </div>
-                  <div
-                    className={`flex gap-1 justify-center items-center bg-[--colors-success] py-1 px-2 rounded`}
-                  >
-                    <Icons.ArrowDown className="text-[--colors-white] rotate-180" />
-                    <span className="text-[--colors-white] font-medium text-base uppercase ml-1">
-                      $0.1508
-                    </span>
-                  </div>
+                  {ratePrice > 0 ? (
+                    <div
+                      className={`text-[--colors-success] font-semibold text-2xl min-h-[36px]`}
+                    >
+                      $
+                      {(Number(historyData?.[0]?.closePrice) / 10 ** 8).toFixed(
+                        4
+                      )}
+                    </div>
+                  ) : (
+                    <div
+                      className={`text-[--colors-failure] font-semibold text-2xl min-h-[36px]`}
+                    >
+                      $
+                      {(Number(historyData?.[0]?.closePrice) / 10 ** 8).toFixed(
+                        4
+                      )}
+                    </div>
+                  )}
+                  {ratePrice > 0 ? (
+                    <div
+                      className={`flex gap-1 justify-center items-center bg-[--colors-success] py-1 px-2 rounded`}
+                    >
+                      <Icons.ArrowDown className="text-[--colors-white] rotate-180" />
+                      <span className="text-[--colors-white] font-medium text-base uppercase ml-1">
+                        ${ratePrice}
+                      </span>
+                    </div>
+                  ) : (
+                    <div
+                      className={`flex gap-1 justify-center items-center bg-[--colors-failure] py-1 px-2 rounded`}
+                    >
+                      <Icons.ArrowDown className="text-[--colors-white]" />
+                      <span className="text-[--colors-white] font-medium text-base uppercase ml-1">
+                        ${ratePrice}
+                      </span>
+                    </div>
+                  )}
                 </div>
                 <div className="flex items-center justify-between text-[--colors-text]">
                   <span className="font-medium text-sm">Locked Price:</span>
-                  <span className="font-medium text-sm">$0.00005</span>
+                  <span className="font-medium text-sm">
+                    $
+                    {historyData?.[0]?.lockPrice
+                      ? ethers.formatEther(historyData?.[0]?.lockPrice)
+                      : 0}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between text-[--colors-text] font-semibold text-base">
                   <span>Prize Pool:</span>
-                  <span>0.00005 BNB</span>
+                  <span>
+                    {historyData?.[0]?.totalAmount
+                      ? Number(
+                          ethers.formatEther(historyData?.[0]?.totalAmount)
+                        )
+                          .toFixed(8)
+                          .toString()
+                      : 0}{" "}
+                    BNB
+                  </span>
                 </div>
               </div>
             </div>
             <div className="relative -mt-[0.55rem]">
-              <div className="h-16 mx-auto w-60">
-                <Icons.PayoutDown />
-                <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
-                  <div className="text-[--colors-textSubtle] font-semibold text-sm">
-                    1.41x Payout
-                  </div>
-                  <div className="text-[--colors-failure] font-semibold uppercase text-xl">
-                    DOWN
+              {ratePrice > 0 ? (
+                <div className="h-16 mx-auto w-60">
+                  <Icons.PayoutDown />
+                  <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
+                    <div className="text-[--colors-textSubtle] font-semibold text-sm">
+                      1 Payout
+                    </div>
+                    <div className="text-[--colors-failure] font-semibold uppercase text-xl">
+                      DOWN
+                    </div>
                   </div>
                 </div>
-              </div>
+              ) : (
+                <div className="h-16 mx-auto w-60">
+                  <Icons.PayoutDownFailure />
+                  <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
+                    <div className="text-[--colors-white] font-semibold text-sm">
+                      1 Payout
+                    </div>
+                    <div className="text-[--colors-white] font-semibold uppercase text-xl">
+                      DOWN
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-            {/* {!isEmpty(dataBetted) &&
-            (dataBetted?.status === "DOWN" ? (
-              <div className="absolute right-0 bottom-2 flex gap-2 z-20 border-2 rounded-2xl border-[--colors-secondary] px-2 py-[2px] ">
-                <Icons.CheckCircle className="text-[--colors-text]" />
-                <span className="text-[--colors-secondary]">ENTERED</span>
-              </div>
-            ) : null)} */}
+            {!isEmpty(historyBetted) &&
+              (historyBetted?.[0]?.position === "DOWN" ? (
+                <div className="absolute right-0 bottom-2 flex gap-2 z-20 border-2 rounded-2xl border-[--colors-secondary] px-2 py-[2px] ">
+                  <Icons.CheckCircle className="text-[--colors-text]" />
+                  <span className="text-[--colors-text]">ENTERED</span>
+                </div>
+              ) : null)}
+            {/* <div className="absolute right-0 bottom-2 flex gap-2 z-20 rounded-2xl bg-[--colors-secondary] px-2 py-[2px] ">
+              <Icons.CheckCircle className="text-[--colors-white]" />
+              <span className="text-[--colors-white] uppercase">Claimed</span>
+            </div> */}
           </div>
-          <div className="absolute bottom-[0.05rem] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100">
+          <div className="absolute bottom-[0.05rem] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
             <Icons.TrophyIcon className="text-[--colors-gold]" />
             <Button
               className="bg-[--colors-primary] hover:bg-[--colors-primary] hover:opacity-70"
               onClick={() => {
                 if (showCollectWinningModal)
-                  showCollectWinningModal(true, currentRound);
+                  showCollectWinningModal(true, historyRound);
               }}
             >
               Collect Winnings
