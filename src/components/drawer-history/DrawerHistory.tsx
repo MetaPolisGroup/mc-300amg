@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import clsx from "clsx";
 import HistoryItem from "./HistoryItem";
@@ -14,6 +14,9 @@ import {
   RADIO,
   RESULT_STATUS,
 } from "@/constants/history";
+import { useAccount } from "wagmi";
+import getDataFileredByOnSnapshot from "@/helpers/getDataByOnSnapshot";
+import { DocumentData } from "firebase/firestore";
 
 interface IDrawerHistory {
   open: boolean;
@@ -21,9 +24,22 @@ interface IDrawerHistory {
 }
 
 const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
+  const { isConnected, address } = useAccount();
   const [mode, setMode] = useState<any>(LIST_MODE[0]);
-  const [dataHistory, setDataHistory] = useState(FAKE_DATA);
+  const [dataHistory, setDataHistory] = useState<DocumentData[]>([]);
   const [radioChecked, setRadioChecked] = useState<string>(RADIO.ALL);
+
+  useEffect(() => {
+    if (isConnected && address) {
+      getDataFileredByOnSnapshot(
+        "bets",
+        [["user_address", "==", address as `0x${string}`]],
+        (docs: DocumentData) => {
+          setDataHistory(docs as DocumentData[]);
+        }
+      );
+    }
+  }, [isConnected, address]);
 
   const handleSelectRadio = (value: string) => {
     setRadioChecked(value);
@@ -141,9 +157,9 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
 
   const renderHistory = () => {
     if (mode.id === MODE.ROUNDS && !isEmpty(dataHistory)) {
-      return dataHistory.map((data) => (
-        <HistoryItem key={data.id} data={data} />
-      ));
+      return dataHistory
+        .sort((a, b) => b.epoch - a.epoch)
+        .map((data) => <HistoryItem key={data.id} data={data} />);
     }
 
     return (
