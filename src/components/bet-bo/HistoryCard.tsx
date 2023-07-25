@@ -193,7 +193,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                 </div>
               ) : (
                 <div className="h-16 mx-auto w-60">
-                  <Icons.PayoutDownFailure />
+                  <Icons.PayoutDown />
                   <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                     <div className="text-[--colors-white] font-semibold text-sm">
                       1 Payout
