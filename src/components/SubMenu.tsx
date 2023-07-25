@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const SubMenu = () => {
@@ -6,19 +7,22 @@ const SubMenu = () => {
       <div className="navbar-center flex justify-center">
         <ul className="menu menu-horizontal px-1 overflow-x-auto flex-nowrap lg:flex-wrap">
           <li className="text-[--colors-textSubtle] font-normal">
-            <a>Prediction (BETA)</a>
+            <Link href="/">Prediction (BETA)</Link>
           </li>
           <li className="text-[--colors-textSubtle] font-normal">
-            <a>Trading Reward</a>
+            <Link href="/chinese-dice">Chinese Dice</Link>
           </li>
           <li className="text-[--colors-textSubtle] font-normal">
-            <a>Trading Competition</a>
+            <Link href="/">Trading Reward</Link>
           </li>
           <li className="text-[--colors-textSubtle] font-normal">
-            <a>Lottery</a>
+            <Link href="/">Trading Competition</Link>
           </li>
           <li className="text-[--colors-textSubtle] font-normal">
-            <a>Pottery (BETA)</a>
+            <Link href="/">Lottery</Link>
+          </li>
+          <li className="text-[--colors-textSubtle] font-normal">
+            <Link href="/">Pottery (BETA)</Link>
           </li>
         </ul>
       </div>
