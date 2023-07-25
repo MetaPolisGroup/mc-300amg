@@ -24,11 +24,12 @@ const SubMenu = () => {
                 setNavSelected(nav.id);
               }}
             >
-              <Link passHref href={nav.ref}>
-                <a className="p-0  h-[40px] flex items-center justify-center px-1">
-                  {nav.title}
-                </a>
-              </Link>
+              <a
+                className="p-0  h-[40px] flex items-center justify-center px-1"
+                ref={nav.ref}
+              >
+                {nav.title}
+              </a>
 
               <div
                 className={clsx(

@@ -15,7 +15,6 @@ import { Icons } from "../Icons";
 import NAV_HEADER from "@/constants/navConstants";
 
 import { createWalletClient, custom } from "viem";
-import Tooltip from "../ui/Tooltip";
 import TooltipElement from "../ui/Tooltip";
 import HeaderItem from "./HeaderItem";
 enum EActive {
