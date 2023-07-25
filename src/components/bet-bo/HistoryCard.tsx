@@ -48,6 +48,8 @@ const HistoryCard: React.FC<IHistoryProps> = ({
   const ratePrice =
     (historyData?.[0]?.closePrice - historyData?.[0]?.lockPrice) / 10 ** 8;
 
+  // console.log({ historyBetted });
+
   return (
     <React.Fragment>
       <div className={`w-full flex justify-center items-center relative`}>
@@ -136,11 +138,11 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                   )}
                   {ratePrice > 0 ? (
                     <div
-                      className={`flex gap-1 justify-center items-center bg-[--colors-success] py-1 px-2 rounded`}
+                      className={`flex gap-1 justify-center items-center bg-[--colors-success] py-1 px-1 rounded`}
                     >
                       <Icons.ArrowDown className="text-[--colors-white] rotate-180" />
                       <span className="text-[--colors-white] font-medium text-base uppercase ml-1">
-                        ${ratePrice}
+                        ${ratePrice.toFixed(4)}
                       </span>
                     </div>
                   ) : (
@@ -217,18 +219,20 @@ const HistoryCard: React.FC<IHistoryProps> = ({
               <span className="text-[--colors-white] uppercase">Claimed</span>
             </div> */}
           </div>
-          <div className="absolute bottom-[0.05rem] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
-            <Icons.TrophyIcon className="text-[--colors-gold]" />
-            <Button
-              className="bg-[--colors-primary] hover:bg-[--colors-primary] hover:opacity-70"
-              onClick={() => {
-                if (showCollectWinningModal)
-                  showCollectWinningModal(true, historyRound);
-              }}
-            >
-              Collect Winnings
-            </Button>
-          </div>
+          {historyBetted?.[0]?.status === "Win" && (
+            <div className="absolute bottom-[0.05rem] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
+              <Icons.TrophyIcon className="text-[--colors-gold]" />
+              <Button
+                className="bg-[--colors-primary] hover:bg-[--colors-primary] hover:opacity-70"
+                onClick={() => {
+                  if (showCollectWinningModal)
+                    showCollectWinningModal(true, historyRound);
+                }}
+              >
+                Collect Winnings
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </React.Fragment>
