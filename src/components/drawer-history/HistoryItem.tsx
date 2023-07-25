@@ -17,9 +17,6 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data }) => {
 
   console.log({ data });
 
-  const isUserDerectionUp =
-    data?.user_history?.direction === USER_DIRECTION.UP ?? false;
-
   const ratePrice =
     (data?.round?.closePrice - data?.round?.lockPrice) / 10 ** 8;
 
@@ -196,7 +193,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data }) => {
 
     return (
       <div className="p-4 border-b-2 border-solid border-[--colors-cardBorder] !bg-[--colors-backgroundAlt2]">
-        {renderYourHistory()}
+        {data?.status !== "Waiting" ? renderYourHistory() : null}
 
         {renderRoundHistory()}
       </div>
@@ -228,17 +225,19 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data }) => {
               {data?.winning_amount}
             </div>
           </div> */}
-          <div className="flex text-[--colors-primary] font-semibold text-base gap-2">
-            <Icons.Clock3 />
-            <span>Starting Soon</span>
-          </div>
+          {data?.status === "Waiting" && (
+            <div className="flex text-[--colors-primary] font-semibold text-base gap-2">
+              <Icons.Clock3 />
+              <span>Starting Soon</span>
+            </div>
+          )}
           {/* <div className="flex text-[--colors-secondary] font-semibold text-base gap-2">
             <Icons.PlayCircle />
             <span>Live</span>
           </div> */}
         </div>
         <div className="flex gap-2">
-          {/* {!data?.is_collected ? (
+          {data?.status === "Win" && data?.claimed === false ? (
             <button
               className="bg-[--colors-primary] text-sm text-[--colors-white] px-4 py-1 rounded-2xl cursor-pointer hover:opacity-[0.8]"
               onClick={(e) => {
@@ -248,7 +247,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data }) => {
             >
               Collect
             </button>
-          ) : null} */}
+          ) : null}
           <div>
             {isShowDetail ? <Icons.ChevronUp /> : <Icons.ChevronDown />}
           </div>

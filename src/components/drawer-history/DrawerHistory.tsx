@@ -44,7 +44,7 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
       );
     }
   }, [isConnected, address]);
-  console.log({ dataHistory });
+  // console.log({ dataHistory });
 
   const handleSelectRadio = (value: string) => {
     setRadioChecked(value);
@@ -52,7 +52,7 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
     if (value === RADIO.COLLECTED) {
       setDataHistory(originalHistoryData);
       const historyDataFilted = dataHistory.filter(
-        (history) => history?.status === "WIN" && history?.claim === true
+        (history) => history?.status === "Win" && history?.claim === true
       );
       return setDataHistory(historyDataFilted);
     }
@@ -60,7 +60,7 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
     if (value === RADIO.UNCOLECTED) {
       setDataHistory(originalHistoryData);
       const historyDataFilted = dataHistory.filter(
-        (history) => history?.status === "WIN" && history?.claim === false
+        (history) => history?.status === "Win" && history?.claim === false
       );
       return setDataHistory(historyDataFilted);
     }
