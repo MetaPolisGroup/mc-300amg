@@ -63,7 +63,7 @@ const NAV_HEADER = [
         link: "/",
       },
       {
-        title: "Prediction (BETA)",
+        title: "Dice",
         link: "/dice",
         subContent: { text: "Dice", color: "--colors-failure" },
       },
