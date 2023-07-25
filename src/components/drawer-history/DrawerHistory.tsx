@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import clsx from "clsx";
 import HistoryItem from "./HistoryItem";
@@ -14,6 +14,9 @@ import {
   RADIO,
   RESULT_STATUS,
 } from "@/constants/history";
+import { useAccount } from "wagmi";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
+import { DocumentData } from "firebase/firestore";
 
 interface IDrawerHistory {
   open: boolean;
@@ -21,32 +24,48 @@ interface IDrawerHistory {
 }
 
 const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
+  const { isConnected, address } = useAccount();
   const [mode, setMode] = useState<any>(LIST_MODE[0]);
-  const [dataHistory, setDataHistory] = useState(FAKE_DATA);
+  const [dataHistory, setDataHistory] = useState<DocumentData[]>([]);
+  const [originalHistoryData, setOriginalHistoryData] = useState<
+    DocumentData[]
+  >([]);
   const [radioChecked, setRadioChecked] = useState<string>(RADIO.ALL);
+
+  useEffect(() => {
+    if (isConnected && address) {
+      getDataFileredByOnSnapshot(
+        "bets",
+        [["user_address", "==", address as `0x${string}`]],
+        (docs: DocumentData) => {
+          setDataHistory(docs as DocumentData[]);
+          setOriginalHistoryData(docs as DocumentData[]);
+        }
+      );
+    }
+  }, [isConnected, address]);
+  // console.log({ dataHistory });
 
   const handleSelectRadio = (value: string) => {
     setRadioChecked(value);
 
     if (value === RADIO.COLLECTED) {
-      return setDataHistory(
-        FAKE_DATA.filter(
-          (item) =>
-            item.is_collected === true && item.result === RESULT_STATUS.WIN
-        )
+      setDataHistory(originalHistoryData);
+      const historyDataFilted = dataHistory.filter(
+        (history) => history?.status === "Win" && history?.claim === true
       );
+      return setDataHistory(historyDataFilted);
     }
 
     if (value === RADIO.UNCOLECTED) {
-      return setDataHistory(
-        FAKE_DATA.filter(
-          (item) =>
-            item.is_collected === false && item.result === RESULT_STATUS.WIN
-        )
+      setDataHistory(originalHistoryData);
+      const historyDataFilted = dataHistory.filter(
+        (history) => history?.status === "Win" && history?.claim === false
       );
+      return setDataHistory(historyDataFilted);
     }
 
-    return setDataHistory(FAKE_DATA);
+    return setDataHistory(originalHistoryData);
   };
 
   const renderMode = () => {
@@ -121,29 +140,11 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
     );
   };
 
-  const renderHeaderContent = () => {
-    if (mode.id === MODE.PNL) {
-      return null;
-    }
-
-    return (
-      <div>
-        <div className="p-4 cursor-pointer border-b-2 border-solid border-[--colors-cardBorder] font-medium">
-          <p>Showing history for Prediction v0.2</p>
-          <p className="flex gap-1 items-center text-[--colors-primary] text-base">
-            Check for unclaimed v0.1 winnings{" "}
-            <Icons.ChevronRight className="w-5 h-5" />
-          </p>
-        </div>
-      </div>
-    );
-  };
-
   const renderHistory = () => {
     if (mode.id === MODE.ROUNDS && !isEmpty(dataHistory)) {
-      return dataHistory.map((data) => (
-        <HistoryItem key={data.id} data={data} />
-      ));
+      return dataHistory
+        .sort((a, b) => b.epoch - a.epoch)
+        .map((data) => <HistoryItem key={data.id} data={data} />);
     }
 
     return (
@@ -186,8 +187,6 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
 
         <div className="h-full bg-[--colors-backgroundAlt] text-[--colors-text]">
           <div className="overflow-y-auto max-h-[90vh] lg:max-h-[75vh]">
-            {renderHeaderContent()}
-
             {renderHistory()}
           </div>
         </div>
@@ -208,78 +207,3 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
 };
 
 export default DrawerHistory;
-
-const FAKE_DATA = [
-  {
-    id: "FAKE_DATA1",
-    result: "WIN",
-    round: 188576,
-    is_collected: true,
-    winning_amount: "+0,0011",
-    user_history: {
-      direction: "DOWN",
-      position: "0,0010",
-      about: "0.26",
-      amount_to_collect: "0,0021",
-    },
-    round_history: {
-      closed_price: "259,2748",
-      result: "DOWN",
-      result_price: "-0,0835",
-      locked_price: "259,3582",
-      prize_pool: "12,6345",
-      up: "1,78",
-      up_value: "6,7620",
-      down: "2,15",
-      down_value: "5,8725",
-    },
-  },
-  {
-    id: "FAKE_DATA3",
-    result: "WIN",
-    round: 188576,
-    is_collected: false,
-    winning_amount: "+0,0011",
-    user_history: {
-      direction: "DOWN",
-      position: "0,0010",
-      about: "0.26",
-      amount_to_collect: "0,0021",
-    },
-    round_history: {
-      closed_price: "259,2748",
-      result: "DOWN",
-      result_price: "-0,0835",
-      locked_price: "259,3582",
-      prize_pool: "12,6345",
-      up: "1,78",
-      up_value: "6,7620",
-      down: "2,15",
-      down_value: "5,8725",
-    },
-  },
-  {
-    id: "FAKE_DATA2",
-    result: "LOSE",
-    round: 187792,
-    is_collected: true,
-    winning_amount: "-0,0010",
-    user_history: {
-      direction: "UP",
-      position: "0,0010",
-      about: "0.24",
-      amount_to_collect: "0,0021",
-    },
-    round_history: {
-      closed_price: "248,1627",
-      result: "DOWN",
-      result_price: "-0,1863",
-      locked_price: "248,3490",
-      prize_pool: "20,5997",
-      up: "3,16",
-      up_value: "6,5227",
-      down: "1,46",
-      down_value: "14,0770",
-    },
-  },
-];

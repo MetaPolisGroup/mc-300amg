@@ -16,11 +16,12 @@ import Popup, { PopupRef } from "../ui/Modal";
 import { Icons } from "../Icons";
 import { DocumentData } from "firebase/firestore";
 import Button from "../ui/Button";
-import getDataFileredByOnSnapshot from "@/helpers/getDataByOnSnapshot";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { useAccount } from "wagmi";
+import ClaimModal from "./ClaimModal";
 
 const Card = () => {
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const [currentRound, setCurrentRound] = useState<string>("");
   const [winningRound, setWinningRound] = useState<string>("");
   const [nextBetData, setNextBetData] = useState<DocumentData[]>([]);
@@ -40,14 +41,16 @@ const Card = () => {
       undefined,
       undefined
     );
-    getDataFileredByOnSnapshot(
-      "bets",
-      [["user_address", "==", address as `0x${string}`]],
-      (docs: DocumentData) => {
-        setDatasBetted(docs as DocumentData[]);
-      }
-    );
-  }, [address]);
+    if (isConnected) {
+      getDataFileredByOnSnapshot(
+        "bets",
+        [["user_address", "==", address as `0x${string}`]],
+        (docs: DocumentData) => {
+          setDatasBetted(docs as DocumentData[]);
+        }
+      );
+    }
+  }, [address, isConnected]);
 
   const dataBettedInCurrentRound = datasBetted.find(
     (dataBetted: DocumentData) => dataBetted.epoch === currentRound
@@ -95,19 +98,19 @@ const Card = () => {
         >
           <SwiperSlide>
             <HistoryCard
-              currentRound={(+currentRound - 4).toString()}
+              historyRound={(+currentRound - 4).toString()}
               showCollectWinningModal={showCollectWinningHandler}
             />
           </SwiperSlide>
           <SwiperSlide>
             <HistoryCard
-              currentRound={(+currentRound - 3).toString()}
+              historyRound={(+currentRound - 3).toString()}
               showCollectWinningModal={showCollectWinningHandler}
             />
           </SwiperSlide>
           <SwiperSlide>
             <HistoryCard
-              currentRound={(+currentRound - 2).toString()}
+              historyRound={(+currentRound - 2).toString()}
               showCollectWinningModal={showCollectWinningHandler}
             />
           </SwiperSlide>
@@ -125,10 +128,13 @@ const Card = () => {
             />
           </SwiperSlide>
           <SwiperSlide>
-            <FutureCard currentRound={(+currentRound + 1).toString()} />
+            <FutureCard futureRound={(+currentRound + 1).toString()} />
           </SwiperSlide>
           <SwiperSlide>
-            <FutureCard currentRound={(+currentRound + 2).toString()} />
+            <FutureCard
+              futureRound={(+currentRound + 2).toString()}
+              plusMinute={5}
+            />
           </SwiperSlide>
         </Swiper>
         <Popup
@@ -141,26 +147,7 @@ const Card = () => {
             background: "var(--colors-backgroundAlt)",
             color: "var(--colors-text)",
           }}
-          content={
-            <React.Fragment>
-              <div className="w-full">
-                <Icons.Trophy className="m-auto w-14 h-14 text-[--colors-gold] my-10" />
-                <div className="flex justify-between font-semibold">
-                  <span>Collecting</span>
-                  <span>0.0453 BNB</span>
-                </div>
-                <p className="w-full text-right text-[--colors-text99]">
-                  ~10.93$
-                </p>
-                <p className="text-center text-[--colors-text99] my-2">
-                  From round {winningRound}
-                </p>
-                <Button variant={"success"} className="w-full">
-                  Confirm
-                </Button>
-              </div>
-            </React.Fragment>
-          }
+          content={<ClaimModal winningRound={winningRound} />}
         />
       </div>
     </React.Fragment>

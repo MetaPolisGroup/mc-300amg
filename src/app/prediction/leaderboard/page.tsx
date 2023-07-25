@@ -1,11 +1,14 @@
+"use client";
 import { Icons } from "@/components/Icons";
 import FilterLeaderboard from "@/components/leaderboard/FilterLeaderboard";
 import MyRanking from "@/components/leaderboard/MyRanking";
 import Ranking from "@/components/leaderboard/Ranking";
 import TopRanking from "@/components/leaderboard/TopRanking";
-import React from "react";
+import getAllData from "@/helpers/getAllDataByOnSnapshot";
+import React, { useEffect } from "react";
 
 const LeaderBoard = () => {
+  useEffect(() => {}, []);
   return (
     <main className="w-full">
       <div className="bg-gradient-to-r from-[--colors-bubblegum1] to-[--colors-bubblegum2] p-6">

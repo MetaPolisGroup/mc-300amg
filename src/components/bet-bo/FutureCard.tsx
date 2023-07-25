@@ -1,11 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Icons } from "../Icons";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
+import { DocumentData } from "firebase/firestore";
 
 interface IFutureCard {
-  currentRound: string;
+  futureRound: string;
+  plusMinute?: number;
 }
 
-const FutureCard: React.FC<IFutureCard> = ({ currentRound }) => {
+const FutureCard: React.FC<IFutureCard> = ({ futureRound, plusMinute }) => {
+  const [minute, setMinute] = useState<number>(0);
+  const [second, setSecond] = useState<number>(0);
+  const [nextBetData, setNextBetData] = useState<DocumentData[]>([]);
+  useEffect(() => {
+    getDataFileredByOnSnapshot(
+      "predictions",
+      [["locked", "==", false]],
+      (docs: DocumentData) => {
+        setNextBetData(docs as DocumentData[]);
+      }
+    );
+  }, []);
+
+  useEffect(() => {
+    const target = +nextBetData?.[0]?.lockTimestamp * 1000;
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const different = target - now;
+      const m = Math.floor((different % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((different % (1000 * 60)) / 1000);
+      setMinute(m);
+      setSecond(s);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [nextBetData]);
+  const renderTime = () => {
+    const _minute = minute < 10 ? `0${minute}` : minute;
+    const _second = second < 10 ? `0${second}` : second;
+    return (
+      <>
+        {+_minute >= 0 && +_second >= 0 ? `~${_minute}:${_second}` : "Closing"}
+      </>
+    );
+  };
   return (
     <div className={`w-full flex justify-center items-center relative`}>
       <div className={"card z-20 w-80 bg-[--colors-backgroundAlt] shadow-xl"}>
@@ -15,7 +53,7 @@ const FutureCard: React.FC<IFutureCard> = ({ currentRound }) => {
             <span className="text-[--colors-text]">Later</span>
           </div>
           <div className="text-[--colors-textSubtle] text-xs">
-            #{currentRound}
+            #{futureRound}
           </div>
         </div>
 
@@ -39,7 +77,7 @@ const FutureCard: React.FC<IFutureCard> = ({ currentRound }) => {
                   Entry starts
                 </span>
                 <span className="text-[--colors-text] font-semibold text-base">
-                  ~01:11
+                  {renderTime()}
                 </span>
               </div>
             </div>
