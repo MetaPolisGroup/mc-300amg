@@ -155,23 +155,33 @@ const NAV_HEADER = [
 export const NAV_SUB_HEADER = [
   {
     id: "SubMenu1",
-    title: "Trading Reward",
+    title: "Prediction (BETA)",
+    ref: "/",
   },
   {
     id: "SubMenu2",
-    title: "Trading Competition",
+    title: "Dice",
+    ref: "chinese-dice",
   },
   {
     id: "SubMenu3",
-    title: "Prediction (BETA)",
+    title: "Trading Competition",
+    ref: "/",
   },
   {
     id: "SubMenu4",
-    title: "Lottery",
+    title: "Prediction (BETA)",
+    ref: "/",
   },
   {
     id: "SubMenu5",
+    title: "Lottery",
+    ref: "/",
+  },
+  {
+    id: "SubMenu6",
     title: "Pottery (BETA)",
+    ref: "/",
   },
 ];
 

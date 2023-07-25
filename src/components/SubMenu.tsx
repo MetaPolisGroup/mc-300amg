@@ -5,6 +5,7 @@ import React, { useState } from "react";
 
 import clsx from "clsx";
 import { NAV_SUB_HEADER } from "@/constants/navConstants";
+import Link from "next/link";
 
 const SubMenu = () => {
   const [navSelected, setNavSelected] = useState<string>("SubMenu3");
@@ -24,9 +25,11 @@ const SubMenu = () => {
                 setNavSelected(nav.id);
               }}
             >
-              <a className="p-0  h-[40px] flex items-center justify-center px-1">
-                {nav.title}
-              </a>
+              <Link passHref href={nav.ref}>
+                <a className="p-0  h-[40px] flex items-center justify-center px-1">
+                  {nav.title}
+                </a>
+              </Link>
 
               <div
                 className={clsx(
