@@ -168,7 +168,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                   <span className="font-medium text-sm">
                     $
                     {liveBetData?.[0]?.lockPrice
-                      ? ethers.formatEther(liveBetData?.[0].lockPrice)
+                      ? (liveBetData?.[0].lockPrice / 10 ** 8).toFixed(4)
                       : 0}
                   </span>
                 </div>
