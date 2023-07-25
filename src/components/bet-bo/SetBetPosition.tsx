@@ -166,6 +166,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
                   console.log({ transaction });
                   if (transaction?.status === "success") {
                     setIsLoading(false);
+
                     toast.custom((t) => (
                       <div
                         className={`${
