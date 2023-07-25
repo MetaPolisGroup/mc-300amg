@@ -119,13 +119,13 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                 <div className="flex justify-between items-center">
                   {ratePrice > 0 ? (
                     <div
-                      className={`text-[--colors-success] font-semibold text-2xl min-h-[36px]`}
+                      className={`text-[--colors-success] font-semibold text-xl`}
                     >
                       ${(historyData?.[0]?.closePrice / 10 ** 8).toFixed(4)}
                     </div>
                   ) : (
                     <div
-                      className={`text-[--colors-failure] font-semibold text-2xl min-h-[36px]`}
+                      className={`text-[--colors-failure] font-semibold text-xl`}
                     >
                       ${(historyData?.[0]?.closePrice / 10 ** 8).toFixed(4)}
                     </div>
@@ -145,7 +145,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                     >
                       <Icons.ArrowDown className="text-[--colors-white]" />
                       <span className="text-[--colors-white] font-medium text-base uppercase ml-1">
-                        ${ratePrice}
+                        ${ratePrice.toFixed(4)}
                       </span>
                     </div>
                   )}
