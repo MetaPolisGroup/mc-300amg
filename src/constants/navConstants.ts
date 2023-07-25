@@ -59,17 +59,23 @@ const NAV_HEADER = [
     renderDot: "bg-[--colors-failure]",
     items: [
       {
-        title: "Trading Reward",
+        title: "Prediction (BETA)",
         link: "/",
-        subContent: { text: "LIVE", color: "--colors-failure" },
       },
+      {
+        title: "Prediction (BETA)",
+        link: "/dice",
+        subContent: { text: "Dice", color: "--colors-failure" },
+      },
+
       {
         title: "Trading Competition",
         link: "/",
       },
       {
-        title: "Prediction (BETA)",
+        title: "Trading Reward",
         link: "/",
+        subContent: { text: "LIVE", color: "--colors-failure" },
       },
       {
         title: "Lottery",
@@ -155,23 +161,33 @@ const NAV_HEADER = [
 export const NAV_SUB_HEADER = [
   {
     id: "SubMenu1",
-    title: "Trading Reward",
+    title: "Prediction (BETA)",
+    ref: "/",
   },
   {
     id: "SubMenu2",
-    title: "Trading Competition",
+    title: "Dice",
+    ref: "/dice",
   },
   {
     id: "SubMenu3",
-    title: "Prediction (BETA)",
+    title: "Trading Competition",
+    ref: "/",
   },
   {
     id: "SubMenu4",
-    title: "Lottery",
+    title: "Trading Reward ",
+    ref: "/",
   },
   {
     id: "SubMenu5",
+    title: "Lottery",
+    ref: "/",
+  },
+  {
+    id: "SubMenu6",
     title: "Pottery (BETA)",
+    ref: "/",
   },
 ];
 

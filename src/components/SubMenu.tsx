@@ -23,7 +23,10 @@ const SubMenu = () => {
                 setNavSelected(nav.id);
               }}
             >
-              <a className="p-0  h-[40px] flex items-center justify-center px-1">
+              <a
+                className="p-0  h-[40px] flex items-center justify-center px-1"
+                href={nav.ref}
+              >
                 {nav.title}
               </a>
 
