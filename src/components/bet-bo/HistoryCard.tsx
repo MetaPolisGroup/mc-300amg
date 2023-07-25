@@ -121,19 +121,13 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                     <div
                       className={`text-[--colors-success] font-semibold text-2xl min-h-[36px]`}
                     >
-                      $
-                      {(Number(historyData?.[0]?.closePrice) / 10 ** 8).toFixed(
-                        4
-                      )}
+                      ${(historyData?.[0]?.closePrice / 10 ** 8).toFixed(4)}
                     </div>
                   ) : (
                     <div
                       className={`text-[--colors-failure] font-semibold text-2xl min-h-[36px]`}
                     >
-                      $
-                      {(Number(historyData?.[0]?.closePrice) / 10 ** 8).toFixed(
-                        4
-                      )}
+                      ${(historyData?.[0]?.closePrice / 10 ** 8).toFixed(4)}
                     </div>
                   )}
                   {ratePrice > 0 ? (
@@ -161,7 +155,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                   <span className="font-medium text-sm">
                     $
                     {historyData?.[0]?.lockPrice
-                      ? ethers.formatEther(historyData?.[0]?.lockPrice)
+                      ? (historyData?.[0]?.lockPrice / 10 ** 8).toFixed(4)
                       : 0}
                   </span>
                 </div>
