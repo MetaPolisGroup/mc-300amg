@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Icons } from "../Icons";
-import getDataFileredByOnSnapshot from "@/helpers/getDataByOnSnapshot";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { DocumentData } from "firebase/firestore";
 
 interface IFutureCard {
