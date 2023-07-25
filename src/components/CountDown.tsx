@@ -106,7 +106,7 @@ const CountDown: React.FC<ICountDown> = ({ title, onAction }) => {
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1 sm:gap-2">
       <div className="bg-[--colors-backgroundAlt] p-1 px-1 pr-8 mr-3 rounded-3xl text-[--colors-light-white] flex gap-0 items-center flex-col md:flex-row rounded-bl-[3rem] min-w-[98px] md:rounded-bl-3xl md:gap-2 md:min-w-fit md:p-2 md:px-3 md:pr-11 order-1 sm:order-none relative">
         <div className="text-[--colors-secondary] text-base font-semibold rounded-bl-[3rem] flex-col md:flex-row md:text-lg">
           {renderTime()}

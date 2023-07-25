@@ -114,7 +114,9 @@ const Header = () => {
             </ul>
           </div>
           <div className="navbar-end gap-2 p-2 w-auto">
-            <ChangeMode HWrapper="30px" WWrapper="70px" H="20px" W="20px" />
+            <div className="hidden xl:block">
+              <ChangeMode HWrapper="30px" WWrapper="70px" H="20px" W="20px" />
+            </div>
             {/* <Button onClick={callRound}>Call Round</Button> */}
             <Popup
               ref={settingPopup}
