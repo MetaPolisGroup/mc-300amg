@@ -6,7 +6,7 @@ import clsx from "clsx";
 import { NAV_SUB_HEADER } from "@/constants/navConstants";
 
 const SubMenu = () => {
-  const [navSelected, setNavSelected] = useState<string>("SubMenu3");
+  const [navSelected, setNavSelected] = useState<string>("SubMenu1");
 
   return (
     <div className="nav bg-[--colors-backgroundAlt2]">
