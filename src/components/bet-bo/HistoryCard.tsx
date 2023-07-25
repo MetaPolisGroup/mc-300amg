@@ -136,11 +136,11 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                   )}
                   {ratePrice > 0 ? (
                     <div
-                      className={`flex gap-1 justify-center items-center bg-[--colors-success] py-1 px-2 rounded`}
+                      className={`flex gap-1 justify-center items-center bg-[--colors-success] py-1 px-1 rounded`}
                     >
                       <Icons.ArrowDown className="text-[--colors-white] rotate-180" />
                       <span className="text-[--colors-white] font-medium text-base uppercase ml-1">
-                        ${ratePrice}
+                        ${ratePrice.toFixed(4)}
                       </span>
                     </div>
                   ) : (
