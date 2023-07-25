@@ -91,7 +91,7 @@ const Card = () => {
             },
             // when window width is >= 640px
             640: {
-              slidesPerView: 3,
+              slidesPerView: 7,
               spaceBetween: 16,
             },
           }}
