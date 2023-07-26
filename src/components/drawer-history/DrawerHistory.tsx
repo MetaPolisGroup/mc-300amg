@@ -21,9 +21,14 @@ import { DocumentData } from "firebase/firestore";
 interface IDrawerHistory {
   open: boolean;
   onClose: (value: boolean) => void;
+  onCollect: (status: boolean, round: string) => void;
 }
 
-const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
+const DrawerHistory: React.FC<IDrawerHistory> = ({
+  open,
+  onClose,
+  onCollect,
+}) => {
   const { isConnected, address } = useAccount();
   const [mode, setMode] = useState<any>(LIST_MODE[0]);
   const [dataHistory, setDataHistory] = useState<DocumentData[]>([]);
@@ -50,17 +55,17 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
     setRadioChecked(value);
 
     if (value === RADIO.COLLECTED) {
-      setDataHistory(originalHistoryData);
-      const historyDataFilted = dataHistory.filter(
-        (history) => history?.status === "Win" && history?.claim === true
+      const historyDataFilted = originalHistoryData.filter(
+        (history) =>
+          history?.status === RESULT_STATUS.WIN && history?.claimed === true
       );
       return setDataHistory(historyDataFilted);
     }
 
     if (value === RADIO.UNCOLECTED) {
-      setDataHistory(originalHistoryData);
-      const historyDataFilted = dataHistory.filter(
-        (history) => history?.status === "Win" && history?.claim === false
+      const historyDataFilted = originalHistoryData.filter(
+        (history) =>
+          history?.status === RESULT_STATUS.WIN && history?.claimed === false
       );
       return setDataHistory(historyDataFilted);
     }
@@ -118,7 +123,7 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
               />
             </div>
             <div
-              className="cursor-pointer"
+              className="cursor-pointer select-none"
               onClick={() => handleSelectRadio(radio)}
             >
               {radio}
@@ -144,7 +149,13 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({ open, onClose }) => {
     if (mode.id === MODE.ROUNDS && !isEmpty(dataHistory)) {
       return dataHistory
         .sort((a, b) => b.epoch - a.epoch)
-        .map((data) => <HistoryItem key={data.id} data={data} />);
+        .map((data) => (
+          <HistoryItem
+            onCollect={onCollect}
+            key={data.id}
+            data={data as IHistory}
+          />
+        ));
     }
 
     return (
