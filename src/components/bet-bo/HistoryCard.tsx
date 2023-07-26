@@ -162,7 +162,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                 <div className="flex items-center justify-between text-[--colors-text] font-semibold text-base">
                   <span>Prize Pool:</span>
                   <span>
-                    {/* {historyData?.[0]?.totalAmount
+                    {historyData?.[0]?.totalAmount
                       ? Number(
                           ethers.formatEther(
                             BigInt(historyData?.[0]?.totalAmount)
@@ -171,7 +171,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                           .toFixed(8)
                           .toString()
                       : 0}{" "}
-                    BNB */}
+                    BNB
                   </span>
                 </div>
               </div>
