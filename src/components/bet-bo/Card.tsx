@@ -16,7 +16,7 @@ import Popup, { PopupRef } from "../ui/Modal";
 import { Icons } from "../Icons";
 import { DocumentData } from "firebase/firestore";
 import Button from "../ui/Button";
-import getDataFileredByOnSnapshot from "@/helpers/getDataByOnSnapshot";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { useAccount } from "wagmi";
 import ClaimModal from "./ClaimModal";
 
@@ -91,7 +91,7 @@ const Card = () => {
             },
             // when window width is >= 640px
             640: {
-              slidesPerView: 3,
+              slidesPerView: 7,
               spaceBetween: 16,
             },
           }}
