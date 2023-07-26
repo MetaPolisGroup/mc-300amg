@@ -14,11 +14,7 @@ import {
 
 const getDataFileredByOnSnapshot = (
   collectionName: string,
-  filters: [
-    string,
-    WhereFilterOp,
-    string | number | boolean | string[] | Date
-  ][],
+  filters: [string, WhereFilterOp, string | number | boolean | string[]][],
   onSnapshotCallback: (docs: DocumentData[]) => void,
   orderByFields?: { field?: string; direction?: "asc" | "desc" }[],
   limitNumber?: number
