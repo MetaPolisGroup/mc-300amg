@@ -17,7 +17,9 @@ import {
   Clock3,
   ArrowUp,
   Instagram,
+  MedalIcon,
   GithubIcon,
+  UserIcon,
   Twitter,
   SunDim,
   MoonStar,
@@ -52,6 +54,7 @@ export const Icons = {
   Instagram,
   GithubIcon,
   Twitter,
+  UserIcon,
   ChevronRight,
   CheckCircle,
   X,
@@ -65,6 +68,7 @@ export const Icons = {
   ChevronDown,
   XCircle,
   HelpCircleIcon,
+  MedalIcon,
   LaurelLeft: (props: LucideProps) => (
     <svg
       viewBox="0 0 20 20"

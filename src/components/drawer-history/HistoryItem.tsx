@@ -1,14 +1,11 @@
 "use client";
 
-import React, { createRef, useState } from "react";
-
+import React, { useState } from "react";
 import clsx from "clsx";
 import { ethers } from "ethers";
 import { Icons } from "../Icons";
-import Popup, { PopupRef } from "../ui/Modal";
-import ClaimModal from "../bet-bo/ClaimModal";
 import { replaceDotToComma } from "@/utils/format-number";
-import { RESULT_STATUS, USER_DIRECTION } from "@/constants/history";
+import { RESULT_STATUS } from "@/constants/history";
 
 interface IHistoryDataProps {
   data: IHistory;
@@ -87,7 +84,9 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
           </div>
 
           <div className="flex justify-between">
-            <div className="text-sm font-bold">Your winnings:</div>
+            <div className="text-sm font-bold">
+              {isWin ? "Your winnings:" : "Your results:"}
+            </div>
             <div>
               <div
                 className={clsx(
@@ -111,7 +110,6 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
               <div className="flex justify-between text-[--colors-textSubtle]">
                 <div className="text-xs font-bold">Amount to collect:</div>
                 <div className="flex gap-1 text-xs font-bold items-center">
-                  {/* winning_amount + bet */}
                   {handlerFormatEther(data.winning_amount)} BNB{" "}
                   <Icons.AlertCircle className="w-[17px] h-[17px]" />
                 </div>
@@ -174,7 +172,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
               $
               {data?.round?.lockPrice
                 ? replaceDotToComma(
-                    ethers.formatEther(BigInt(data?.round?.lockPrice))
+                    (data?.round?.lockPrice / 10 ** 8).toFixed(4)
                   )
                 : 0}
             </div>
@@ -184,7 +182,9 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
             <div className="text-sm font-bold">
               {data?.round?.totalAmount
                 ? replaceDotToComma(
-                    ethers.formatEther(BigInt(data?.round?.totalAmount))
+                    Number(
+                      ethers.formatEther(BigInt(data?.round?.totalAmount))
+                    ).toFixed(6)
                   )
                 : 0}{" "}
               BNB
