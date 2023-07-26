@@ -100,7 +100,7 @@ const BetCard: React.FC<IBetCard> = ({
                 (dataBettedInCurrentRound?.position === "UP" ? (
                   <TooltipElement
                     title={`${ethers.formatEther(
-                      dataBettedInCurrentRound.amount
+                      BigInt(dataBettedInCurrentRound.amount)
                     )} BNB`}
                   >
                     <Button
@@ -115,7 +115,7 @@ const BetCard: React.FC<IBetCard> = ({
                 ) : (
                   <TooltipElement
                     title={`${ethers.formatEther(
-                      dataBettedInCurrentRound.amount
+                      BigInt(dataBettedInCurrentRound.amount)
                     )} BNB`}
                   >
                     <Button
@@ -132,7 +132,9 @@ const BetCard: React.FC<IBetCard> = ({
                 <span>Prize Pool:</span>
                 <span>
                   {nextBetData?.totalAmount
-                    ? ethers.formatEther(nextBetData?.totalAmount).slice(0, 8)
+                    ? ethers
+                        .formatEther(BigInt(nextBetData?.totalAmount))
+                        .slice(0, 8)
                     : 0}{" "}
                   BNB
                 </span>
