@@ -4,11 +4,37 @@ import FilterLeaderboard from "@/components/leaderboard/FilterLeaderboard";
 import MyRanking from "@/components/leaderboard/MyRanking";
 import Ranking from "@/components/leaderboard/Ranking";
 import TopRanking from "@/components/leaderboard/TopRanking";
-import getAllData from "@/helpers/getAllDataByOnSnapshot";
-import React, { useEffect } from "react";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
+import { DocumentData } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
 
 const LeaderBoard = () => {
-  useEffect(() => {}, []);
+  const [leaderboardData, setLeaderboardData] = useState<DocumentData[]>([]);
+
+  useEffect(() => {
+    getDataFileredByOnSnapshot(
+      "leaderboard",
+      [["type", "==", "Round Played"]],
+      (docs: DocumentData) => {
+        setLeaderboardData(docs as DocumentData[]);
+      }
+    );
+  }, []);
+
+  const queryHandler = (option: string) => {
+    getDataFileredByOnSnapshot(
+      "leaderboard",
+      [["type", "==", option]],
+      (docs: DocumentData) => {
+        setLeaderboardData(docs as DocumentData[]);
+      }
+    );
+  };
+
+  const topLeaderboard = leaderboardData?.[0]?.user_lists.slice(0, 3);
+
+  const ranking = leaderboardData?.[0]?.user_lists.slice(3);
+
   return (
     <main className="w-full">
       <div className="bg-gradient-to-r from-[--colors-bubblegum1] to-[--colors-bubblegum2] p-6">
@@ -24,10 +50,7 @@ const LeaderBoard = () => {
                 <Icons.ChevronRightIcon className="text-[--colors-textDisabled]" />
               </li>
               <li>
-                <a
-                  href="/prediction"
-                  className="text-[--colors-primary] font-semibold"
-                >
+                <a href="/" className="text-[--colors-primary] font-semibold">
                   Prediction
                 </a>
               </li>
@@ -48,12 +71,12 @@ const LeaderBoard = () => {
       </div>
       <div className="bg-[--colors-background] p-6">
         <div className="max-w-[1200px] mx-auto">
-          <FilterLeaderboard />
+          <FilterLeaderboard onQueries={queryHandler} />
           <MyRanking />
-          <TopRanking />
+          <TopRanking topLeaderboard={topLeaderboard} />
         </div>
       </div>
-      <Ranking />
+      <Ranking ranking={ranking} />
     </main>
   );
 };

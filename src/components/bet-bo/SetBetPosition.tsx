@@ -59,7 +59,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
 
   const balance =
     isClient && isConnected && data?.value
-      ? ethers.formatEther(data?.value!)
+      ? ethers.formatEther(BigInt(data?.value!))
       : 0;
 
   const changeUpOrDownHandler = (status: string) => {
@@ -158,11 +158,52 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
               });
               if (request) {
                 const hash = await walletClient.writeContract(request);
+
                 if (hash) {
                   const transaction =
                     await publicClient.waitForTransactionReceipt({
                       hash,
                     });
+                  toast.custom((t) => (
+                    <div
+                      className={`${
+                        t.visible ? "animate-enter" : "animate-leave"
+                      } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+                    >
+                      <div className="flex bg-[--colors-success] p-4 rounded-l-lg">
+                        <Icons.CheckCircle className="text-[--colors-white]" />
+                      </div>
+                      <div className="flex-1 w-0 p-2">
+                        <div className="flex items-start">
+                          <div className="flex-shrink-0 pt-0.5"></div>
+                          <div className="ml-3 flex-1">
+                            <p className="text-sm font-medium text-[--colors-text]">
+                              Transaction Submitted!
+                            </p>
+                            <p className="mt-1 text-sm text-[--colors-text]">
+                              Your transaction has been sent!
+                            </p>
+                            {/* <a
+                            href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
+                            className="mt-1 text-sm text-[--colors-primary]"
+                            target="_blank"
+                          >
+                            View on BscScan:{" "}
+                            {getEllipsisTxt(transaction.transactionHash)}
+                          </a> */}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex">
+                        <button
+                          onClick={() => toast.dismiss(t.id)}
+                          className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
+                        >
+                          <Icons.X className="text-[--colors-primary]" />
+                        </button>
+                      </div>
+                    </div>
+                  ));
                   console.log({ transaction });
                   if (transaction?.status === "success") {
                     setIsLoading(false);

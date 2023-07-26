@@ -119,13 +119,13 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                 <div className="flex justify-between items-center">
                   {ratePrice > 0 ? (
                     <div
-                      className={`text-[--colors-success] font-semibold text-2xl min-h-[36px]`}
+                      className={`text-[--colors-success] font-semibold text-xl`}
                     >
                       ${(historyData?.[0]?.closePrice / 10 ** 8).toFixed(4)}
                     </div>
                   ) : (
                     <div
-                      className={`text-[--colors-failure] font-semibold text-2xl min-h-[36px]`}
+                      className={`text-[--colors-failure] font-semibold text-xl`}
                     >
                       ${(historyData?.[0]?.closePrice / 10 ** 8).toFixed(4)}
                     </div>
@@ -145,7 +145,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                     >
                       <Icons.ArrowDown className="text-[--colors-white]" />
                       <span className="text-[--colors-white] font-medium text-base uppercase ml-1">
-                        ${ratePrice}
+                        ${ratePrice.toFixed(4)}
                       </span>
                     </div>
                   )}
@@ -164,7 +164,9 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                   <span>
                     {historyData?.[0]?.totalAmount
                       ? Number(
-                          ethers.formatEther(historyData?.[0]?.totalAmount)
+                          ethers.formatEther(
+                            BigInt(historyData?.[0]?.totalAmount)
+                          )
                         )
                           .toFixed(8)
                           .toString()
@@ -213,20 +215,21 @@ const HistoryCard: React.FC<IHistoryProps> = ({
               <span className="text-[--colors-white] uppercase">Claimed</span>
             </div> */}
           </div>
-          {historyBetted?.[0]?.status === "Win" && (
-            <div className="absolute bottom-[0.05rem] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
-              <Icons.TrophyIcon className="text-[--colors-gold]" />
-              <Button
-                className="bg-[--colors-primary] hover:bg-[--colors-primary] hover:opacity-70"
-                onClick={() => {
-                  if (showCollectWinningModal)
-                    showCollectWinningModal(true, historyRound);
-                }}
-              >
-                Collect Winnings
-              </Button>
-            </div>
-          )}
+          {historyBetted?.[0]?.status === "Win" &&
+            !historyBetted?.[0]?.claimed && (
+              <div className="absolute bottom-[0.05rem] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
+                <Icons.TrophyIcon className="text-[--colors-gold]" />
+                <Button
+                  className="bg-[--colors-primary] hover:bg-[--colors-primary] hover:opacity-70"
+                  onClick={() => {
+                    if (showCollectWinningModal)
+                      showCollectWinningModal(true, historyRound);
+                  }}
+                >
+                  Collect Winnings
+                </Button>
+              </div>
+            )}
         </div>
       </div>
     </React.Fragment>

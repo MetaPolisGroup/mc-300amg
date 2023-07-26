@@ -214,6 +214,7 @@
 
 .backface-hidden {
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .translate-rotateY {
@@ -225,6 +226,16 @@
   align-items: center !important;
 }
 
+.swiper-slide {
+  width: 320px !important;
+}
+
 .top-banner {
   transform: translateX(0%) translateY(200%) rotate(-45deg);
+}
+
+@media only screen and (max-width: 640px) {
+  .swiper-slide {
+    width: 100% !important;
+  }
 }

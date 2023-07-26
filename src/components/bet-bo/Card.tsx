@@ -91,7 +91,7 @@ const Card = () => {
             },
             // when window width is >= 640px
             640: {
-              slidesPerView: 3,
+              slidesPerView: 7,
               spaceBetween: 16,
             },
           }}
@@ -147,7 +147,14 @@ const Card = () => {
             background: "var(--colors-backgroundAlt)",
             color: "var(--colors-text)",
           }}
-          content={<ClaimModal winningRound={winningRound} />}
+          content={
+            <ClaimModal
+              winningRound={winningRound}
+              onCancel={() => {
+                showCollectWinningHandler(false, "");
+              }}
+            />
+          }
         />
       </div>
     </React.Fragment>
