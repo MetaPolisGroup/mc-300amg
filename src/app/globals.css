@@ -214,6 +214,7 @@
 
 .backface-hidden {
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .translate-rotateY {
