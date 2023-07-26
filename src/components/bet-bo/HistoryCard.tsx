@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Icons } from "../Icons";
 import { useAccount } from "wagmi";
-import getDataFileredByOnSnapshot from "@/helpers/getDataByOnSnapshot";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { DocumentData } from "firebase/firestore";
 import { isEmpty } from "lodash";
 import { ethers } from "ethers";
@@ -119,21 +119,15 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                 <div className="flex justify-between items-center">
                   {ratePrice > 0 ? (
                     <div
-                      className={`text-[--colors-success] font-semibold text-2xl min-h-[36px]`}
+                      className={`text-[--colors-success] font-semibold text-xl`}
                     >
-                      $
-                      {(Number(historyData?.[0]?.closePrice) / 10 ** 8).toFixed(
-                        4
-                      )}
+                      ${(historyData?.[0]?.closePrice / 10 ** 8).toFixed(4)}
                     </div>
                   ) : (
                     <div
-                      className={`text-[--colors-failure] font-semibold text-2xl min-h-[36px]`}
+                      className={`text-[--colors-failure] font-semibold text-xl`}
                     >
-                      $
-                      {(Number(historyData?.[0]?.closePrice) / 10 ** 8).toFixed(
-                        4
-                      )}
+                      ${(historyData?.[0]?.closePrice / 10 ** 8).toFixed(4)}
                     </div>
                   )}
                   {ratePrice > 0 ? (
@@ -151,7 +145,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                     >
                       <Icons.ArrowDown className="text-[--colors-white]" />
                       <span className="text-[--colors-white] font-medium text-base uppercase ml-1">
-                        ${ratePrice}
+                        ${ratePrice.toFixed(4)}
                       </span>
                     </div>
                   )}
@@ -161,21 +155,21 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                   <span className="font-medium text-sm">
                     $
                     {historyData?.[0]?.lockPrice
-                      ? ethers.formatEther(historyData?.[0]?.lockPrice)
+                      ? (historyData?.[0]?.lockPrice / 10 ** 8).toFixed(4)
                       : 0}
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-[--colors-text] font-semibold text-base">
                   <span>Prize Pool:</span>
                   <span>
-                    {historyData?.[0]?.totalAmount
+                    {/* {historyData?.[0]?.totalAmount
                       ? Number(
                           ethers.formatEther(historyData?.[0]?.totalAmount)
                         )
                           .toFixed(8)
                           .toString()
                       : 0}{" "}
-                    BNB
+                    BNB */}
                   </span>
                 </div>
               </div>

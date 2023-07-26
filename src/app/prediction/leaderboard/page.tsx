@@ -1,11 +1,38 @@
+"use client";
 import { Icons } from "@/components/Icons";
 import FilterLeaderboard from "@/components/leaderboard/FilterLeaderboard";
 import MyRanking from "@/components/leaderboard/MyRanking";
 import Ranking from "@/components/leaderboard/Ranking";
 import TopRanking from "@/components/leaderboard/TopRanking";
-import React from "react";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
+import { DocumentData } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
 
 const LeaderBoard = () => {
+  const [leaderboardData, setLeaderboardData] = useState<DocumentData[]>([]);
+
+  useEffect(() => {
+    getDataFileredByOnSnapshot(
+      "leaderboard",
+      [["type", "==", "Round Played"]],
+      (docs: DocumentData) => {
+        setLeaderboardData(docs as DocumentData[]);
+      }
+    );
+  }, []);
+
+  const queryHandler = (option: string) => {
+    getDataFileredByOnSnapshot(
+      "leaderboard",
+      [["type", "==", option]],
+      (docs: DocumentData) => {
+        setLeaderboardData(docs as DocumentData[]);
+      }
+    );
+  };
+
+  console.log({ leaderboardData });
+
   return (
     <main className="w-full">
       <div className="bg-gradient-to-r from-[--colors-bubblegum1] to-[--colors-bubblegum2] p-6">
@@ -45,7 +72,7 @@ const LeaderBoard = () => {
       </div>
       <div className="bg-[--colors-background] p-6">
         <div className="max-w-[1200px] mx-auto">
-          <FilterLeaderboard />
+          <FilterLeaderboard onQueries={queryHandler} />
           <MyRanking />
           <TopRanking />
         </div>

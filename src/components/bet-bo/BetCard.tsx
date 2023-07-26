@@ -131,10 +131,10 @@ const BetCard: React.FC<IBetCard> = ({
               <div className="flex items-center justify-between text-[--colors-text] font-semibold text-base">
                 <span>Prize Pool:</span>
                 <span>
-                  {nextBetData?.totalAmount
+                  {/* {nextBetData?.totalAmount
                     ? ethers.formatEther(nextBetData?.totalAmount).slice(0, 8)
                     : 0}{" "}
-                  BNB
+                  BNB */}
                 </span>
               </div>
               {isEmpty(dataBettedInCurrentRound) ? (

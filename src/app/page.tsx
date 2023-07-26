@@ -8,7 +8,7 @@ import DrawerHistory from "@/components/drawer-history/DrawerHistory";
 import Card from "@/components/bet-bo/Card";
 import SubNav from "@/components/SubNav";
 import clsx from "clsx";
-import { DocumentData } from "firebase/firestore";
+import Chart from "@/components/chart";
 
 import Popup, { PopupRef } from "@/components/ui/Modal";
 import ClaimModal from "@/components/bet-bo/ClaimModal";
@@ -51,6 +51,7 @@ export default function Home() {
           onCollect={handlerToggleCollectWinning}
         />
       </div>
+      <Chart />
       <SubNav isShowHistory={isShowDrawer} onShowHistory={setIsShowDrawer} />
 
       <Popup

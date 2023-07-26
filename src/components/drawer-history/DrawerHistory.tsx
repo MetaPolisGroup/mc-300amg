@@ -15,7 +15,7 @@ import {
   RESULT_STATUS,
 } from "@/constants/history";
 import { useAccount } from "wagmi";
-import getDataFileredByOnSnapshot from "@/helpers/getDataByOnSnapshot";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { DocumentData } from "firebase/firestore";
 
 interface IDrawerHistory {
