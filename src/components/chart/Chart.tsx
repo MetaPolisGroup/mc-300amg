@@ -49,7 +49,6 @@ const Chart: React.FC = () => {
   useEffect(() => {
     var chartDom = document.getElementById("main")!;
     var myChart = echarts.init(chartDom);
-    console.log({ chartData });
     const option: EChartsOption = {
       tooltip: {
         trigger: "axis",
