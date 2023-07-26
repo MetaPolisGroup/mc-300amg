@@ -59,7 +59,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
 
   const balance =
     isClient && isConnected && data?.value
-      ? ethers.formatEther(data?.value!)
+      ? ethers.formatEther(BigInt(data?.value!))
       : 0;
 
   const changeUpOrDownHandler = (status: string) => {

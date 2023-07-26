@@ -1,7 +1,11 @@
 import React from "react";
 import { Icons } from "../Icons";
 
-const TopRanking = () => {
+interface ITopRankingProps {
+  topLeaderboard: IUserList[];
+}
+
+const TopRanking: React.FC<ITopRankingProps> = ({ topLeaderboard }) => {
   return (
     <div className="flex flex-col w-full gap-2 mb-4 lg:flex-row">
       <div className="relative overflow-x-auto flex-1 rounded-[--radii-card] bg-[--colors-backgroundAlt]">
@@ -16,7 +20,7 @@ const TopRanking = () => {
               <Icons.LaurelRight className="text-[--colors-gold] fill-[--colors-gold] rotate-[-30deg]" />
             </div>
             <div className="text-base text-[--colors-primary] font-bold">
-              CROSSZERO
+              {topLeaderboard?.[0]?.user_id}
             </div>
           </div>
           <div className="flex justify-between items-center mb-1">
@@ -62,7 +66,7 @@ const TopRanking = () => {
               <Icons.LaurelRight className="text-[--colors-silver] fill-[--colors-silver] rotate-[-30deg]" />
             </div>
             <div className="text-base text-[--colors-primary] font-bold">
-              0xf1...a1b7
+              {topLeaderboard?.[1]?.user_id}
             </div>
           </div>
           <div className="flex justify-between items-center mb-1">
@@ -108,7 +112,7 @@ const TopRanking = () => {
               <Icons.LaurelRight className="text-[--colors-bronze] fill-[--colors-bronze] rotate-[-30deg]" />
             </div>
             <div className="text-base text-[--colors-primary] font-bold">
-              0xf1...a1b7
+              {topLeaderboard?.[2]?.user_id}
             </div>
           </div>
           <div className="flex justify-between items-center mb-1">

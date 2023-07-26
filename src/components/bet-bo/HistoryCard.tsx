@@ -164,7 +164,9 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                   <span>
                     {/* {historyData?.[0]?.totalAmount
                       ? Number(
-                          ethers.formatEther(historyData?.[0]?.totalAmount)
+                          ethers.formatEther(
+                            BigInt(historyData?.[0]?.totalAmount)
+                          )
                         )
                           .toFixed(8)
                           .toString()

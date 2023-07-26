@@ -64,7 +64,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data }) => {
             <div className="text-sm">Your position</div>
             <div className="text-sm font-bold">
               {data?.amount
-                ? replaceDotToComma(ethers.formatEther(data?.amount))
+                ? replaceDotToComma(ethers.formatEther(BigInt(data?.amount)))
                 : 0}{" "}
               BNB
             </div>
@@ -156,7 +156,9 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data }) => {
             <div className="text-sm">
               $
               {data?.round?.lockPrice
-                ? replaceDotToComma(ethers.formatEther(data?.round?.lockPrice))
+                ? replaceDotToComma(
+                    ethers.formatEther(BigInt(data?.round?.lockPrice))
+                  )
                 : 0}
             </div>
           </div>
@@ -165,7 +167,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data }) => {
             <div className="text-sm font-bold">
               {data?.round?.totalAmount
                 ? replaceDotToComma(
-                    ethers.formatEther(data?.round?.totalAmount)
+                    ethers.formatEther(BigInt(data?.round?.totalAmount))
                   )
                 : 0}{" "}
               BNB
