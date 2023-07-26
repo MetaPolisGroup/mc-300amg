@@ -31,7 +31,9 @@ const LeaderBoard = () => {
     );
   };
 
-  console.log({ leaderboardData });
+  const topLeaderboard = leaderboardData?.[0]?.user_lists.slice(0, 3);
+
+  const ranking = leaderboardData?.[0]?.user_lists.slice(3);
 
   return (
     <main className="w-full">
@@ -48,10 +50,7 @@ const LeaderBoard = () => {
                 <Icons.ChevronRightIcon className="text-[--colors-textDisabled]" />
               </li>
               <li>
-                <a
-                  href="/prediction"
-                  className="text-[--colors-primary] font-semibold"
-                >
+                <a href="/" className="text-[--colors-primary] font-semibold">
                   Prediction
                 </a>
               </li>
@@ -74,10 +73,10 @@ const LeaderBoard = () => {
         <div className="max-w-[1200px] mx-auto">
           <FilterLeaderboard onQueries={queryHandler} />
           <MyRanking />
-          <TopRanking />
+          <TopRanking topLeaderboard={topLeaderboard} />
         </div>
       </div>
-      <Ranking />
+      <Ranking ranking={ranking} />
     </main>
   );
 };

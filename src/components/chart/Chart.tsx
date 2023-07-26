@@ -12,6 +12,7 @@ import { LineChart, LineSeriesOption } from "echarts/charts";
 import { UniversalTransition } from "echarts/features";
 import { CanvasRenderer } from "echarts/renderers";
 import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
+import { DocumentData } from "firebase/firestore";
 
 echarts.use([
   GridComponent,
@@ -27,24 +28,28 @@ echarts.use([
 type EChartsOption = echarts.ComposeOption<
   GridComponentOption | LineSeriesOption
 >;
-const now = new Date();
-const sevenMinutesAgo = new Date(now.getTime() - 7 * 60 * 1000);
+
 const Chart: React.FC = () => {
-  const [data, setData] = React.useState();
+  const [chartData, setChartData] = React.useState<DocumentData[]>([]);
   useEffect(() => {
-    getDataFileredByOnSnapshot(
-      "charts",
-      [["created_at", ">=", Number(sevenMinutesAgo.getTime())]],
-      (docs) => {
-        console.log(docs);
-      }
-    );
+    const interval = setInterval(() => {
+      const now = new Date();
+      const sevenMinutesAgo = new Date(now.getTime() - 7 * 60 * 1000);
+      getDataFileredByOnSnapshot(
+        "charts",
+        [["created_at", ">=", sevenMinutesAgo.getTime() / 1000]],
+        (docs) => {
+          setChartData(docs);
+        }
+      );
+      return () => clearInterval(interval);
+    }, 2000);
   }, []);
-  console.log(sevenMinutesAgo.getTime());
+
   useEffect(() => {
     var chartDom = document.getElementById("main")!;
     var myChart = echarts.init(chartDom);
-
+    console.log({ chartData });
     const option: EChartsOption = {
       tooltip: {
         trigger: "axis",
@@ -73,7 +78,7 @@ const Chart: React.FC = () => {
       ],
     };
     option && myChart.setOption(option);
-  }, []);
+  }, [chartData]);
 
   return <div id="main" style={{ width: "100%", height: "300px" }}></div>;
 };

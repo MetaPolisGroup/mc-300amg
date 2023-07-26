@@ -125,7 +125,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
 
   const renderRoundHistory = () => {
     return (
-      <div>
+      <>
         <div className="text-lg font-bold mb-2">Round History</div>
         <div
           className={clsx(
@@ -171,7 +171,12 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
           <div className="flex justify-between mb-1">
             <div className="text-sm">Locked Price:</div>
             <div className="text-sm">
-              ${data?.round?.lockPrice ? data?.round?.lockPrice / 10 ** 8 : 0}
+              $
+              {data?.round?.lockPrice
+                ? replaceDotToComma(
+                    ethers.formatEther(BigInt(data?.round?.lockPrice))
+                  )
+                : 0}
             </div>
           </div>
           <div className="flex justify-between mb-1">
@@ -198,7 +203,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
   };
 
