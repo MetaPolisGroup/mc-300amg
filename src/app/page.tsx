@@ -6,7 +6,7 @@ import DrawerHistory from "@/components/drawer-history/DrawerHistory";
 import Card from "@/components/bet-bo/Card";
 import SubNav from "@/components/SubNav";
 import clsx from "clsx";
-import { DocumentData } from "firebase/firestore";
+import Chart from "@/components/chart";
 
 export default function Home() {
   const [isShowDrawer, setIsShowDrawer] = useState<boolean>(false);
@@ -30,6 +30,7 @@ export default function Home() {
         </div>
         <DrawerHistory open={isShowDrawer} onClose={setIsShowDrawer} />
       </div>
+      <Chart />
       <SubNav isShowHistory={isShowDrawer} onShowHistory={setIsShowDrawer} />
     </main>
   );

@@ -175,13 +175,13 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                 <div className="flex items-center justify-between text-[--colors-text] font-semibold text-base">
                   <span>Prize Pool:</span>
                   <span>
-                    {liveBetData?.[0]?.totalAmount
+                    {/* {liveBetData?.[0]?.totalAmount
                       ? Number(
                           ethers.formatEther(liveBetData?.[0]?.totalAmount)
                         )
                           .toFixed(8)
                           .toString()
-                      : 0}{" "}
+                      : 0}{" "} */}
                     BNB
                   </span>
                 </div>

@@ -9,7 +9,6 @@ import {
 
 const getAllData = (
   collectionName: string,
-
   onSnapshotCallback: (docs: DocumentData[]) => void
 ) => {
   const collectionRef = collection(db, collectionName);
