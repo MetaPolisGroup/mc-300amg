@@ -1,12 +1,12 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CountDown from "@/components/CountDown";
 import CoinCurrency from "@/components/CoinCurrency";
 import DrawerHistory from "@/components/drawer-history/DrawerHistory";
 import Card from "@/components/bet-bo/Card";
 import SubNav from "@/components/SubNav";
 import clsx from "clsx";
-import Chart from "@/components/chart";
+import Chart from "@/components/chart/Chart";
 
 export default function Home() {
   const [isShowDrawer, setIsShowDrawer] = useState<boolean>(false);
@@ -27,10 +27,10 @@ export default function Home() {
             </div>
           </div>
           <Card />
+          <Chart />
         </div>
         <DrawerHistory open={isShowDrawer} onClose={setIsShowDrawer} />
       </div>
-      <Chart />
       <SubNav isShowHistory={isShowDrawer} onShowHistory={setIsShowDrawer} />
     </main>
   );
