@@ -136,7 +136,8 @@ const BetCard: React.FC<IBetCard> = ({
                         .formatEther(BigInt(nextBetData?.totalAmount))
                         .slice(0, 8)
                     : 0}{" "}
-                  BNB
+                  BNB 
+
                 </span>
               </div>
               {isEmpty(dataBettedInCurrentRound) ? (
