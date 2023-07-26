@@ -137,6 +137,7 @@ const BetCard: React.FC<IBetCard> = ({
                         .slice(0, 8)
                     : 0}{" "}
                   BNB 
+
                 </span>
               </div>
               {isEmpty(dataBettedInCurrentRound) ? (
