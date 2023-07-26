@@ -1,15 +1,32 @@
 "use client";
-import { useEffect, useState } from "react";
+import { createRef, useEffect, useState } from "react";
+
 import CountDown from "@/components/CountDown";
 import CoinCurrency from "@/components/CoinCurrency";
 import DrawerHistory from "@/components/drawer-history/DrawerHistory";
+
 import Card from "@/components/bet-bo/Card";
 import SubNav from "@/components/SubNav";
 import clsx from "clsx";
 import { DocumentData } from "firebase/firestore";
 
+import Popup, { PopupRef } from "@/components/ui/Modal";
+import ClaimModal from "@/components/bet-bo/ClaimModal";
+
 export default function Home() {
   const [isShowDrawer, setIsShowDrawer] = useState<boolean>(false);
+
+  const [collectWinning, setCollectWinning] = useState<string>("");
+  const collectWinningsRef = createRef<PopupRef>();
+
+  const handlerToggleCollectWinning = (status: boolean, round: string) => {
+    setCollectWinning(round);
+
+    if (status === true) {
+      return collectWinningsRef.current?.open();
+    }
+    return collectWinningsRef.current?.close();
+  };
 
   return (
     <main className="bg-gradient-to-r from-[--colors-violetAlt1] to-[--colors-violetAlt2] overflow-hidden">
@@ -28,9 +45,33 @@ export default function Home() {
           </div>
           <Card />
         </div>
-        <DrawerHistory open={isShowDrawer} onClose={setIsShowDrawer} />
+        <DrawerHistory
+          open={isShowDrawer}
+          onClose={setIsShowDrawer}
+          onCollect={handlerToggleCollectWinning}
+        />
       </div>
       <SubNav isShowHistory={isShowDrawer} onShowHistory={setIsShowDrawer} />
+
+      <Popup
+        ref={collectWinningsRef}
+        width={300}
+        footer={false}
+        closable
+        title="Collect Winnnings"
+        styleContent={{
+          background: "var(--colors-backgroundAlt)",
+          color: "var(--colors-text)",
+        }}
+        content={
+          <ClaimModal
+            winningRound={collectWinning}
+            onCancel={() => {
+              handlerToggleCollectWinning(false, "");
+            }}
+          />
+        }
+      />
     </main>
   );
 }

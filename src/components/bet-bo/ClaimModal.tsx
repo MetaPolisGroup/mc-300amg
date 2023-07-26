@@ -10,10 +10,11 @@ import { createWalletClient, custom } from "viem";
 
 interface IClaimProps {
   winningRound: string;
+  onCancel: () => void;
 }
 const isBrowser = () => typeof window !== "undefined";
 
-const ClaimModal: React.FC<IClaimProps> = ({ winningRound }) => {
+const ClaimModal: React.FC<IClaimProps> = ({ winningRound, onCancel }) => {
   const { address } = useAccount();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   let walletClient: any = null;
@@ -86,9 +87,11 @@ const ClaimModal: React.FC<IClaimProps> = ({ winningRound }) => {
           }
         }
       }
+      onCancel();
     } catch (error) {
       setIsLoading(false);
       console.log(error);
+      onCancel();
     }
   };
 
@@ -103,7 +106,12 @@ const ClaimModal: React.FC<IClaimProps> = ({ winningRound }) => {
       <p className="text-center text-[--colors-text99] my-2">
         From round {winningRound}
       </p>
-      <Button variant={"success"} className="w-full" onClick={claimHandler}>
+      <Button
+        variant={"success"}
+        isLoading={isLoading}
+        className="w-full"
+        onClick={claimHandler}
+      >
         Confirm
       </Button>
     </div>
