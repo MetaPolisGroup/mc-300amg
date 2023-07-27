@@ -1,6 +1,6 @@
 import React from "react";
-import Left from "../../components/staking/Left";
-import Right from "../../components/staking/Right";
+import Left from "../../components/staking/_Left";
+import Right from "../../components/staking/_Right";
 
 const Staking = () => {
   return (
