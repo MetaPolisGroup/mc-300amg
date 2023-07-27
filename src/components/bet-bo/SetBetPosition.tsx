@@ -23,7 +23,6 @@ interface ISetBetPositionProps {
   onPlacedBet?: (status: boolean) => void;
 }
 
-const isBrowser = () => typeof window !== "undefined";
 let walletClient: any;
 if (typeof window !== "undefined") {
   walletClient = createWalletClient({
