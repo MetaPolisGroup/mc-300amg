@@ -4,7 +4,7 @@ import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { DocumentData } from "firebase/firestore";
 
 interface IFutureCard {
-  futureRound: string;
+  futureRound: number;
   plusMinute?: number;
 }
 

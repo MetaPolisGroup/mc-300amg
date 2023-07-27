@@ -10,7 +10,7 @@ import CalculatingCard from "./CalculatingCard";
 import getAllData from "@/helpers/getAllDataByOnSnapshot";
 
 interface ILiveBetCardProps {
-  liveRound: string;
+  liveRound: number;
   nextBetData: DocumentData;
 }
 
@@ -23,6 +23,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
   const [liveBettedData, setLiveBettedData] = useState<DocumentData[]>();
   const [chainlinkData, setChainlinkData] = useState<DocumentData[]>();
   const [progressing, setProgressing] = useState<number>(0);
+  const [isClient, setIsClient] = useState<boolean>(false);
 
   useEffect(() => {
     getDataFileredByOnSnapshot(
@@ -32,7 +33,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
         setLiveBetData(docs as DocumentData[]);
       }
     );
-    if (isConnected) {
+    if (isClient && isConnected) {
       getDataFileredByOnSnapshot(
         "bets",
         [
@@ -47,7 +48,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
     getAllData("chainlink", (docs: DocumentData) => {
       setChainlinkData(docs as DocumentData[]);
     });
-  }, [liveRound, address, isConnected]);
+  }, [isClient, liveRound, address, isConnected]);
 
   useEffect(() => {
     const target = +nextBetData?.lockTimestamp * 1000;
@@ -59,9 +60,14 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
     return () => clearInterval(interval);
   }, [nextBetData?.lockTimestamp]);
 
-  const ratePrice =
-    (chainlinkData?.[0]?.price - liveBetData?.[0]?.lockPrice) / 10 ** 8;
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
+  const ratePrice =
+    (+chainlinkData?.[0]?.price - +liveBetData?.[0]?.lockPrice) / 10 ** 8;
+
+  console.log(liveBetData);
   return (
     <div
       className={`w-full flex justify-center items-center relative transition-transform duration-700 preverve-3d`}

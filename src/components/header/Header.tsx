@@ -14,8 +14,6 @@ import { Icons } from "../Icons";
 
 import NAV_HEADER from "@/constants/navConstants";
 
-import { createWalletClient, custom } from "viem";
-import Tooltip from "../ui/Tooltip";
 import TooltipElement from "../ui/Tooltip";
 import HeaderItem from "./HeaderItem";
 enum EActive {
@@ -37,60 +35,14 @@ const spring = {
   damping: 30,
 };
 
-const isBrowser = () => typeof window !== "undefined";
-
 const Header = () => {
   const settingPopup = React.createRef<PopupRef>();
   const [isOn, setIsOn] = React.useState(false);
   const [isButton, setIsButton] = React.useState<EActive>();
 
-  let walletClient: any = null;
-  if (isBrowser()) {
-    walletClient = createWalletClient({
-      chain: CONSTANTS.CHAIN,
-      transport: custom(window.ethereum as any),
-    });
-  }
-
   const toggleSwitch = () => {
     setIsOn((prev) => !prev);
   };
-  // const callRound = async () => {
-  //   const gasPrice = await publicClient.getGasPrice();
-  //   const gas = await publicClient.estimateContractGas({
-  //     type: "eip1559",
-  //     address: CONSTANTS.ADDRESS.PREDICTION,
-  //     abi: CONSTANTS.ABI.PREDICTION,
-  //     functionName: "executeRound",
-  //     args: ["11", "100000"],
-  //     account: privateKey(
-  //       "0x7476c8c08f10b30ac5aead18e090ff99549c4f28d1b90efde543eb1158e41493"
-  //     ),
-  //   });
-  //   const { request } = await publicClient.simulateContract({
-  //     account: privateKey(
-  //       "0x7476c8c08f10b30ac5aead18e090ff99549c4f28d1b90efde543eb1158e41493"
-  //     ),
-
-  //     address: CONSTANTS.ADDRESS.PREDICTION,
-  //     abi: CONSTANTS.ABI.PREDICTION,
-  //     functionName: "executeRound",
-  //     args: ["11", "100000"],
-  //     gas,
-  //     type: "eip1559",
-  //     maxFeePerGas: gasPrice,
-  //     maxPriorityFeePerGas: gasPrice,
-  //   });
-  //   const hash = await walletClient.writeContract(request);
-  //   if (hash) {
-  //     const transaction = await publicClient.waitForTransactionReceipt({
-  //       hash,
-  //     });
-  //     if (transaction?.status === "success") {
-  //       console.log("success");
-  //     }
-  //   }
-  // };
 
   const renderNavItems = () => {
     return NAV_HEADER.map((nav) => {
@@ -117,7 +69,7 @@ const Header = () => {
             <div className="hidden xl:block">
               <ChangeMode HWrapper="30px" WWrapper="70px" H="20px" W="20px" />
             </div>
-            {/* <Button onClick={callRound}>Call Round</Button> */}
+
             <Popup
               ref={settingPopup}
               footer={false}

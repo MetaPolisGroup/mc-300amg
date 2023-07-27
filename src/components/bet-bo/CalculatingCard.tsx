@@ -4,7 +4,7 @@ import Image from "next/image";
 import TooltipElement from "../ui/Tooltip";
 
 interface ICalculatingCardProps {
-  liveRound: string;
+  liveRound: number;
 }
 
 const CalculatingCard: React.FC<ICalculatingCardProps> = ({ liveRound }) => {
