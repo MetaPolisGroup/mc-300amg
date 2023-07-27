@@ -1,6 +1,6 @@
 import React from "react";
-import Left from "../../components/staking/_Left";
-import Right from "../../components/staking/_Right";
+import TokenStake from "../../components/staking/TokenStake";
+import ReferralCode from "../../components/staking/ReferralCode";
 
 const Staking = () => {
   return (
@@ -23,8 +23,8 @@ const Staking = () => {
             </div>
           </div>
           <div className="grid gap-y-5 md:gap-5 grid-cols-1 md:grid-cols-3 mt-4">
-            <Left />
-            <Right />
+            <TokenStake />
+            <ReferralCode />
           </div>
         </div>
       </div>

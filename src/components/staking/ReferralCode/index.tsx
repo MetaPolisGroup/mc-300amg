@@ -1,6 +1,6 @@
 import React from "react";
 
-const Right = () => {
+const ReferralCode = () => {
   return (
     <div className="p-3 rounded-md border-2 border-[--colors-secondary]">
       <div className="p-5 border rounded-xl text-center text-3xl">
@@ -32,4 +32,4 @@ const Right = () => {
   );
 };
 
-export default Right;
+export default ReferralCode;

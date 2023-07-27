@@ -1,6 +1,6 @@
 import React from "react";
 
-const Left = () => {
+const TokenStake = () => {
   return (
     <div className="col-span-2 p-3 rounded-md border-2 border-[--colors-secondary]">
       <div className="border border-gray-700 rounded-md p-5">
@@ -82,4 +82,4 @@ const Left = () => {
   );
 };
 
-export default Left;
+export default TokenStake;
