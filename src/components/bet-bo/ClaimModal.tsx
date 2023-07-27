@@ -6,29 +6,27 @@ import { getEllipsisTxt } from "@/utils/formmater-address";
 import { publicClient } from "@/lib/contract-config";
 import { useAccount } from "wagmi";
 import { CONSTANTS } from "@/constants";
-import { createWalletClient, custom } from "viem";
+import { createWalletClient, custom, http } from "viem";
 
 interface IClaimProps {
   winningRound: string;
   onCancel: () => void;
 }
-const isBrowser = () => typeof window !== "undefined";
+
+let walletClient: any = null;
+
+if (typeof window !== "undefined") {
+  walletClient = createWalletClient({
+    chain: CONSTANTS.CHAIN,
+    // transport: custom(window.ethereum as any),
+    transport: http(),
+  });
+}
 
 const ClaimModal: React.FC<IClaimProps> = ({ winningRound, onCancel }) => {
   const { address } = useAccount();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isClient, setIsClient] = useState<boolean>(false);
-  let walletClient: any = null;
-  if (isBrowser()) {
-    walletClient = createWalletClient({
-      chain: CONSTANTS.CHAIN,
-      transport: custom(window.ethereum as any),
-    });
-  }
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
   const claimHandler = async () => {
     setIsLoading(true);
     try {
