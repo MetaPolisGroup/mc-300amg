@@ -22,8 +22,8 @@ import ClaimModal from "./ClaimModal";
 
 const Card = () => {
   const { address, isConnected } = useAccount();
-  const [currentRound, setCurrentRound] = useState<string>("");
-  const [winningRound, setWinningRound] = useState<string>("");
+  const [currentRound, setCurrentRound] = useState<number>(0);
+  const [winningRound, setWinningRound] = useState<number>();
   const [nextBetData, setNextBetData] = useState<DocumentData[]>([]);
   const [datasBetted, setDatasBetted] = useState<DocumentData[]>([]);
 
@@ -56,7 +56,7 @@ const Card = () => {
     (dataBetted: DocumentData) => dataBetted.epoch === currentRound
   );
 
-  const showCollectWinningHandler = (status: boolean, round: string) => {
+  const showCollectWinningHandler = (status: boolean, round: number) => {
     if (status === true) {
       setWinningRound(round);
       return collectWinningsRef.current?.open();
@@ -98,25 +98,25 @@ const Card = () => {
         >
           <SwiperSlide>
             <HistoryCard
-              historyRound={(+currentRound - 4).toString()}
+              historyRound={+currentRound - 4}
               showCollectWinningModal={showCollectWinningHandler}
             />
           </SwiperSlide>
           <SwiperSlide>
             <HistoryCard
-              historyRound={(+currentRound - 3).toString()}
+              historyRound={+currentRound - 3}
               showCollectWinningModal={showCollectWinningHandler}
             />
           </SwiperSlide>
           <SwiperSlide>
             <HistoryCard
-              historyRound={(+currentRound - 2).toString()}
+              historyRound={+currentRound - 2}
               showCollectWinningModal={showCollectWinningHandler}
             />
           </SwiperSlide>
           <SwiperSlide>
             <LiveBetCard
-              liveRound={(+currentRound - 1).toString()}
+              liveRound={+currentRound - 1}
               nextBetData={nextBetData[0]}
             />
           </SwiperSlide>
@@ -128,13 +128,10 @@ const Card = () => {
             />
           </SwiperSlide>
           <SwiperSlide>
-            <FutureCard futureRound={(+currentRound + 1).toString()} />
+            <FutureCard futureRound={+currentRound + 1} />
           </SwiperSlide>
           <SwiperSlide>
-            <FutureCard
-              futureRound={(+currentRound + 2).toString()}
-              plusMinute={5}
-            />
+            <FutureCard futureRound={+currentRound + 2} plusMinute={5} />
           </SwiperSlide>
         </Swiper>
         <Popup
@@ -151,7 +148,7 @@ const Card = () => {
             <ClaimModal
               winningRound={winningRound}
               onCancel={() => {
-                showCollectWinningHandler(false, "");
+                showCollectWinningHandler(false, 0);
               }}
             />
           }

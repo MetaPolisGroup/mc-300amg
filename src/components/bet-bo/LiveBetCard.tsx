@@ -10,7 +10,7 @@ import CalculatingCard from "./CalculatingCard";
 import getAllData from "@/helpers/getAllDataByOnSnapshot";
 
 interface ILiveBetCardProps {
-  liveRound: string;
+  liveRound: number;
   nextBetData: DocumentData;
 }
 
@@ -65,8 +65,9 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
   }, []);
 
   const ratePrice =
-    (chainlinkData?.[0]?.price - liveBetData?.[0]?.lockPrice) / 10 ** 8;
+    (+chainlinkData?.[0]?.price - +liveBetData?.[0]?.lockPrice) / 10 ** 8;
 
+  console.log(liveBetData);
   return (
     <div
       className={`w-full flex justify-center items-center relative transition-transform duration-700 preverve-3d`}
