@@ -84,7 +84,7 @@ const Chart: React.FC = () => {
         },
         formatter: (params: any) => {
           dataHeaderRef.current = {
-            price: params?.[0]?.data.toFixed(4),
+            price: params?.[0]?.data?.toFixed(4) ?? params?.[0]?.data,
             time: params?.[0]?.axisValue,
           };
 
@@ -106,12 +106,17 @@ const Chart: React.FC = () => {
         show: true,
         type: "value",
         position: "right",
-        min: min,
-        max: max,
+        min: (min - 0.2).toFixed(2),
+        max: (max + 0.2).toFixed(2),
+        // splitNumber: 2,
+        interval: 0.2,
         splitLine: {
           show: false,
         },
         axisLabel: {
+          formatter: (value: any) => {
+            return `${value.toFixed(4)}`;
+          },
           color: "#9a6aff",
           fontWeight: 500,
         },
@@ -120,12 +125,24 @@ const Chart: React.FC = () => {
         {
           data: price,
           type: "line",
-          areaStyle: {},
+          showSymbol: false,
+          areaStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: "#53dee9" },
+              { offset: 1, color: "rgba(83, 222, 233, 0)" },
+            ]),
+          },
           itemStyle: { borderColor: "#ffc700" },
           lineStyle: { color: "#19c0cc" },
+          smooth: true,
         },
       ],
-      color: ["#53dee9"],
+      grid: {
+        left: 0,
+        right: 15,
+        bottom: 10,
+        containLabel: true,
+      },
     };
     option && myChart.setOption(option);
   }, [chartData]);
@@ -136,7 +153,10 @@ const Chart: React.FC = () => {
         time={dataHeaderRef.current.time}
         price={dataHeaderRef.current.price ?? 0}
       />
-      <div id="main" style={{ width: "100%", height: "300px" }}></div>
+      <div
+        id="main"
+        className="w-full h-[350px] md:h-[400px] bg-[--colors-backgroundAlt] lg:bg-inherit"
+      ></div>
     </div>
   );
 };

@@ -1,19 +1,40 @@
 "use client";
 import CoinCurrency from "@/components/CoinCurrency";
 import CountDown from "@/components/CountDown";
-import SubNav from "@/components/SubNav";
+import SubNav, { MODE } from "@/components/SubNav";
 import Card from "@/components/bet-bo/Card";
 import ClaimModal from "@/components/bet-bo/ClaimModal";
 import Chart from "@/components/chart/Chart";
 import DrawerHistory from "@/components/drawer-history/DrawerHistory";
 import Popup, { PopupRef } from "@/components/ui/Modal";
 import clsx from "clsx";
-import React, { createRef, useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
 
 const Prediction = () => {
+  const [modeSubNavMobile, setModeSubNavMobile] = useState<string>(MODE.CHART);
+
   const collectWinningsRef = createRef<PopupRef>();
-  const [isShowDrawer, setIsShowDrawer] = useState<boolean>(false);
   const [collectWinning, setCollectWinning] = useState<number>();
+
+  const [isScreenMobile, setIsScreenMobile] = useState(false);
+
+  const isShowDrawer = modeSubNavMobile === MODE.HISTORY;
+
+  useEffect(() => {
+    setIsScreenMobile(1024 > screen.width);
+  }, []);
+
+  useEffect(() => {
+    let timeSet = setTimeout(() => {
+      if (!isScreenMobile) return;
+
+      return setModeSubNavMobile(MODE.CARD);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeSet);
+    };
+  }, [isScreenMobile]);
 
   const handlerToggleCollectWinning = (status: boolean, round: number) => {
     setCollectWinning(round);
@@ -36,19 +57,40 @@ const Prediction = () => {
           <div className="text-[--colors-failure] p-4">
             <div className="flex flex-nowrap justify-between">
               <CoinCurrency />
-              <CountDown title="5m" onAction={{ setIsShowDrawer }} />
+              <CountDown
+                title="5m"
+                onAction={{
+                  setIsShowDrawer: () => {
+                    setModeSubNavMobile(MODE.HISTORY);
+                  },
+                }}
+              />
             </div>
           </div>
-          <Card />
-          <Chart />
+
+          <div
+            className={clsx(
+              modeSubNavMobile !== MODE.CARD && isScreenMobile && "hidden"
+            )}
+          >
+            <Card />
+          </div>
+
+          <div
+            className={clsx(
+              modeSubNavMobile !== MODE.CHART && isScreenMobile && "hidden"
+            )}
+          >
+            <Chart />
+          </div>
         </div>
         <DrawerHistory
           open={isShowDrawer}
-          onClose={setIsShowDrawer}
+          onClose={() => setModeSubNavMobile(MODE.CARD)}
           onCollect={handlerToggleCollectWinning}
         />
       </div>
-      <SubNav isShowHistory={isShowDrawer} onShowHistory={setIsShowDrawer} />
+      <SubNav modeMobile={modeSubNavMobile} onAction={setModeSubNavMobile} />
 
       <Popup
         ref={collectWinningsRef}
