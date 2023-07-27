@@ -7,6 +7,7 @@ import SetBetPosition from "./SetBetPosition";
 import TooltipElement from "../ui/Tooltip";
 import { DocumentData } from "firebase/firestore";
 import { ethers } from "ethers";
+import { CURRENCY_UNIT } from "@/constants";
 
 interface IBetCard {
   currentRound: number;
@@ -89,7 +90,12 @@ const BetCard: React.FC<IBetCard> = ({
                   UP
                 </div>
                 <div className="text-[--colors-textSubtle] font-semibold text-sm">
-                  1 Payout
+                  {nextBetData?.bullAmount
+                    ? Number(
+                        ethers.formatEther(BigInt(nextBetData?.bullAmount))
+                      ).toFixed(4)
+                    : 0}{" "}
+                  {CURRENCY_UNIT}
                 </div>
               </div>
             </div>
@@ -166,7 +172,12 @@ const BetCard: React.FC<IBetCard> = ({
               <Icons.PayoutDown />
               <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                 <div className="text-[--colors-textSubtle] font-semibold text-sm">
-                  1 Payout
+                  {nextBetData?.bearAmount
+                    ? Number(
+                        ethers.formatEther(BigInt(nextBetData?.bearAmount))
+                      ).toFixed(4)
+                    : 0}{" "}
+                  {CURRENCY_UNIT}
                 </div>
                 <div className="text-[--colors-failure] font-semibold uppercase text-xl">
                   DOWN
