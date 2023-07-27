@@ -4,6 +4,7 @@ import Header from "@/components/header/Header";
 import Footer from "@/components/Footer";
 import "./globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
+import Menu from "@/components/Menu";
 
 // Others
 
@@ -26,6 +27,7 @@ export default function RootLayout({
           <Header />
           {children}
           <Footer />
+          <Menu />
         </Provider>
       </body>
     </html>
