@@ -1,20 +1,13 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import NetworkSelector from "../NetworkSelector";
 import SubMenu from "../SubMenu";
 import ConnectWallet from "../ConnectWallet";
-import Button from "../ui/Button";
-import { publicClient } from "@/lib/contract-config";
-import { CONSTANTS } from "@/constants";
-import { privateKeyToAccount as privateKey } from "viem/accounts";
-import Popup, { PopupRef } from "../ui/Modal";
+import { PopupRef } from "../ui/Modal";
 import { motion } from "framer-motion";
-import ChangeMode from "../ui/ChangeMode";
-import { Icons } from "../Icons";
 
 import NAV_HEADER from "@/constants/navConstants";
 
-import TooltipElement from "../ui/Tooltip";
 import HeaderItem from "./HeaderItem";
 enum EActive {
   "Default" = 1,
@@ -36,14 +29,6 @@ const spring = {
 };
 
 const Header = () => {
-  const settingPopup = React.createRef<PopupRef>();
-  const [isOn, setIsOn] = React.useState(false);
-  const [isButton, setIsButton] = React.useState<EActive>();
-
-  const toggleSwitch = () => {
-    setIsOn((prev) => !prev);
-  };
-
   const renderNavItems = () => {
     return NAV_HEADER.map((nav) => {
       return <HeaderItem key={nav.id} data={nav} />;
@@ -66,7 +51,7 @@ const Header = () => {
             </ul>
           </div>
           <div className="navbar-end gap-2 p-2 w-auto">
-            <div className="hidden xl:block">
+            {/* <div className="hidden xl:block">
               <ChangeMode HWrapper="30px" WWrapper="70px" H="20px" W="20px" />
             </div>
 
@@ -86,7 +71,7 @@ const Header = () => {
                     GLOBAL
                   </span>
                   <div className="leading-[3.5]">
-                    {/* <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center">
                       <span>Dark mode</span>
                       <div>
                         <ChangeMode
@@ -96,7 +81,7 @@ const Header = () => {
                           W="20px"
                         />
                       </div>
-                    </div> */}
+                    </div>
                     <div className="flex justify-between items-center">
                       <div className="flex items-center">
                         <span>Subgraph Health Indicator</span>
@@ -154,13 +139,13 @@ const Header = () => {
                   />
                 </div>
               }
-            />
+            /> */}
             <NetworkSelector />
             <ConnectWallet />
           </div>
         </div>
       </nav>
-      <SubMenu />
+      {/* <SubMenu /> */}
     </header>
   );
 };
