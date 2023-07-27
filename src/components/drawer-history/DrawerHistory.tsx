@@ -36,9 +36,10 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({
     DocumentData[]
   >([]);
   const [radioChecked, setRadioChecked] = useState<string>(RADIO.ALL);
+  const [isClient, setIsClient] = useState<boolean>(false);
 
   useEffect(() => {
-    if (isConnected && address) {
+    if (isClient && isConnected && address) {
       getDataFileredByOnSnapshot(
         "bets",
         [["user_address", "==", address as `0x${string}`]],
@@ -48,8 +49,12 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({
         }
       );
     }
-  }, [isConnected, address]);
+  }, [isClient, isConnected, address]);
   // console.log({ dataHistory });
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const handleSelectRadio = (value: string) => {
     setRadioChecked(value);

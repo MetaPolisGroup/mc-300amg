@@ -19,6 +19,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
   const { isConnected, address } = useAccount();
   const [historyBetted, setHistoryBetted] = useState<DocumentData[]>([]);
   const [historyData, setHistoryData] = useState<DocumentData[]>([]);
+  const [isClient, setIsClient] = useState<boolean>(false);
   useEffect(() => {
     // Get all round history data
     getDataFileredByOnSnapshot(
@@ -30,7 +31,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
     );
 
     // Get round history data that user has been betted
-    if (isConnected && address && historyRound) {
+    if (isClient && isConnected && address && historyRound) {
       getDataFileredByOnSnapshot(
         "bets",
         [
@@ -42,7 +43,11 @@ const HistoryCard: React.FC<IHistoryProps> = ({
         }
       );
     }
-  }, [isConnected, address, historyRound]);
+  }, [isClient, isConnected, address, historyRound]);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // Determine this round up or down (UP: rate > 0, vice versa)
   const ratePrice =

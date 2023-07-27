@@ -15,7 +15,6 @@ import { Icons } from "../Icons";
 import NAV_HEADER from "@/constants/navConstants";
 
 import { createWalletClient, custom } from "viem";
-import Tooltip from "../ui/Tooltip";
 import TooltipElement from "../ui/Tooltip";
 import HeaderItem from "./HeaderItem";
 enum EActive {
@@ -55,7 +54,7 @@ const Header = () => {
   const toggleSwitch = () => {
     setIsOn((prev) => !prev);
   };
-  // const callRound = async () => {
+
   //   const gasPrice = await publicClient.getGasPrice();
   //   const gas = await publicClient.estimateContractGas({
   //     type: "eip1559",

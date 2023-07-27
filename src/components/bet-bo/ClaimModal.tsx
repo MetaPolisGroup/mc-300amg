@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Icons } from "../Icons";
 import Button from "../ui/Button";
 import toast from "react-hot-toast";
@@ -17,6 +17,7 @@ const isBrowser = () => typeof window !== "undefined";
 const ClaimModal: React.FC<IClaimProps> = ({ winningRound, onCancel }) => {
   const { address } = useAccount();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isClient, setIsClient] = useState<boolean>(false);
   let walletClient: any = null;
   if (isBrowser()) {
     walletClient = createWalletClient({
@@ -24,6 +25,10 @@ const ClaimModal: React.FC<IClaimProps> = ({ winningRound, onCancel }) => {
       transport: custom(window.ethereum as any),
     });
   }
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   const claimHandler = async () => {
     setIsLoading(true);
     try {
