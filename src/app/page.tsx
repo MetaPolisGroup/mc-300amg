@@ -40,8 +40,6 @@ export default function Home() {
 
   const recommendId = searchParams.get("id");
 
-  console.log(recommendId);
-
   useEffect(() => {
     if (isConnected && address) {
       getDataFileredByOnSnapshot(
@@ -138,7 +136,7 @@ export default function Home() {
       />
 
       <Modal
-        show={showUserNickname}
+        show={false}
         title="Username"
         width={500}
         styleContent={{
