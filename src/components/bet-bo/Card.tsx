@@ -70,7 +70,7 @@ const Card = () => {
         <SwiperNavButton swiperRef={swiperRef} />
       </div>
       <div className="flex justify-center items-center">
-        <Swiper
+        {/* <Swiper
           modules={[Navigation]}
           slidesPerView={"auto"}
           centeredSlides={true}
@@ -155,7 +155,7 @@ const Card = () => {
               }}
             />
           }
-        />
+        /> */}
       </div>
     </React.Fragment>
   );
