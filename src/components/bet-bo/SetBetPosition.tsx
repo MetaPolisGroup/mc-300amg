@@ -32,12 +32,14 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   onPlacedBet,
 }) => {
   const { isConnected, address } = useAccount();
-
-  const walletClient = createWalletClient({
-    chain: CONSTANTS.CHAIN,
-    transport: custom(window.ethereum as any),
-    // transport: http(),
-  });
+  let walletClient: any;
+  if (typeof window !== "undefined") {
+    walletClient = createWalletClient({
+      chain: CONSTANTS.CHAIN,
+      transport: custom(window.ethereum as any),
+      // transport: http(),
+    });
+  }
   // Fix hydrate by using isClient
   const [isClient, setIsClient] = useState<boolean>(false);
   const [amount, setAmount] = useState<string>("");
