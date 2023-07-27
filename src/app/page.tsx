@@ -30,12 +30,17 @@ export default function Home() {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const collectWinningsRef = createRef<PopupRef>();
 
-  const isScreenMoblie = 1024 > screen.width;
+  const [isScreenMobile, setIsScreenMobile] = useState(false);
+
   const isShowDrawer = modeSubNavMobile === MODE.HISTORY;
 
   useEffect(() => {
+    setIsScreenMobile(1024 > screen.width);
+  }, []);
+
+  useEffect(() => {
     let timeSet = setTimeout(() => {
-      if (!isScreenMoblie) return;
+      if (!isScreenMobile) return;
 
       return setModeSubNavMobile(MODE.CARD);
     }, 1000);
@@ -43,7 +48,7 @@ export default function Home() {
     return () => {
       clearTimeout(timeSet);
     };
-  }, [isScreenMoblie]);
+  }, [isScreenMobile]);
 
   const handlerToggleCollectWinning = (status: boolean, round: number) => {
     setCollectWinning(round);
@@ -165,7 +170,7 @@ export default function Home() {
 
           <div
             className={clsx(
-              modeSubNavMobile !== MODE.CARD && isScreenMoblie && "hidden"
+              modeSubNavMobile !== MODE.CARD && isScreenMobile && "hidden"
             )}
           >
             <Card />
@@ -173,7 +178,7 @@ export default function Home() {
 
           <div
             className={clsx(
-              modeSubNavMobile !== MODE.CHART && isScreenMoblie && "hidden"
+              modeSubNavMobile !== MODE.CHART && isScreenMobile && "hidden"
             )}
           >
             <Chart />
