@@ -39,6 +39,7 @@ export default function Home() {
 
       return setModeSubNavMobile(MODE.CARD);
     }, 1000);
+
     return () => {
       clearTimeout(timeSet);
     };
