@@ -16,6 +16,8 @@ import Button from "@/components/ui/Button";
 import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import userApi from "@/services/user-api";
 import { useSearchParams } from "next/navigation";
+import { Icons } from "@/components/Icons";
+import toast from "react-hot-toast";
 
 export default function Home() {
   const { isConnected, address } = useAccount();
@@ -81,7 +83,40 @@ export default function Home() {
       });
       if (response) {
         setIsLoading(false);
+        setShowUserNickname(false);
         console.log(response);
+        toast.custom((t) => (
+          <div
+            className={`${
+              t.visible ? "animate-enter" : "animate-leave"
+            } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+          >
+            <div className="flex bg-[--colors-success] p-4 rounded-l-lg">
+              <Icons.XCircle className="text-[--colors-white]" />
+            </div>
+            <div className="flex-1 w-0 p-2">
+              <div className="flex items-start">
+                <div className="flex-shrink-0 pt-0.5"></div>
+                <div className="ml-3 flex-1">
+                  <p className="text-sm font-medium text-[--colors-text]">
+                    Success!
+                  </p>
+                  <p className="mt-1 text-sm text-[--colors-text]">
+                    Your nickname has been updated!
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="flex">
+              <button
+                onClick={() => toast.dismiss(t.id)}
+                className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
+              >
+                <Icons.X className="text-[--colors-primary]" />
+              </button>
+            </div>
+          </div>
+        ));
       }
     } catch (error) {
       setIsLoading(false);
@@ -136,7 +171,7 @@ export default function Home() {
       />
 
       <Modal
-        show={false}
+        show={showUserNickname}
         title="Username"
         width={500}
         styleContent={{
