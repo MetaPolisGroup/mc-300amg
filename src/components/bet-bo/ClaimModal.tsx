@@ -9,7 +9,7 @@ import { CONSTANTS } from "@/constants";
 import { createWalletClient, custom, http } from "viem";
 
 interface IClaimProps {
-  winningRound: string;
+  winningRound: number | undefined;
   onCancel: () => void;
 }
 

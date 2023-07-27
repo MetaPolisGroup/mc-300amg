@@ -9,7 +9,7 @@ import { RESULT_STATUS } from "@/constants/history";
 
 interface IHistoryDataProps {
   data: IHistory;
-  onCollect: (status: boolean, round: string) => void;
+  onCollect: (status: boolean, round: number) => void;
 }
 
 const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {

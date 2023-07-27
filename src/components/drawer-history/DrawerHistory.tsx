@@ -21,7 +21,7 @@ import { DocumentData } from "firebase/firestore";
 interface IDrawerHistory {
   open: boolean;
   onClose: (value: boolean) => void;
-  onCollect: (status: boolean, round: string) => void;
+  onCollect: (status: boolean, round: number) => void;
 }
 
 const DrawerHistory: React.FC<IDrawerHistory> = ({

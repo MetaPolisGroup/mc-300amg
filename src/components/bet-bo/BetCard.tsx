@@ -9,7 +9,7 @@ import { DocumentData } from "firebase/firestore";
 import { ethers } from "ethers";
 
 interface IBetCard {
-  currentRound: string;
+  currentRound: number;
   nextBetData: DocumentData;
   dataBettedInCurrentRound: DocumentData | undefined;
 }
@@ -136,8 +136,7 @@ const BetCard: React.FC<IBetCard> = ({
                         .formatEther(BigInt(nextBetData?.totalAmount))
                         .slice(0, 8)
                     : 0}{" "}
-                  BNB 
-
+                  BNB
                 </span>
               </div>
               {isEmpty(dataBettedInCurrentRound) ? (
