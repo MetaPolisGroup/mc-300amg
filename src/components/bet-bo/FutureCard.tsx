@@ -23,7 +23,9 @@ const FutureCard: React.FC<IFutureCard> = ({ futureRound, plusMinute }) => {
   }, []);
 
   useEffect(() => {
-    const target = +nextBetData?.[0]?.lockTimestamp * 1000;
+    const target = plusMinute
+      ? +nextBetData?.[0]?.lockTimestamp * 1000 + 5 * 60 * 1000
+      : +nextBetData?.[0]?.lockTimestamp * 1000;
     const interval = setInterval(() => {
       const now = new Date().getTime();
       const different = target - now;
@@ -34,7 +36,7 @@ const FutureCard: React.FC<IFutureCard> = ({ futureRound, plusMinute }) => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [nextBetData]);
+  }, [nextBetData, plusMinute]);
   const renderTime = () => {
     const _minute = minute < 10 ? `0${minute}` : minute;
     const _second = second < 10 ? `0${second}` : second;

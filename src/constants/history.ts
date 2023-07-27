@@ -24,8 +24,10 @@ export const LIST_MODE = [
 ];
 
 export const RESULT_STATUS = {
-  WIN: "WIN",
-  LOSE: "LOSE",
+  WIN: "Win",
+  LOSE: "Lose",
+  WAITING: "Waiting",
+  LIVE: "Live",
 };
 
 export const USER_DIRECTION = {

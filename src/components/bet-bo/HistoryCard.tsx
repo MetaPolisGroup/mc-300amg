@@ -164,7 +164,9 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                   <span>
                     {historyData?.[0]?.totalAmount
                       ? Number(
-                          ethers.formatEther(historyData?.[0]?.totalAmount)
+                          ethers.formatEther(
+                            BigInt(historyData?.[0]?.totalAmount)
+                          )
                         )
                           .toFixed(8)
                           .toString()
@@ -213,20 +215,21 @@ const HistoryCard: React.FC<IHistoryProps> = ({
               <span className="text-[--colors-white] uppercase">Claimed</span>
             </div> */}
           </div>
-          {historyBetted?.[0]?.status === "Win" && (
-            <div className="absolute bottom-[0.05rem] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
-              <Icons.TrophyIcon className="text-[--colors-gold]" />
-              <Button
-                className="bg-[--colors-primary] hover:bg-[--colors-primary] hover:opacity-70"
-                onClick={() => {
-                  if (showCollectWinningModal)
-                    showCollectWinningModal(true, historyRound);
-                }}
-              >
-                Collect Winnings
-              </Button>
-            </div>
-          )}
+          {historyBetted?.[0]?.status === "Win" &&
+            !historyBetted?.[0]?.claimed && (
+              <div className="absolute bottom-[0.05rem] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
+                <Icons.TrophyIcon className="text-[--colors-gold]" />
+                <Button
+                  className="bg-[--colors-primary] hover:bg-[--colors-primary] hover:opacity-70"
+                  onClick={() => {
+                    if (showCollectWinningModal)
+                      showCollectWinningModal(true, historyRound);
+                  }}
+                >
+                  Collect Winnings
+                </Button>
+              </div>
+            )}
         </div>
       </div>
     </React.Fragment>

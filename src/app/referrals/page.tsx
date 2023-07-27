@@ -1,3 +1,5 @@
+import InfoReferral from "@/components/referrals/InfoReferral";
+import ReferralTree from "@/components/referrals/ReferralTree";
 import WalletUser from "@/components/referrals/WalletUser";
 import React from "react";
 
@@ -14,6 +16,8 @@ const Referrals = () => {
       <div className="bg-[--colors-background] p-6">
         <div className="max-w-[1200px] mx-auto">
           <WalletUser />
+          <InfoReferral />
+          <ReferralTree />
         </div>
       </div>
     </main>
