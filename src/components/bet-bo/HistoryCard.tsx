@@ -8,8 +8,8 @@ import { ethers } from "ethers";
 import Button from "../ui/Button";
 
 interface IHistoryProps {
-  historyRound: string;
-  showCollectWinningModal?: (status: boolean, round: string) => void;
+  historyRound: number;
+  showCollectWinningModal?: (status: boolean, round: number) => void;
 }
 
 const HistoryCard: React.FC<IHistoryProps> = ({

@@ -13,10 +13,10 @@ import ClaimModal from "@/components/bet-bo/ClaimModal";
 export default function Home() {
   const [isShowDrawer, setIsShowDrawer] = useState<boolean>(false);
 
-  const [collectWinning, setCollectWinning] = useState<string>("");
+  const [collectWinning, setCollectWinning] = useState<number>();
   const collectWinningsRef = createRef<PopupRef>();
 
-  const handlerToggleCollectWinning = (status: boolean, round: string) => {
+  const handlerToggleCollectWinning = (status: boolean, round: number) => {
     setCollectWinning(round);
 
     if (status === true) {
@@ -65,7 +65,7 @@ export default function Home() {
           <ClaimModal
             winningRound={collectWinning}
             onCancel={() => {
-              handlerToggleCollectWinning(false, "");
+              handlerToggleCollectWinning(false, 0);
             }}
           />
         }
