@@ -35,9 +35,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
 
   const walletClient = createWalletClient({
     chain: CONSTANTS.CHAIN,
-    transport: custom(
-      typeof window !== "undefined" && (window.ethereum as any)
-    ),
+    transport: custom(window.ethereum as any),
     // transport: http(),
   });
   // Fix hydrate by using isClient
@@ -202,6 +200,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
                 </div>
               </div>
             ));
+            getApprove();
           }
           if (transactionToken.status === "reverted") {
             setIsApproveLoading(false);
