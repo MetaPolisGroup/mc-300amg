@@ -40,7 +40,7 @@ export default function Home() {
               <CountDown title="5m" onAction={{ setIsShowDrawer }} />
             </div>
           </div>
-          {/* <Card /> */}
+          <Card />
           <Chart />
         </div>
         {/* <DrawerHistory
