@@ -116,7 +116,7 @@ const Header = () => {
             <div className="hidden xl:block">
               <ChangeMode HWrapper="30px" WWrapper="70px" H="20px" W="20px" />
             </div>
-            {/* <Button onClick={callRound}>Call Round</Button> */}
+
             <Popup
               ref={settingPopup}
               footer={false}
