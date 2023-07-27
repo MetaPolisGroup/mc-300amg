@@ -70,7 +70,7 @@ const Card = () => {
         <SwiperNavButton swiperRef={swiperRef} />
       </div>
       <div className="flex justify-center items-center">
-        {/* <Swiper
+        <Swiper
           modules={[Navigation]}
           slidesPerView={"auto"}
           centeredSlides={true}
@@ -96,7 +96,7 @@ const Card = () => {
             },
           }}
         >
-          <SwiperSlide>
+          {/* <SwiperSlide>
             <HistoryCard
               historyRound={(+currentRound - 4).toString()}
               showCollectWinningModal={showCollectWinningHandler}
@@ -119,7 +119,7 @@ const Card = () => {
               liveRound={(+currentRound - 1).toString()}
               nextBetData={nextBetData[0]}
             />
-          </SwiperSlide>
+          </SwiperSlide> */}
           <SwiperSlide>
             <BetCard
               currentRound={currentRound}
@@ -127,7 +127,7 @@ const Card = () => {
               dataBettedInCurrentRound={dataBettedInCurrentRound}
             />
           </SwiperSlide>
-          <SwiperSlide>
+          {/* <SwiperSlide>
             <FutureCard futureRound={(+currentRound + 1).toString()} />
           </SwiperSlide>
           <SwiperSlide>
@@ -135,9 +135,9 @@ const Card = () => {
               futureRound={(+currentRound + 2).toString()}
               plusMinute={5}
             />
-          </SwiperSlide>
+          </SwiperSlide> */}
         </Swiper>
-        <Popup
+        {/* <Popup
           ref={collectWinningsRef}
           width={300}
           footer={false}
