@@ -24,6 +24,13 @@ interface ISetBetPositionProps {
 }
 
 const isBrowser = () => typeof window !== "undefined";
+let walletClient: any;
+if (typeof window !== "undefined") {
+  walletClient = createWalletClient({
+    chain: CONSTANTS.CHAIN,
+    transport: custom(window.ethereum as any),
+  });
+}
 
 const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   showSetBetCard,
@@ -46,13 +53,6 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
     formatUnits: "ether",
   });
 
-  let walletClient: any = null;
-  if (isBrowser() && isClient) {
-    walletClient = createWalletClient({
-      chain: CONSTANTS.CHAIN,
-      transport: custom(window.ethereum as any),
-    });
-  }
   useEffect(() => {
     setIsClient(true);
   }, []);
