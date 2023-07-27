@@ -2,7 +2,6 @@ import Provider from "@/components/Provider";
 import { Inter } from "next/font/google";
 import Header from "@/components/header/Header";
 import Footer from "@/components/Footer";
-import { ThemeProvider } from "../context/change-mode";
 import "./globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 
@@ -23,13 +22,11 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="dark">
       <body className={`${inter.className}`}>
-        <ThemeProvider>
-          <Provider>
-            <Header />
-            {children}
-            <Footer />
-          </Provider>
-        </ThemeProvider>
+        <Provider>
+          <Header />
+          {children}
+          <Footer />
+        </Provider>
       </body>
     </html>
   );
