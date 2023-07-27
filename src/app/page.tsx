@@ -1,5 +1,5 @@
 "use client";
-import { createRef, useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import CountDown from "@/components/CountDown";
 import CoinCurrency from "@/components/CoinCurrency";
 import DrawerHistory from "@/components/drawer-history/DrawerHistory";
@@ -9,11 +9,22 @@ import clsx from "clsx";
 import Chart from "@/components/chart/Chart";
 import Popup, { PopupRef } from "@/components/ui/Modal";
 import ClaimModal from "@/components/bet-bo/ClaimModal";
+import { useAccount } from "wagmi";
+import Modal from "@/components/ui/Modal/Modal";
+import Input from "@/components/ui/Input";
+import Button from "@/components/ui/Button";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
+import userApi from "@/services/user-api";
+import { useSearchParams } from "next/navigation";
 
 export default function Home() {
+  const { isConnected, address } = useAccount();
+  const [showUserNickname, setShowUserNickname] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isShowDrawer, setIsShowDrawer] = useState<boolean>(false);
-
   const [collectWinning, setCollectWinning] = useState<number>();
+  const [nicknameValue, setNicknameValue] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const collectWinningsRef = createRef<PopupRef>();
 
   const handlerToggleCollectWinning = (status: boolean, round: number) => {
@@ -23,6 +34,61 @@ export default function Home() {
       return collectWinningsRef.current?.open();
     }
     return collectWinningsRef.current?.close();
+  };
+
+  const searchParams = useSearchParams();
+
+  const recommendId = searchParams.get("id");
+
+  console.log(recommendId);
+
+  useEffect(() => {
+    if (isConnected && address) {
+      getDataFileredByOnSnapshot(
+        "users",
+        [["user_address", "==", address]],
+        (docs) => {
+          if (docs?.[0]?.nickname === "") {
+            setShowUserNickname(true);
+          }
+          if (docs.length === 0) {
+            setShowUserNickname(true);
+          }
+        }
+      );
+    }
+  }, [isConnected, address]);
+
+  const changeNicknameValueHandler = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const {
+      target: { value },
+    } = e;
+    setNicknameValue(value);
+  };
+
+  const submitNicknameHandler = async () => {
+    setIsLoading(true);
+    if (nicknameValue.trim().length === 0) {
+      setErrorMessage("Nick name is not empty!");
+      setIsLoading(false);
+      return;
+    }
+    try {
+      const response = await userApi.nickname({
+        user_address: address!,
+        nickname: nicknameValue,
+        recommend_id: recommendId ? recommendId : "",
+      });
+      if (response) {
+        setIsLoading(false);
+        console.log(response);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      console.log(error);
+    }
   };
 
   return (
@@ -70,6 +136,37 @@ export default function Home() {
           />
         }
       />
+
+      <Modal
+        show={showUserNickname}
+        title="Username"
+        width={500}
+        styleContent={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "5px",
+          backgroundColor: "transparent !important",
+          backgroundImage:
+            "linear-gradient(100%, var(--colors-lightBlueLeft), var(--colors-lightBlueRight))",
+        }}
+      >
+        <div>
+          <p>Enter your nickname:</p>
+          <Input
+            className="bg-white border-[--colors-success] border-2 rounded-2xl text-black px-2 py-4"
+            onChange={changeNicknameValueHandler}
+            onFocus={() => setErrorMessage("")}
+          />
+          <span className="text-sm text-red-500">{errorMessage}</span>
+        </div>
+        <Button
+          variant="success"
+          onClick={submitNicknameHandler}
+          isLoading={isLoading}
+        >
+          Confirm
+        </Button>
+      </Modal>
     </main>
   );
 }
