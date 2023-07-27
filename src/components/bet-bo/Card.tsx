@@ -137,7 +137,7 @@ const Card = () => {
             />
           </SwiperSlide>
         </Swiper>
-        {/* <Popup
+        <Popup
           ref={collectWinningsRef}
           width={300}
           footer={false}
@@ -155,7 +155,7 @@ const Card = () => {
               }}
             />
           }
-        /> */}
+        />
       </div>
     </React.Fragment>
   );
