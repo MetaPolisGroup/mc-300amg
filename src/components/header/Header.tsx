@@ -203,7 +203,7 @@ const Header = () => {
               }
             />
             <NetworkSelector />
-            <ConnectWallet />
+            {/* <ConnectWallet /> */}
           </div>
         </div>
       </nav>
