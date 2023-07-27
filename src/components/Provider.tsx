@@ -10,6 +10,7 @@ import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 import { CONSTANTS } from "@/constants";
 import { MetaMaskWalletOptions } from "@rainbow-me/rainbowkit/dist/wallets/walletConnectors/metaMaskWallet/metaMaskWallet";
+import { ThemeProvider } from "../context/change-mode";
 
 // Walet connect
 const { chains, publicClient } = configureChains(
@@ -47,12 +48,14 @@ interface ProviderProps {
 
 const Provider: React.FC<ProviderProps> = ({ children }) => {
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains}>
-        <Toaster position="top-right" reverseOrder={false} />
-        {children}
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <ThemeProvider>
+      <WagmiConfig config={wagmiConfig}>
+        <RainbowKitProvider chains={chains}>
+          <Toaster position="top-right" reverseOrder={false} />
+          {children}
+        </RainbowKitProvider>
+      </WagmiConfig>
+    </ThemeProvider>
   );
 };
 

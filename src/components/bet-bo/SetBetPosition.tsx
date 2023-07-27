@@ -12,7 +12,7 @@ import { publicClient } from "@/lib/contract-config";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
 import { getEllipsisTxt } from "@/utils/formmater-address";
-import { createWalletClient, custom } from "viem";
+import { createWalletClient, custom, http } from "viem";
 
 interface ISetBetPositionProps {
   showSetBetCard?: boolean;
@@ -23,7 +23,14 @@ interface ISetBetPositionProps {
   onPlacedBet?: (status: boolean) => void;
 }
 
-const isBrowser = () => typeof window !== "undefined";
+let walletClient: any;
+if (typeof window !== "undefined") {
+  walletClient = createWalletClient({
+    chain: CONSTANTS.CHAIN,
+    // transport: custom(window.ethereum as any),
+    transport: http(),
+  });
+}
 
 const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   showSetBetCard,
@@ -34,13 +41,6 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   onPlacedBet,
 }) => {
   const { isConnected, address } = useAccount();
-  let walletClient: any = null;
-  if (isBrowser()) {
-    walletClient = createWalletClient({
-      chain: CONSTANTS.CHAIN,
-      transport: custom(window.ethereum as any),
-    });
-  }
 
   // Fix hydrate by using isClient
   const [isClient, setIsClient] = useState<boolean>(false);
