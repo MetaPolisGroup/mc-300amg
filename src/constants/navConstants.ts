@@ -124,18 +124,21 @@ const NAV_HEADER = [
     title: "Leaderboard",
     link: "/",
     renderDot: "bg-[--colors-success]",
+    items:[]
   },
   {
     id: "STAKING",
     title: "Staking",
     link: "/staking",
     renderDot: "bg-[--colors-success]",
+    items:[]
   },
   {
     id: "REFERRALS",
     title: "Referrals",
     link: "/referrals",
     renderDot: "bg-[--colors-success]",
+    items:[]
   },
   // {
   //   id: "MORE",
