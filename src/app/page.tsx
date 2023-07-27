@@ -43,11 +43,11 @@ export default function Home() {
           <Card />
           <Chart />
         </div>
-        {/* <DrawerHistory
+        <DrawerHistory
           open={isShowDrawer}
           onClose={setIsShowDrawer}
           onCollect={handlerToggleCollectWinning}
-        /> */}
+        />
       </div>
       <SubNav isShowHistory={isShowDrawer} onShowHistory={setIsShowDrawer} />
 
