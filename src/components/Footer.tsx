@@ -30,7 +30,7 @@ export default function Footer() {
     };
   }, []);
   return (
-    <footer className="bg-gradient-to-br from-blue-300 to-green-600 md:from-[--colors-backgroundAlt] md:to-[--colors-backgroundAlt] md:bg-[--colors-backgroundAlt] sticky bottom-0 md:relative">
+    <footer className="bg-gradient-to-br from-blue-300 to-green-600 md:from-[--colors-backgroundAlt] md:to-[--colors-backgroundAlt] md:bg-[--colors-backgroundAlt] sticky bottom-0 z-50 md:relative">
       <div className="hidden md:block relative container px-5 pt-14 mx-auto">
         <div className=" flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
           <div className="flex-grow gap-[33px] flex flex-wrap md:flex-nowrap  md:text-left text-center ">
