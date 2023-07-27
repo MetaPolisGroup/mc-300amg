@@ -34,13 +34,6 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   onPlacedBet,
 }) => {
   const { isConnected, address } = useAccount();
-  let walletClient: any = null;
-  if (isBrowser()) {
-    walletClient = createWalletClient({
-      chain: CONSTANTS.CHAIN,
-      transport: custom(window.ethereum as any),
-    });
-  }
 
   // Fix hydrate by using isClient
   const [isClient, setIsClient] = useState<boolean>(false);
@@ -53,6 +46,13 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
     formatUnits: "ether",
   });
 
+  let walletClient: any = null;
+  if (isBrowser() && isClient) {
+    walletClient = createWalletClient({
+      chain: CONSTANTS.CHAIN,
+      transport: custom(window.ethereum as any),
+    });
+  }
   useEffect(() => {
     setIsClient(true);
   }, []);
