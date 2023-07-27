@@ -54,7 +54,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   }, [isConnected, address]);
 
   const getApprove = async () => {
-    const data = await publicClient.readContract({
+    const data: any = await publicClient.readContract({
       address: CONSTANTS.ADDRESS.TOKEN,
       abi: CONSTANTS.ABI.TOKEN,
       functionName: "allowance",
@@ -133,7 +133,6 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   const approveHandler = async () => {
     setIsApproveLoading(true);
     try {
-      console.log("first");
       const { request: reqToken } = await publicClient.simulateContract({
         account: address,
         address: CONSTANTS.ADDRESS.TOKEN,
@@ -145,16 +144,13 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
         ],
       });
       if (reqToken) {
-        console.log("dasdasdsa");
         const hash = await walletClient?.writeContract(reqToken);
-        console.log({ hash });
         if (hash) {
           const transactionToken = await publicClient.waitForTransactionReceipt(
             {
               hash,
             }
           );
-          console.log({ transactionToken });
           if (transactionToken?.status === "success") {
             setIsApproveLoading(false);
             toast.custom((t) => (
@@ -236,7 +232,10 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
           }
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      setIsApproveLoading(false);
+      console.log(error);
+    }
   };
 
   const placeBetHandler = async () => {
@@ -244,7 +243,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
     try {
       // betBull is Bet up
       console.log({ currentRound });
-      console.log(address);
+
       if (upOrDownStatus === "UP") {
         const { request } = await publicClient.simulateContract({
           account: address,
