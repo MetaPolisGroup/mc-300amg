@@ -35,8 +35,6 @@ const spring = {
   damping: 30,
 };
 
-const isBrowser = () => typeof window !== "undefined";
-
 const Header = () => {
   const settingPopup = React.createRef<PopupRef>();
   const [isOn, setIsOn] = React.useState(false);
@@ -158,7 +156,7 @@ const Header = () => {
               }
             />
             <NetworkSelector />
-            {/* <ConnectWallet /> */}
+            <ConnectWallet />
           </div>
         </div>
       </nav>
