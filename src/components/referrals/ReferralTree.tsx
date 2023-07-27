@@ -16,7 +16,7 @@ const ReferralTree = () => {
             <svg
               stroke="currentColor"
               fill="currentColor"
-              stroke-width="0"
+              strokeWidth="0"
               viewBox="0 0 512 512"
               height="1em"
               width="1em"
@@ -32,7 +32,7 @@ const ReferralTree = () => {
           <svg
             stroke="currentColor"
             fill="currentColor"
-            stroke-width="0"
+            strokeWidth="0"
             viewBox="0 0 512 512"
             focusable="false"
             className="chakra-icon css-bfrb7x"
@@ -48,7 +48,7 @@ const ReferralTree = () => {
           <svg
             stroke="currentColor"
             fill="currentColor"
-            stroke-width="0"
+            strokeWidth="0"
             viewBox="0 0 512 512"
             focusable="false"
             className="chakra-icon css-1h8y4d7"
@@ -64,7 +64,7 @@ const ReferralTree = () => {
           <svg
             stroke="currentColor"
             fill="currentColor"
-            stroke-width="0"
+            strokeWidth="0"
             viewBox="0 0 512 512"
             focusable="false"
             className="chakra-icon css-bo6s3p"
