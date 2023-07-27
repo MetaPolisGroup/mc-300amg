@@ -30,8 +30,8 @@ export default function Footer() {
     };
   }, []);
   return (
-    <footer className="bg-[--colors-backgroundAlt]">
-      <div className="relative container px-5 pt-14 mx-auto">
+    <footer className="bg-gradient-to-br from-blue-300 to-green-600 md:from-[--colors-backgroundAlt] md:to-[--colors-backgroundAlt] md:bg-[--colors-backgroundAlt] sticky bottom-0 md:relative">
+      <div className="hidden md:block relative container px-5 pt-14 mx-auto">
         <div className=" flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
           <div className="flex-grow gap-[33px] flex flex-wrap md:flex-nowrap  md:text-left text-center ">
             <div className="lg:w-1/3 md:w-1/2 text-left w-full ">
@@ -144,6 +144,24 @@ export default function Footer() {
             <button className=" text-2xl">Buy Cake</button>
             <Icons.ArrowRight />
           </div>
+        </div>
+      </div>
+      <div className="container md:hidden flex justify-between text-white px-5 py-3">
+        <div className="flex justify-center flex-col-reverse items-center ">
+          <span>Leaderboard</span>
+          <Icons.Leaderboard />
+        </div>
+        <div className="flex justify-center flex-col-reverse items-center">
+          <span>Staking</span>
+          <Icons.Staking />
+        </div>
+        <div className="flex justify-center flex-col-reverse items-center">
+          <span>Referral</span>
+          <Icons.Referral />
+        </div>
+        <div className="flex justify-center flex-col-reverse items-center">
+          <span>My Wallet</span>
+          <Icons.MyWallet />
         </div>
       </div>
     </footer>

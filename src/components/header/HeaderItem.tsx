@@ -1,5 +1,6 @@
+"use client";
 import React from "react";
-
+import Link from "next/link";
 import { Icons } from "../Icons";
 
 interface IHeaderItem {
@@ -72,7 +73,7 @@ const HeaderItem: React.FC<IHeaderItem> = ({ data }) => {
       subContent?: { text: string; color: string };
     }[]
   ) => {
-    return listSubItem.map((item, index) => {
+    return listSubItem?.map((item, index) => {
       return (
         <li
           key={`${item.title}_${index}`}
@@ -92,12 +93,12 @@ const HeaderItem: React.FC<IHeaderItem> = ({ data }) => {
           tabIndex={0}
           className="btn text-[--colors-textSubtle] flex-nowrap gap-3 border-0 !m-0 py-4 px-2 xl:p-4 !min-h-fit !normal-case !rounded-[20px] hover:bg-[--colors-tertiary] h-[48px] font-bold"
         >
-          {renderMainTitle(data.title)}
+          <Link href={data.link}>{renderMainTitle(data.title)}</Link>
           {renderDotTemplate(data.renderDot)}
         </label>
       </div>
 
-      {data.items.length !== 0 ? (
+      {data.items?.length !== 0 ? (
         <ul
           tabIndex={0}
           className="dropdown-content z-10 menu px-0 shadow bg-[--colors-backgroundAlt] text-[--colors-textSubtle] rounded-box min-w-[280px] border-2 border-solid border-[--colors-cardBorder]"
