@@ -4,7 +4,7 @@ import { formatInputField } from "@/utils/format-inputField";
 import { nanoid } from "nanoid";
 import { Icons } from "../Icons";
 import { has, isEmpty } from "lodash";
-import { CONSTANTS } from "@/constants";
+import { CONSTANTS, CURRENCY_UNIT } from "@/constants";
 import { toast } from "react-hot-toast";
 import { useAccount, useBalance, useWalletClient } from "wagmi";
 import { ethers } from "ethers";
@@ -36,20 +36,17 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   // Fix hydrate by using isClient
   const [isClient, setIsClient] = useState<boolean>(false);
   const [amount, setAmount] = useState<string>("");
+  const [balance, setBalance] = useState<number>(0);
   const [percentage, setPercentage] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isApproveLoading, setIsApproveLoading] = useState<boolean>(false);
   const [approveValue, setApproveValue] = useState<number>(0);
 
-  const { data } = useBalance({
-    address: address,
-    formatUnits: "ether",
-  });
-
   useEffect(() => {
     setIsClient(true);
     if (isConnected && address) {
       getApprove();
+      getBalance();
     }
   }, [isConnected, address]);
 
@@ -65,10 +62,17 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
     }
   };
 
-  const balance =
-    isClient && isConnected && data?.value
-      ? ethers.formatEther(BigInt(data?.value!))
-      : 0;
+  const getBalance = async () => {
+    const data: any = await publicClient.readContract({
+      address: CONSTANTS.ADDRESS.TOKEN,
+      abi: CONSTANTS.ABI.TOKEN,
+      functionName: "balanceOf",
+      args: [address],
+    });
+    if (data) {
+      setBalance(Number(ethers.formatEther(data.toString())));
+    }
+  };
 
   const changeUpOrDownHandler = (status: string) => {
     if (onEnterUpOrDown) return onEnterUpOrDown(status);
@@ -547,7 +551,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
           <div className="flex items-center gap-1">
             <Icons.BNBIcon />
             <span className="text-[--colors-text] font-semibold text-base">
-              {isClient && data?.symbol}
+              {CURRENCY_UNIT}
             </span>
           </div>
         </div>
@@ -567,7 +571,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
         {isClient &&
           (isConnected ? (
             <div className="text-[--colors-textSubtle] font-medium text-sm text-right">
-              Balance: {data?.formatted} {data?.symbol}
+              Balance: {balance} {CURRENCY_UNIT}
             </div>
           ) : null)}
         <div className="w-full h-12 relative mb-6">

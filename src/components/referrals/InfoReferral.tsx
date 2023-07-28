@@ -195,13 +195,14 @@ const InfoReferral = () => {
             <Button
               variant="success"
               onClick={claimCommisionHandler}
+              className="w-full lg:max-w-[200px]"
               isLoading={isClaimCommisionLoading}
               disabled={point <= 0}
             >
               Claim
             </Button>
           ) : (
-            <Button variant="success" disabled={true}>
+            <Button className="w-full" variant="success" disabled={true}>
               Please connect wallet
             </Button>
           ))}

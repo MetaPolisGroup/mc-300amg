@@ -10,7 +10,11 @@ import { CURRENCY_UNIT } from "@/constants";
 
 interface IHistoryProps {
   historyRound: number;
-  showCollectWinningModal?: (status: boolean, round: number) => void;
+  showCollectWinningModal?: (
+    status: boolean,
+    title: string,
+    round: number
+  ) => void;
 }
 
 const HistoryCard: React.FC<IHistoryProps> = ({
@@ -53,8 +57,6 @@ const HistoryCard: React.FC<IHistoryProps> = ({
   // Determine this round up or down (UP: rate > 0, vice versa)
   const ratePrice =
     (historyData?.[0]?.closePrice - historyData?.[0]?.lockPrice) / 10 ** 8;
-
-  console.log({ historyBetted });
 
   return (
     <React.Fragment>
@@ -244,8 +246,9 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                   <span className="text-[--colors-text]">ENTERED</span>
                 </div>
               ) : null)}
-            {historyBetted?.[0]?.status === "Win" &&
-              !historyBetted?.[0]?.claimed === false && (
+            {!isEmpty(historyBetted) &&
+              historyBetted?.[0]?.status === "Win" &&
+              historyBetted?.[0]?.claimed === true && (
                 <div className="absolute right-0 bottom-2 flex gap-2 z-20 rounded-2xl bg-[--colors-secondary] px-2 py-[2px] ">
                   <Icons.CheckCircle className="text-[--colors-white]" />
                   <span className="text-[--colors-white] uppercase">
@@ -262,10 +265,31 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                   className="bg-[--colors-primary] hover:bg-[--colors-primary] hover:opacity-70"
                   onClick={() => {
                     if (showCollectWinningModal)
-                      showCollectWinningModal(true, historyRound);
+                      showCollectWinningModal(
+                        true,
+                        "Collect Winnings",
+                        historyRound
+                      );
                   }}
                 >
                   Collect Winnings
+                </Button>
+              </div>
+            )}
+          {!isEmpty(historyBetted) &&
+            historyBetted?.[0]?.status !== "Win" &&
+            historyBetted?.[0]?.refund !== 0 &&
+            !historyBetted?.[0]?.claimed && (
+              <div className="absolute bottom-[0.05rem] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
+                <Icons.TrophyIcon className="text-[--colors-gold]" />
+                <Button
+                  className="bg-[--colors-primary] hover:bg-[--colors-primary] hover:opacity-70"
+                  onClick={() => {
+                    if (showCollectWinningModal)
+                      showCollectWinningModal(true, "Refund", historyRound);
+                  }}
+                >
+                  Refund
                 </Button>
               </div>
             )}
