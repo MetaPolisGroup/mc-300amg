@@ -96,7 +96,6 @@ const ClaimModal: React.FC<IClaimProps> = ({ winningRound, onCancel }) => {
         <span>Collecting</span>
         <span>0.0453 BNB</span>
       </div>
-      <p className="w-full text-right text-[--colors-text99]">~10.93$</p>
       <p className="text-center text-[--colors-text99] my-2">
         From round {winningRound}
       </p>

@@ -12,6 +12,8 @@ export const buttonVariants = cva(
         ghost: "bg-transparent hover:text-slate-900 hover:bg-slate-200",
         success:
           "bg-[--colors-primary] text-white rounded-2xl hover:bg-[--colors-primary] hover:opacity-70",
+        error:
+          "bg-[--colors-failure] text-white rounded-2xl hover:bg-[--colors-failure] hover:opacity-70",
       },
       size: {
         default: "h-10 py-2 px-4",

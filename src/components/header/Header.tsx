@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import NetworkSelector from "../NetworkSelector";
-import SubMenu from "../SubMenu";
+
 import ConnectWallet from "../ConnectWallet";
 import { PopupRef } from "../ui/Modal";
 import { motion } from "framer-motion";
@@ -51,101 +51,11 @@ const Header = () => {
             </ul>
           </div>
           <div className="navbar-end gap-2 p-2 w-auto">
-            {/* <div className="hidden xl:block">
-              <ChangeMode HWrapper="30px" WWrapper="70px" H="20px" W="20px" />
-            </div>
-
-            <Popup
-              ref={settingPopup}
-              footer={false}
-              width={485}
-              title="Settings"
-              closable
-              styleContent={{
-                background: "var(--colors-backgroundAlt)",
-                color: "var(--colors-text)",
-              }}
-              content={
-                <React.Fragment>
-                  <span className="text-[--colors-secondary] text-sm font-bold">
-                    GLOBAL
-                  </span>
-                  <div className="leading-[3.5]">
-                    <div className="flex justify-between items-center">
-                      <span>Dark mode</span>
-                      <div>
-                        <ChangeMode
-                          HWrapper="30px"
-                          WWrapper="70px"
-                          H="20px"
-                          W="20px"
-                        />
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center">
-                        <span>Subgraph Health Indicator</span>
-                        <TooltipElement title="Tooltip">
-                          <Icons.HelpCircleIcon />
-                        </TooltipElement>
-                      </div>
-                      <SwitchElement isOn={isOn} toggleSwitch={toggleSwitch} />
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center">
-                        <span>Show username</span>
-
-                        <TooltipElement title="Tooltip">
-                          <Icons.HelpCircleIcon />
-                        </TooltipElement>
-                      </div>
-                      <SwitchElement isOn={isOn} toggleSwitch={toggleSwitch} />
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center">
-                        <span>Token Risk Scanning</span>
-                        <TooltipElement title="Tooltip">
-                          <Icons.HelpCircleIcon />
-                        </TooltipElement>
-                      </div>
-                      <SwitchElement isOn={isOn} toggleSwitch={toggleSwitch} />
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center">
-                        <span>Default Transaction Speed (GWEI)</span>
-                        <TooltipElement title="Tooltip">
-                          <Icons.HelpCircleIcon />
-                        </TooltipElement>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between">
-                    {buttons.map((button) => (
-                      <ButtonElement
-                        key={button.id}
-                        content={button.content}
-                        isActive={button.id === isButton}
-                        action={() => setIsButton(button.id)}
-                      />
-                    ))}
-                  </div>
-                </React.Fragment>
-              }
-              selector={
-                <div className="w-[30px]">
-                  <Icons.Settings
-                    onClick={() => settingPopup.current?.open()}
-                    className="hover:cursor-pointer text-[--colors-textSubtle]"
-                  />
-                </div>
-              }
-            /> */}
             <NetworkSelector />
             <ConnectWallet />
           </div>
         </div>
       </nav>
-      {/* <SubMenu /> */}
     </header>
   );
 };

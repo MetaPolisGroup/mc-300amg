@@ -22,7 +22,7 @@ const NAV_HEADER = [
         link: "/",
       },
       {
-        title: "Socer",
+        title: "Football",
         link: "/",
       },
     ],
