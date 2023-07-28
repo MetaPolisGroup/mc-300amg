@@ -18,7 +18,7 @@ const SwiperNavButton: FC<ISwiperNavButtonProps> = ({ swiperRef }) => {
         className="-m-8 cursor-pointer"
         onClick={() => swiperRef?.current?.slideTo(3)}
       >
-        <Icons.PancakeIcon />
+        <Icons.PancakeIcon width="40px" />
       </div>
       <button
         onClick={() => swiperRef.current?.slideNext()}
