@@ -74,8 +74,6 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
     }
   };
 
-  console.log({ balance });
-
   const changeUpOrDownHandler = (status: string) => {
     if (onEnterUpOrDown) return onEnterUpOrDown(status);
   };
@@ -573,8 +571,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
         {isClient &&
           (isConnected ? (
             <div className="text-[--colors-textSubtle] font-medium text-sm text-right">
-              {/* Balance: {data?.formatted} {data?.symbol} */}
-              Balance: {balance}
+              Balance: {balance} {CURRENCY_UNIT}
             </div>
           ) : null)}
         <div className="w-full h-12 relative mb-6">
