@@ -17,7 +17,7 @@ const Referrals = () => {
         <div className="max-w-[1200px] mx-auto">
           <WalletUser />
           <InfoReferral />
-          <ReferralTree />
+          {/* <ReferralTree /> */}
         </div>
       </div>
     </main>

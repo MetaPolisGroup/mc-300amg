@@ -69,12 +69,14 @@ export default function Home() {
         "users",
         [["user_address", "==", address]],
         (docs) => {
+          console.log(docs);
           if (docs?.[0]?.nickname === "") {
-            setShowUserNickname(true);
+            return setShowUserNickname(true);
           }
           if (docs.length === 0) {
-            setShowUserNickname(true);
+            return setShowUserNickname(true);
           }
+          setShowUserNickname(false);
         }
       );
     }
