@@ -55,9 +55,7 @@ const ReferralTree = () => {
     return (
       <div key={node.id} className="flex relative">
         <div
-          className={`w-12 h-12 rounded flex items-center justify-center border-2 border-black cursor-pointer m-2 ${
-            visibleNodes.includes(node.id) ? " border border-green-400" : ""
-          }`}
+          className={`flex items-center justify-center border-2 border-black cursor-pointer m-2`}
           onClick={() => handleToggleNode(node.id, isSubTree)}
         >
           {node.id && <ButtonItem text={`${node.id}`} disnable={isDisnable} />}
@@ -70,23 +68,27 @@ const ReferralTree = () => {
     <div className="text-white  p-3 border-2 border-[--colors-secondary] rounded-xl">
       <div>
         <div className="text-xl mb-8 md:text-3xl">Referral Tree</div>
-        <div className="grid justify-self-center grid-cols-4 gap-5">
+        <div className="grid grid-cols-4 gap-5">
           <div className="mt-[10px]">
-            <ButtonItem text="Root" handle={() => handleGetData(address!)} />
+            <ButtonItem
+              text="Root"
+              handle={() => handleGetData(address!)}
+              isRoot={true}
+            />
           </div>
           {data && (
             <div className="block mx-auto px-5 h-[500px] overflow-y-scroll ">
               {data.map((rootNode) => renderTreeNode(rootNode, false))}
             </div>
           )}
-          {visibleNodes && (
+          {visibleNodes.length > 0 && (
             <div className="ml-4 block mx-auto px-5 h-[500px] overflow-y-scroll  ">
               {visibleNodes.map((childNode: any) =>
                 renderTreeNode(childNode, true)
               )}
             </div>
           )}
-          {child && (
+          {child.length > 0 && (
             <div className="ml-4 block mx-auto px-5 h-[500px] overflow-y-scroll  ">
               {child.map((childNode: any) =>
                 renderTreeNode(childNode, true, true)
@@ -103,13 +105,18 @@ const ButtonItem: React.FC<{
   text: string;
   handle?: () => void;
   disnable?: boolean;
-}> = ({ handle, text, disnable }) => (
-  <Button
+  isRoot?: boolean;
+}> = ({ handle, text, disnable, isRoot }) => (
+  <button
     disabled={disnable}
     onClick={() => handle?.()}
-    className="bg-gradient-to-r from-[#00CEEA] to-[#28C38B] text-center py-2 rounded-2xl w-[264px] h-[60px]"
+    className={`${
+      isRoot
+        ? "bg-gradient-to-r from-[#00CEEA] to-[#28C38B] text-white"
+        : "bg-white text-black"
+    } text-center py-2 rounded-[60px] w-[230px] h-[60px]`}
   >
     {text}
-  </Button>
+  </button>
 );
 export default ReferralTree;
