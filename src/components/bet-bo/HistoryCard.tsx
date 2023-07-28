@@ -10,7 +10,11 @@ import { CURRENCY_UNIT } from "@/constants";
 
 interface IHistoryProps {
   historyRound: number;
-  showCollectWinningModal?: (status: boolean, round: number) => void;
+  showCollectWinningModal?: (
+    status: boolean,
+    title: string,
+    round: number
+  ) => void;
 }
 
 const HistoryCard: React.FC<IHistoryProps> = ({
@@ -262,10 +266,30 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                   className="bg-[--colors-primary] hover:bg-[--colors-primary] hover:opacity-70"
                   onClick={() => {
                     if (showCollectWinningModal)
-                      showCollectWinningModal(true, historyRound);
+                      showCollectWinningModal(
+                        true,
+                        "Collect Winnings",
+                        historyRound
+                      );
                   }}
                 >
                   Collect Winnings
+                </Button>
+              </div>
+            )}
+          {historyBetted?.[0]?.status === "Lose" &&
+            historyBetted?.[0]?.refund !== 0 &&
+            !historyBetted?.[0]?.claimed && (
+              <div className="absolute bottom-[0.05rem] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
+                <Icons.TrophyIcon className="text-[--colors-gold]" />
+                <Button
+                  className="bg-[--colors-primary] hover:bg-[--colors-primary] hover:opacity-70"
+                  onClick={() => {
+                    if (showCollectWinningModal)
+                      showCollectWinningModal(true, "Refund", historyRound);
+                  }}
+                >
+                  Refund
                 </Button>
               </div>
             )}
