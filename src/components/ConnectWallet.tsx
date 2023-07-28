@@ -102,7 +102,9 @@ const ConnectWallet = () => {
                     {!isEmpty(usersInfo)
                       ? usersInfo?.[0]?.nickname
                       : account.displayName}
-                    {balance ? ` (${balance.toFixed(2)} ${CURRENCY_UNIT})` : ""}
+                    {balance
+                      ? ` (${balance.toFixed(2)} ${CURRENCY_UNIT})`
+                      : ` (0 ${CURRENCY_UNIT})`}
                   </Button>
                 </div>
               );
