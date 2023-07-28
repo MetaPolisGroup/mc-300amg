@@ -24,6 +24,7 @@ const Card = () => {
   const { address, isConnected } = useAccount();
   const [currentRound, setCurrentRound] = useState<number>(0);
   const [winningRound, setWinningRound] = useState<number>();
+  const [titleClaimModal, setTitleClaimModal] = useState<string>("");
   const [nextBetData, setNextBetData] = useState<DocumentData[]>([]);
   const [datasBetted, setDatasBetted] = useState<DocumentData[]>([]);
 
@@ -56,9 +57,14 @@ const Card = () => {
     (dataBetted: DocumentData) => dataBetted.epoch === currentRound
   );
 
-  const showCollectWinningHandler = (status: boolean, round: number) => {
+  const showCollectWinningHandler = (
+    status: boolean,
+    title: string,
+    round: number
+  ) => {
     if (status === true) {
       setWinningRound(round);
+      setTitleClaimModal(title);
       return collectWinningsRef.current?.open();
     }
     return collectWinningsRef.current?.close();
@@ -139,7 +145,7 @@ const Card = () => {
           width={300}
           footer={false}
           closable
-          title="Collect Winnnings"
+          title={titleClaimModal}
           styleContent={{
             background: "var(--colors-backgroundAlt)",
             color: "var(--colors-text)",
@@ -148,7 +154,7 @@ const Card = () => {
             <ClaimModal
               winningRound={winningRound}
               onCancel={() => {
-                showCollectWinningHandler(false, 0);
+                showCollectWinningHandler(false, "", 0);
               }}
             />
           }
