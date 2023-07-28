@@ -30,8 +30,8 @@ export default function Footer() {
     };
   }, []);
   return (
-    <footer className="bg-[--colors-backgroundAlt]">
-      <div className="relative container px-5 pt-14 mx-auto">
+    <footer className="bg-[--colors-backgroundAlt]   ">
+      <div className=" md:block relative container px-5 pt-14 mx-auto">
         <div className=" flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
           <div className="flex-grow gap-[33px] flex flex-wrap md:flex-nowrap  md:text-left text-center ">
             <div className="lg:w-1/3 md:w-1/2 text-left w-full ">

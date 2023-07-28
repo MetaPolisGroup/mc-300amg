@@ -3,14 +3,16 @@ import { Icons } from "../Icons";
 import { isEmpty } from "lodash";
 import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { DocumentData } from "firebase/firestore";
-import { ethers } from "ethers";
+
 import { useAccount } from "wagmi";
 import AnimatedNumber from "../AnimatedNumber";
 import CalculatingCard from "./CalculatingCard";
 import getAllData from "@/helpers/getAllDataByOnSnapshot";
+import { CURRENCY_UNIT } from "@/constants";
+import { ethers } from "ethers";
 
 interface ILiveBetCardProps {
-  liveRound: string;
+  liveRound: number;
   nextBetData: DocumentData;
 }
 
@@ -23,6 +25,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
   const [liveBettedData, setLiveBettedData] = useState<DocumentData[]>();
   const [chainlinkData, setChainlinkData] = useState<DocumentData[]>();
   const [progressing, setProgressing] = useState<number>(0);
+  const [isClient, setIsClient] = useState<boolean>(false);
 
   useEffect(() => {
     getDataFileredByOnSnapshot(
@@ -32,7 +35,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
         setLiveBetData(docs as DocumentData[]);
       }
     );
-    if (isConnected) {
+    if (isClient && isConnected) {
       getDataFileredByOnSnapshot(
         "bets",
         [
@@ -47,7 +50,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
     getAllData("chainlink", (docs: DocumentData) => {
       setChainlinkData(docs as DocumentData[]);
     });
-  }, [liveRound, address, isConnected]);
+  }, [isClient, liveRound, address, isConnected]);
 
   useEffect(() => {
     const target = +nextBetData?.lockTimestamp * 1000;
@@ -59,8 +62,12 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
     return () => clearInterval(interval);
   }, [nextBetData?.lockTimestamp]);
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const ratePrice =
-    (chainlinkData?.[0]?.price - liveBetData?.[0]?.lockPrice) / 10 ** 8;
+    (+chainlinkData?.[0]?.price - +liveBetData?.[0]?.lockPrice) / 10 ** 8;
 
   return (
     <div
@@ -100,7 +107,14 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                       UP
                     </div>
                     <div className="text-[--colors-white] font-semibold text-sm">
-                      1 Payout
+                      {liveBetData?.[0]?.bullAmount
+                        ? Number(
+                            ethers.formatEther(
+                              BigInt(liveBetData?.[0]?.bullAmount)
+                            )
+                          ).toFixed(4)
+                        : 0}{" "}
+                      {CURRENCY_UNIT}
                     </div>
                   </div>
                 </div>
@@ -114,7 +128,14 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                       UP
                     </div>
                     <div className="text-[--colors-textSubtle] font-semibold text-sm">
-                      1 Payout
+                      {liveBetData?.[0]?.bullAmount
+                        ? Number(
+                            ethers.formatEther(
+                              BigInt(liveBetData?.[0]?.bullAmount)
+                            )
+                          ).toFixed(4)
+                        : 0}{" "}
+                      {CURRENCY_UNIT}
                     </div>
                   </div>
                 </div>
@@ -179,7 +200,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                 <div className="flex items-center justify-between text-[--colors-text] font-semibold text-base">
                   <span>Prize Pool:</span>
                   <span>
-                    {/* {liveBetData?.[0]?.totalAmount
+                    {liveBetData?.[0]?.totalAmount
                       ? Number(
                           ethers.formatEther(
                             BigInt(liveBetData?.[0]?.totalAmount)
@@ -187,8 +208,8 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                         )
                           .toFixed(8)
                           .toString()
-                      : 0}{" "} */}
-                    BNB
+                      : 0}{" "}
+                    {CURRENCY_UNIT}
                   </span>
                 </div>
               </div>
@@ -199,7 +220,14 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                   <Icons.PayoutDown />
                   <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                     <div className="text-[--colors-textSubtle] font-semibold text-sm">
-                      1 Payout
+                      {liveBetData?.[0]?.bearAmount
+                        ? Number(
+                            ethers.formatEther(
+                              BigInt(liveBetData?.[0]?.bearAmount)
+                            )
+                          ).toFixed(4)
+                        : 0}{" "}
+                      {CURRENCY_UNIT}
                     </div>
                     <div className="text-[--colors-failure] font-semibold uppercase text-xl">
                       DOWN
@@ -211,7 +239,14 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                   <Icons.PayoutDownFailure />
                   <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                     <div className="text-[--colors-white] font-semibold text-sm">
-                      1 Payout
+                      {liveBetData?.[0]?.bearAmount
+                        ? Number(
+                            ethers.formatEther(
+                              BigInt(liveBetData?.[0]?.bearAmount)
+                            )
+                          ).toFixed(4)
+                        : 0}{" "}
+                      {CURRENCY_UNIT}
                     </div>
                     <div className="text-[--colors-white] font-semibold uppercase text-xl">
                       DOWN

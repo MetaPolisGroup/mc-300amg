@@ -19,7 +19,7 @@ interface IHistory {
     bullAmount: number;
     id: string;
     lockPrice: number;
-    epoch: string;
+    epoch: number;
     closeOracleId: number;
     totalAmount: number;
     bearAmount: number;

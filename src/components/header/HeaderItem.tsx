@@ -1,5 +1,6 @@
+"use client";
 import React from "react";
-
+import Link from "next/link";
 import { Icons } from "../Icons";
 
 interface IHeaderItem {
@@ -7,7 +8,7 @@ interface IHeaderItem {
     id: string;
     link: string;
     title: string;
-    renderDot: string | null;
+    renderDot?: string | null;
     items: {
       title: string;
       link: string;
@@ -40,11 +41,6 @@ const HeaderItem: React.FC<IHeaderItem> = ({ data }) => {
     return title;
   };
 
-  const renderDotTemplate = (css: string | null) => {
-    if (css === null) return null;
-    return <span className={`!w-[8px] !h-[8px] rounded-full ${css}`} />;
-  };
-
   const renderSubContent = (item: {
     title: string;
     link: string;
@@ -72,14 +68,16 @@ const HeaderItem: React.FC<IHeaderItem> = ({ data }) => {
       subContent?: { text: string; color: string };
     }[]
   ) => {
-    return listSubItem.map((item, index) => {
+    return listSubItem?.map((item, index) => {
       return (
         <li
           key={`${item.title}_${index}`}
           className="hover:bg-[--colors-tertiary] h-[48px] flex justify-between items-center flex-nowrap flex-row px-4"
         >
-          <span className="p-0 font-semibold">{item.title}</span>
-          <span className="p-0">{renderSubContent(item)}</span>
+          <a href={item.link} className="w-full">
+            <span className="p-0 font-semibold">{item.title}</span>
+            <span className="p-0">{renderSubContent(item)}</span>
+          </a>
         </li>
       );
     });
@@ -92,12 +90,11 @@ const HeaderItem: React.FC<IHeaderItem> = ({ data }) => {
           tabIndex={0}
           className="btn text-[--colors-textSubtle] flex-nowrap gap-3 border-0 !m-0 py-4 px-2 xl:p-4 !min-h-fit !normal-case !rounded-[20px] hover:bg-[--colors-tertiary] h-[48px] font-bold"
         >
-          {renderMainTitle(data.title)}
-          {renderDotTemplate(data.renderDot)}
+          <Link href={data.link}>{renderMainTitle(data.title)}</Link>
         </label>
       </div>
 
-      {data.items.length !== 0 ? (
+      {data.items?.length !== 0 ? (
         <ul
           tabIndex={0}
           className="dropdown-content z-10 menu px-0 shadow bg-[--colors-backgroundAlt] text-[--colors-textSubtle] rounded-box min-w-[280px] border-2 border-solid border-[--colors-cardBorder]"

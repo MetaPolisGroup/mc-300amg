@@ -6,10 +6,11 @@ import { DocumentData } from "firebase/firestore";
 import { isEmpty } from "lodash";
 import { ethers } from "ethers";
 import Button from "../ui/Button";
+import { CURRENCY_UNIT } from "@/constants";
 
 interface IHistoryProps {
-  historyRound: string;
-  showCollectWinningModal?: (status: boolean, round: string) => void;
+  historyRound: number;
+  showCollectWinningModal?: (status: boolean, round: number) => void;
 }
 
 const HistoryCard: React.FC<IHistoryProps> = ({
@@ -19,6 +20,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
   const { isConnected, address } = useAccount();
   const [historyBetted, setHistoryBetted] = useState<DocumentData[]>([]);
   const [historyData, setHistoryData] = useState<DocumentData[]>([]);
+  const [isClient, setIsClient] = useState<boolean>(false);
   useEffect(() => {
     // Get all round history data
     getDataFileredByOnSnapshot(
@@ -30,7 +32,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
     );
 
     // Get round history data that user has been betted
-    if (isConnected && address && historyRound) {
+    if (isClient && isConnected && address && historyRound) {
       getDataFileredByOnSnapshot(
         "bets",
         [
@@ -42,13 +44,15 @@ const HistoryCard: React.FC<IHistoryProps> = ({
         }
       );
     }
-  }, [isConnected, address, historyRound]);
+  }, [isClient, isConnected, address, historyRound]);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // Determine this round up or down (UP: rate > 0, vice versa)
   const ratePrice =
     (historyData?.[0]?.closePrice - historyData?.[0]?.lockPrice) / 10 ** 8;
-
-  // console.log({ historyBetted });
 
   return (
     <React.Fragment>
@@ -85,7 +89,14 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                       UP
                     </div>
                     <div className="text-[--colors-white] font-semibold text-sm">
-                      1 Payout
+                      {historyData?.[0]?.bullAmount
+                        ? Number(
+                            ethers.formatEther(
+                              BigInt(historyData?.[0]?.bullAmount)
+                            )
+                          ).toFixed(4)
+                        : 0}{" "}
+                      {CURRENCY_UNIT}
                     </div>
                   </div>
                 </div>
@@ -99,7 +110,14 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                       UP
                     </div>
                     <div className="text-[--colors-textSubtle] font-semibold text-sm">
-                      1 Payout
+                      {historyData?.[0]?.bullAmount
+                        ? Number(
+                            ethers.formatEther(
+                              BigInt(historyData?.[0]?.bullAmount)
+                            )
+                          ).toFixed(4)
+                        : 0}{" "}
+                      {CURRENCY_UNIT}
                     </div>
                   </div>
                 </div>
@@ -182,7 +200,14 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                   <Icons.PayoutDown />
                   <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                     <div className="text-[--colors-textSubtle] font-semibold text-sm">
-                      1 Payout
+                      {historyData?.[0]?.bearAmount
+                        ? Number(
+                            ethers.formatEther(
+                              BigInt(historyData?.[0]?.bearAmount)
+                            )
+                          ).toFixed(4)
+                        : 0}{" "}
+                      {CURRENCY_UNIT}
                     </div>
                     <div className="text-[--colors-failure] font-semibold uppercase text-xl">
                       DOWN
@@ -194,7 +219,14 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                   <Icons.PayoutDownFailure />
                   <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                     <div className="text-[--colors-white] font-semibold text-sm">
-                      1 Payout
+                      {historyData?.[0]?.bearAmount
+                        ? Number(
+                            ethers.formatEther(
+                              BigInt(historyData?.[0]?.bearAmount)
+                            )
+                          ).toFixed(4)
+                        : 0}{" "}
+                      {CURRENCY_UNIT}
                     </div>
                     <div className="text-[--colors-white] font-semibold uppercase text-xl">
                       DOWN
@@ -210,10 +242,15 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                   <span className="text-[--colors-text]">ENTERED</span>
                 </div>
               ) : null)}
-            {/* <div className="absolute right-0 bottom-2 flex gap-2 z-20 rounded-2xl bg-[--colors-secondary] px-2 py-[2px] ">
-              <Icons.CheckCircle className="text-[--colors-white]" />
-              <span className="text-[--colors-white] uppercase">Claimed</span>
-            </div> */}
+            {historyBetted?.[0]?.status === "Win" &&
+              !historyBetted?.[0]?.claimed === false && (
+                <div className="absolute right-0 bottom-2 flex gap-2 z-20 rounded-2xl bg-[--colors-secondary] px-2 py-[2px] ">
+                  <Icons.CheckCircle className="text-[--colors-white]" />
+                  <span className="text-[--colors-white] uppercase">
+                    Claimed
+                  </span>
+                </div>
+              )}
           </div>
           {historyBetted?.[0]?.status === "Win" &&
             !historyBetted?.[0]?.claimed && (

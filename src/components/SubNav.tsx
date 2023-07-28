@@ -6,42 +6,27 @@ import clsx from "clsx";
 import { Icons } from "./Icons";
 
 interface ISubNav {
-  isShowHistory: boolean;
-  onShowHistory: (value: boolean) => void;
+  modeMobile: string;
+  onAction: (value: string) => void;
 }
 
-const MODE = {
+export const MODE = {
   CARD: "CARD",
   CHART: "CHART",
   HISTORY: "HISTORY",
 };
 
-const SubNav: React.FC<ISubNav> = ({ isShowHistory, onShowHistory }) => {
+const SubNav: React.FC<ISubNav> = ({ modeMobile, onAction }) => {
   const [mode, setMode] = useState<string>(MODE.CARD);
 
   const classNameIconCenter = "w-[20px] h-[20px]";
 
   useEffect(() => {
-    if (isShowHistory) return setMode(MODE.HISTORY);
-    if (!isShowHistory) return setMode(MODE.CARD);
-  }, [isShowHistory]);
+    setMode(modeMobile);
+  }, [modeMobile]);
 
   const handleAction = (action: string) => {
-    if (action === MODE.CARD) {
-      onShowHistory(false);
-      return console.log("clicked Card");
-    }
-
-    if (action === MODE.CHART) {
-      onShowHistory(false);
-      return console.log("clicked Chart");
-    }
-
-    if (action === MODE.HISTORY) {
-      return onShowHistory(true);
-    }
-
-    return;
+    return onAction(action);
   };
 
   const renderButton = () => {

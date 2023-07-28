@@ -7,8 +7,8 @@ import { toast } from "react-hot-toast";
  * ! DO NOT DELETE CONFIG
  */
 
-const axiosClient = axios.create({
-  baseURL: "",
+export const axiosClient = axios.create({
+  baseURL: "https://bo-development-6h2r4.ondigitalocean.app",
   headers: {
     "Content-Type": "application/json",
   },
