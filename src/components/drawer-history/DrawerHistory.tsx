@@ -50,7 +50,6 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({
       );
     }
   }, [isClient, isConnected, address]);
-  // console.log({ dataHistory });
 
   useEffect(() => {
     setIsClient(true);

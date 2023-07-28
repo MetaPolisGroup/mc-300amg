@@ -109,8 +109,8 @@ const Chart: React.FC = () => {
         show: true,
         type: "value",
         position: "right",
-        min: (min - 0.2).toFixed(2),
-        max: (max + 0.1).toFixed(2),
+        min: (min - 0.1).toFixed(2),
+        max: (max + 0.05).toFixed(2),
         // splitNumber: 2,
         interval: 0.2,
         splitLine: {
@@ -137,7 +137,7 @@ const Chart: React.FC = () => {
           },
           itemStyle: { borderColor: "#ffc700" },
           lineStyle: { color: "#19c0cc" },
-          smooth: true,
+          smooth: false,
         },
       ],
       grid: {

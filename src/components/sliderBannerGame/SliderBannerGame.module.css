@@ -1,0 +1,16 @@
+.banner-game :global(.slick-arrow) {
+  display: none !important;
+}
+
+.banner-game :global(.slick-dots) li button:before {
+  font-size: 16px;
+}
+
+.banner-game :global(.slick-dots) :global(.slick-active) button:before {
+  color: var(--colors-success) !important;
+}
+
+.banner-game :global(.slick-dots) li button:hover:before,
+.banner-game :global(.slick-dots) li button:focus:before {
+  color: var(--colors-success) !important;
+}
