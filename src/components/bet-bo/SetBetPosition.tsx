@@ -640,7 +640,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
                     onClick={placeBetHandler}
                     isLoading={isLoading}
                   >
-                    Bet
+                    Confirm
                   </Button>
                 )}
               </>
