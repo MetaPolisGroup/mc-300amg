@@ -69,7 +69,6 @@ export default function Home() {
         "users",
         [["user_address", "==", address]],
         (docs) => {
-          console.log(docs);
           if (docs?.[0]?.nickname === "") {
             return setShowUserNickname(true);
           }
