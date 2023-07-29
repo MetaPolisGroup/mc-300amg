@@ -30,10 +30,12 @@ const WalletUser = () => {
         </span>
         <div className="flex justify-between p-3 border-2 border-[--colors-secondary] rounded-xl">
           <span className="text-[--colors-primary] font-bold text-[9px] lg:text-base">
-            {linkReferral}
+            http://localhost:3000/?id={linkReferral}
           </span>
           <span>
-            <ClipboardCopy copyText={linkReferral} />
+            <ClipboardCopy
+              copyText={`http://localhost:3000/?id=${linkReferral}`}
+            />
           </span>
         </div>
       </div>

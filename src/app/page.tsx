@@ -9,15 +9,15 @@ import clsx from "clsx";
 import Chart from "@/components/chart/Chart";
 import Popup, { PopupRef } from "@/components/ui/Modal";
 import ClaimModal from "@/components/bet-bo/ClaimModal";
-import { useAccount } from "wagmi";
 import Modal from "@/components/ui/Modal/Modal";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import userApi from "@/services/user-api";
+import toast from "react-hot-toast";
+import { useAccount } from "wagmi";
 import { useSearchParams } from "next/navigation";
 import { Icons } from "@/components/Icons";
-import toast from "react-hot-toast";
 
 export default function Home() {
   const [modeSubNavMobile, setModeSubNavMobile] = useState<string>(MODE.CHART);
@@ -69,7 +69,6 @@ export default function Home() {
         "users",
         [["user_address", "==", address]],
         (docs) => {
-          console.log(docs);
           if (docs?.[0]?.nickname === "") {
             return setShowUserNickname(true);
           }

@@ -9,6 +9,7 @@ import { isEmpty } from "lodash";
 import { publicClient } from "@/lib/contract-config";
 import { CONSTANTS, CURRENCY_UNIT } from "@/constants";
 import { ethers } from "ethers";
+import Image from "next/image";
 
 const ConnectWallet = () => {
   const { isConnected, address } = useAccount();
@@ -98,6 +99,14 @@ const ConnectWallet = () => {
 
               return (
                 <div style={{ display: "flex", gap: 12 }}>
+                  {/* {chain.iconUrl && (
+                    <Image
+                      alt={chain.name ?? "Chain icon"}
+                      src={chain.iconUrl}
+                      width={12}
+                      height={12}
+                    />
+                  )} */}
                   <Button onClick={openAccountModal} type="button">
                     {!isEmpty(usersInfo)
                       ? usersInfo?.[0]?.nickname
