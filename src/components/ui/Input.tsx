@@ -26,6 +26,7 @@ const Input: FC<InputProps> = ({ className, variant, isDisable, ...props }) => {
   return (
     <input
       className={cn(InputVariants({ className, variant }))}
+      autoFocus
       disabled={isDisable}
       {...props}
     />

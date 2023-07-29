@@ -105,8 +105,9 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   const validatorInputField = () => {
     let errorMessage = "";
     if (+amount < CONSTANTS.AMOUNT_REQUIRED && !isEmpty(amount))
-      return (errorMessage = `A minimum amount of ${CONSTANTS.AMOUNT_REQUIRED} BNB is required`);
-    if (+balance! < +amount) return (errorMessage = "Insufficient BNB balance");
+      return (errorMessage = `A minimum amount of ${CONSTANTS.AMOUNT_REQUIRED} ${CURRENCY_UNIT} is required`);
+    if (+balance! < +amount)
+      return (errorMessage = `Insufficient ${CURRENCY_UNIT} balance`);
     return errorMessage;
   };
 
@@ -120,7 +121,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
     let name = "Approve";
 
     if (+balance! < +amount || balance! === 0)
-      return (name = "Insufficient BNB balance");
+      return (name = `Insufficient ${CURRENCY_UNIT} balance`);
 
     if (Number(amount) === 0 || +amount < CONSTANTS.AMOUNT_REQUIRED)
       return (name = "Enter an amount");
@@ -557,6 +558,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
         </div>
         <div className="px-4 py-2 bg-[--colors-input] rounded-2xl">
           <Input
+            autoFocus
             className="text-[--colors-white] text-right"
             placeholder="0.0"
             onKeyDown={formatInputField}

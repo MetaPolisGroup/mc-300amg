@@ -152,7 +152,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                             ethers.formatEther(
                               BigInt(liveBetData?.[0]?.bullAmount)
                             )
-                          ).toFixed(4)
+                          ).toFixed(2)
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
@@ -173,7 +173,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                             ethers.formatEther(
                               BigInt(liveBetData?.[0]?.bullAmount)
                             )
-                          ).toFixed(4)
+                          ).toFixed(2)
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
@@ -246,7 +246,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                             BigInt(liveBetData?.[0]?.totalAmount)
                           )
                         )
-                          .toFixed(8)
+                          .toFixed(2)
                           .toString()
                       : 0}{" "}
                     {CURRENCY_UNIT}
@@ -265,7 +265,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                             ethers.formatEther(
                               BigInt(liveBetData?.[0]?.bearAmount)
                             )
-                          ).toFixed(4)
+                          ).toFixed(2)
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
@@ -284,7 +284,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                             ethers.formatEther(
                               BigInt(liveBetData?.[0]?.bearAmount)
                             )
-                          ).toFixed(4)
+                          ).toFixed(2)
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
