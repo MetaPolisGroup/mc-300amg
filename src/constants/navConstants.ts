@@ -36,8 +36,10 @@ const NAV_HEADER = [
   },
   {
     id: "STAKING",
-    title: "Staking",
-    link: "/staking",
+    title: "Staking (Coming soon)",
+    link: "",
+    // title: "Staking",
+    // link: "/staking",
     // renderDot: "bg-[--colors-success]",
     items: [],
   },

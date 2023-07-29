@@ -18,6 +18,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
   const isWin = data?.status === RESULT_STATUS.WIN;
   const isLose = data?.status === RESULT_STATUS.LOSE;
   const isLive = data?.status === RESULT_STATUS.LIVE;
+  const isRefund = data?.status === RESULT_STATUS.REFUND;
   const isWaiting = data?.status === RESULT_STATUS.WAITING;
 
   const handlerFormatEther = (value: number) => {
@@ -32,6 +33,8 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
 
   const ratePrice =
     (data?.round?.closePrice - data?.round?.lockPrice) / 10 ** 8;
+
+  console.log({ data });
 
   const renderYourHistory = () => {
     return (
@@ -85,17 +88,23 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
 
           <div className="flex justify-between">
             <div className="text-sm font-bold">
-              {isWin ? "Your winnings:" : "Your results:"}
+              {isWin
+                ? "Your winnings:"
+                : isLose
+                ? "Your results:"
+                : "Your refund:"}
             </div>
             <div>
               <div
                 className={clsx(
                   "text-sm font-bold",
-                  isWin && "text-[--colors-success]",
+                  (isWin || isRefund) && "text-[--colors-success]",
                   isLose && "text-[--colors-failure]"
                 )}
               >
-                {isWin ? "+" : "-"} {winningAmount} BNB
+                {isWin || isRefund ? "+" : "-"}{" "}
+                {isRefund ? handlerFormatEther(data?.refund) : winningAmount}{" "}
+                BNB
               </div>
               {/* <div className="text-right text-[--colors-textSubtle] text-xs">
                 ~${data?.user_history?.about}
@@ -210,6 +219,16 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
   const renderWinningAmount = () => {
     if (isWaiting || isLive) return null;
 
+    if (isRefund)
+      return (
+        <div className="text-center">
+          <div className="text-xs">Your Result</div>
+          <div className={clsx("font-bold text-[--colors-success]")}>
+            + {handlerFormatEther(data?.refund)}
+          </div>
+        </div>
+      );
+
     return (
       <div className="text-center">
         <div className="text-xs">Your Result</div>
@@ -278,7 +297,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
           {renderLayoutStatus()}
         </div>
         <div className="flex gap-2">
-          {isWin && data?.claimed === false ? (
+          {(isWin || isRefund) && data?.claimed === false ? (
             <button
               className="bg-[--colors-primary] text-sm text-[--colors-white] px-4 py-1 rounded-2xl cursor-pointer hover:opacity-[0.8]"
               onClick={(e) => {
