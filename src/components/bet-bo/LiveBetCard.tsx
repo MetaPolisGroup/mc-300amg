@@ -45,7 +45,6 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
         ],
         (docs) => {
           setLiveBettedData(docs as IBetData[]);
-          console.log(docs);
           if (docs?.[0]?.refund > 0) {
             return toast.custom((t) => (
               <div
