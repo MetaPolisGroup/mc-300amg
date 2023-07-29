@@ -10,12 +10,12 @@ interface IHeaderChart {
 const HeaderChart: React.FC<IHeaderChart> = ({ time, price }) => {
   if (price === 0)
     return (
-      <div className="h-[80px] bg-[--colors-backgroundAlt] lg:bg-inherit" />
+      <div className="h-[80px] bg-[--colors-backgroundAlt] lg:bg-[--colors-gradientBubblegum]" />
     );
 
   const data = new Date();
   return (
-    <div className="flex items-center gap-3 pt-5 px-3 bg-[--colors-backgroundAlt] lg:bg-inherit">
+    <div className="flex items-center gap-3 pt-5 px-3 bg-[--colors-backgroundAlt] lg:bg-[--colors-gradientBubblegum]">
       <div className="flex items-center gap-2">
         <div className="text-[--colors-text] font-bold text-[32px] md:text-[40px]">
           {price}
