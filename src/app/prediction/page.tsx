@@ -29,7 +29,7 @@ const Prediction = () => {
       if (!isScreenMobile) return;
 
       return setModeSubNavMobile(MODE.CARD);
-    }, 1000);
+    }, 500);
 
     return () => {
       clearTimeout(timeSet);
