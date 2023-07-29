@@ -77,8 +77,10 @@ const ReferralTree = () => {
     _arr: IUser[],
     idx: number
   ): any => {
-    data = tempArr;
+    console.log(tempArr);
+    data = tempArr.length > 0 ? tempArr : data;
     console.log(data);
+
     if (!isEmpty(_arr)) {
       for (let i = 0; i < _arr.length; i++) {
         let obj = {};
@@ -87,41 +89,18 @@ const ReferralTree = () => {
             ..._arr[i],
             show: true,
           };
-          console.log(obj);
+          // console.log(obj);
         } else {
           obj = { ..._arr[i] };
         }
+
         data[idx][i] = obj;
       }
 
-      setTempArr(data);
+      // setTempArr(data);
+      return data;
     }
   };
-
-  // const renderTreeNode = (
-  //   node: IUser,
-  //   idx: number,
-  //   showNode: boolean,
-  //   isDisnable?: boolean
-  // ) => {
-  //   return (
-  //     <div key={node.user_address} className="flex relative">
-  //       <div
-  //         className={`flex items-center ${
-  //           showNode ? "" : "hidden"
-  //         } justify-center border-2 border-black cursor-pointer m-2`}
-  //         onClick={() =>
-  //           handleToggleNode(node.user_address, data[idx + 1], idx + 1)
-  //         }
-  //       >
-  //         <ButtonItem
-  //           text={`${getEllipsisTxt(node.user_address)}`}
-  //           disnable={isDisnable}
-  //         />
-  //       </div>
-  //     </div>
-  //   );
-  // };
 
   const renderNode = (idx: number, _arr: IUser[]) => {
     return (
@@ -134,17 +113,19 @@ const ReferralTree = () => {
                   className={`flex items-center ${
                     rootNode.show ? "" : "hidden"
                   } justify-center border-2 border-black cursor-pointer m-2`}
-                  onClick={() =>
-                    handleToggleNode(
+                  onClick={() => {
+                    const result = handleToggleNode(
                       rootNode.user_address,
                       data[idx + 1],
                       idx + 1
-                    )
+                    );
+                    setTempArr(result);
+                  }
+                    
                   }
                 >
                   <ButtonItem
                     text={`${getEllipsisTxt(rootNode.user_address)}`}
-                    // disnable={isDisnable}
                   />
                 </div>
               </div>
@@ -162,11 +143,11 @@ const ReferralTree = () => {
         <div className={`grid grid-cols-4 gap-5`}>
           {isClient && tempArr.length > 0
             ? tempArr?.map((item: IUser[], idx: number) => {
-                // console.log("temp");
+                // console.log({ idx, item, stt: "first" });
                 return renderNode(idx, item);
               })
             : data?.map((item: IUser[], idx: number) => {
-                // console.log("data");
+                // console.log({ idx, item, stt: "second" });
                 return renderNode(idx, item);
               })}
         </div>
