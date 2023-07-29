@@ -23,20 +23,6 @@ const CountDown: React.FC<ICountDown> = ({ title, onAction }) => {
 
   const LIST_BTN_FEATURE = [
     {
-      id: "question",
-      icon: <Icons.HelpCircle />,
-      disabled: false,
-      onAction: () => {},
-    },
-    {
-      id: "cup",
-      icon: <Icons.Trophy />,
-      disabled: false,
-      onAction: () => {
-        router.push("/prediction/leaderboard");
-      },
-    },
-    {
       id: "history",
       icon: <Icons.History />,
       disabled: false,

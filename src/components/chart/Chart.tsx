@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import * as echarts from "echarts/core";
 import {
   GridComponent,
@@ -33,9 +33,12 @@ type EChartsOption = echarts.ComposeOption<
 >;
 
 const Chart: React.FC = () => {
-  const [chartData, setChartData] = React.useState<DocumentData[]>([]);
+  const [chartData, setChartData] = useState<DocumentData[]>([]);
 
-  const dataHeaderRef = React.useRef<{ time: string; price: number | null }>({
+  const [dataHeader, setDataHeader] = useState<{
+    time: string;
+    price: number | null;
+  }>({
     time: "",
     price: null,
   });
@@ -83,10 +86,10 @@ const Chart: React.FC = () => {
           },
         },
         formatter: (params: any) => {
-          dataHeaderRef.current = {
+          setDataHeader({
             price: params?.[0]?.data?.toFixed(4) ?? params?.[0]?.data,
             time: params?.[0]?.axisValue,
-          };
+          });
 
           return `${params?.[0]?.axisValue}<br><b>${params?.[0]?.data.toFixed(
             4
@@ -106,8 +109,8 @@ const Chart: React.FC = () => {
         show: true,
         type: "value",
         position: "right",
-        min: (min - 0.2).toFixed(2),
-        max: (max + 0.2).toFixed(2),
+        min: (min - 0.1).toFixed(2),
+        max: (max + 0.05).toFixed(2),
         // splitNumber: 2,
         interval: 0.2,
         splitLine: {
@@ -134,7 +137,7 @@ const Chart: React.FC = () => {
           },
           itemStyle: { borderColor: "#ffc700" },
           lineStyle: { color: "#19c0cc" },
-          smooth: true,
+          smooth: false,
         },
       ],
       grid: {
@@ -149,10 +152,7 @@ const Chart: React.FC = () => {
 
   return (
     <div>
-      <HeaderChart
-        time={dataHeaderRef.current.time}
-        price={dataHeaderRef.current.price ?? 0}
-      />
+      <HeaderChart time={dataHeader.time} price={dataHeader.price ?? 0} />
       <div
         id="main"
         className="w-full h-[350px] md:h-[400px] bg-[--colors-backgroundAlt] lg:bg-inherit"

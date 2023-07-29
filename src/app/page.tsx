@@ -69,12 +69,14 @@ export default function Home() {
         "users",
         [["user_address", "==", address]],
         (docs) => {
+          console.log(docs);
           if (docs?.[0]?.nickname === "") {
-            setShowUserNickname(true);
+            return setShowUserNickname(true);
           }
           if (docs.length === 0) {
-            setShowUserNickname(true);
+            return setShowUserNickname(true);
           }
+          setShowUserNickname(false);
         }
       );
     }
@@ -113,7 +115,7 @@ export default function Home() {
             } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
           >
             <div className="flex bg-[--colors-success] p-4 rounded-l-lg">
-              <Icons.XCircle className="text-[--colors-white]" />
+              <Icons.CheckCircle className="text-[--colors-white]" />
             </div>
             <div className="flex-1 w-0 p-2">
               <div className="flex items-start">

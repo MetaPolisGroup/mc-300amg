@@ -1,11 +1,13 @@
 "use client";
 import React from "react";
 import Modal from "./Modal";
+import { isEmpty } from "lodash";
 
 export type ClosePopupEvent = () => void;
 
 export interface PopupProps {
   selector?: React.ReactNode;
+  showCustomize?: boolean;
   title?: React.ReactNode;
   width?: string | number;
   labelOk?: React.ReactNode;
@@ -43,6 +45,7 @@ const PopupRender: React.ForwardRefRenderFunction<PopupRef, PopupProps> = (
   const {
     title,
     labelOk,
+    showCustomize,
     labelCancel,
     onSubmit,
     onCancel,
@@ -60,7 +63,7 @@ const PopupRender: React.ForwardRefRenderFunction<PopupRef, PopupProps> = (
   if (header === undefined) header = true;
   if (footer === undefined) footer = true;
 
-  const [show, setShow] = React.useState(false);
+  const [show, setShow] = React.useState<boolean>(false);
 
   React.useImperativeHandle(ref, () => ({
     open: () => {
@@ -77,7 +80,7 @@ const PopupRender: React.ForwardRefRenderFunction<PopupRef, PopupProps> = (
     <React.Fragment>
       {selector}
       <Modal
-        show={show}
+        show={!isEmpty(showCustomize) ? showCustomize! : show}
         closeAble={closable}
         title={title}
         footer={footer}
