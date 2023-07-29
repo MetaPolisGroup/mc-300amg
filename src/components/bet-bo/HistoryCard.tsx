@@ -98,7 +98,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                             ethers.formatEther(
                               BigInt(historyData?.[0]?.bullAmount)
                             )
-                          ).toFixed(4)
+                          ).toFixed(2)
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
@@ -119,7 +119,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                             ethers.formatEther(
                               BigInt(historyData?.[0]?.bullAmount)
                             )
-                          ).toFixed(4)
+                          ).toFixed(2)
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
@@ -190,10 +190,10 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                             BigInt(historyData?.[0]?.totalAmount)
                           )
                         )
-                          .toFixed(8)
+                          .toFixed(2)
                           .toString()
                       : 0}{" "}
-                    BNB
+                    {CURRENCY_UNIT}
                   </span>
                 </div>
               </div>
@@ -209,7 +209,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                             ethers.formatEther(
                               BigInt(historyData?.[0]?.bearAmount)
                             )
-                          ).toFixed(4)
+                          ).toFixed(2)
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
@@ -228,7 +228,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                             ethers.formatEther(
                               BigInt(historyData?.[0]?.bearAmount)
                             )
-                          ).toFixed(4)
+                          ).toFixed(2)
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>

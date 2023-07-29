@@ -2,6 +2,8 @@
 import React from "react";
 import { Icons } from "./Icons";
 import ChangeMode from "./ui/ChangeMode";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Footer() {
   const [showElement, setShowElement] = React.useState(false);
@@ -76,7 +78,11 @@ export default function Footer() {
             </div>
           </div>
           <div className="hidden md:flex w-64 md:mx-0 md:h-[250px] items-start md:justify-end lg:justify-center justify-start text-center md:text-left md:mt-0  order-first md:order-none mb-14 ">
-            <h1 className="text-[--colors-secondary] text-3xl">Logo</h1>
+            <h1 className="text-[--colors-secondary] text-3xl">
+              <Link href={"/"}>
+                <Image src={"./svgs/logo.svg"} width={110} height={40} alt="" />
+              </Link>
+            </h1>
           </div>
 
           <div className="md:hidden border-t-[1px] md:border-b-[1px] border-[#383241] mb-5 container -order-2 md:order-none md:justify-between items-center py-3  md:py-10 flex md:flex-row md:flex-nowrap flex-wrap flex-col">

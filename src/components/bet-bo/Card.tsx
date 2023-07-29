@@ -165,7 +165,11 @@ const Card = () => {
       </div>
 
       <div className="flex lg:relative justify-end pr-4 pb-5">
-        <Link href={"/prediction"} target="_blank" className="lg:absolute">
+        <Link
+          href={"https://chain.link/"}
+          target="_blank"
+          className="lg:absolute"
+        >
           <Image
             src={"./svgs/market_data.svg"}
             width={170}
