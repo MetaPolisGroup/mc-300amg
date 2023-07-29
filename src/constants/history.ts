@@ -28,6 +28,7 @@ export const RESULT_STATUS = {
   LOSE: "Lose",
   WAITING: "Waiting",
   LIVE: "Live",
+  REFUND: "Refund",
 };
 
 export const USER_DIRECTION = {

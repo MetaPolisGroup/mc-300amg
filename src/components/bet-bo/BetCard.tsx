@@ -93,7 +93,7 @@ const BetCard: React.FC<IBetCard> = ({
                   {nextBetData?.bullAmount
                     ? Number(
                         ethers.formatEther(BigInt(nextBetData?.bullAmount))
-                      ).toFixed(4)
+                      ).toFixed(2)
                     : 0}{" "}
                   {CURRENCY_UNIT}
                 </div>
@@ -107,7 +107,7 @@ const BetCard: React.FC<IBetCard> = ({
                   <TooltipElement
                     title={`${ethers.formatEther(
                       BigInt(dataBettedInCurrentRound.amount)
-                    )} BNB`}
+                    )} ${CURRENCY_UNIT}`}
                   >
                     <Button
                       className="flex relative group w-[255px] gap-1 bg-[--colors-success] text-[--colors-white] hover:bg-[--colors-success] hover:opacity-[0.8] rounded-2xl"
@@ -122,7 +122,7 @@ const BetCard: React.FC<IBetCard> = ({
                   <TooltipElement
                     title={`${ethers.formatEther(
                       BigInt(dataBettedInCurrentRound.amount)
-                    )} BNB`}
+                    )} ${CURRENCY_UNIT}`}
                   >
                     <Button
                       className="flex relative group w-[255px] gap-1 bg-[--colors-failure] text-[--colors-white] hover:bg-[--colors-failure] hover:opacity-[0.8] rounded-2xl"
@@ -140,9 +140,9 @@ const BetCard: React.FC<IBetCard> = ({
                   {nextBetData?.totalAmount
                     ? ethers
                         .formatEther(BigInt(nextBetData?.totalAmount))
-                        .slice(0, 8)
+                        .slice(0, 2)
                     : 0}{" "}
-                  BNB
+                  {CURRENCY_UNIT}
                 </span>
               </div>
               {isEmpty(dataBettedInCurrentRound) ? (
@@ -175,7 +175,7 @@ const BetCard: React.FC<IBetCard> = ({
                   {nextBetData?.bearAmount
                     ? Number(
                         ethers.formatEther(BigInt(nextBetData?.bearAmount))
-                      ).toFixed(4)
+                      ).toFixed(2)
                     : 0}{" "}
                   {CURRENCY_UNIT}
                 </div>

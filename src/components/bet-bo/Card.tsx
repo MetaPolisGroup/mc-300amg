@@ -20,6 +20,9 @@ import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { useAccount } from "wagmi";
 import ClaimModal from "./ClaimModal";
 
+import Link from "next/link";
+import Image from "next/image";
+
 const Card = () => {
   const { address, isConnected } = useAccount();
   const [currentRound, setCurrentRound] = useState<number>(0);
@@ -159,6 +162,21 @@ const Card = () => {
             />
           }
         />
+      </div>
+
+      <div className="flex lg:relative justify-end pr-4 pb-5">
+        <Link
+          href={"https://chain.link/"}
+          target="_blank"
+          className="lg:absolute"
+        >
+          <Image
+            src={"./svgs/market_data.svg"}
+            width={170}
+            height={47}
+            alt=""
+          />
+        </Link>
       </div>
     </React.Fragment>
   );

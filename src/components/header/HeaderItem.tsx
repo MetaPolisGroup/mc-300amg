@@ -1,5 +1,7 @@
 "use client";
 import React from "react";
+
+import clsx from "clsx";
 import Link from "next/link";
 import { Icons } from "../Icons";
 
@@ -37,6 +39,9 @@ const HeaderItem: React.FC<IHeaderItem> = ({ data }) => {
           </div>
         </div>
       );
+
+    if (title === "Staking (Coming soon)")
+      return <div className="cursor-default">{title}</div>;
 
     return title;
   };
@@ -83,14 +88,28 @@ const HeaderItem: React.FC<IHeaderItem> = ({ data }) => {
     });
   };
 
+  const renderLink = () => {
+    return data.link !== "" ? (
+      <Link href={data.link}>{renderMainTitle(data.title)}</Link>
+    ) : (
+      <div>{renderMainTitle(data.title)}</div>
+    );
+  };
+
   return (
     <div key={data.id} className="dropdown dropdown-hover">
       <div className="p-2 px-1 xl:px-2">
         <label
           tabIndex={0}
-          className="btn text-[--colors-textSubtle] flex-nowrap gap-3 border-0 !m-0 py-4 px-2 xl:p-4 !min-h-fit !normal-case !rounded-[20px] hover:bg-[--colors-tertiary] h-[48px] font-bold"
+          className={clsx(
+            "btn text-[--colors-textSubtle] flex-nowrap gap-3 border-0 !m-0 py-4 px-2 xl:p-4 !min-h-fit !normal-case !rounded-[20px] h-[48px] font-bold",
+            data.title !== "Staking (Coming soon)" &&
+              "hover:bg-[--colors-tertiary]",
+            data.title === "Staking (Coming soon)" &&
+              "cursor-default opacity-60 !hover:bg-[--colors-backgroundAlt]"
+          )}
         >
-          <Link href={data.link}>{renderMainTitle(data.title)}</Link>
+          {renderLink()}
         </label>
       </div>
 

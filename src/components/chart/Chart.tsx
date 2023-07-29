@@ -16,6 +16,9 @@ import { DocumentData } from "firebase/firestore";
 
 import dayjs from "dayjs";
 import HeaderChart from "./HeaderChart";
+import Link from "next/link";
+import { Icons } from "../Icons";
+import clsx from "clsx";
 
 echarts.use([
   GridComponent,
@@ -33,6 +36,7 @@ type EChartsOption = echarts.ComposeOption<
 >;
 
 const Chart: React.FC = () => {
+  const [isShowChart, setIsShowChart] = useState<boolean>(true);
   const [chartData, setChartData] = useState<DocumentData[]>([]);
 
   const [dataHeader, setDataHeader] = useState<{
@@ -42,6 +46,16 @@ const Chart: React.FC = () => {
     time: "",
     price: null,
   });
+
+  useEffect(() => {
+    const firstRenderChart = setTimeout(() => {
+      if (1024 <= screen.width) setIsShowChart(false);
+    }, 200);
+
+    return () => {
+      clearTimeout(firstRenderChart);
+    };
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -150,12 +164,43 @@ const Chart: React.FC = () => {
     option && myChart.setOption(option);
   }, [chartData]);
 
+  const handleToggleShowChart = () => {
+    setIsShowChart(!isShowChart);
+  };
+
   return (
     <div>
-      <HeaderChart time={dataHeader.time} price={dataHeader.price ?? 0} />
+      <div className="hidden lg:block">
+        <div className="flex pl-3">
+          <div
+            className="flex items-center gap-1 p-4 pb-3 text-[--colors-text] bg-[--colors-backgroundAlt] rounded-t-3xl text-base font-semibold cursor-pointer"
+            onClick={() => handleToggleShowChart()}
+          >
+            <Icons.BarChart3 />
+            ChainLink Chart
+          </div>
+        </div>
+        <div className="flex items-center gap-1 justify-end h-[24px] pr-6 text-[--colors-text] bg-[--colors-backgroundAlt] text-sm">
+          BNB/USD Chart by
+          <Link
+            href={"/prediction"}
+            className="font-bold text-[--colors-primary]"
+          >
+            Chainlink Oracle
+          </Link>
+        </div>
+      </div>
+
+      {isShowChart ? (
+        <HeaderChart time={dataHeader.time} price={dataHeader.price ?? 0} />
+      ) : null}
+
       <div
         id="main"
-        className="w-full h-[350px] md:h-[400px] bg-[--colors-backgroundAlt] lg:bg-inherit"
+        className={clsx(
+          "w-full h-[350px] md:h-[400px] bg-[--colors-backgroundAlt] lg:bg-inherit",
+          !isShowChart && "hidden"
+        )}
       ></div>
     </div>
   );
