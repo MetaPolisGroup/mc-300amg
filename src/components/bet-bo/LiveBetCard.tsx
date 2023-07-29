@@ -10,6 +10,7 @@ import CalculatingCard from "./CalculatingCard";
 import getAllData from "@/helpers/getAllDataByOnSnapshot";
 import { CURRENCY_UNIT } from "@/constants";
 import { ethers } from "ethers";
+import { toast } from "react-hot-toast";
 
 interface ILiveBetCardProps {
   liveRound: number;
@@ -22,7 +23,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
 }) => {
   const { address, isConnected } = useAccount();
   const [liveBetData, setLiveBetData] = useState<DocumentData[]>();
-  const [liveBettedData, setLiveBettedData] = useState<DocumentData[]>();
+  const [liveBettedData, setLiveBettedData] = useState<IBetData[]>();
   const [chainlinkData, setChainlinkData] = useState<DocumentData[]>();
   const [progressing, setProgressing] = useState<number>(0);
   const [isClient, setIsClient] = useState<boolean>(false);
@@ -42,8 +43,47 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
           ["user_address", "==", address as `0x${string}`],
           ["epoch", "==", liveRound],
         ],
-        (docs: DocumentData) => {
-          setLiveBettedData(docs as DocumentData[]);
+        (docs) => {
+          setLiveBettedData(docs as IBetData[]);
+          console.log(docs);
+          if (docs?.[0]?.refund > 0) {
+            return toast.custom((t) => (
+              <div
+                className={`${
+                  t.visible ? "animate-enter" : "animate-leave"
+                } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+              >
+                <div className="flex bg-[--colors-success] p-4 rounded-l-lg">
+                  <Icons.CheckCircle className="text-[--colors-white]" />
+                </div>
+                <div className="flex-1 w-0 p-2">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0 pt-0.5"></div>
+                    <div className="ml-3 flex-1">
+                      <p className="text-sm font-medium text-[--colors-text]">
+                        Refund!
+                      </p>
+                      <p className="mt-1 text-sm text-[--colors-text]">
+                        You has been refunded{" "}
+                        {Number(
+                          ethers.formatEther(BigInt(docs?.[0]?.refund))
+                        ).toFixed(2)}{" "}
+                        {CURRENCY_UNIT}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex">
+                  <button
+                    onClick={() => toast.dismiss(t.id)}
+                    className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
+                  >
+                    <Icons.X className="text-[--colors-primary]" />
+                  </button>
+                </div>
+              </div>
+            ));
+          }
         }
       );
     }
