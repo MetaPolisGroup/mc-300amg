@@ -8,7 +8,7 @@ import { tokenABI } from "./abi/token-abi";
 
 const CURRENT_NETWORK = ChainType.BSCTESTNET;
 
-export const CURRENCY_UNIT = "BNB";
+export const CURRENCY_UNIT = "PRX";
 export const CONSTANTS = {
   ADDRESS: {
     TOKEN: tokenAddr[CURRENT_NETWORK],

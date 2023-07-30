@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import NAV_HEADER from "@/constants/navConstants";
 
 import HeaderItem from "./HeaderItem";
+import Image from "next/image";
 enum EActive {
   "Default" = 1,
   "Stand",
@@ -44,7 +45,7 @@ const Header = () => {
               className="normal-case text-xl text-[--colors-textSubtle]"
               href="/"
             >
-              daisyUI
+              <Image src={"./svgs/logo.svg"} width={110} height={40} alt="" />
             </a>
             <ul className="menu menu-horizontal p-0 flex-nowrap gap-1 xl:gap-2 hidden lg:flex items-center">
               {renderNavItems()}
