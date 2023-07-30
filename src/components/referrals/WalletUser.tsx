@@ -1,9 +1,7 @@
 "use client";
 import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
-import { getEllipsisTxt } from "@/utils/formmater-address";
 import React, { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
-import { Icons } from "../Icons";
 import ClipboardCopy from "../ui/ClipboardCopy";
 
 const WalletUser = () => {
@@ -16,7 +14,7 @@ const WalletUser = () => {
         "users",
         [["user_address", "==", address as `0x${string}`]],
         (docs) => {
-          setLinkReferral(docs?.[0]?.ref);
+          setLinkReferral(docs?.[0]?.user_address);
         }
       );
     }

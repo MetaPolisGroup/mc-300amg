@@ -78,7 +78,7 @@ const ReferralTree = () => {
     idx: number
   ): any => {
     console.log(tempArr);
-    data = tempArr.length > 0 ? tempArr : data;
+    data = tempArr?.length > 0 ? tempArr : data;
     console.log(data);
 
     if (!isEmpty(_arr)) {
@@ -120,9 +120,7 @@ const ReferralTree = () => {
                       idx + 1
                     );
                     setTempArr(result);
-                  }
-                    
-                  }
+                  }}
                 >
                   <ButtonItem
                     text={`${getEllipsisTxt(rootNode.user_address)}`}
@@ -140,16 +138,19 @@ const ReferralTree = () => {
     <div className="text-white p-3 border-2 border-[--colors-secondary] rounded-xl">
       <div>
         <div className="text-xl mb-8 md:text-3xl">Referral Tree</div>
+
         <div className={`grid grid-cols-4 gap-5`}>
-          {isClient && tempArr.length > 0
-            ? tempArr?.map((item: IUser[], idx: number) => {
-                // console.log({ idx, item, stt: "first" });
-                return renderNode(idx, item);
-              })
-            : data?.map((item: IUser[], idx: number) => {
-                // console.log({ idx, item, stt: "second" });
-                return renderNode(idx, item);
-              })}
+          {isClient &&
+            isConnected &&
+            (tempArr?.length > 0
+              ? tempArr?.map((item: IUser[], idx: number) => {
+                  // console.log({ idx, item, stt: "first" });
+                  return renderNode(idx, item);
+                })
+              : data?.map((item: IUser[], idx: number) => {
+                  // console.log({ idx, item, stt: "second" });
+                  return renderNode(idx, item);
+                }))}
         </div>
       </div>
     </div>
