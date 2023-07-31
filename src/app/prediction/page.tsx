@@ -14,7 +14,13 @@ const Prediction = () => {
   const [modeSubNavMobile, setModeSubNavMobile] = useState<string>(MODE.CHART);
 
   const collectWinningsRef = createRef<PopupRef>();
-  const [collectWinning, setCollectWinning] = useState<number>();
+  const [collectWinning, setCollectWinning] = useState<{
+    round: number;
+    title: string;
+  }>({
+    round: 0,
+    title: "Collect Winnnings",
+  });
 
   const [isScreenMobile, setIsScreenMobile] = useState(false);
 
@@ -36,8 +42,17 @@ const Prediction = () => {
     };
   }, [isScreenMobile]);
 
-  const handlerToggleCollectWinning = (status: boolean, round: number) => {
-    setCollectWinning(round);
+  const handlerToggleCollectWinning = (
+    status: boolean,
+    round: number,
+    title: string
+  ) => {
+    setCollectWinning({
+      round: round,
+      title: title,
+    });
+
+    console.log({ title });
 
     if (status === true) {
       return collectWinningsRef.current?.open();
@@ -97,16 +112,16 @@ const Prediction = () => {
         width={300}
         footer={false}
         closable
-        title="Collect Winnnings"
+        title={collectWinning.title}
         styleContent={{
           background: "var(--colors-backgroundAlt)",
           color: "var(--colors-text)",
         }}
         content={
           <ClaimModal
-            winningRound={collectWinning}
+            winningRound={collectWinning.round}
             onCancel={() => {
-              handlerToggleCollectWinning(false, 0);
+              handlerToggleCollectWinning(false, 0, "Collect Winnnings");
             }}
           />
         }

@@ -9,7 +9,7 @@ import { RESULT_STATUS } from "@/constants/history";
 
 interface IHistoryDataProps {
   data: IHistory;
-  onCollect: (status: boolean, round: number) => void;
+  onCollect: (status: boolean, round: number, title: string) => void;
 }
 
 const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
@@ -301,12 +301,15 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
             <button
               className="bg-[--colors-primary] text-sm text-[--colors-white] px-4 py-1 rounded-2xl cursor-pointer hover:opacity-[0.8]"
               onClick={(e) => {
-                onCollect(true, data?.round?.epoch);
-                console.log("Collected");
+                onCollect(
+                  true,
+                  data?.round?.epoch,
+                  isWin ? "Collect Winnnings" : "Collect Refund"
+                );
                 e.stopPropagation();
               }}
             >
-              Collect
+              {isWin ? "Collect" : "Refund"}
             </button>
           ) : null}
           <div>
