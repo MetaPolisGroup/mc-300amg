@@ -46,6 +46,7 @@ const BetCard: React.FC<IBetCard> = ({
 
   const changeUpOrDownHandler = (status: string) => {
     setUpOrDownStatus(status);
+    inputRef.current?.focus();
   };
 
   const backwardHandler = (status: boolean) => {
@@ -55,6 +56,7 @@ const BetCard: React.FC<IBetCard> = ({
   const placedBetHandler = (status: boolean) => {
     setShowSetBetCard(status);
   };
+  const inputRef = React.useRef<HTMLInputElement | null>(null);
 
   return (
     <div
@@ -202,6 +204,7 @@ const BetCard: React.FC<IBetCard> = ({
         onBackward={backwardHandler}
         currentRound={nextBetData?.epoch}
         onPlacedBet={placedBetHandler}
+        inputRef={inputRef}
       />
     </div>
   );
