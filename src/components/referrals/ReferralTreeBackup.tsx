@@ -38,6 +38,8 @@ const ReferralTreeBackup = () => {
           // setFloorTree(max);
         }
       );
+      setTreesNode([]);
+      setNodeAddress("");
     }
   }, [isConnected, address]);
 
@@ -84,8 +86,6 @@ const ReferralTreeBackup = () => {
         )
       );
 
-      console.log({ nodeSameLevel });
-
       const childNodeSameLevel = treesNode.filter((node) =>
         node.children.some((child) =>
           child.user_tree_commissions.includes(nodeSameLevel?.address!)
@@ -111,8 +111,6 @@ const ReferralTreeBackup = () => {
 
     setTreesNode((prev: any) => [...prev, treeLevelObj]);
   };
-
-  console.log({ treesNode });
 
   return (
     <div className="text-[--colors-secondary] p-3 border-2 border-[--colors-secondary] rounded-xl">

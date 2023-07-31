@@ -181,9 +181,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
               )}
             </div>
             <div
-              className={`rounded-2xl bg-gradient-to-r from-[${
-                ratePrice > 0 ? "--colors-success" : "--colors-failure"
-              }] to-[${
+              className={`rounded-2xl border-2 border-[${
                 ratePrice > 0 ? "--colors-success" : "--colors-failure"
               }] p-[2px]`}
             >

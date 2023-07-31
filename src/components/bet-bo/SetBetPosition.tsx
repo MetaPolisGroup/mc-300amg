@@ -47,6 +47,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
     if (isConnected && address) {
       getApprove();
       getBalance();
+      setApproveValue(0);
     }
   }, [isConnected, address]);
 
@@ -627,29 +628,33 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
                 Please Connect Wallet
               </Button>
             ) : (
-              <>
-                {approveValue < +amount ? (
-                  <Button
-                    className="w-full bg-[--colors-primary] text-[--colors-white] hover:bg-[--colors-primary] hover:opacity-[0.8] rounded-2xl"
-                    type="button"
-                    disabled={activeButton() || isApproveLoading}
-                    onClick={approveHandler}
-                    isLoading={isApproveLoading}
-                  >
-                    {buttonName()}
-                  </Button>
-                ) : (
-                  <Button
-                    className="w-full bg-[--colors-primary] text-[--colors-white] hover:bg-[--colors-primary] hover:opacity-[0.8] rounded-2xl"
-                    type="button"
-                    disabled={activeButton() || isLoading}
-                    onClick={placeBetHandler}
-                    isLoading={isLoading}
-                  >
-                    Confirm
-                  </Button>
-                )}
-              </>
+              <div className="flex gap-2">
+                <Button
+                  className="w-full bg-[--colors-primary] text-[--colors-white] hover:bg-[--colors-primary] hover:opacity-[0.8] rounded-2xl"
+                  type="button"
+                  disabled={
+                    activeButton() ||
+                    isApproveLoading ||
+                    approveValue >= +amount
+                  }
+                  onClick={approveHandler}
+                  isLoading={isApproveLoading}
+                >
+                  {buttonName()}
+                </Button>
+
+                <Button
+                  className="w-full bg-[--colors-primary] text-[--colors-white] hover:bg-[--colors-primary] hover:opacity-[0.8] rounded-2xl"
+                  type="button"
+                  disabled={
+                    activeButton() || isLoading || approveValue < +amount
+                  }
+                  onClick={placeBetHandler}
+                  isLoading={isLoading}
+                >
+                  Confirm
+                </Button>
+              </div>
             ))}
         </div>
         <p className="text-[--colors-textSubtle] font-medium text-xs">
