@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { Icons } from "../Icons";
 import Button from "../ui/Button";
+import { getEllipsisTxt } from "@/utils/formmater-address";
+import { ethers } from "ethers";
+import { toFixedEtherNumber } from "@/utils/format-number";
 
 interface IRanking {
   ranking: IUserList[];
@@ -42,7 +45,7 @@ const Ranking: React.FC<IRanking> = ({ ranking }) => {
             </tr>
           </thead>
           <tbody>
-            {rankingsLimited &&
+            {rankingsLimited ? (
               rankingsLimited.map((rankingLimited, idx) => (
                 <tr
                   key={rankingLimited.user_id}
@@ -57,31 +60,56 @@ const Ranking: React.FC<IRanking> = ({ ranking }) => {
                     <div className="flex justify-start items-center gap-2">
                       <Icons.AvatarUser className="w-10 h-10" />
                       <span className="text-[--colors-primary] font-bold text-base">
-                        {rankingLimited?.user_id}
+                        {rankingLimited?.nickname}
                       </span>
                     </div>
                   </td>
                   <td>
                     <div
-                      className={`text-right text-[--colors-success] text-base font-bold`}
+                      className={`text-right text-[${
+                        rankingLimited?.leaderboard.net_winnings < 0
+                          ? "--colors-failure"
+                          : "--colors-success"
+                      }] text-base font-bold`}
                     >
-                      +{rankingLimited?.leaderboard?.net_winnings}
+                      {rankingLimited?.leaderboard.net_winnings > 0 ? "+" : ""}
+                      {rankingLimited?.leaderboard?.net_winnings
+                        ? Number(
+                            toFixedEtherNumber(
+                              ethers.formatEther(
+                                BigInt(rankingLimited?.leaderboard.net_winnings)
+                              ),
+                              2
+                            )
+                          ).toLocaleString("en-US")
+                        : 0}
                     </div>
                     {/* <div className="text-right text-[--colors-textSubtle] text-xs font-normal">
                       ~$0,03
                     </div> */}
                   </td>
                   <td className="text-[--colors-text] text-center font-medium">
-                    {rankingLimited?.leaderboard?.win_rate}
+                    {rankingLimited?.leaderboard?.win_rate.toFixed(2)}%
                   </td>
                   <td className="text-[--colors-text] text-center font-medium">
-                    1
+                    {rankingLimited?.leaderboard?.round_winning}
                   </td>
                   <td className="text-[--colors-text] text-center font-medium">
                     {rankingLimited?.leaderboard?.round_played}
                   </td>
                 </tr>
-              ))}
+              ))
+            ) : (
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td className="text-base text-center text-[--colors-text]">
+                  No Data
+                </td>
+                <td></td>
+              </tr>
+            )}
           </tbody>
         </table>
         <div className="w-full text-center pb-6 hidden lg:block">

@@ -13,6 +13,7 @@ interface IUserList {
     win_rate: number;
   };
   user_id: string;
+  nickname: string;
 }
 
 interface ILeaderboardUserList {

@@ -62,7 +62,13 @@ const CountDown: React.FC<ICountDown> = ({ title, onAction }) => {
     const _second = second < 10 ? `0${second}` : second;
     return (
       <>
-        {+_minute >= 0 && +_second >= 0 ? `${_minute}:${_second}` : "Closing"}
+        {+_minute >= 0 && +_second >= 0 ? (
+          <p className="text-red-600">
+            {_minute}:{_second}
+          </p>
+        ) : (
+          "Closing"
+        )}
       </>
     );
   };
@@ -97,8 +103,12 @@ const CountDown: React.FC<ICountDown> = ({ title, onAction }) => {
         <div className="text-[--colors-secondary] text-base font-semibold rounded-bl-[3rem] flex-col md:flex-row md:text-lg">
           {renderTime()}
         </div>
-        <div className="text-xs text-[--colors-text]">{title}</div>
-        <Icons.Clock />
+        <div className="text-xs text-[--colors-text] md:pr-8">{title}</div>
+        <Icons.Clock
+          width={64}
+          height={64}
+          className="absolute right-[-25px] top-[-10px] md:right-0"
+        />
       </div>
 
       {renderListFeature()}

@@ -1,9 +1,7 @@
 "use client";
 import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
-import { getEllipsisTxt } from "@/utils/formmater-address";
 import React, { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
-import { Icons } from "../Icons";
 import ClipboardCopy from "../ui/ClipboardCopy";
 
 const WalletUser = () => {
@@ -16,7 +14,7 @@ const WalletUser = () => {
         "users",
         [["user_address", "==", address as `0x${string}`]],
         (docs) => {
-          setLinkReferral(docs?.[0]?.ref);
+          setLinkReferral(docs?.[0]?.user_address);
         }
       );
     }
@@ -30,10 +28,12 @@ const WalletUser = () => {
         </span>
         <div className="flex justify-between p-3 border-2 border-[--colors-secondary] rounded-xl">
           <span className="text-[--colors-primary] font-bold text-[9px] lg:text-base">
-            {linkReferral}
+            http://localhost:3000/?id={linkReferral}
           </span>
           <span>
-            <ClipboardCopy copyText={linkReferral} />
+            <ClipboardCopy
+              copyText={`http://localhost:3000/?id=${linkReferral}`}
+            />
           </span>
         </div>
       </div>

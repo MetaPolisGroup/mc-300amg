@@ -7,9 +7,11 @@ import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import userApi from "@/services/user-api";
+import toast from "react-hot-toast";
+
 import { useSearchParams } from "next/navigation";
 import { Icons } from "@/components/Icons";
-import toast from "react-hot-toast";
+
 import SliderListGame from "@/components/sliderListGame";
 import SliderBannerGame from "@/components/sliderBannerGame";
 
