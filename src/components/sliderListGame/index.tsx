@@ -4,60 +4,52 @@ import React, { useState } from "react";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/pagination";
-import NAV_HEADER from "@/constants/navConstants";
+
+import { LIST_GAME } from "@/constants/navConstants";
 
 import classes from "./SliderListGame.module.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Pagination } from "swiper/modules";
+import clsx from "clsx";
+import Image from "next/image";
+import Link from "next/link";
 
 const SliderListGame: React.FC = () => {
-  const [games, setGames] = useState<{ title: string; link: string }[]>(
-    NAV_HEADER[0].items
-  );
+  const [games, setGames] =
+    useState<{ id: string; img: string; link: string }[]>(LIST_GAME);
 
   const renderCardGames = () => {
     return games.map((games, index) => {
-      // return (
-      //   <div
-      //     key={`${games.title}${index}`}
-      //     className="!w-full px-3 cursor-pointer"
-      //   >
-      //     <div className="!w-full h-[140px] rounded-[60px] bg-[--colors-background-slider] overflow-hidden flex items-center justify-center text-[--colors-textSubtle] font-bold">
-      //       {games.title}
-      //     </div>
-      //   </div>
-      // );
-
       return (
-        <SwiperSlide key={`${games.title}${index}`}>
-          <div className="!w-full px-3 cursor-pointer">
-            <div className="!w-full h-[140px] rounded-[60px] bg-[--colors-background-slider] overflow-hidden flex items-center justify-center text-[--colors-textSubtle] font-bold">
-              {games.title}
+        <SwiperSlide key={`${games.id}${index}`}>
+          <Link href={games.link}>
+            <div className="w-[110px] h-[60px] sm:!w-full sm:h-[140px] mx-2 rounded-[60px] bg-[--colors-background-slider] overflow-hidden flex items-center justify-center text-[--colors-textSubtle] font-bold select-none cursor-pointer">
+              <Image
+                src={games.img}
+                sizes="1000"
+                width={100}
+                height={50}
+                alt={games.id}
+                className="max-w-fit !w-[560px]"
+              />
             </div>
-          </div>
+          </Link>
         </SwiperSlide>
       );
     });
   };
 
   return (
-    <div className="my-6">
+    <div className={clsx("my-1", classes["list-game"])}>
       <Swiper
-        slidesPerView={3}
-        spaceBetween={30}
-        freeMode={true}
+        slidesPerView={"auto"}
+        spaceBetween={24}
+        freeMode={false}
         modules={[FreeMode, Pagination]}
-        className="mySwiper"
+        centeredSlides={true}
+        slideToClickedSlide={true}
       >
-        <SwiperSlide>Slide 1</SwiperSlide>
-        <SwiperSlide>Slide 2</SwiperSlide>
-        <SwiperSlide>Slide 3</SwiperSlide>
-        <SwiperSlide>Slide 4</SwiperSlide>
-        <SwiperSlide>Slide 5</SwiperSlide>
-        <SwiperSlide>Slide 6</SwiperSlide>
-        <SwiperSlide>Slide 7</SwiperSlide>
-        <SwiperSlide>Slide 8</SwiperSlide>
-        <SwiperSlide>Slide 9</SwiperSlide>
+        {renderCardGames()}
       </Swiper>
     </div>
   );
