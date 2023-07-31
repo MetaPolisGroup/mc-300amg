@@ -122,4 +122,27 @@ export const NAV_SUB_HEADER = [
   },
 ];
 
+export const LIST_GAME = [
+  {
+    id: "prediction",
+    img: "/images/game/prediction.svg",
+    link: "/prediction",
+  },
+  {
+    id: "diee",
+    img: "/images/game/dice.svg",
+    link: "/",
+  },
+  {
+    id: "sport",
+    img: "/images/game/sport.svg",
+    link: "/",
+  },
+  {
+    id: "market",
+    img: "/images/game/market.png",
+    link: "/",
+  },
+];
+
 export default NAV_HEADER;
