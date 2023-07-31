@@ -20,13 +20,21 @@ export interface InputProps
   extends InputHTMLAttributes<HTMLInputElement>,
     VariantProps<typeof InputVariants> {
   isDisable?: boolean;
+  ref?: React.LegacyRef<HTMLInputElement> | undefined;
 }
 
-const Input: FC<InputProps> = ({ className, variant, isDisable, ...props }) => {
+const Input: FC<InputProps> = ({
+  className,
+  variant,
+  isDisable,
+  ref,
+  ...props
+}) => {
   return (
     <input
       className={cn(InputVariants({ className, variant }))}
       autoFocus
+      ref={ref}
       disabled={isDisable}
       {...props}
     />
