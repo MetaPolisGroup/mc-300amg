@@ -8,7 +8,7 @@ export const MODE = {
 
 export const RADIO = {
   ALL: "All",
-  COLLECTED: "Collected",
+  UNREFUNDED: "UnRefunded",
   UNCOLECTED: "Uncollected",
 };
 
@@ -36,4 +36,4 @@ export const USER_DIRECTION = {
   DOWN: "DOWN",
 };
 
-export const LIST_RADIO = [RADIO.ALL, RADIO.COLLECTED, RADIO.UNCOLECTED];
+export const LIST_RADIO = [RADIO.ALL, RADIO.UNREFUNDED, RADIO.UNCOLECTED];
