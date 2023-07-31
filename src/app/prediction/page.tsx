@@ -52,8 +52,6 @@ const Prediction = () => {
       title: title,
     });
 
-    console.log({ title });
-
     if (status === true) {
       return collectWinningsRef.current?.open();
     }
