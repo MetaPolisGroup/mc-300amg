@@ -4,6 +4,13 @@ import React, { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { getEllipsisTxt } from "@/utils/formmater-address";
 import { isEmpty } from "lodash";
+interface IUser {
+  user_address: string;
+  ref: string;
+  user_tree_belong: [];
+  user_tree_commissions: string[];
+  show: boolean;
+}
 
 const ReferralTree = () => {
   const { isConnected, address } = useAccount();
