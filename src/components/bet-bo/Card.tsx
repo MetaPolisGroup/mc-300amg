@@ -84,6 +84,7 @@ const Card = () => {
           slidesPerView={"auto"}
           centeredSlides={true}
           initialSlide={3}
+          noSwipingSelector={"input"}
           onBeforeInit={(swiper) => {
             swiperRef.current = swiper;
           }}

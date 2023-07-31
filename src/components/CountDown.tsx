@@ -62,7 +62,13 @@ const CountDown: React.FC<ICountDown> = ({ title, onAction }) => {
     const _second = second < 10 ? `0${second}` : second;
     return (
       <>
-        {+_minute >= 0 && +_second >= 0 ? `${_minute}:${_second}` : "Closing"}
+        {+_minute >= 0 && +_second >= 0 ? (
+          <p className="text-red-600">
+            {_minute}:{_second}
+          </p>
+        ) : (
+          "Closing"
+        )}
       </>
     );
   };

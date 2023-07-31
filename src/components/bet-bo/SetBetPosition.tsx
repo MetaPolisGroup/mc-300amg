@@ -250,6 +250,10 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
     }
   };
 
+  const chooseQuickAmountHandler = (amount: number) => {
+    setAmount(amount.toString());
+  };
+
   const placeBetHandler = async () => {
     setIsLoading(true);
     try {
@@ -580,7 +584,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
         {isClient &&
           (isConnected ? (
             <div className="text-[--colors-textSubtle] font-medium text-sm text-right">
-              Balance: {balance} {CURRENCY_UNIT}
+              Balance: {balance.toLocaleString("en-US")} {CURRENCY_UNIT}
             </div>
           ) : null)}
         <div className="w-full h-12 relative mb-6">
@@ -596,7 +600,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
             value={percentage}
             disabled={isClient && (isConnected ? false : true)}
             onChange={changePercentageHandler}
-            className="w-full bg-transparent disabled:cursor-not-allowed"
+            className="relative w-full bg-transparent z-50 disabled:cursor-not-allowed"
           />
 
           <div
@@ -620,6 +624,18 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
               onClick={() => choosePercentageAmountHandler(buttonPrecent.value)}
             >
               {buttonPrecent.name}
+            </Button>
+          ))}
+        </div>
+        <div className="flex items-center justify-between mb-4">
+          {BUTTONS_AMOUNT.map((buttonAmount) => (
+            <Button
+              key={buttonAmount.id}
+              className="flex items-center rounded-2xl font-semibold justify-center h-5 py-0 px-2 bg-[--colors-tertiary] text-[--colors-primary] text-xs flex-1 hover:bg-[--colors-tertiary] hover:opacity-80 focus:ring-offset-0 focus:ring-0"
+              disabled={isClient && (isConnected ? false : true)}
+              onClick={() => chooseQuickAmountHandler(buttonAmount.value)}
+            >
+              {buttonAmount.name}
             </Button>
           ))}
         </div>
@@ -658,7 +674,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
                   onClick={placeBetHandler}
                   isLoading={isLoading}
                 >
-                  Confirm
+                  Place bet
                 </Button>
               </div>
             ))}
@@ -699,5 +715,28 @@ const BUTTONS_PERCENT = [
     id: nanoid(),
     name: "Max",
     value: 100,
+  },
+];
+
+const BUTTONS_AMOUNT = [
+  {
+    id: nanoid(),
+    value: 100,
+    name: "100",
+  },
+  {
+    id: nanoid(),
+    value: 200,
+    name: "200",
+  },
+  {
+    id: nanoid(),
+    value: 500,
+    name: "500",
+  },
+  {
+    id: nanoid(),
+    value: 1000,
+    name: "1000",
   },
 ];

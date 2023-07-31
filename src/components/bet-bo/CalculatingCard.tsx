@@ -34,7 +34,7 @@ const CalculatingCard: React.FC<ICalculatingCardProps> = ({ liveRound }) => {
           <div className="bg-[--colors-backgroundAlt] rounded-xl p-4 flex flex-col gap-1 border-2 border-[--colors-cardBorder]">
             <div className="">
               <Image
-                src="/gifs/pancake-3d-spinner-v2.gif"
+                src="/gifs/calculating.gif"
                 alt="calculating"
                 width={96}
                 height={115}

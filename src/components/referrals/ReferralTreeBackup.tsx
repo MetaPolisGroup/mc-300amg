@@ -6,6 +6,14 @@ import { getEllipsisTxt } from "@/utils/formmater-address";
 import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { isEmpty } from "lodash";
 
+interface IUser {
+  user_address: string;
+  ref: string;
+  user_tree_belong: [];
+  user_tree_commissions: string[];
+  show: boolean;
+}
+
 const ReferralTreeBackup = () => {
   const { isConnected, address } = useAccount();
   const [isClient, setIsClient] = useState<boolean>(false);
@@ -29,13 +37,6 @@ const ReferralTreeBackup = () => {
         [["user_tree_commissions", "array-contains", address]],
         (docs) => {
           setAllTreeData(docs as IUser[]);
-          let max = 0;
-          for (const item of allTreeData) {
-            if (item.user_tree_commissions.length > max) {
-              max = item.user_tree_commissions.length;
-            }
-          }
-          // setFloorTree(max);
         }
       );
       setTreesNode([]);
