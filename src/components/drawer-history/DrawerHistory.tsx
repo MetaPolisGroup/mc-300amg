@@ -21,7 +21,7 @@ import { DocumentData } from "firebase/firestore";
 interface IDrawerHistory {
   open: boolean;
   onClose: (value: boolean) => void;
-  onCollect: (status: boolean, round: number) => void;
+  onCollect: (status: boolean, round: number, title: string) => void;
 }
 
 const DrawerHistory: React.FC<IDrawerHistory> = ({
@@ -58,12 +58,10 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({
   const handleSelectRadio = (value: string) => {
     setRadioChecked(value);
 
-    if (value === RADIO.COLLECTED) {
+    if (value === RADIO.UNREFUNDED) {
       const historyDataFilted = originalHistoryData.filter(
         (history) =>
-          (history?.status === RESULT_STATUS.WIN ||
-            history?.status === RESULT_STATUS.REFUND) &&
-          history?.claimed === true
+          history?.status === RESULT_STATUS.REFUND && history?.claimed === false
       );
       return setDataHistory(historyDataFilted);
     }
@@ -71,9 +69,7 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({
     if (value === RADIO.UNCOLECTED) {
       const historyDataFilted = originalHistoryData.filter(
         (history) =>
-          (history?.status === RESULT_STATUS.WIN ||
-            history?.status === RESULT_STATUS.REFUND) &&
-          history?.claimed === false
+          history?.status === RESULT_STATUS.WIN && history?.claimed === false
       );
       return setDataHistory(historyDataFilted);
     }
