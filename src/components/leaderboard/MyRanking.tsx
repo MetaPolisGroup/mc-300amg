@@ -1,7 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Icons } from "../Icons";
+import { useAccount } from "wagmi";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
+import { toFixedEtherNumber } from "@/utils/format-number";
+import { ethers } from "ethers";
 
 const MyRanking = () => {
+  const [userInfo, setUserInfo] = useState<IUser[]>([]);
+  const { isConnected, address } = useAccount();
+  useEffect(() => {
+    if (isConnected && address) {
+      getDataFileredByOnSnapshot(
+        "users",
+        [["user_address", "==", address as `0x${string}`]],
+        (docs) => {
+          setUserInfo(docs as IUser[]);
+        }
+      );
+    }
+  }, [isConnected, address]);
+
   return (
     <div className="mb-8">
       <h2 className="text-base font-semibold text-[--colors-secondary] mb-4 md:text-xl">
@@ -34,7 +52,7 @@ const MyRanking = () => {
                 <div className="flex justify-start items-center gap-2">
                   <Icons.AvatarUser className="w-10 h-10" />
                   <span className="text-[--colors-primary] font-bold text-base">
-                    0x5332...342423
+                    {userInfo?.[0]?.nickname}
                   </span>
                 </div>
               </td>
@@ -42,11 +60,12 @@ const MyRanking = () => {
                 <div
                   className={`text-right text-[--colors-success] text-base font-bold`}
                 >
-                  +0,055435
+                  {userInfo?.[0]?.leaderboard.net_winnings > 0 ? "+" : ""}
+                  {userInfo?.[0]?.leaderboard.net_winnings ? Number() : 0}
                 </div>
-                <div className="text-right text-[--colors-textSubtle] text-xs font-normal">
+                {/* <div className="text-right text-[--colors-textSubtle] text-xs font-normal">
                   ~$0,03
-                </div>
+                </div> */}
               </td>
               <td className="text-[--colors-text] text-center font-medium">
                 50%

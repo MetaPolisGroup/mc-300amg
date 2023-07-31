@@ -1,5 +1,7 @@
 import React from "react";
 import { Icons } from "../Icons";
+import { toFixedEtherNumber } from "@/utils/format-number";
+import { ethers } from "ethers";
 
 interface ITopRankingProps {
   topLeaderboard: IUserList[];
@@ -20,7 +22,7 @@ const TopRanking: React.FC<ITopRankingProps> = ({ topLeaderboard }) => {
               <Icons.LaurelRight className="text-[--colors-gold] fill-[--colors-gold] rotate-[-30deg]" />
             </div>
             <div className="text-base text-[--colors-primary] font-bold">
-              {topLeaderboard?.[0]?.user_id}
+              {topLeaderboard?.[0]?.nickname}
             </div>
           </div>
           <div className="flex justify-between items-center mb-1">
@@ -28,7 +30,7 @@ const TopRanking: React.FC<ITopRankingProps> = ({ topLeaderboard }) => {
               Win Rate
             </span>
             <span className="text-[--colors-text] text-base font-bold">
-              50%
+              {topLeaderboard?.[0]?.leaderboard.win_rate.toFixed(2)}%
             </span>
           </div>
           <div className="flex justify-between items-center mb-1">
@@ -36,12 +38,28 @@ const TopRanking: React.FC<ITopRankingProps> = ({ topLeaderboard }) => {
               Net Winnings (BNB)
             </span>
             <div className="flex flex-col justify-between items-end">
-              <span className={`text-[--colors-success] font-bold text-base`}>
-                +0,00234
+              <span
+                className={`text-[${
+                  topLeaderboard?.[0]?.leaderboard.net_winnings < 0
+                    ? "--colors-failure"
+                    : "--colors-success"
+                }] font-bold text-base`}
+              >
+                {topLeaderboard?.[0]?.leaderboard.net_winnings > 0 ? "+" : ""}
+                {topLeaderboard?.[0]?.leaderboard?.net_winnings
+                  ? Number(
+                      toFixedEtherNumber(
+                        ethers.formatEther(
+                          BigInt(topLeaderboard?.[0]?.leaderboard.net_winnings)
+                        ),
+                        2
+                      )
+                    ).toLocaleString("en-US")
+                  : 0}
               </span>
-              <span className="text-[--colors-textSubtle] font-normal text-xs">
+              {/* <span className="text-[--colors-textSubtle] font-normal text-xs">
                 ~$0,03
-              </span>
+              </span> */}
             </div>
           </div>
           <div className="flex justify-between items-center mb-1">
@@ -49,7 +67,8 @@ const TopRanking: React.FC<ITopRankingProps> = ({ topLeaderboard }) => {
               Rounds Won
             </span>
             <span className="text-[--colors-text] text-base font-bold">
-              1/2
+              {topLeaderboard?.[0]?.leaderboard.round_winning}/
+              {topLeaderboard?.[0].leaderboard.round_played}
             </span>
           </div>
         </div>
@@ -66,7 +85,7 @@ const TopRanking: React.FC<ITopRankingProps> = ({ topLeaderboard }) => {
               <Icons.LaurelRight className="text-[--colors-silver] fill-[--colors-silver] rotate-[-30deg]" />
             </div>
             <div className="text-base text-[--colors-primary] font-bold">
-              {topLeaderboard?.[1]?.user_id}
+              {topLeaderboard?.[1]?.nickname}
             </div>
           </div>
           <div className="flex justify-between items-center mb-1">
@@ -74,7 +93,7 @@ const TopRanking: React.FC<ITopRankingProps> = ({ topLeaderboard }) => {
               Win Rate
             </span>
             <span className="text-[--colors-text] text-base font-bold">
-              50%
+              {topLeaderboard?.[1]?.leaderboard.win_rate.toFixed(2)}%
             </span>
           </div>
           <div className="flex justify-between items-center mb-1">
@@ -82,12 +101,28 @@ const TopRanking: React.FC<ITopRankingProps> = ({ topLeaderboard }) => {
               Net Winnings (BNB)
             </span>
             <div className="flex flex-col justify-between items-end">
-              <span className={`text-[--colors-success] font-bold text-base`}>
-                +0,00234
+              <span
+                className={`text-[${
+                  topLeaderboard?.[1]?.leaderboard.net_winnings < 0
+                    ? "--colors-failure"
+                    : "--colors-success"
+                }] font-bold text-base`}
+              >
+                {topLeaderboard?.[1]?.leaderboard.net_winnings > 0 ? "+" : ""}
+                {topLeaderboard?.[1]?.leaderboard?.net_winnings
+                  ? Number(
+                      toFixedEtherNumber(
+                        ethers.formatEther(
+                          BigInt(topLeaderboard?.[1]?.leaderboard.net_winnings)
+                        ),
+                        2
+                      )
+                    ).toLocaleString("en-US")
+                  : 0}
               </span>
-              <span className="text-[--colors-textSubtle] font-normal text-xs">
+              {/* <span className="text-[--colors-textSubtle] font-normal text-xs">
                 ~$0,03
-              </span>
+              </span> */}
             </div>
           </div>
           <div className="flex justify-between items-center mb-1">
@@ -95,7 +130,8 @@ const TopRanking: React.FC<ITopRankingProps> = ({ topLeaderboard }) => {
               Rounds Won
             </span>
             <span className="text-[--colors-text] text-base font-bold">
-              1/2
+              {topLeaderboard?.[1]?.leaderboard.round_winning}/
+              {topLeaderboard?.[1].leaderboard.round_played}
             </span>
           </div>
         </div>
@@ -112,7 +148,7 @@ const TopRanking: React.FC<ITopRankingProps> = ({ topLeaderboard }) => {
               <Icons.LaurelRight className="text-[--colors-bronze] fill-[--colors-bronze] rotate-[-30deg]" />
             </div>
             <div className="text-base text-[--colors-primary] font-bold">
-              {topLeaderboard?.[2]?.user_id}
+              {topLeaderboard?.[2]?.nickname}
             </div>
           </div>
           <div className="flex justify-between items-center mb-1">
@@ -120,7 +156,7 @@ const TopRanking: React.FC<ITopRankingProps> = ({ topLeaderboard }) => {
               Win Rate
             </span>
             <span className="text-[--colors-text] text-base font-bold">
-              50%
+              {topLeaderboard?.[2]?.leaderboard.win_rate.toFixed(2)}%
             </span>
           </div>
           <div className="flex justify-between items-center mb-1">
@@ -128,12 +164,28 @@ const TopRanking: React.FC<ITopRankingProps> = ({ topLeaderboard }) => {
               Net Winnings (BNB)
             </span>
             <div className="flex flex-col justify-between items-end">
-              <span className={`text-[--colors-success] font-bold text-base`}>
-                +0,00234
+              <span
+                className={`text-[${
+                  topLeaderboard?.[2]?.leaderboard.net_winnings < 0
+                    ? "--colors-failure"
+                    : "--colors-success"
+                }] font-bold text-base`}
+              >
+                {topLeaderboard?.[2]?.leaderboard.net_winnings > 0 ? "+" : ""}
+                {topLeaderboard?.[2]?.leaderboard?.net_winnings
+                  ? Number(
+                      toFixedEtherNumber(
+                        ethers.formatEther(
+                          BigInt(topLeaderboard?.[2]?.leaderboard.net_winnings)
+                        ),
+                        2
+                      )
+                    ).toLocaleString("en-US")
+                  : 0}
               </span>
-              <span className="text-[--colors-textSubtle] font-normal text-xs">
+              {/* <span className="text-[--colors-textSubtle] font-normal text-xs">
                 ~$0,03
-              </span>
+              </span> */}
             </div>
           </div>
           <div className="flex justify-between items-center mb-1">
@@ -141,7 +193,8 @@ const TopRanking: React.FC<ITopRankingProps> = ({ topLeaderboard }) => {
               Rounds Won
             </span>
             <span className="text-[--colors-text] text-base font-bold">
-              1/2
+              {topLeaderboard?.[2]?.leaderboard.round_winning}/
+              {topLeaderboard?.[2].leaderboard.round_played}
             </span>
           </div>
         </div>
