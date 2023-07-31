@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { formatInputField } from "@/utils/format-inputField";
 import { nanoid } from "nanoid";
 import { Icons } from "../Icons";
@@ -20,6 +20,7 @@ interface ISetBetPositionProps {
   onBackward?: (status: boolean) => void;
   currentRound: string;
   onPlacedBet?: (status: boolean) => void;
+  inputRef?: React.MutableRefObject<HTMLInputElement | null>;
 }
 
 const SetBetPosition: React.FC<ISetBetPositionProps> = ({
@@ -29,6 +30,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   onBackward,
   currentRound,
   onPlacedBet,
+  inputRef,
 }) => {
   const { isConnected, address } = useAccount();
 
@@ -41,6 +43,10 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isApproveLoading, setIsApproveLoading] = useState<boolean>(false);
   const [approveValue, setApproveValue] = useState<number>(0);
+
+  useEffect(() => {
+    if (upOrDownStatus !== "") inputRef?.current?.focus();
+  }, [inputRef, upOrDownStatus]);
 
   useEffect(() => {
     setIsClient(true);
@@ -557,10 +563,10 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
           </div>
         </div>
         <div className="px-4 py-2 bg-[--colors-input] rounded-2xl">
-          <Input
-            autoFocus
-            className="text-[--colors-white] text-right"
+          <input
+            className="text-[--colors-white] text-right rounded-sm py-2 w-full focus:outline-none  disabled:cursor-not-allowed bg-[--colors-input] boder-[--colors-inputSecondary] "
             placeholder="0.0"
+            ref={inputRef}
             onKeyDown={formatInputField}
             disabled={isClient && (isConnected ? false : true)}
             onChange={changeAmountHandler}
