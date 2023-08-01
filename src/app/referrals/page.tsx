@@ -1,5 +1,6 @@
 import InfoReferral from "@/components/referrals/InfoReferral";
 import ReferralTree from "@/components/referrals/ReferralTree";
+import ReferralTreeBackup from "@/components/referrals/ReferralTreeBackup";
 import WalletUser from "@/components/referrals/WalletUser";
 import React from "react";
 
@@ -18,6 +19,7 @@ const Referrals = () => {
           <WalletUser />
           <InfoReferral />
           {/* <ReferralTree /> */}
+          <ReferralTreeBackup />
         </div>
       </div>
     </main>

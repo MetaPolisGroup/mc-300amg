@@ -14,12 +14,14 @@ const LeaderBoard = () => {
   useEffect(() => {
     getDataFileredByOnSnapshot(
       "leaderboard",
-      [["type", "==", "Round Played"]],
+      [["type", "==", "Rounds Played"]],
       (docs: DocumentData) => {
         setLeaderboardData(docs as DocumentData[]);
       }
     );
   }, []);
+
+  console.log({ leaderboardData });
 
   const queryHandler = (option: string) => {
     getDataFileredByOnSnapshot(
