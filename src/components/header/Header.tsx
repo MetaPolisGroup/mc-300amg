@@ -45,7 +45,7 @@ const Header = () => {
               className="normal-case text-xl text-[--colors-textSubtle]"
               href="/"
             >
-              <Image src={"./svgs/logo.svg"} width={110} height={40} alt="" />
+              <Image src="/svgs/logo.svg" width={110} height={40} alt="" />
             </a>
             <ul className="menu menu-horizontal p-0 flex-nowrap gap-1 xl:gap-2 hidden lg:flex items-center">
               {renderNavItems()}

@@ -31,7 +31,7 @@ const SliderBannerGame: React.FC = () => {
                   <div className="mb-9 px-[0px] sm:px-[12px] lg:px-[96px]">
                     <div className=" bg-[--colors-background-slider] rounded-[40px] sm:rounded-[60px] overflow-hidden flex items-center justify-center m-3">
                       <Image
-                        src={"/svgs/banner/PRX_prediction_banner-01.svg"}
+                        src="/svgs/banner/PRX_prediction_banner-01.svg"
                         width={1000}
                         height={500}
                         alt=""

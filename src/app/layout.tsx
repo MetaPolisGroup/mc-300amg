@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import "./globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 import Menu from "@/components/Menu";
+import NickNameModal from "@/components/NickNameModal";
 
 // Others
 
@@ -25,6 +26,7 @@ export default function RootLayout({
       <body className={`${inter.className}`}>
         <Provider>
           <Header />
+          <NickNameModal />
           {children}
           <Footer />
           <Menu />

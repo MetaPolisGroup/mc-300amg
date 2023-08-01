@@ -58,23 +58,31 @@ const MyRanking = () => {
               </td>
               <td>
                 <div
-                  className={`text-right text-[--colors-success] text-base font-bold`}
+                  className={`text-right text-[${
+                    userInfo?.[0]?.leaderboard.net_winnings > 0
+                      ? `--colors-success`
+                      : "--colors-failure"
+                  }] text-base font-bold`}
                 >
                   {userInfo?.[0]?.leaderboard.net_winnings > 0 ? "+" : ""}
-                  {userInfo?.[0]?.leaderboard.net_winnings ? Number() : 0}
+                  {userInfo?.[0]?.leaderboard.net_winnings
+                    ? toFixedEtherNumber(
+                        ethers.formatEther(
+                          BigInt(userInfo?.[0]?.leaderboard.net_winnings)
+                        ),
+                        2
+                      )
+                    : 0}
                 </div>
-                {/* <div className="text-right text-[--colors-textSubtle] text-xs font-normal">
-                  ~$0,03
-                </div> */}
               </td>
               <td className="text-[--colors-text] text-center font-medium">
-                50%
+                {userInfo?.[0]?.leaderboard.win_rate.toFixed(2)}%
               </td>
               <td className="text-[--colors-text] text-center font-medium">
-                1
+                {userInfo?.[0]?.leaderboard.round_winning}
               </td>
               <td className="text-[--colors-text] text-center font-medium">
-                2
+                {userInfo?.[0]?.leaderboard.round_played}
               </td>
             </tr>
           </tbody>
@@ -82,7 +90,7 @@ const MyRanking = () => {
         <div className="flex flex-col p-4 lg:hidden">
           <div className="flex items-center justify-end gap-2 mb-4">
             <div className="text-base text-[--colors-primary] font-bold">
-              0x04...43242
+              {userInfo?.[0]?.nickname}
             </div>
             <Icons.AvatarUser className="w-10 h-10" />
           </div>
@@ -91,7 +99,7 @@ const MyRanking = () => {
               Win Rate
             </span>
             <span className="text-[--colors-text] text-base font-bold">
-              50%
+              {userInfo?.[0]?.leaderboard.win_rate.toFixed(2)}%
             </span>
           </div>
           <div className="flex justify-between items-center mb-1">
@@ -99,12 +107,26 @@ const MyRanking = () => {
               Net Winnings (BNB)
             </span>
             <div className="flex flex-col justify-between items-end">
-              <span className={`text-[--colors-success] font-bold text-base`}>
-                +0,00234
+              <span
+                className={`text-right text-[${
+                  userInfo?.[0]?.leaderboard.net_winnings > 0
+                    ? `--colors-success`
+                    : "--colors-failure"
+                }] font-bold text-base`}
+              >
+                {userInfo?.[0]?.leaderboard.net_winnings > 0 ? "+" : ""}
+                {userInfo?.[0]?.leaderboard.net_winnings
+                  ? toFixedEtherNumber(
+                      ethers.formatEther(
+                        BigInt(userInfo?.[0]?.leaderboard.net_winnings)
+                      ),
+                      2
+                    )
+                  : 0}
               </span>
-              <span className="text-[--colors-textSubtle] font-normal text-xs">
+              {/* <span className="text-[--colors-textSubtle] font-normal text-xs">
                 ~$0,03
-              </span>
+              </span> */}
             </div>
           </div>
           <div className="flex justify-between items-center mb-1">
@@ -112,7 +134,8 @@ const MyRanking = () => {
               Rounds Won
             </span>
             <span className="text-[--colors-text] text-base font-bold">
-              1/2
+              {userInfo?.[0]?.leaderboard.round_winning}/
+              {userInfo?.[0]?.leaderboard.round_played}
             </span>
           </div>
         </div>

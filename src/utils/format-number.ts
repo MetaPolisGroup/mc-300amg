@@ -3,5 +3,5 @@ export const replaceDotToComma = (text: string) => {
 };
 
 export const toFixedEtherNumber = (num: string | number, toFixed: number) => {
-  return Number(num).toFixed(toFixed);
+  return Number(Number(num).toFixed(toFixed)).toLocaleString("en-US");
 };

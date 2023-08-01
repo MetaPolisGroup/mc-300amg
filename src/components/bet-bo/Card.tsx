@@ -172,7 +172,7 @@ const Card = () => {
           className="lg:absolute"
         >
           <Image
-            src={"./svgs/market_data.svg"}
+            src="/svgs/market_data.svg"
             width={170}
             height={47}
             alt=""

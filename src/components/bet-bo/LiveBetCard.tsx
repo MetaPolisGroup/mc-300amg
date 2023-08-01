@@ -11,6 +11,7 @@ import getAllData from "@/helpers/getAllDataByOnSnapshot";
 import { CURRENCY_UNIT } from "@/constants";
 import { ethers } from "ethers";
 import { toast } from "react-hot-toast";
+import { toFixedEtherNumber } from "@/utils/format-number";
 
 interface ILiveBetCardProps {
   liveRound: number;
@@ -147,11 +148,12 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                     </div>
                     <div className="text-[--colors-white] font-semibold text-sm">
                       {liveBetData?.[0]?.bullAmount
-                        ? Number(
+                        ? toFixedEtherNumber(
                             ethers.formatEther(
                               BigInt(liveBetData?.[0]?.bullAmount)
-                            )
-                          ).toFixed(2)
+                            ),
+                            2
+                          )
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
@@ -168,11 +170,12 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                     </div>
                     <div className="text-[--colors-textSubtle] font-semibold text-sm">
                       {liveBetData?.[0]?.bullAmount
-                        ? Number(
+                        ? toFixedEtherNumber(
                             ethers.formatEther(
                               BigInt(liveBetData?.[0]?.bullAmount)
-                            )
-                          ).toFixed(2)
+                            ),
+                            2
+                          )
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
@@ -238,13 +241,12 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                   <span>Prize Pool:</span>
                   <span>
                     {liveBetData?.[0]?.totalAmount
-                      ? Number(
+                      ? toFixedEtherNumber(
                           ethers.formatEther(
                             BigInt(liveBetData?.[0]?.totalAmount)
-                          )
+                          ),
+                          2
                         )
-                          .toFixed(2)
-                          .toString()
                       : 0}{" "}
                     {CURRENCY_UNIT}
                   </span>
@@ -258,11 +260,12 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                   <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                     <div className="text-[--colors-textSubtle] font-semibold text-sm">
                       {liveBetData?.[0]?.bearAmount
-                        ? Number(
+                        ? toFixedEtherNumber(
                             ethers.formatEther(
                               BigInt(liveBetData?.[0]?.bearAmount)
-                            )
-                          ).toFixed(2)
+                            ),
+                            2
+                          )
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
@@ -277,11 +280,12 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                   <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                     <div className="text-[--colors-white] font-semibold text-sm">
                       {liveBetData?.[0]?.bearAmount
-                        ? Number(
+                        ? toFixedEtherNumber(
                             ethers.formatEther(
                               BigInt(liveBetData?.[0]?.bearAmount)
-                            )
-                          ).toFixed(2)
+                            ),
+                            2
+                          )
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>

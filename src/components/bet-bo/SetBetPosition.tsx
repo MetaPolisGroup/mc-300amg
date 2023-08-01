@@ -561,7 +561,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
             Commit:
           </span>
           <div className="flex items-center gap-1">
-            <Icons.BNBIcon />
+            <Icons.PRXIcon />
             <span className="text-[--colors-text] font-semibold text-base">
               {CURRENCY_UNIT}
             </span>

@@ -7,6 +7,7 @@ import { isEmpty } from "lodash";
 import { ethers } from "ethers";
 import Button from "../ui/Button";
 import { CURRENCY_UNIT } from "@/constants";
+import { toFixedEtherNumber } from "@/utils/format-number";
 
 interface IHistoryProps {
   historyRound: number;
@@ -25,6 +26,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
   const [historyBetted, setHistoryBetted] = useState<DocumentData[]>([]);
   const [historyData, setHistoryData] = useState<DocumentData[]>([]);
   const [isClient, setIsClient] = useState<boolean>(false);
+
   useEffect(() => {
     // Get all round history data
     getDataFileredByOnSnapshot(
@@ -58,6 +60,8 @@ const HistoryCard: React.FC<IHistoryProps> = ({
   const ratePrice =
     (historyData?.[0]?.closePrice - historyData?.[0]?.lockPrice) / 10 ** 8;
 
+  console.log({ historyBetted });
+
   return (
     <React.Fragment>
       <div className={`w-full flex justify-center items-center relative`}>
@@ -76,12 +80,35 @@ const HistoryCard: React.FC<IHistoryProps> = ({
 
           <div className="card-body p-4 opacity-70 group-hover:opacity-100">
             {!isEmpty(historyBetted) &&
-              (historyBetted?.[0]?.position === "UP" ? (
+              (historyBetted?.[0]?.position === "UP" &&
+              historyBetted?.[0]?.claimed === false ? (
                 <div className="absolute flex gap-2 z-20 border-2 rounded-2xl border-[--colors-secondary] px-2 py-[2px] ">
                   <Icons.CheckCircle className="text-[--colors-text]" />
                   <span className="text-[--colors-secondary]">ENTERED</span>
                 </div>
               ) : null)}
+            {!isEmpty(historyBetted) &&
+              historyBetted?.[0]?.position === "UP" &&
+              historyBetted?.[0]?.status === "Refund" &&
+              historyBetted?.[0]?.claimed === true && (
+                <div className="absolute flex gap-2 z-20 rounded-2xl bg-[--colors-secondary] px-2 py-[2px] ">
+                  <Icons.CheckCircle className="text-[--colors-white]" />
+                  <span className="text-[--colors-white] uppercase">
+                    Refunded
+                  </span>
+                </div>
+              )}
+            {!isEmpty(historyBetted) &&
+              historyBetted?.[0]?.position === "UP" &&
+              historyBetted?.[0]?.status === "Win" &&
+              historyBetted?.[0]?.claimed === true && (
+                <div className="absolute flex gap-2 z-20 rounded-2xl bg-[--colors-secondary] px-2 py-[2px] ">
+                  <Icons.CheckCircle className="text-[--colors-white]" />
+                  <span className="text-[--colors-white] uppercase">
+                    Claimed
+                  </span>
+                </div>
+              )}
             <div className="relative -mb-[0.55rem]">
               {ratePrice > 0 ? (
                 <div className="h-16 mx-auto w-60">
@@ -94,11 +121,12 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                     </div>
                     <div className="text-[--colors-white] font-semibold text-sm">
                       {historyData?.[0]?.bullAmount
-                        ? Number(
+                        ? toFixedEtherNumber(
                             ethers.formatEther(
                               BigInt(historyData?.[0]?.bullAmount)
-                            )
-                          ).toFixed(2)
+                            ),
+                            2
+                          )
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
@@ -115,11 +143,12 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                     </div>
                     <div className="text-[--colors-textSubtle] font-semibold text-sm">
                       {historyData?.[0]?.bullAmount
-                        ? Number(
+                        ? toFixedEtherNumber(
                             ethers.formatEther(
                               BigInt(historyData?.[0]?.bullAmount)
-                            )
-                          ).toFixed(2)
+                            ),
+                            2
+                          )
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
@@ -183,13 +212,12 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                   <span>Prize Pool:</span>
                   <span>
                     {historyData?.[0]?.totalAmount
-                      ? Number(
+                      ? toFixedEtherNumber(
                           ethers.formatEther(
                             BigInt(historyData?.[0]?.totalAmount)
-                          )
+                          ),
+                          2
                         )
-                          .toFixed(2)
-                          .toString()
                       : 0}{" "}
                     {CURRENCY_UNIT}
                   </span>
@@ -203,11 +231,12 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                   <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                     <div className="text-[--colors-textSubtle] font-semibold text-sm">
                       {historyData?.[0]?.bearAmount
-                        ? Number(
+                        ? toFixedEtherNumber(
                             ethers.formatEther(
                               BigInt(historyData?.[0]?.bearAmount)
-                            )
-                          ).toFixed(2)
+                            ),
+                            2
+                          )
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
@@ -222,11 +251,12 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                   <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                     <div className="text-[--colors-white] font-semibold text-sm">
                       {historyData?.[0]?.bearAmount
-                        ? Number(
+                        ? toFixedEtherNumber(
                             ethers.formatEther(
                               BigInt(historyData?.[0]?.bearAmount)
-                            )
-                          ).toFixed(2)
+                            ),
+                            2
+                          )
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
@@ -238,19 +268,32 @@ const HistoryCard: React.FC<IHistoryProps> = ({
               )}
             </div>
             {!isEmpty(historyBetted) &&
-              (historyBetted?.[0]?.position === "DOWN" ? (
+              (historyBetted?.[0]?.position === "DOWN" &&
+              historyBetted?.[0]?.claimed === false ? (
                 <div className="absolute right-0 bottom-2 flex gap-2 z-20 border-2 rounded-2xl border-[--colors-secondary] px-2 py-[2px] ">
                   <Icons.CheckCircle className="text-[--colors-text]" />
                   <span className="text-[--colors-text]">ENTERED</span>
                 </div>
               ) : null)}
             {!isEmpty(historyBetted) &&
+              historyBetted?.[0]?.position === "DOWN" &&
               historyBetted?.[0]?.status === "Win" &&
               historyBetted?.[0]?.claimed === true && (
                 <div className="absolute right-0 bottom-2 flex gap-2 z-20 rounded-2xl bg-[--colors-secondary] px-2 py-[2px] ">
                   <Icons.CheckCircle className="text-[--colors-white]" />
                   <span className="text-[--colors-white] uppercase">
                     Claimed
+                  </span>
+                </div>
+              )}
+            {!isEmpty(historyBetted) &&
+              historyBetted?.[0]?.position === "DOWN" &&
+              historyBetted?.[0]?.status === "Refund" &&
+              historyBetted?.[0]?.claimed === true && (
+                <div className="absolute right-0 bottom-2 flex gap-2 z-20 rounded-2xl bg-[--colors-secondary] px-2 py-[2px] ">
+                  <Icons.CheckCircle className="text-[--colors-white]" />
+                  <span className="text-[--colors-white] uppercase">
+                    Refunded
                   </span>
                 </div>
               )}
@@ -274,6 +317,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                 </Button>
               </div>
             )}
+
           {!isEmpty(historyBetted) &&
             historyBetted?.[0]?.status !== "Win" &&
             historyBetted?.[0]?.refund !== 0 &&

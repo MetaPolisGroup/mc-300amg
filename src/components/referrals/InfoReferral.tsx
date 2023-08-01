@@ -202,7 +202,11 @@ const InfoReferral = () => {
               Claim
             </Button>
           ) : (
-            <Button className="w-full" variant="success" disabled={true}>
+            <Button
+              className="w-full lg:max-w-[200px]"
+              variant="success"
+              disabled={true}
+            >
               Please connect wallet
             </Button>
           ))}
