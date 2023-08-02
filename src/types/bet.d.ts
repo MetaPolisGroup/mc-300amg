@@ -4,4 +4,5 @@ interface IBetData {
   value: string;
   refund: number;
   position: "UP" | "DOWN";
+  winning_amount: number;
 }

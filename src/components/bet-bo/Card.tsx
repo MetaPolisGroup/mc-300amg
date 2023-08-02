@@ -13,11 +13,9 @@ import FutureCard from "./FutureCard";
 import SwiperNavButton from "../SwiperNavButton";
 import { Swiper as SwiperType } from "swiper";
 import Popup, { PopupRef } from "../ui/Modal";
-import { Icons } from "../Icons";
 import { DocumentData } from "firebase/firestore";
-import Button from "../ui/Button";
-import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { useAccount } from "wagmi";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import ClaimModal from "./ClaimModal";
 
 import Link from "next/link";
@@ -160,6 +158,7 @@ const Card = () => {
           content={
             <ClaimModal
               winningRound={winningRound}
+              titleClaim={titleClaimModal}
               onCancel={() => {
                 showCollectWinningHandler(false, "", 0);
               }}

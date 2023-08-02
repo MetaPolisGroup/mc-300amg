@@ -6,17 +6,42 @@ import { getEllipsisTxt } from "@/utils/formmater-address";
 import { publicClient } from "@/lib/contract-config";
 import { useAccount, useWalletClient } from "wagmi";
 import { CONSTANTS, CURRENCY_UNIT } from "@/constants";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
+import { toFixedEtherNumber } from "@/utils/format-number";
+import { ethers } from "ethers";
+import { isEmpty } from "lodash";
 
 interface IClaimProps {
+  titleClaim: string;
   winningRound: number | undefined;
   onCancel: () => void;
 }
 
-const ClaimModal: React.FC<IClaimProps> = ({ winningRound, onCancel }) => {
-  const { address } = useAccount();
+const ClaimModal: React.FC<IClaimProps> = ({
+  winningRound,
+  titleClaim,
+  onCancel,
+}) => {
+  const { isConnected, address } = useAccount();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [roundClaimedData, setRoundClaimedData] = useState<IBetData[]>([]);
 
   const { data: walletClient } = useWalletClient();
+
+  useEffect(() => {
+    if (isConnected && address) {
+      getDataFileredByOnSnapshot(
+        "bets",
+        [
+          ["user_address", "==", address as `0x${string}`],
+          ["epoch", "==", Number(winningRound!)],
+        ],
+        (docs) => {
+          setRoundClaimedData(docs as IBetData[]);
+        }
+      );
+    }
+  }, [isConnected, address]);
 
   const claimHandler = async () => {
     setIsLoading(true);
@@ -36,6 +61,7 @@ const ClaimModal: React.FC<IClaimProps> = ({ winningRound, onCancel }) => {
           });
           if (transaction?.status === "success") {
             setIsLoading(false);
+            onCancel();
             toast.custom((t) => (
               <div
                 className={`${
@@ -50,7 +76,7 @@ const ClaimModal: React.FC<IClaimProps> = ({ winningRound, onCancel }) => {
                     <div className="flex-shrink-0 pt-0.5"></div>
                     <div className="ml-3 flex-1">
                       <p className="text-sm font-medium text-[--colors-text]">
-                        Winning collected!
+                        {titleClaim}
                       </p>
                       <p className="mt-1 text-sm text-[--colors-text]">
                         Your prizes have been sent to your wallet
@@ -81,7 +107,6 @@ const ClaimModal: React.FC<IClaimProps> = ({ winningRound, onCancel }) => {
           }
         }
       }
-      onCancel();
     } catch (error) {
       setIsLoading(false);
       console.log(error);
@@ -94,7 +119,19 @@ const ClaimModal: React.FC<IClaimProps> = ({ winningRound, onCancel }) => {
       <Icons.Trophy className="m-auto w-14 h-14 text-[--colors-gold] my-10" />
       <div className="flex justify-between font-semibold">
         <span>Collecting</span>
-        <span>0.0453 {CURRENCY_UNIT}</span>
+        {}
+        <span>
+          {!isEmpty(roundClaimedData)
+            ? toFixedEtherNumber(
+                +ethers.formatEther(BigInt(roundClaimedData?.[0]?.refund)) +
+                  +ethers.formatEther(
+                    BigInt(roundClaimedData?.[0]?.winning_amount)
+                  ),
+                2
+              )
+            : 0}{" "}
+          {CURRENCY_UNIT}
+        </span>
       </div>
       <p className="text-center text-[--colors-text99] my-2">
         From round {winningRound}
@@ -111,4 +148,4 @@ const ClaimModal: React.FC<IClaimProps> = ({ winningRound, onCancel }) => {
   );
 };
 
-export default ClaimModal;
+export default React.memo(ClaimModal);

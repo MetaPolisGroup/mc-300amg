@@ -315,7 +315,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                         );
                     }}
                   >
-                    Collect Winnings
+                    Collect Your Winnings
                   </Button>
                 </div>
               )}
@@ -333,7 +333,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                         showCollectWinningModal(true, "Refund", historyRound);
                     }}
                   >
-                    Refund
+                    Collect Your Refund
                   </Button>
                 </div>
               )}

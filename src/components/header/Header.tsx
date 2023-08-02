@@ -1,15 +1,11 @@
 "use client";
-import React from "react";
-import NetworkSelector from "../NetworkSelector";
-
+import React, { createRef } from "react";
 import ConnectWallet from "../ConnectWallet";
-import { PopupRef } from "../ui/Modal";
-import { motion } from "framer-motion";
-
+import Popup, { PopupRef } from "../ui/Modal";
 import NAV_HEADER from "@/constants/navConstants";
-
 import HeaderItem from "./HeaderItem";
 import Image from "next/image";
+import { Icons } from "../Icons";
 enum EActive {
   "Default" = 1,
   "Stand",
@@ -36,11 +32,30 @@ const Header = () => {
     });
   };
 
+  const menuModal = createRef<PopupRef>();
+
   return (
     <header className="w-full z-20 bg-[--colors-backgroundAlt]">
       <nav className="flex justify-between items-center w-full h-full border-b border-[--colors-cardBorder] px-4">
         <div className="navbar p-0 justify-between">
           <div className="navbar-start lg:flex w-auto gap-1">
+            <Popup
+              ref={menuModal}
+              width={300}
+              footer={false}
+              selector={
+                <Icons.MenuIcon
+                  className="text-[--colors-textSub]"
+                  onClick={() => menuModal.current?.open()}
+                />
+              }
+              closable
+              styleContent={{
+                background: "var(--colors-backgroundAlt)",
+                color: "var(--colors-text)",
+              }}
+              content={<p>Modal</p>}
+            />
             <a
               className="normal-case text-xl text-[--colors-textSubtle]"
               href="/"
@@ -52,7 +67,7 @@ const Header = () => {
             </ul>
           </div>
           <div className="navbar-end gap-2 p-2 w-auto">
-            <NetworkSelector />
+            {/* <NetworkSelector /> */}
             <ConnectWallet />
           </div>
         </div>
