@@ -50,12 +50,11 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
 
   useEffect(() => {
     setIsClient(true);
-    if (isConnected && address) {
+    if (isConnected && address && currentRound) {
       getApprove();
       getBalance();
-      setApproveValue(0);
     }
-  }, [isConnected, address]);
+  }, [isConnected, address, currentRound]);
 
   const getApprove = async () => {
     const data: any = await publicClient.readContract({
