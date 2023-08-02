@@ -47,14 +47,12 @@ const TopRanking: React.FC<ITopRankingProps> = ({ topLeaderboard }) => {
               >
                 {topLeaderboard?.[0]?.leaderboard.net_winnings > 0 ? "+" : ""}
                 {topLeaderboard?.[0]?.leaderboard?.net_winnings
-                  ? Number(
-                      toFixedEtherNumber(
-                        ethers.formatEther(
-                          BigInt(topLeaderboard?.[0]?.leaderboard.net_winnings)
-                        ),
-                        2
-                      )
-                    ).toLocaleString("en-US")
+                  ? toFixedEtherNumber(
+                      ethers.formatEther(
+                        BigInt(topLeaderboard?.[0]?.leaderboard.net_winnings)
+                      ),
+                      2
+                    )
                   : 0}
               </span>
               {/* <span className="text-[--colors-textSubtle] font-normal text-xs">
@@ -110,14 +108,12 @@ const TopRanking: React.FC<ITopRankingProps> = ({ topLeaderboard }) => {
               >
                 {topLeaderboard?.[1]?.leaderboard.net_winnings > 0 ? "+" : ""}
                 {topLeaderboard?.[1]?.leaderboard?.net_winnings
-                  ? Number(
-                      toFixedEtherNumber(
-                        ethers.formatEther(
-                          BigInt(topLeaderboard?.[1]?.leaderboard.net_winnings)
-                        ),
-                        2
-                      )
-                    ).toLocaleString("en-US")
+                  ? toFixedEtherNumber(
+                      ethers.formatEther(
+                        BigInt(topLeaderboard?.[1]?.leaderboard.net_winnings)
+                      ),
+                      2
+                    )
                   : 0}
               </span>
               {/* <span className="text-[--colors-textSubtle] font-normal text-xs">
@@ -173,14 +169,12 @@ const TopRanking: React.FC<ITopRankingProps> = ({ topLeaderboard }) => {
               >
                 {topLeaderboard?.[2]?.leaderboard.net_winnings > 0 ? "+" : ""}
                 {topLeaderboard?.[2]?.leaderboard?.net_winnings
-                  ? Number(
-                      toFixedEtherNumber(
-                        ethers.formatEther(
-                          BigInt(topLeaderboard?.[2]?.leaderboard.net_winnings)
-                        ),
-                        2
-                      )
-                    ).toLocaleString("en-US")
+                  ? toFixedEtherNumber(
+                      ethers.formatEther(
+                        BigInt(topLeaderboard?.[2]?.leaderboard.net_winnings)
+                      ),
+                      2
+                    )
                   : 0}
               </span>
               {/* <span className="text-[--colors-textSubtle] font-normal text-xs">

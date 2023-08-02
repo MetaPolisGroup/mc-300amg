@@ -49,7 +49,7 @@ const ReferralTreeBackup = () => {
 
     if (nodeAddress === address) {
       setNodeAddress("");
-    } else {
+    } else if (!isEmpty(childNode)) {
       setNodeAddress(address);
     }
 
@@ -101,7 +101,19 @@ const ReferralTreeBackup = () => {
         })
       );
     }
+
     if (isEmpty(childNode)) {
+      // const sameLevelTreeInx = treesNode.findIndex((tree) =>
+      //   tree.children.some((child) => child.user_address === address)
+      // );
+
+      // console.log(sameLevelTreeInx);
+
+      // const sameLevelTree = treesNode.slice(sameLevelTreeInx + 1);
+
+      // console.log(sameLevelTree);
+
+      // return setTreesNode(sameLevelTree);
       return;
     }
 
@@ -110,8 +122,12 @@ const ReferralTreeBackup = () => {
       children: childNode,
     };
 
-    setTreesNode((prev: any) => [...prev, treeLevelObj]);
+    setTreesNode((prev: any) =>
+      [...prev, treeLevelObj].filter((level) => !isEmpty(level.children))
+    );
   };
+
+  console.log({ treesNode });
 
   return (
     <div className="text-[--colors-secondary] p-3 border-2 border-[--colors-secondary] rounded-xl">
@@ -120,7 +136,7 @@ const ReferralTreeBackup = () => {
       </div>
 
       {isClient && isConnected && (
-        <div className="flex gap-3">
+        <div className="flex gap-3 w-full overflow-scroll">
           <div>
             <Button
               variant="success"

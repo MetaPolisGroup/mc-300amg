@@ -8,6 +8,7 @@ import TooltipElement from "../ui/Tooltip";
 import { DocumentData } from "firebase/firestore";
 import { ethers } from "ethers";
 import { CURRENCY_UNIT } from "@/constants";
+import { toFixedEtherNumber } from "@/utils/format-number";
 
 interface IBetCard {
   currentRound: number;
@@ -93,9 +94,10 @@ const BetCard: React.FC<IBetCard> = ({
                 </div>
                 <div className="text-[--colors-textSubtle] font-semibold text-sm">
                   {nextBetData?.bullAmount
-                    ? Number(
-                        ethers.formatEther(BigInt(nextBetData?.bullAmount))
-                      ).toFixed(2)
+                    ? toFixedEtherNumber(
+                        ethers.formatEther(BigInt(nextBetData?.bullAmount)),
+                        2
+                      )
                     : 0}{" "}
                   {CURRENCY_UNIT}
                 </div>
@@ -107,8 +109,11 @@ const BetCard: React.FC<IBetCard> = ({
               {!isEmpty(dataBettedInCurrentRound) &&
                 (dataBettedInCurrentRound?.position === "UP" ? (
                   <TooltipElement
-                    title={`${ethers.formatEther(
-                      BigInt(dataBettedInCurrentRound.amount)
+                    title={`${toFixedEtherNumber(
+                      ethers.formatEther(
+                        BigInt(dataBettedInCurrentRound.amount)
+                      ),
+                      2
                     )} ${CURRENCY_UNIT}`}
                   >
                     <Button
@@ -122,8 +127,11 @@ const BetCard: React.FC<IBetCard> = ({
                   </TooltipElement>
                 ) : (
                   <TooltipElement
-                    title={`${ethers.formatEther(
-                      BigInt(dataBettedInCurrentRound.amount)
+                    title={`${toFixedEtherNumber(
+                      ethers.formatEther(
+                        BigInt(dataBettedInCurrentRound.amount)
+                      ),
+                      2
                     )} ${CURRENCY_UNIT}`}
                   >
                     <Button
@@ -140,9 +148,10 @@ const BetCard: React.FC<IBetCard> = ({
                 <span>Prize Pool:</span>
                 <span>
                   {nextBetData?.totalAmount
-                    ? ethers
-                        .formatEther(BigInt(nextBetData?.totalAmount))
-                        .slice(0, 2)
+                    ? toFixedEtherNumber(
+                        ethers.formatEther(BigInt(nextBetData?.totalAmount)),
+                        2
+                      )
                     : 0}{" "}
                   {CURRENCY_UNIT}
                 </span>
@@ -175,9 +184,10 @@ const BetCard: React.FC<IBetCard> = ({
               <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                 <div className="text-[--colors-textSubtle] font-semibold text-sm">
                   {nextBetData?.bearAmount
-                    ? Number(
-                        ethers.formatEther(BigInt(nextBetData?.bearAmount))
-                      ).toFixed(2)
+                    ? toFixedEtherNumber(
+                        ethers.formatEther(BigInt(nextBetData?.bearAmount)),
+                        2
+                      )
                     : 0}{" "}
                   {CURRENCY_UNIT}
                 </div>

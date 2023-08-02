@@ -4,8 +4,9 @@ import React, { useState } from "react";
 import clsx from "clsx";
 import { ethers } from "ethers";
 import { Icons } from "../Icons";
-import { replaceDotToComma } from "@/utils/format-number";
+import { replaceDotToComma, toFixedEtherNumber } from "@/utils/format-number";
 import { RESULT_STATUS } from "@/constants/history";
+import { CURRENCY_UNIT } from "@/constants";
 
 interface IHistoryDataProps {
   data: IHistory;
@@ -22,7 +23,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
   const isWaiting = data?.status === RESULT_STATUS.WAITING;
 
   const handlerFormatEther = (value: number) => {
-    return Number(ethers?.formatEther(BigInt(value))).toFixed(4);
+    return toFixedEtherNumber(ethers?.formatEther(BigInt(value)), 2);
   };
 
   const winningAmount = isLose
@@ -80,9 +81,12 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
             <div className="text-sm">Your position</div>
             <div className="text-sm font-bold">
               {data?.amount
-                ? replaceDotToComma(ethers.formatEther(BigInt(data?.amount)))
+                ? toFixedEtherNumber(
+                    ethers.formatEther(BigInt(data?.amount)),
+                    2
+                  )
                 : 0}{" "}
-              BNB
+              {CURRENCY_UNIT}
             </div>
           </div>
 
@@ -104,7 +108,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
               >
                 {isWin || isRefund ? "+" : "-"}{" "}
                 {isRefund ? handlerFormatEther(data?.refund) : winningAmount}{" "}
-                BNB
+                {CURRENCY_UNIT}
               </div>
               {/* <div className="text-right text-[--colors-textSubtle] text-xs">
                 ~${data?.user_history?.about}
@@ -119,7 +123,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
               <div className="flex justify-between text-[--colors-textSubtle]">
                 <div className="text-xs font-bold">Amount to collect:</div>
                 <div className="flex gap-1 text-xs font-bold items-center">
-                  {handlerFormatEther(data.winning_amount)} BNB{" "}
+                  {handlerFormatEther(data.winning_amount)} {CURRENCY_UNIT}{" "}
                   <Icons.AlertCircle className="w-[17px] h-[17px]" />
                 </div>
               </div>
@@ -190,25 +194,40 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
             <div className="text-sm font-bold">Prize Pool:</div>
             <div className="text-sm font-bold">
               {data?.round?.totalAmount
-                ? replaceDotToComma(
-                    Number(
-                      ethers.formatEther(BigInt(data?.round?.totalAmount))
-                    ).toFixed(6)
+                ? toFixedEtherNumber(
+                    ethers.formatEther(BigInt(data?.round?.totalAmount)),
+                    2
                   )
                 : 0}{" "}
-              BNB
+              {CURRENCY_UNIT}
             </div>
           </div>
           <div className="flex justify-between mb-1">
             <div className="text-xs">UP:</div>
             <div className="text-xs">
-              <span className="font-bold">1 Payout</span>
+              <span className="font-bold">
+                {data?.round?.bullAmount
+                  ? toFixedEtherNumber(
+                      ethers.formatEther(BigInt(data?.round?.bullAmount)),
+                      2
+                    )
+                  : 0}{" "}
+                {CURRENCY_UNIT}
+              </span>
             </div>
           </div>
           <div className="flex justify-between mb-1">
             <div className="text-xs">DOWN:</div>
             <div className="text-xs">
-              <span className="font-bold">1 Payout</span>
+              <span className="font-bold">
+                {data?.round?.bearAmount
+                  ? toFixedEtherNumber(
+                      ethers.formatEther(BigInt(data?.round?.bullAmount)),
+                      2
+                    )
+                  : 0}{" "}
+                {CURRENCY_UNIT}
+              </span>
             </div>
           </div>
         </div>

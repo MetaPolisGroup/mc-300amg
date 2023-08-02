@@ -37,7 +37,10 @@ const Card = () => {
   useEffect(() => {
     getDataFileredByOnSnapshot(
       "predictions",
-      [["locked", "==", false]],
+      [
+        ["locked", "==", false],
+        ["cancel", "==", false],
+      ],
       (docs: DocumentData) => {
         setNextBetData(docs as DocumentData[]);
         setCurrentRound(docs?.[0]?.epoch);
@@ -171,12 +174,7 @@ const Card = () => {
           target="_blank"
           className="lg:absolute"
         >
-          <Image
-            src={"./svgs/market_data.svg"}
-            width={170}
-            height={47}
-            alt=""
-          />
+          <Image src="/svgs/market_data.svg" width={170} height={47} alt="" />
         </Link>
       </div>
     </React.Fragment>

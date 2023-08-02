@@ -52,7 +52,10 @@ const LeaderBoard = () => {
                 <Icons.ChevronRightIcon className="text-[--colors-textDisabled]" />
               </li>
               <li>
-                <a href="/" className="text-[--colors-primary] font-semibold">
+                <a
+                  href="/prediction"
+                  className="text-[--colors-primary] font-semibold"
+                >
                   Prediction
                 </a>
               </li>

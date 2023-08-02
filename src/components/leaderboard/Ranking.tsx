@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Icons } from "../Icons";
 import Button from "../ui/Button";
-import { getEllipsisTxt } from "@/utils/formmater-address";
 import { ethers } from "ethers";
 import { toFixedEtherNumber } from "@/utils/format-number";
 
@@ -17,8 +16,6 @@ const Ranking: React.FC<IRanking> = ({ ranking }) => {
   };
 
   const rankingsLimited = ranking && ranking.slice(0, lastIdxData);
-
-  console.log(rankingsLimited);
 
   return (
     <div className="bg-[--colors-background] pb-10">
@@ -74,14 +71,12 @@ const Ranking: React.FC<IRanking> = ({ ranking }) => {
                     >
                       {rankingLimited?.leaderboard.net_winnings > 0 ? "+" : ""}
                       {rankingLimited?.leaderboard?.net_winnings
-                        ? Number(
-                            toFixedEtherNumber(
-                              ethers.formatEther(
-                                BigInt(rankingLimited?.leaderboard.net_winnings)
-                              ),
-                              2
-                            )
-                          ).toLocaleString("en-US")
+                        ? toFixedEtherNumber(
+                            ethers.formatEther(
+                              BigInt(rankingLimited?.leaderboard.net_winnings)
+                            ),
+                            2
+                          )
                         : 0}
                     </div>
                     {/* <div className="text-right text-[--colors-textSubtle] text-xs font-normal">
@@ -135,7 +130,7 @@ const Ranking: React.FC<IRanking> = ({ ranking }) => {
                   </div>
                   <div className="flex justify-center items-center gap-2">
                     <div className="text-base text-[--colors-primary] font-bold">
-                      {rankingLimited?.user_id}
+                      {rankingLimited?.nickname}
                     </div>
                     <Icons.AvatarUser className="w-10 h-10" />
                   </div>
@@ -145,7 +140,7 @@ const Ranking: React.FC<IRanking> = ({ ranking }) => {
                     Win Rate
                   </span>
                   <span className="text-[--colors-text] text-base font-bold">
-                    {rankingLimited?.leaderboard?.win_rate}
+                    {rankingLimited?.leaderboard?.win_rate.toFixed(2)}%
                   </span>
                 </div>
                 <div className="flex justify-between items-center mb-1">
@@ -154,9 +149,21 @@ const Ranking: React.FC<IRanking> = ({ ranking }) => {
                   </span>
                   <div className="flex flex-col justify-between items-end">
                     <span
-                      className={`text-[--colors-success] font-bold text-base`}
+                      className={`text-right text-[${
+                        rankingLimited?.leaderboard.net_winnings < 0
+                          ? "--colors-failure"
+                          : "--colors-success"
+                      }] font-bold text-base`}
                     >
-                      +{rankingLimited?.leaderboard?.net_winnings}
+                      {rankingLimited?.leaderboard.net_winnings > 0 ? "+" : ""}
+                      {rankingLimited?.leaderboard?.net_winnings
+                        ? toFixedEtherNumber(
+                            ethers.formatEther(
+                              BigInt(rankingLimited?.leaderboard.net_winnings)
+                            ),
+                            2
+                          )
+                        : 0}
                     </span>
                     {/* <span className="text-[--colors-textSubtle] font-normal text-xs">
                       ~$0,03
@@ -168,7 +175,8 @@ const Ranking: React.FC<IRanking> = ({ ranking }) => {
                     Rounds Won
                   </span>
                   <span className="text-[--colors-text] text-base font-bold">
-                    1/{rankingLimited?.leaderboard?.round_played}
+                    {rankingLimited?.leaderboard?.round_winning}/
+                    {rankingLimited?.leaderboard?.round_played}
                   </span>
                 </div>
               </div>
