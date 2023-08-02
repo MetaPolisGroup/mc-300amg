@@ -24,6 +24,7 @@ import {
   SunDim,
   MoonStar,
   TrophyIcon,
+  MenuIcon,
   Layers,
   BarChart3,
   ChevronUp,
@@ -72,6 +73,7 @@ export const Icons = {
   HelpCircleIcon,
   MedalIcon,
   FileIcon,
+  MenuIcon,
   LaurelLeft: (props: LucideProps) => (
     <svg
       viewBox="0 0 20 20"

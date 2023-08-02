@@ -50,8 +50,6 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
       );
     }
 
-    console.log("rendering");
-
     getAllData("chainlink", (docs: DocumentData) => {
       setChainlinkData(docs as DocumentData[]);
     });

@@ -11,7 +11,7 @@ const NetworkSelector = () => {
   }, []);
 
   return (
-    <div className="dropdown dropdown-hover">
+    <div className="dropdown dropdown-hover hidden md:block">
       <label
         tabIndex={0}
         className="flex w-12 lg:w-full gap-2 items-center justify-center bg-[--colors-tertiary] rounded-2xl pr-4"

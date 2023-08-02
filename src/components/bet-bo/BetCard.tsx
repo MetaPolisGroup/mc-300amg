@@ -39,6 +39,12 @@ const BetCard: React.FC<IBetCard> = ({
     return () => clearInterval(interval);
   }, [nextBetData?.lockTimestamp]);
 
+  useEffect(() => {
+    if (currentRound) {
+      setShowSetBetCard(false);
+    }
+  }, [currentRound]);
+
   const enterUpOrDownHandler = (status: string) => {
     setShowSetBetCard(true);
     if (status === "UP") setUpOrDownStatus("UP");

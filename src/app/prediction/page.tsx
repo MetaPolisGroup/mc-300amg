@@ -118,8 +118,9 @@ const Prediction = () => {
         content={
           <ClaimModal
             winningRound={collectWinning.round}
+            titleClaim={collectWinning.title}
             onCancel={() => {
-              handlerToggleCollectWinning(false, 0, "Collect Winnnings");
+              handlerToggleCollectWinning(false, 0, "");
             }}
           />
         }
