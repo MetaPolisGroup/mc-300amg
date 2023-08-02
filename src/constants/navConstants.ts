@@ -1,3 +1,5 @@
+import { nanoid } from "nanoid";
+
 const NAV_HEADER = [
   {
     id: "GAME",
@@ -50,43 +52,6 @@ const NAV_HEADER = [
     // renderDot: "bg-[--colors-success]",
     items: [],
   },
-  // {
-  //   id: "MORE",
-  //   title: "MORE",
-  //   link: "/",
-  //   renderDot: "bg-[--colors-warning]",
-  //   items: [
-  //     {
-  //       title: "Info",
-  //       link: "/",
-  //     },
-  //     {
-  //       title: "IFO",
-  //       link: "/",
-  //       subContent: { text: "SOON", color: "--colors-warning" },
-  //     },
-  //     {
-  //       title: "Affiliate Program",
-  //       link: "/",
-  //     },
-  //     {
-  //       title: "Voting",
-  //       link: "/",
-  //     },
-  //     {
-  //       title: "Leaderboard",
-  //       link: "/",
-  //     },
-  //     {
-  //       title: "Blog",
-  //       link: "/",
-  //     },
-  //     {
-  //       title: "Docs",
-  //       link: "/",
-  //     },
-  //   ],
-  // },
 ];
 
 export const NAV_SUB_HEADER = [
@@ -142,6 +107,33 @@ export const LIST_GAME = [
     id: "market",
     img: "/images/game/market.png",
     link: "/",
+  },
+];
+
+export const LIST_BANNERS_GAME = [
+  {
+    id: nanoid(),
+    name: "prediction",
+    banner: "/svgs/banner/PRX_prediction_banner-01.svg",
+    link: "/prediction",
+  },
+  {
+    id: nanoid(),
+    name: "dice",
+    banner: "/svgs/banner/PRX_dice_banner-01.svg",
+    link: "/dice",
+  },
+  {
+    id: nanoid(),
+    name: "sport",
+    banner: "/svgs/banner/PRX_sport_banner-01.svg",
+    link: "/sport",
+  },
+  {
+    id: nanoid(),
+    name: "market",
+    banner: "/svgs/banner/PRX_market_banner-01.svg",
+    link: "/market",
   },
 ];
 

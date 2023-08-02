@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Input from "../ui/Input";
 
 interface IFilterLeaderboardProps {
@@ -30,10 +30,10 @@ const FilterLeaderboard: React.FC<IFilterLeaderboardProps> = ({
           <option className="block py-4 px-2">Total BNB</option>
           <option className="block py-4 px-2">Win Rate</option>
         </select>
-        <Input
+        {/* <Input
           className="w-full px-4 md:w-80 rounded-2xl focus:ring-2 focus:ring-[--colors-secondary]"
           placeholder="Search address"
-        />
+        /> */}
       </div>
     </div>
   );

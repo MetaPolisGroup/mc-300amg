@@ -26,14 +26,6 @@ const Menu = () => {
           <span>Referral</span>
           <Icons.Referral />
         </Link>
-
-        {/* <Link
-          href={"/"}
-          className="flex justify-center flex-col-reverse items-center"
-        >
-          <span>My Wallet</span>
-          <Icons.MyWallet />
-        </Link> */}
       </div>
     </div>
   );

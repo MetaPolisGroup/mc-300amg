@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { getEllipsisTxt } from "@/utils/formmater-address";
 import { publicClient } from "@/lib/contract-config";
 import { useAccount, useWalletClient } from "wagmi";
-import { CONSTANTS } from "@/constants";
+import { CONSTANTS, CURRENCY_UNIT } from "@/constants";
 
 interface IClaimProps {
   winningRound: number | undefined;
@@ -43,7 +43,7 @@ const ClaimModal: React.FC<IClaimProps> = ({ winningRound, onCancel }) => {
                 } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
               >
                 <div className="flex bg-[--colors-success] p-4 rounded-l-lg">
-                  <Icons.XCircle className="text-[--colors-white]" />
+                  <Icons.CheckCircle className="text-[--colors-white]" />
                 </div>
                 <div className="flex-1 w-0 p-2">
                   <div className="flex items-start">
@@ -94,7 +94,7 @@ const ClaimModal: React.FC<IClaimProps> = ({ winningRound, onCancel }) => {
       <Icons.Trophy className="m-auto w-14 h-14 text-[--colors-gold] my-10" />
       <div className="flex justify-between font-semibold">
         <span>Collecting</span>
-        <span>0.0453 BNB</span>
+        <span>0.0453 {CURRENCY_UNIT}</span>
       </div>
       <p className="text-center text-[--colors-text99] my-2">
         From round {winningRound}
