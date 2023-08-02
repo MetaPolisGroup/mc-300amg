@@ -171,8 +171,8 @@ export const Icons = {
           y2="96"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#53DEE9"></stop>
-          <stop offset="1" stopColor="#1FC7D4"></stop>
+          <stop stop-color="#53DEE9"></stop>
+          <stop offset="1" stop-color="#1FC7D4"></stop>
         </linearGradient>
       </defs>
     </svg>
@@ -551,8 +551,8 @@ export const Icons = {
           y2="30.5011"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#FFDB00" />
-          <stop offset="0.457" stopColor="#F47A20" />
+          <stop stop-color="#FFDB00" />
+          <stop offset="0.457" stop-color="#F47A20" />
         </linearGradient>
         <clipPath id="clip0_164_21">
           <rect width="84" height="61" fill="white" />
