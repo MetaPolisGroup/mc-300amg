@@ -551,8 +551,8 @@ export const Icons = {
           y2="30.5011"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFDB00" />
-          <stop offset="0.457" stop-color="#F47A20" />
+          <stop stopColor="#FFDB00" />
+          <stop offset="0.457" stopColor="#F47A20" />
         </linearGradient>
         <clipPath id="clip0_164_21">
           <rect width="84" height="61" fill="white" />

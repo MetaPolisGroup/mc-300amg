@@ -62,39 +62,3 @@ const Header = () => {
 };
 
 export default Header;
-
-const ButtonElement: React.FC<{
-  content?: React.ReactNode | string;
-  action?: () => void;
-  isActive?: boolean;
-}> = ({ action, content, isActive }) => (
-  <button
-    className={`rounded-2xl ${
-      isActive
-        ? "bg-[--colors-primary] text-[--colors-invertedContrast]"
-        : " bg-[--colors-tertiary] text-[--colors-primary]"
-    } mt-[4px] font-bold text-[16px] py-[5px] px-[12px]`}
-    onClick={() => action?.()}
-  >
-    {content}
-  </button>
-);
-
-const SwitchElement: React.FC<{
-  isOn: boolean;
-  toggleSwitch: () => void;
-}> = ({ isOn, toggleSwitch }) => (
-  <div
-    data-ison={isOn}
-    onClick={toggleSwitch}
-    className={`flex-start flex h-[30px] w-[70px] rounded-[50px]  p-[5px] shadow-inner hover:cursor-pointer  ${
-      isOn ? "place-content-end bg-[--colors-success]" : "bg-[--colors-input]"
-    }`}
-  >
-    <motion.div
-      className="flex h-[20px] w-[20px] items-center justify-center rounded-full bg-[--colors-backgroundAlt] hover:shadow-inner hover:shadow-purple-800 transition-shadow duration-150"
-      layout
-      transition={spring}
-    />
-  </div>
-);
