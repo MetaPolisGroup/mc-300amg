@@ -10,14 +10,20 @@ import { publicClient } from "@/lib/contract-config";
 import { CONSTANTS, CURRENCY_UNIT } from "@/constants";
 import { ethers } from "ethers";
 import { Icons } from "./Icons";
+import { useAppSelector } from "@/redux/hooks";
+import { RootState } from "@/redux/store";
 
 const ConnectWallet = () => {
   const { isConnected, address } = useAccount();
   const [usersInfo, setUserInfo] = useState<DocumentData[]>([]);
   const [balance, setBalance] = useState<number>(0);
 
+  const { bettedStatus } = useAppSelector(
+    (state: RootState) => state.betReducer
+  );
+
   useEffect(() => {
-    if (isConnected && address) {
+    if (isConnected && address && bettedStatus) {
       getDataFileredByOnSnapshot(
         "users",
         [["user_address", "==", address]],
@@ -27,7 +33,7 @@ const ConnectWallet = () => {
       );
       getBalance();
     }
-  }, [isConnected, address]);
+  }, [isConnected, address, bettedStatus]);
 
   const getBalance = async () => {
     const data: any = await publicClient.readContract({

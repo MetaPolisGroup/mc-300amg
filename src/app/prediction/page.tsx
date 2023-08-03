@@ -7,12 +7,14 @@ import ClaimModal from "@/components/bet-bo/ClaimModal";
 import Chart from "@/components/chart/Chart";
 import DrawerHistory from "@/components/drawer-history/DrawerHistory";
 import Popup, { PopupRef } from "@/components/ui/Modal";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import clsx from "clsx";
+import { DocumentData } from "firebase/firestore";
 import React, { createRef, useEffect, useState } from "react";
 
 const Prediction = () => {
   const [modeSubNavMobile, setModeSubNavMobile] = useState<string>(MODE.CHART);
-
+  const [currentRound, setCurrentRound] = useState<number>(0);
   const collectWinningsRef = createRef<PopupRef>();
   const [collectWinning, setCollectWinning] = useState<{
     round: number;
@@ -41,6 +43,21 @@ const Prediction = () => {
       clearTimeout(timeSet);
     };
   }, [isScreenMobile]);
+
+  useEffect(() => {
+    getDataFileredByOnSnapshot(
+      "predictions",
+      [
+        ["locked", "==", false],
+        ["cancel", "==", false],
+      ],
+      (docs: DocumentData) => {
+        setCurrentRound(docs?.[0]?.epoch);
+      },
+      undefined,
+      undefined
+    );
+  }, []);
 
   const handlerToggleCollectWinning = (
     status: boolean,
@@ -86,7 +103,7 @@ const Prediction = () => {
               modeSubNavMobile !== MODE.CARD && isScreenMobile && "hidden"
             )}
           >
-            <Card />
+            <Card currentRound={currentRound} />
           </div>
 
           <div

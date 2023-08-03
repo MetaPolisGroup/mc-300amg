@@ -10,6 +10,8 @@ import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { toFixedEtherNumber } from "@/utils/format-number";
 import { ethers } from "ethers";
 import { isEmpty } from "lodash";
+import { useAppDispatch } from "@/redux/hooks";
+import { changeBettedStatusHandler } from "@/redux/features/bet/betSlice";
 
 interface IClaimProps {
   titleClaim: string;
@@ -23,10 +25,11 @@ const ClaimModal: React.FC<IClaimProps> = ({
   onCancel,
 }) => {
   const { isConnected, address } = useAccount();
+  const { data: walletClient } = useWalletClient();
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [roundClaimedData, setRoundClaimedData] = useState<IBetData[]>([]);
-
-  const { data: walletClient } = useWalletClient();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (isConnected && address) {
@@ -62,6 +65,7 @@ const ClaimModal: React.FC<IClaimProps> = ({
           if (transaction?.status === "success") {
             setIsLoading(false);
             onCancel();
+            dispatch(changeBettedStatusHandler(titleClaim));
             toast.custom((t) => (
               <div
                 className={`${
