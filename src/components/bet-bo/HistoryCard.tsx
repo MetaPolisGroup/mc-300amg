@@ -322,8 +322,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
               )}
 
             {!isEmpty(historyBetted) &&
-              historyBetted?.[0]?.status === "Win" &&
-              historyBetted?.[0]?.refund !== 0 &&
+              historyBetted?.[0]?.status === "Winning Refund" &&
               !historyBetted?.[0]?.claimed && (
                 <div className="absolute bottom-[0.05rem] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
                   <Icons.TrophyIcon className="text-[--colors-gold]" />
