@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "./features/counter/counterSlice";
+import betReducer from "./features/bet/betSlice";
 
 export const store = configureStore({
   reducer: {
-    counterReducer,
+    betReducer,
   },
   devTools: process.env.NODE_ENV !== "production",
 });

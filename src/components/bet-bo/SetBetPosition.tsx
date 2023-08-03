@@ -1,17 +1,22 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { formatInputField } from "@/utils/format-inputField";
 import { nanoid } from "nanoid";
 import { Icons } from "../Icons";
-import { has, isEmpty } from "lodash";
+import { isEmpty } from "lodash";
 import { CONSTANTS, CURRENCY_UNIT } from "@/constants";
 import { toast } from "react-hot-toast";
-import { useAccount, useBalance, useWalletClient } from "wagmi";
+import { useAccount, useWalletClient } from "wagmi";
 import { ethers } from "ethers";
 import { publicClient } from "@/lib/contract-config";
-import Input from "../ui/Input";
-import Button from "../ui/Button";
 import { getEllipsisTxt } from "@/utils/formmater-address";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import {
+  changeBettedStatusHandler,
+  resetState,
+} from "@/redux/features/bet/betSlice";
+import Button from "../ui/Button";
+import { RootState } from "@/redux/store";
 
 interface ISetBetPositionProps {
   showSetBetCard?: boolean;
@@ -33,7 +38,10 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   inputRef,
 }) => {
   const { isConnected, address } = useAccount();
-
+  const dispatch = useAppDispatch();
+  const { bettedStatus } = useAppSelector(
+    (state: RootState) => state.betReducer
+  );
   const { data: walletClient } = useWalletClient();
   // Fix hydrate by using isClient
   const [isClient, setIsClient] = useState<boolean>(false);
@@ -50,11 +58,12 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
 
   useEffect(() => {
     setIsClient(true);
-    if (isConnected && address && currentRound) {
+    if (isConnected && address && currentRound && bettedStatus) {
       getApprove();
       getBalance();
+      dispatch(resetState());
     }
-  }, [isConnected, address, currentRound]);
+  }, [isConnected, address, bettedStatus, currentRound, dispatch]);
 
   const getApprove = async () => {
     const data: any = await publicClient.readContract({
@@ -63,9 +72,8 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
       functionName: "allowance",
       args: [address, CONSTANTS.ADDRESS.PREDICTION],
     });
-    if (data) {
-      setApproveValue(Number(ethers.formatEther(data.toString())));
-    }
+
+    setApproveValue(Number(ethers.formatEther(data.toString())));
   };
 
   const getBalance = async () => {
@@ -257,7 +265,6 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
     setIsLoading(true);
     try {
       // betBull is Bet up
-      console.log({ currentRound });
 
       if (upOrDownStatus === "UP") {
         const { request } = await publicClient.simulateContract({
@@ -314,7 +321,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
                 </div>
               </div>
             ));
-            console.log({ transaction });
+
             if (transaction?.status === "success") {
               setIsLoading(false);
 
@@ -358,6 +365,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
                   </div>
                 </div>
               ));
+              dispatch(changeBettedStatusHandler("Betted"));
               if (onPlacedBet) onPlacedBet(false);
             }
             if (transaction?.status === "reverted") {
@@ -421,7 +429,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
             const transaction = await publicClient.waitForTransactionReceipt({
               hash,
             });
-            console.log({ transaction });
+
             if (transaction?.status === "success") {
               setIsLoading(false);
               toast.custom((t) => (
@@ -464,6 +472,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
                   </div>
                 </div>
               ));
+              dispatch(changeBettedStatusHandler("Betted"));
               if (onPlacedBet) onPlacedBet(false);
             }
             if (transaction?.status === "reverted") {
