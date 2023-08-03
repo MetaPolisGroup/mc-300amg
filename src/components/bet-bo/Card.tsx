@@ -1,30 +1,33 @@
-import React, { createRef, useEffect, useRef, useState } from "react";
-import BetCard from "./BetCard";
-import LiveBetCard from "./LiveBetCard";
-import HistoryCard from "./HistoryCard";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import "swiper/css/effect-cards";
-import FutureCard from "./FutureCard";
+import React, { createRef, useEffect, useRef, useState } from "react";
+import BetCard from "./BetCard";
+import LiveBetCard from "./LiveBetCard";
+import HistoryCard from "./HistoryCard";
 import SwiperNavButton from "../SwiperNavButton";
+import FutureCard from "./FutureCard";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
 import { Swiper as SwiperType } from "swiper";
 import Popup, { PopupRef } from "../ui/Modal";
 import { DocumentData } from "firebase/firestore";
 import { useAccount } from "wagmi";
 import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import ClaimModal from "./ClaimModal";
-
 import Link from "next/link";
 import Image from "next/image";
 
-const Card = () => {
+interface ICard {
+  currentRound: number;
+}
+
+const Card: React.FC<ICard> = ({ currentRound }) => {
   const { address, isConnected } = useAccount();
-  const [currentRound, setCurrentRound] = useState<number>(0);
   const [winningRound, setWinningRound] = useState<number>();
+  const [activeIndex, setActiveIndex] = useState<number>(3);
   const [titleClaimModal, setTitleClaimModal] = useState<string>("");
   const [nextBetData, setNextBetData] = useState<DocumentData[]>([]);
   const [datasBetted, setDatasBetted] = useState<DocumentData[]>([]);
@@ -41,11 +44,11 @@ const Card = () => {
       ],
       (docs: DocumentData) => {
         setNextBetData(docs as DocumentData[]);
-        setCurrentRound(docs?.[0]?.epoch);
       },
       undefined,
       undefined
     );
+
     if (isConnected) {
       getDataFileredByOnSnapshot(
         "bets",
@@ -56,6 +59,12 @@ const Card = () => {
       );
     }
   }, [address, isConnected]);
+
+  useEffect(() => {
+    if (currentRound) {
+      swiperRef.current?.slideTo(3);
+    }
+  }, [currentRound]);
 
   const dataBettedInCurrentRound = datasBetted.find(
     (dataBetted: DocumentData) => dataBetted.epoch === currentRound

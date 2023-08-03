@@ -1,5 +1,5 @@
 import Provider from "@/components/Provider";
-import { Inter } from "next/font/google";
+import { Lexend } from "next/font/google";
 import Header from "@/components/header/Header";
 import Footer from "@/components/Footer";
 import "./globals.css";
@@ -9,7 +9,7 @@ import NickNameModal from "@/components/NickNameModal";
 
 // Others
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Lexend({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Create Next App",
