@@ -130,7 +130,8 @@ const ClaimModal: React.FC<IClaimProps> = ({
                 +ethers.formatEther(BigInt(roundClaimedData?.[0]?.refund)) +
                   +ethers.formatEther(
                     BigInt(roundClaimedData?.[0]?.winning_amount)
-                  ),
+                  ) +
+                  +ethers.formatEther(BigInt(roundClaimedData?.[0]?.amount)),
                 2
               )
             : 0}{" "}

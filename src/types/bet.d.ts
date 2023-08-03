@@ -1,5 +1,6 @@
 interface IBetData {
   id: string;
+  amount: number;
   status: "UP" | "DOWN" | "" | string | undefined;
   value: string;
   refund: number;
