@@ -16,11 +16,15 @@ interface IHistoryDataProps {
 const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
   const [isShowDetail, setIsShowDetail] = useState<boolean>(false);
 
-  const isWin = data?.status === RESULT_STATUS.WIN;
-  const isLose = data?.status === RESULT_STATUS.LOSE;
   const isLive = data?.status === RESULT_STATUS.LIVE;
   const isRefund = data?.status === RESULT_STATUS.REFUND;
   const isWaiting = data?.status === RESULT_STATUS.WAITING;
+  const isWinningRefund = data?.status === RESULT_STATUS.WR;
+  const isLosingWinning = data?.status === RESULT_STATUS.LR;
+  const isWin =
+    data?.status === RESULT_STATUS.WIN || data?.status === RESULT_STATUS.WR;
+  const isLose =
+    data?.status === RESULT_STATUS.LOSE || data?.status === RESULT_STATUS.LR;
 
   const handlerFormatEther = (value: number) => {
     return toFixedEtherNumber(ethers?.formatEther(BigInt(value)), 2);
@@ -34,8 +38,6 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
 
   const ratePrice =
     (data?.round?.closePrice - data?.round?.lockPrice) / 10 ** 8;
-
-  console.log({ data });
 
   const renderYourHistory = () => {
     return (
@@ -110,11 +112,22 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
                 {isRefund ? handlerFormatEther(data?.refund) : winningAmount}{" "}
                 {CURRENCY_UNIT}
               </div>
-              {/* <div className="text-right text-[--colors-textSubtle] text-xs">
-                ~${data?.user_history?.about}
-              </div> */}
             </div>
           </div>
+
+          {isWinningRefund || isLosingWinning ? (
+            <div className="flex justify-between">
+              <div className="text-sm font-bold">Your refund:</div>
+              <div>
+                <div
+                  className={clsx("text-sm font-bold text-[--colors-success]")}
+                >
+                  {"+ "}
+                  {handlerFormatEther(data?.refund)} {CURRENCY_UNIT}
+                </div>
+              </div>
+            </div>
+          ) : null}
 
           {isWin ? (
             <>
@@ -123,7 +136,10 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
               <div className="flex justify-between text-[--colors-textSubtle]">
                 <div className="text-xs font-bold">Amount to collect:</div>
                 <div className="flex gap-1 text-xs font-bold items-center">
-                  {handlerFormatEther(data.winning_amount)} {CURRENCY_UNIT}{" "}
+                  {handlerFormatEther(
+                    data.winning_amount + data?.amount + data?.refund
+                  )}{" "}
+                  {CURRENCY_UNIT}{" "}
                   <Icons.AlertCircle className="w-[17px] h-[17px]" />
                 </div>
               </div>
@@ -316,7 +332,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
           {renderLayoutStatus()}
         </div>
         <div className="flex gap-2">
-          {(isWin || isRefund) && data?.claimed === false ? (
+          {(isWin || isRefund || isLosingWinning) && data?.claimed === false ? (
             <button
               className="bg-[--colors-primary] text-sm text-[--colors-white] px-4 py-1 rounded-2xl cursor-pointer hover:opacity-[0.8]"
               onClick={(e) => {

@@ -61,7 +61,9 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({
     if (value === RADIO.UNREFUNDED) {
       const historyDataFilted = originalHistoryData.filter(
         (history) =>
-          history?.status === RESULT_STATUS.REFUND && history?.claimed === false
+          (history?.status === RESULT_STATUS.REFUND ||
+            history?.status === RESULT_STATUS.LR) &&
+          history?.claimed === false
       );
       return setDataHistory(historyDataFilted);
     }
@@ -69,7 +71,9 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({
     if (value === RADIO.UNCOLECTED) {
       const historyDataFilted = originalHistoryData.filter(
         (history) =>
-          history?.status === RESULT_STATUS.WIN && history?.claimed === false
+          (history?.status === RESULT_STATUS.WIN ||
+            history?.status === RESULT_STATUS.WR) &&
+          history?.claimed === false
       );
       return setDataHistory(historyDataFilted);
     }
