@@ -24,7 +24,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
   showCollectWinningModal,
 }) => {
   const { isConnected, address } = useAccount();
-  const [historyBetted, setHistoryBetted] = useState<DocumentData[]>([]);
+  const [historyBetted, setHistoryBetted] = useState<IHistory[]>([]);
   const [historyData, setHistoryData] = useState<DocumentData[]>([]);
   const [isClient, setIsClient] = useState<boolean>(false);
 
@@ -47,7 +47,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
           ["epoch", "==", historyRound],
         ],
         (docs: DocumentData) => {
-          setHistoryBetted(docs as DocumentData[]);
+          setHistoryBetted(docs as IHistory[]);
         }
       );
     }
@@ -301,6 +301,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                 )}
             </div>
             {historyBetted?.[0]?.status === "Win" &&
+              historyBetted?.[0]?.refund === 0 &&
               !historyBetted?.[0]?.claimed && (
                 <div className="absolute bottom-[0.05rem] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
                   <Icons.TrophyIcon className="text-[--colors-gold]" />
@@ -316,6 +317,27 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                     }}
                   >
                     Collect Your Winnings
+                  </Button>
+                </div>
+              )}
+
+            {!isEmpty(historyBetted) &&
+              historyBetted?.[0]?.status === "Winning Refund" &&
+              !historyBetted?.[0]?.claimed && (
+                <div className="absolute bottom-[0.05rem] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
+                  <Icons.TrophyIcon className="text-[--colors-gold]" />
+                  <Button
+                    className="bg-[--colors-primary] hover:bg-[--colors-primary] hover:opacity-70"
+                    onClick={() => {
+                      if (showCollectWinningModal)
+                        showCollectWinningModal(
+                          true,
+                          "Collect Winnings",
+                          historyRound
+                        );
+                    }}
+                  >
+                    Collect Your Winnings And Refunds
                   </Button>
                 </div>
               )}
