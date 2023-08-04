@@ -50,12 +50,24 @@ const HeaderModal = () => {
         </div>
         <div>
           <div className="social-network flex justify-center my-4 py-4 gap-2 border-[--colors-white] border-solid border-t border-b">
-            <Icons.Twitter {...socialConfig} />
-            <Icons.Telegram {...socialConfig} />
-            <Icons.Reddit {...socialConfig} />
-            <Icons.Instagram color="var(--colors-white)" />
-            <Icons.GithubIcon {...socialConfig} />
-            <Icons.YoutubeIcon {...socialConfig} />
+            <Link href={"/"} target="_blank">
+              <Icons.Twitter {...socialConfig} />
+            </Link>
+            <Link href={"/"} target="_blank">
+              <Icons.Telegram {...socialConfig} />
+            </Link>
+            <Link href={"/"} target="_blank">
+              <Icons.GithubIcon {...socialConfig} />
+            </Link>
+            <Link href={"/"} target="_blank">
+              <Icons.Reddit {...socialConfig} />
+            </Link>
+            <Link href={"/"} target="_blank">
+              <Icons.Instagram color="var(--colors-white)" />
+            </Link>
+            <Link href={"/"} target="_blank">
+              <Icons.YoutubeIcon {...socialConfig} />
+            </Link>
           </div>
         </div>
 
