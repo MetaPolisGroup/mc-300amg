@@ -177,7 +177,7 @@ const Card: React.FC<ICard> = ({ currentRound }) => {
 
       <div className="flex lg:relative justify-end pr-4 pb-5">
         <Link
-          href={"https://chain.link/"}
+          href="https://chain.link/"
           target="_blank"
           className="lg:absolute"
         >
