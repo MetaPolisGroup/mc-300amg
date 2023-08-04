@@ -22,15 +22,18 @@ const SliderListGame: React.FC = () => {
     return games.map((games, index) => {
       return (
         <SwiperSlide key={`${games.id}${index}`}>
-          <Link href={games.link}>
-            <div className="w-[110px] h-[60px] sm:!w-full sm:h-[140px] mx-2 rounded-[60px] bg-[--colors-background-slider] overflow-hidden flex items-center justify-center text-[--colors-textSubtle] font-bold select-none cursor-pointer">
+          <Link href={games.link} className="mx-2">
+            <div className="w-[110px] h-[60px] sm:!w-full sm:h-[140px] rounded-[60px] bg-[--colors-background-slider] overflow-hidden flex items-center justify-center text-[--colors-textSubtle] font-bold select-none cursor-pointer">
               <Image
                 src={games.img}
                 sizes="1000"
                 width={100}
                 height={50}
                 alt={games.id}
-                className="max-w-fit !w-[560px]"
+                className={clsx(
+                  "max-w-fit !w-[560px]",
+                  index === 3 && "h-[60px] sm:h-auto"
+                )}
               />
             </div>
           </Link>
@@ -46,7 +49,7 @@ const SliderListGame: React.FC = () => {
         spaceBetween={24}
         freeMode={false}
         modules={[FreeMode, Pagination]}
-        centeredSlides={true}
+        // centeredSlides={true}
         slideToClickedSlide={true}
       >
         {renderCardGames()}
