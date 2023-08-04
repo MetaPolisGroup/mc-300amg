@@ -30,7 +30,7 @@ const WalletUser = () => {
           <span className="text-[--colors-primary] font-bold text-[9px] lg:text-base">
             {process.env.NODE_ENV !== "production"
               ? "http://localhost:3000/"
-              : ""}
+              : "https://predix.vercel.app/"}
             ?id={linkReferral}
           </span>
           <span>
