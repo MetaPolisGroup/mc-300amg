@@ -35,7 +35,11 @@ const WalletUser = () => {
           </span>
           <span>
             <ClipboardCopy
-              copyText={`http://localhost:3000/?id=${linkReferral}`}
+              copyText={
+                process.env.NODE_ENV !== "production"
+                  ? `http://localhost:3000/?id=${linkReferral}`
+                  : `https://predix.vercel.app/?id=${linkReferral}`
+              }
             />
           </span>
         </div>
