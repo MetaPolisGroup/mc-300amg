@@ -44,26 +44,28 @@ const ReferralTreeBackup = () => {
     }
   }, [isConnected, address]);
 
-  const showChildNodeHandler = (address: `0x${string}` | string) => {
-    const childNode = allTreeData.filter((data) => data.ref === address);
+  const showChildNodeHandler = (addressNode: `0x${string}` | string) => {
+    const childNode = allTreeData.filter((data) => data.ref === addressNode);
 
-    if (nodeAddress === address) {
+    console.log(childNode);
+
+    if (nodeAddress === addressNode) {
       setNodeAddress("");
     } else if (!isEmpty(childNode)) {
-      setNodeAddress(address);
+      setNodeAddress(addressNode);
     }
 
     let treeLevelObj = {};
 
     if (
       !isEmpty(treesNode) &&
-      treesNode.some((node) => node.address === address)
+      treesNode.some((node) => node.address === addressNode)
     ) {
       return setTreesNode(
         treesNode.filter(
           (treeNode) =>
             !treeNode.children.some((child) =>
-              child.user_tree_commissions.includes(address)
+              child.user_tree_commissions.includes(addressNode)
             )
         )
       );
@@ -79,6 +81,8 @@ const ReferralTreeBackup = () => {
         )
       )
     ) {
+      console.log("second");
+
       const nodeSameLevel = treesNode.find((node) =>
         node.children.some(
           (child) =>
@@ -87,18 +91,24 @@ const ReferralTreeBackup = () => {
         )
       );
 
+      console.log({ nodeSameLevel });
+
       const childNodeSameLevel = treesNode.filter((node) =>
         node.children.some((child) =>
           child.user_tree_commissions.includes(nodeSameLevel?.address!)
         )
       );
 
+      console.log({ childNodeSameLevel });
+
       return setTreesNode((prev) =>
-        [...prev, { address, children: childNode }].filter((node) => {
-          return !childNodeSameLevel.find(
-            (childNode) => node.address === childNode.address
-          );
-        })
+        [...prev, { address: addressNode, children: childNode }].filter(
+          (node) => {
+            return !childNodeSameLevel.find(
+              (childNode) => node.address === childNode.address
+            );
+          }
+        )
       );
     }
 
@@ -118,7 +128,7 @@ const ReferralTreeBackup = () => {
     }
 
     treeLevelObj = {
-      address,
+      address: addressNode,
       children: childNode,
     };
 
