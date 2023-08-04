@@ -40,7 +40,9 @@ const InfoReferral = () => {
 
   const claimCommisionHandler = async () => {
     setIsClaimCommisionLoading(true);
-    const point = userCommission?.[0]?.point ? userCommission?.[0]?.point : 0;
+    const point = userCommission?.[0]?.point
+      ? BigInt(userCommission?.[0]?.point)
+      : 0;
     const signer = new ethers.Wallet(
       process.env.NEXT_PUBLIC_OWNER_PRIVATE_KEY!,
       CONSTANTS.PROVIDER
