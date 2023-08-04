@@ -5,7 +5,11 @@ import {
   connectorsForWallets,
   RainbowKitProvider,
 } from "@rainbow-me/rainbowkit";
-import { metaMaskWallet, trustWallet } from "@rainbow-me/rainbowkit/wallets";
+import {
+  metaMaskWallet,
+  trustWallet,
+  rainbowWallet,
+} from "@rainbow-me/rainbowkit/wallets";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 import { CONSTANTS } from "@/constants";
@@ -31,7 +35,12 @@ const connectors = connectorsForWallets([
       } as MetaMaskWalletOptions),
 
       trustWallet({
-        projectId: "bd9d8fac308dbb3111f4f6027617462e",
+        projectId: "7a8d1dd7222aa046c6766da9c1ba436a",
+        chains,
+      } as TrustWalletOptions),
+
+      rainbowWallet({
+        projectId: "7a8d1dd7222aa046c6766da9c1ba436a",
         chains,
       } as TrustWalletOptions),
     ],
