@@ -5,7 +5,7 @@ import {
   connectorsForWallets,
   RainbowKitProvider,
 } from "@rainbow-me/rainbowkit";
-import { metaMaskWallet } from "@rainbow-me/rainbowkit/wallets";
+import { metaMaskWallet, trustWallet } from "@rainbow-me/rainbowkit/wallets";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 import { CONSTANTS } from "@/constants";
@@ -13,6 +13,7 @@ import { MetaMaskWalletOptions } from "@rainbow-me/rainbowkit/dist/wallets/walle
 import { ThemeProvider } from "../context/change-mode";
 import { store } from "@/redux/store";
 import { Provider as ProviderRedux } from "react-redux";
+import { TrustWalletOptions } from "@rainbow-me/rainbowkit/dist/wallets/walletConnectors/trustWallet/trustWallet";
 
 // Walet connect
 const { chains, publicClient } = configureChains(
@@ -28,6 +29,10 @@ const connectors = connectorsForWallets([
         projectId: "bd9d8fac308dbb3111f4f6027617462e",
         chains,
       } as MetaMaskWalletOptions),
+
+      trustWallet({
+        chains,
+      } as TrustWalletOptions),
     ],
   },
 ]);
