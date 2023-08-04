@@ -91,12 +91,7 @@ export default function Footer() {
             </div>
             <div className="flex items-center gap-5 order-first md:order-none justify-between  w-full md:w-[45%] lg:w-[30%]">
               <div className="flex items-center gap-2">
-                <Image
-                  src="/svgs/prx-logo.svg"
-                  width={30}
-                  height={30}
-                  alt=""
-                />
+                <Image src="/svgs/prx-logo.svg" width={30} height={30} alt="" />
                 <p className="text-[#00CEEA] text-xl font-medium">$0.01</p>
               </div>
               <div className="text-[--colors-invertedContrast] flex w-[38%] md:w-[48%] px-2 items-center justify-center py-1 bg-[--colors-primary] rounded-full font-bold">
@@ -114,8 +109,14 @@ export default function Footer() {
               color="var(--colors-textSubtle)"
               cursor="pointer"
             />
-            <Icons.Telegram />
-            <Icons.Reddit />
+            <Icons.Telegram
+              fill="var(--colors-textSubtle)"
+              color="var(--colors-textSubtle)"
+            />
+            <Icons.Reddit
+              fill="var(--colors-textSubtle)"
+              color="var(--colors-textSubtle)"
+            />
             <Icons.Instagram
               color="var(--colors-textSubtle)"
               size={25}
@@ -128,7 +129,10 @@ export default function Footer() {
               cursor="pointer"
             />
 
-            <Icons.YoutubeIcon />
+            <Icons.YoutubeIcon
+              fill="var(--colors-textSubtle)"
+              color="var(--colors-textSubtle)"
+            />
           </div>
         </div>
         {showElement && (

@@ -80,30 +80,32 @@ const Prediction = () => {
       <div className="flex overflow-hidden">
         <div
           className={clsx(
-            "overflow-hidden",
+            "overflow-hidden flex flex-col justify-between",
             isShowDrawer ? "w-[0px] lg:w-[calc(100%-385px)]" : "w-[100%]"
           )}
         >
-          <div className="text-[--colors-failure] p-4">
-            <div className="flex flex-nowrap justify-between">
-              <CoinCurrency />
-              <CountDown
-                title="5m"
-                onAction={{
-                  setIsShowDrawer: () => {
-                    setModeSubNavMobile(MODE.HISTORY);
-                  },
-                }}
-              />
+          <div>
+            <div className="text-[--colors-failure] p-4">
+              <div className="flex flex-nowrap justify-between">
+                <CoinCurrency />
+                <CountDown
+                  title="5m"
+                  onAction={{
+                    setIsShowDrawer: () => {
+                      setModeSubNavMobile(MODE.HISTORY);
+                    },
+                  }}
+                />
+              </div>
             </div>
-          </div>
 
-          <div
-            className={clsx(
-              modeSubNavMobile !== MODE.CARD && isScreenMobile && "hidden"
-            )}
-          >
-            <Card currentRound={currentRound} />
+            <div
+              className={clsx(
+                modeSubNavMobile !== MODE.CARD && isScreenMobile && "hidden"
+              )}
+            >
+              <Card currentRound={currentRound} />
+            </div>
           </div>
 
           <div
@@ -114,12 +116,14 @@ const Prediction = () => {
             <Chart />
           </div>
         </div>
+
         <DrawerHistory
           open={isShowDrawer}
           onClose={() => setModeSubNavMobile(MODE.CARD)}
           onCollect={handlerToggleCollectWinning}
         />
       </div>
+
       <SubNav modeMobile={modeSubNavMobile} onAction={setModeSubNavMobile} />
 
       <Popup

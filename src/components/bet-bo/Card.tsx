@@ -27,7 +27,6 @@ interface ICard {
 const Card: React.FC<ICard> = ({ currentRound }) => {
   const { address, isConnected } = useAccount();
   const [winningRound, setWinningRound] = useState<number>();
-  const [activeIndex, setActiveIndex] = useState<number>(3);
   const [titleClaimModal, setTitleClaimModal] = useState<string>("");
   const [nextBetData, setNextBetData] = useState<DocumentData[]>([]);
   const [datasBetted, setDatasBetted] = useState<DocumentData[]>([]);
@@ -178,7 +177,7 @@ const Card: React.FC<ICard> = ({ currentRound }) => {
 
       <div className="flex lg:relative justify-end pr-4 pb-5">
         <Link
-          href={"https://chain.link/"}
+          href="https://chain.link/"
           target="_blank"
           className="lg:absolute"
         >

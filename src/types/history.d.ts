@@ -18,7 +18,7 @@ interface IRound {
 
 interface IHistory {
   id: string;
-  epoch: string;
+  epoch: string | number;
   refund: number;
   amount: number;
   status: string;

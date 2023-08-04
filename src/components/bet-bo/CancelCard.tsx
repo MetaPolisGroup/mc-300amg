@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Icons } from "../Icons";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
+import { isEmpty } from "lodash";
+import Button from "../ui/Button";
 
 interface ICancelCard {
   historyRound: number;
+  historyBetted: IHistory;
+  showCollectWinningModal?: (
+    status: boolean,
+    title: string,
+    round: number
+  ) => void;
 }
 
-const CancelCard: React.FC<ICancelCard> = ({ historyRound }) => {
+const CancelCard: React.FC<ICancelCard> = ({
+  historyRound,
+  historyBetted,
+  showCollectWinningModal,
+}) => {
   return (
     <div className={`w-full flex justify-center items-center relative`}>
       <div className={"card z-20 w-80 bg-[--colors-backgroundAlt] shadow-xl"}>
@@ -52,14 +65,24 @@ const CancelCard: React.FC<ICancelCard> = ({ historyRound }) => {
               </div>
             </div>
           </div>
-          {/* {!isEmpty(dataBetted) &&
-            (dataBetted?.status === "DOWN" ? (
-              <div className="absolute right-0 bottom-2 flex gap-2 z-20 border-2 rounded-2xl border-[--colors-secondary] px-2 py-[2px] ">
-                <Icons.CheckCircle className="text-[--colors-text]" />
-                <span className="text-[--colors-secondary]">ENTERED</span>
-              </div>
-            ) : null)} */}
         </div>
+        {!isEmpty(historyBetted) &&
+          historyBetted?.status !== "Win" &&
+          historyBetted?.refund !== 0 &&
+          !historyBetted?.claimed && (
+            <div className="absolute bottom-[0.05rem] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
+              <Icons.TrophyIcon className="text-[--colors-gold]" />
+              <Button
+                className="bg-[--colors-primary] hover:bg-[--colors-primary] hover:opacity-70"
+                onClick={() => {
+                  if (showCollectWinningModal)
+                    showCollectWinningModal(true, "Refund", historyRound);
+                }}
+              >
+                Collect Your Refund
+              </Button>
+            </div>
+          )}
       </div>
     </div>
   );
