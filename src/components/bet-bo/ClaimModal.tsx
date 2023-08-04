@@ -44,7 +44,7 @@ const ClaimModal: React.FC<IClaimProps> = ({
         }
       );
     }
-  }, [isConnected, address]);
+  }, [isConnected, address, winningRound]);
 
   const claimHandler = async () => {
     setIsLoading(true);

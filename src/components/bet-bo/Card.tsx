@@ -27,7 +27,6 @@ interface ICard {
 const Card: React.FC<ICard> = ({ currentRound }) => {
   const { address, isConnected } = useAccount();
   const [winningRound, setWinningRound] = useState<number>();
-  const [activeIndex, setActiveIndex] = useState<number>(3);
   const [titleClaimModal, setTitleClaimModal] = useState<string>("");
   const [nextBetData, setNextBetData] = useState<DocumentData[]>([]);
   const [datasBetted, setDatasBetted] = useState<DocumentData[]>([]);
