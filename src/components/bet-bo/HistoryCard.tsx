@@ -362,7 +362,11 @@ const HistoryCard: React.FC<IHistoryProps> = ({
           </div>
         </div>
       ) : (
-        <CancelCard historyRound={historyRound} />
+        <CancelCard
+          historyRound={historyRound}
+          historyBetted={historyBetted?.[0]}
+          showCollectWinningModal={showCollectWinningModal}
+        />
       )}
     </React.Fragment>
   );

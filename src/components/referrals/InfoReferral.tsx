@@ -182,7 +182,7 @@ const InfoReferral = () => {
           <span>
             {userCommission?.[0]?.point
               ? toFixedEtherNumber(
-                  ethers.formatEther(userCommission?.[0]?.point),
+                  ethers.formatEther(BigInt(userCommission?.[0]?.point)),
                   4
                 )
               : 0}{" "}
