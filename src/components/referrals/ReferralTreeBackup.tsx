@@ -45,9 +45,18 @@ const ReferralTreeBackup = () => {
   }, [isConnected, address]);
 
   const showChildNodeHandler = (addressNode: `0x${string}` | string) => {
+
+    // Get children node that it has direct ref address
     const childNode = allTreeData.filter((data) => data.ref === addressNode);
 
-    console.log(childNode);
+    // Remove ancestor from user address ["child", "address", "ancestor"] -> ["child", "address"]
+    childNode.map((child) =>
+      child.user_tree_commissions.splice(
+        child.user_tree_commissions.indexOf(address as `0x${string}`) + 1
+      )
+    );
+
+    //  Set active address button when click it
 
     if (nodeAddress === addressNode) {
       setNodeAddress("");

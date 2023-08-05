@@ -3,9 +3,14 @@ import React from "react";
 import { Toaster } from "react-hot-toast";
 import {
   connectorsForWallets,
+  getDefaultWallets,
   RainbowKitProvider,
 } from "@rainbow-me/rainbowkit";
-import { metaMaskWallet, trustWallet } from "@rainbow-me/rainbowkit/wallets";
+import {
+  metaMaskWallet,
+  trustWallet,
+  rainbowWallet,
+} from "@rainbow-me/rainbowkit/wallets";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 import { CONSTANTS } from "@/constants";
@@ -21,22 +26,33 @@ const { chains, publicClient } = configureChains(
   [publicProvider()]
 );
 
-const connectors = connectorsForWallets([
-  {
-    groupName: "Recommended",
-    wallets: [
-      metaMaskWallet({
-        projectId: "bd9d8fac308dbb3111f4f6027617462e",
-        chains,
-      } as MetaMaskWalletOptions),
+// const connectors = connectorsForWallets([
+//   {
+//     groupName: "Recommended",
+//     wallets: [
+//       metaMaskWallet({
+//         projectId: "bd9d8fac308dbb3111f4f6027617462e",
+//         chains,
+//       } as MetaMaskWalletOptions),
 
-      trustWallet({
-        projectId: "bd9d8fac308dbb3111f4f6027617462e",
-        chains,
-      } as TrustWalletOptions),
-    ],
-  },
-]);
+//       trustWallet({
+//         projectId: "7a8d1dd7222aa046c6766da9c1ba436a",
+//         chains,
+//       } as TrustWalletOptions),
+
+//       rainbowWallet({
+//         projectId: "7a8d1dd7222aa046c6766da9c1ba436a",
+//         chains,
+//       } as TrustWalletOptions),
+//     ],
+//   },
+// ]);
+
+const { connectors } = getDefaultWallets({
+  appName: "My RainbowKit App",
+  projectId: "7a8d1dd7222aa046c6766da9c1ba436a",
+  chains,
+});
 
 const wagmiConfig = createConfig({
   autoConnect: true,
