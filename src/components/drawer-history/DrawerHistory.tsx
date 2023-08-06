@@ -167,7 +167,7 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({
     }
 
     return (
-      <div className="text-center p-6">
+      <div className="text-center p-6 h-[58vh] lg:h-auto">
         <p className="mb-2 text-xl font-bold">
           No prediction history available
         </p>
