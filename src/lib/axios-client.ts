@@ -8,7 +8,7 @@ import { toast } from "react-hot-toast";
  */
 
 export const axiosClient = axios.create({
-  baseURL: "https://bo-development-6h2r4.ondigitalocean.app",
+  baseURL: "https://seahorse-app-c6dh8.ondigitalocean.app/",
   headers: {
     "Content-Type": "application/json",
   },

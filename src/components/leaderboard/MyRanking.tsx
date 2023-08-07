@@ -162,9 +162,18 @@ const MyRanking = () => {
             <span className="text-[--colors-textSubtle] font-normal text-xs">
               Rounds Won
             </span>
-            <span className="text-[--colors-text] text-base font-bold">
-              {userInfo?.[0]?.leaderboard.round_winning}/
-              {userInfo?.[0]?.leaderboard.round_played}
+            <span className="text-[--colors-text] text-base font-bold flex">
+              {userInfo?.[0]?.leaderboard.round_winning ? (
+                userInfo?.[0]?.leaderboard.round_winning
+              ) : (
+                <Skeleton width={50} height={20} />
+              )}
+              /
+              {userInfo?.[0]?.leaderboard.round_played ? (
+                userInfo?.[0]?.leaderboard.round_played
+              ) : (
+                <Skeleton width={50} height={20} />
+              )}
             </span>
           </div>
         </div>
