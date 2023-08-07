@@ -4,6 +4,7 @@ import { useAccount } from "wagmi";
 import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { toFixedEtherNumber } from "@/utils/format-number";
 import { ethers } from "ethers";
+import Skeleton from "react-loading-skeleton";
 
 const MyRanking = () => {
   const [userInfo, setUserInfo] = useState<IUser[]>([]);
@@ -52,7 +53,11 @@ const MyRanking = () => {
                 <div className="flex justify-start items-center gap-2">
                   <Icons.AvatarUser className="w-10 h-10" />
                   <span className="text-[--colors-primary] font-bold text-base">
-                    {userInfo?.[0]?.nickname}
+                    {userInfo?.[0]?.nickname ? (
+                      userInfo?.[0]?.nickname
+                    ) : (
+                      <Skeleton width={100} height={20} />
+                    )}
                   </span>
                 </div>
               </td>
@@ -65,24 +70,38 @@ const MyRanking = () => {
                   }] text-base font-bold`}
                 >
                   {userInfo?.[0]?.leaderboard.net_winnings > 0 ? "+" : ""}
-                  {userInfo?.[0]?.leaderboard.net_winnings
-                    ? toFixedEtherNumber(
-                        ethers.formatEther(
-                          BigInt(userInfo?.[0]?.leaderboard.net_winnings)
-                        ),
-                        2
-                      )
-                    : 0}
+                  {userInfo?.[0]?.leaderboard.net_winnings ? (
+                    toFixedEtherNumber(
+                      ethers.formatEther(
+                        BigInt(userInfo?.[0]?.leaderboard.net_winnings)
+                      ),
+                      2
+                    )
+                  ) : (
+                    <Skeleton width={100} height={20} />
+                  )}
                 </div>
               </td>
               <td className="text-[--colors-text] text-center font-medium">
-                {userInfo?.[0]?.leaderboard.win_rate.toFixed(2)}%
+                {userInfo?.[0] ? (
+                  `${userInfo?.[0]?.leaderboard.win_rate.toFixed(2)}%`
+                ) : (
+                  <Skeleton width={100} height={20} />
+                )}
               </td>
               <td className="text-[--colors-text] text-center font-medium">
-                {userInfo?.[0]?.leaderboard.round_winning}
+                {userInfo?.[0] ? (
+                  userInfo?.[0]?.leaderboard.round_winning
+                ) : (
+                  <Skeleton width={100} height={20} />
+                )}
               </td>
               <td className="text-[--colors-text] text-center font-medium">
-                {userInfo?.[0]?.leaderboard.round_played}
+                {userInfo?.[0] ? (
+                  userInfo?.[0]?.leaderboard.round_played
+                ) : (
+                  <Skeleton width={100} height={20} />
+                )}
               </td>
             </tr>
           </tbody>
@@ -90,7 +109,11 @@ const MyRanking = () => {
         <div className="flex flex-col p-4 lg:hidden">
           <div className="flex items-center justify-end gap-2 mb-4">
             <div className="text-base text-[--colors-primary] font-bold">
-              {userInfo?.[0]?.nickname}
+              {userInfo?.[0]?.nickname ? (
+                userInfo?.[0]?.nickname
+              ) : (
+                <Skeleton width={100} height={20} />
+              )}
             </div>
             <Icons.AvatarUser className="w-10 h-10" />
           </div>
@@ -99,7 +122,11 @@ const MyRanking = () => {
               Win Rate
             </span>
             <span className="text-[--colors-text] text-base font-bold">
-              {userInfo?.[0]?.leaderboard.win_rate.toFixed(2)}%
+              {userInfo?.[0] ? (
+                `${userInfo?.[0]?.leaderboard.win_rate.toFixed(2)}%`
+              ) : (
+                <Skeleton width={100} height={20} />
+              )}
             </span>
           </div>
           <div className="flex justify-between items-center mb-1">
@@ -115,14 +142,16 @@ const MyRanking = () => {
                 }] font-bold text-base`}
               >
                 {userInfo?.[0]?.leaderboard.net_winnings > 0 ? "+" : ""}
-                {userInfo?.[0]?.leaderboard.net_winnings
-                  ? toFixedEtherNumber(
-                      ethers.formatEther(
-                        BigInt(userInfo?.[0]?.leaderboard.net_winnings)
-                      ),
-                      2
-                    )
-                  : 0}
+                {userInfo?.[0]?.leaderboard.net_winnings ? (
+                  toFixedEtherNumber(
+                    ethers.formatEther(
+                      BigInt(userInfo?.[0]?.leaderboard.net_winnings)
+                    ),
+                    2
+                  )
+                ) : (
+                  <Skeleton width={100} height={20} />
+                )}
               </span>
               {/* <span className="text-[--colors-textSubtle] font-normal text-xs">
                 ~$0,03

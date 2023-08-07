@@ -7,6 +7,8 @@ import TopRanking from "@/components/leaderboard/TopRanking";
 import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { DocumentData } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const LeaderBoard = () => {
   const [leaderboardData, setLeaderboardData] = useState<DocumentData[]>([]);
