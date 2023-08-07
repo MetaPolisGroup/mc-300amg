@@ -19,6 +19,7 @@ import { ThemeProvider } from "../context/change-mode";
 import { store } from "@/redux/store";
 import { Provider as ProviderRedux } from "react-redux";
 import { TrustWalletOptions } from "@rainbow-me/rainbowkit/dist/wallets/walletConnectors/trustWallet/trustWallet";
+import { SkeletonTheme } from "react-loading-skeleton";
 
 // Walet connect
 const { chains, publicClient } = configureChains(
@@ -66,16 +67,18 @@ interface ProviderProps {
 
 const Provider: React.FC<ProviderProps> = ({ children }) => {
   return (
-    <ProviderRedux store={store}>
-      <ThemeProvider>
-        <WagmiConfig config={wagmiConfig}>
-          <RainbowKitProvider chains={chains}>
-            <Toaster position="top-right" reverseOrder={false} />
-            {children}
-          </RainbowKitProvider>
-        </WagmiConfig>
-      </ThemeProvider>
-    </ProviderRedux>
+    <SkeletonTheme baseColor="#a8a3a3" highlightColor="#716d6d">
+      <ProviderRedux store={store}>
+        <ThemeProvider>
+          <WagmiConfig config={wagmiConfig}>
+            <RainbowKitProvider chains={chains}>
+              <Toaster position="top-right" reverseOrder={false} />
+              {children}
+            </RainbowKitProvider>
+          </WagmiConfig>
+        </ThemeProvider>
+      </ProviderRedux>
+    </SkeletonTheme>
   );
 };
 
