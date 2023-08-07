@@ -31,10 +31,11 @@ export default function Footer() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
   return (
-    <footer className="bg-[--colors-backgroundAlt]   ">
-      <div className=" md:block relative container px-5 pt-0 md:pt-14 mx-auto">
-        <div className=" flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
+    <footer className="bg-[--colors-backgroundAlt]">
+      <div className=" md:block relative container px-3 sm:px-5 pt-3 md:pt-10 mx-auto">
+        {/* <div className=" flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
           <div className="flex-grow gap-[33px] flex flex-wrap md:flex-nowrap  md:text-left text-center ">
             <div className="hidden md:block lg:w-1/3 md:w-1/2 text-left w-full ">
               <h2 className="font-bold text-[--colors-secondary] tracking-widest text-sm mb-3">
@@ -85,7 +86,7 @@ export default function Footer() {
             </h1>
           </div>
 
-          <div className="md:hidden border-t-[1px] md:border-b-[1px] border-[#383241] mb-5 container -order-2 md:order-none md:justify-between items-center py-3  md:py-10 flex md:flex-row md:flex-nowrap flex-wrap flex-col">
+          <div className="md:hidden mb-5 container -order-2 md:order-none md:justify-between items-center py-3  md:py-10 flex md:flex-row md:flex-nowrap flex-wrap flex-col">
             <div className="mr-auto mt-5">
               <ChangeMode HWrapper={"50px"} WWrapper={"100px"} />
             </div>
@@ -100,9 +101,9 @@ export default function Footer() {
               </div>
             </div>
           </div>
-        </div>
-        <div className="hidden mt-10 mx-auto pb-4 md:pb-14 md:flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
-          <div className="flex md:mx-0 mx-auto gap-5 pb-5 border-[#383241] border-b-[1px] w-full">
+        </div> */}
+        <div className="mx-auto pb-3 md:pb-10 flex items-center flex-nowrap justify-between">
+          <div className="hidden lg:flex items-center md:mx-0 mx-auto gap-5">
             <Icons.Twitter
               fill="var(--colors-textSubtle)"
               size={25}
@@ -133,11 +134,31 @@ export default function Footer() {
               fill="var(--colors-textSubtle)"
               color="var(--colors-textSubtle)"
             />
+
+            <ChangeMode />
+          </div>
+
+          <div className="block lg:hidden">
+            <ChangeMode />
+          </div>
+
+          <div className="flex  items-center gap-3 sm:gap-5 mr-[15%] md:mr-[15%] lg:mr-[10%] pr-3 sm:pr-0">
+            <div className="flex items-center gap-2">
+              <Image src="/svgs/prx-logo.svg" width={30} height={30} alt="" />
+              <p className="text-[#00CEEA] text-base md:text-xl font-medium">
+                $0.01
+              </p>
+            </div>
+            <div className="text-[--colors-invertedContrast] flex px-2 items-center justify-center py-1 bg-[--colors-primary] rounded-full font-bold">
+              <button className="text-base md:text-xl">Buy PRX</button>
+              <Icons.ArrowRight />
+            </div>
           </div>
         </div>
+
         {showElement && (
           <div
-            className="fixed cursor-pointer right-[30px] bottom-[100px] md:right-[100px] md:bottom-[190px] flex w-[10%] md:w-[5%] items-center  justify-around py-3 bg-[--colors-primary] rounded-xl font-bold"
+            className="fixed cursor-pointer right-[30px] bottom-[91px] md:right-[65px] md:bottom-[45px] flex w-[7%] sm:w-[5%] items-center justify-around bg-[--colors-primary] rounded-xl font-bold py-1 md:py-3"
             onClick={() => {
               if (typeof window !== "undefined")
                 window.scrollTo({ top: 0, behavior: "smooth" });
@@ -146,20 +167,6 @@ export default function Footer() {
             <Icons.ArrowUp size={20} />
           </div>
         )}
-      </div>
-
-      <div className="hidden container md:order-none md:justify-between items-center px-6 mx-auto pb-14 md:flex md:flex-row md:flex-nowrap flex-wrap flex-col">
-        <ChangeMode />
-        <div className="flex items-center gap-5 order-first md:order-none justify-between  w-full md:w-[45%] lg:w-[30%]">
-          <div className="flex items-center gap-2">
-            <Image src="/svgs/prx-logo.svg" width={30} height={30} alt="" />
-            <p className="text-[#00CEEA] text-xl font-medium">$0.01</p>
-          </div>
-          <div className="text-[--colors-invertedContrast] flex w-[30%] md:w-[48%] px-2 items-center py-1 justify-center bg-[--colors-primary] rounded-full font-bold">
-            <button className=" text-2xl">Buy PRX</button>
-            <Icons.ArrowRight />
-          </div>
-        </div>
       </div>
     </footer>
   );
