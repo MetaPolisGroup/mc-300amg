@@ -106,7 +106,7 @@ export const LIST_GAME = [
   {
     id: "market",
     img: "/images/game/market.png",
-    link: "/",
+    link: "/market",
   },
 ];
 
