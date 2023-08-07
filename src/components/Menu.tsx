@@ -5,17 +5,17 @@ import Link from "next/link";
 const Menu = () => {
   return (
     <div className="sticky bg-gradient-to-br from-blue-300 to-green-600 bottom-0 z-50">
-      <div className="container md:hidden flex justify-between text-white px-5 py-3">
+      <div className="md:hidden flex justify-between text-white px-5 py-3">
         <Link
           href={"/prediction/leaderboard"}
           className="flex justify-center flex-col-reverse items-center "
         >
-          <span>Leaderboard</span>
+          <span className="text-sm">Leaderboard</span>
           <Icons.Leaderboard />
         </Link>
 
         <div className="flex justify-center flex-col-reverse items-center">
-          <span>Staking</span>
+          <span className="text-sm">Staking</span>
           <Icons.Staking />
         </div>
 
@@ -23,7 +23,7 @@ const Menu = () => {
           href={"/referrals"}
           className="flex justify-center flex-col-reverse items-center"
         >
-          <span>Referral</span>
+          <span className="text-sm">Referral</span>
           <Icons.Referral />
         </Link>
       </div>
