@@ -4,7 +4,7 @@ import ReferralCode from "../../components/staking/ReferralCode";
 
 const Staking = () => {
   return (
-    <main className="w-full">
+    <main className="w-full min-h-[90vh]">
       <div className="bg-[--colors-background] text-white p-6">
         <div className="max-w-[1200px] mx-auto">
           <div className="items-center p-3 border-2 border-[--colors-secondary] rounded-md">

@@ -198,7 +198,7 @@ const Chart: React.FC = () => {
       <div
         id="main"
         className={clsx(
-          "w-full h-[350px] md:h-[400px] bg-[--colors-backgroundAlt] lg:bg-inherit",
+          "w-full h-[60vh] lg:h-[350px] md:h-[400px] bg-[--colors-backgroundAlt] lg:bg-inherit",
           !isShowChart && "hidden"
         )}
       ></div>
