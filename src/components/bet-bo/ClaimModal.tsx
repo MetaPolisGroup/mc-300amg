@@ -78,7 +78,6 @@ const ClaimModal: React.FC<IClaimProps> = ({
         ));
       }
     }
-    return amountClaimed;
   };
 
   const claimHandler = async () => {
