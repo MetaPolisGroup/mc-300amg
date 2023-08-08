@@ -14,7 +14,6 @@ import React, { createRef, useEffect, useState } from "react";
 
 const Prediction = () => {
   const [modeSubNavMobile, setModeSubNavMobile] = useState<string>(MODE.CHART);
-  const [currentRound, setCurrentRound] = useState<number>(0);
   const collectWinningsRef = createRef<PopupRef>();
   const [collectWinning, setCollectWinning] = useState<{
     round: number;
@@ -44,21 +43,6 @@ const Prediction = () => {
     };
   }, [isScreenMobile]);
 
-  useEffect(() => {
-    getDataFileredByOnSnapshot(
-      "predictions",
-      [
-        ["locked", "==", false],
-        ["cancel", "==", false],
-      ],
-      (docs: DocumentData) => {
-        setCurrentRound(docs?.[0]?.epoch);
-      },
-      undefined,
-      undefined
-    );
-  }, []);
-
   const handlerToggleCollectWinning = (
     status: boolean,
     round: number,
@@ -77,7 +61,7 @@ const Prediction = () => {
 
   return (
     <main className="bg-gradient-to-r from-[--colors-violetAlt1] to-[--colors-violetAlt2] overflow-hidden">
-      <div className="flex overflow-hidden">
+      <div className="flex overflow-hidden md:min-h-[90vh]">
         <div
           className={clsx(
             "overflow-hidden flex flex-col justify-between",
@@ -104,7 +88,7 @@ const Prediction = () => {
                 modeSubNavMobile !== MODE.CARD && isScreenMobile && "hidden"
               )}
             >
-              <Card currentRound={currentRound} />
+              <Card />
             </div>
           </div>
 

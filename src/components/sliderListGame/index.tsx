@@ -23,7 +23,7 @@ const SliderListGame: React.FC = () => {
       return (
         <SwiperSlide key={`${games.id}${index}`}>
           <Link href={games.link} className="mx-2">
-            <div className="w-[110px] h-[60px] sm:!w-full sm:h-[140px] rounded-[60px] bg-[--colors-background-slider] overflow-hidden flex items-center justify-center text-[--colors-textSubtle] font-bold select-none cursor-pointer">
+            <div className="w-[520px] h-[60px] sm:h-[140px] rounded-[60px] bg-[--colors-background-slider] overflow-hidden flex items-center justify-center text-[--colors-textSubtle] font-bold select-none cursor-pointer">
               <Image
                 src={games.img}
                 sizes="1000"
@@ -43,7 +43,7 @@ const SliderListGame: React.FC = () => {
   };
 
   return (
-    <div className={clsx("my-1", classes["list-game"])}>
+    <div className={clsx(classes["list-game"])}>
       <Swiper
         slidesPerView={"auto"}
         spaceBetween={24}
