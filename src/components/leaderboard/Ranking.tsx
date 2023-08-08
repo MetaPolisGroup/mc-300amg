@@ -182,12 +182,14 @@ const Ranking: React.FC<IRanking> = ({ ranking }) => {
               </div>
             ))}
         </div>
-        <Button
-          className="bg-transparent border-2 border-[--colors-primary] rounded-2xl p-6 text-[--colors-primary]"
-          onClick={loadMoreDataHandler}
-        >
-          View More
-        </Button>
+        {rankingsLimited && (
+          <Button
+            className="bg-transparent border-2 border-[--colors-primary] rounded-2xl p-6 text-[--colors-primary]"
+            onClick={loadMoreDataHandler}
+          >
+            View More
+          </Button>
+        )}
       </div>
     </div>
   );

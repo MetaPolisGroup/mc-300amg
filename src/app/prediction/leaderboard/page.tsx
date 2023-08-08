@@ -7,6 +7,8 @@ import TopRanking from "@/components/leaderboard/TopRanking";
 import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { DocumentData } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const LeaderBoard = () => {
   const [leaderboardData, setLeaderboardData] = useState<DocumentData[]>([]);
@@ -38,7 +40,7 @@ const LeaderBoard = () => {
   const ranking = leaderboardData?.[0]?.user_lists.slice(3);
 
   return (
-    <main className="w-full">
+    <main className="w-full min-h-[90vh]">
       <div className="bg-gradient-to-r from-[--colors-bubblegum1] to-[--colors-bubblegum2] p-6">
         <div className="max-w-[1200px] mx-auto">
           <div className="mb-6">

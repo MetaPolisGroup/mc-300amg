@@ -77,7 +77,7 @@ const Prediction = () => {
 
   return (
     <main className="bg-gradient-to-r from-[--colors-violetAlt1] to-[--colors-violetAlt2] overflow-hidden">
-      <div className="flex overflow-hidden">
+      <div className="flex overflow-hidden md:min-h-[90vh]">
         <div
           className={clsx(
             "overflow-hidden flex flex-col justify-between",

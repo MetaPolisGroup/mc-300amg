@@ -30,7 +30,7 @@ export const RESULT_STATUS = {
   LIVE: "Live",
   REFUND: "Refund",
   WR: "Winning Refund",
-  LR: "Losing Winning",
+  LR: "Losing Refund",
 };
 
 export const USER_DIRECTION = {

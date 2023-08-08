@@ -159,7 +159,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
         functionName: "approve",
         args: [
           CONSTANTS.ADDRESS.PREDICTION,
-          ethers.parseUnits(amount, "ether"),
+          ethers.parseEther((+amount + 1).toString()),
         ],
       });
       if (reqToken) {

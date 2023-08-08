@@ -1,11 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
+
 import clsx from "clsx";
 import { Icons } from "./Icons";
 import Button from "./ui/Button";
-import { useRouter } from "next/navigation";
-import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
+import { useAccount } from "wagmi";
+
 import { DocumentData } from "firebase/firestore";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 
 interface ICountDown {
   title: string;
@@ -19,13 +21,13 @@ const CountDown: React.FC<ICountDown> = ({ title, onAction }) => {
   const [second, setSecond] = useState<number>(0);
   const [nextBetData, setNextBetData] = useState<DocumentData[]>([]);
 
-  const router = useRouter();
+  const { isConnected } = useAccount();
 
   const LIST_BTN_FEATURE = [
     {
       id: "history",
       icon: <Icons.History />,
-      disabled: false,
+      disabled: !isConnected,
       className: "hidden lg:flex",
       onAction: () => {
         return onAction?.setIsShowDrawer?.(true);
@@ -81,7 +83,7 @@ const CountDown: React.FC<ICountDown> = ({ title, onAction }) => {
           className={clsx(
             `w-12 h-12 !rounded-2xl !p-2 ${feature?.className}`,
             feature.disabled &&
-              "cursor-no-drop !active:border-none focus:!border-none hidden md:flex",
+              "!active:border-none focus:!border-none hidden md:flex",
             !feature.disabled &&
               "bg-[--colors-textSubtle] hover:bg-[--colors-textSubtle] hover:opacity-80"
           )}

@@ -6,9 +6,9 @@ import Button from "@/components/ui/Button";
 
 export default function Home() {
   return (
-    <main className="bg-gradient-to-r from-[--colors-violetAlt1] to-[--colors-violetAlt2] overflow-hidden">
+    <main className="bg-[--colors-background] overflow-hidden min-h-[85vh]">
       <SliderListGame />
-      <SliderBannerGame />
+      {/* <SliderBannerGame /> */}
       <div className="px-4 flex flex-col items-center md:flex-row justify-between md:px-28">
         <div className="flex flex-col gap-3 md:gap-10">
           <h1 className="text-[#28C38B] text-3xl md:text-6xl font-semibold">
@@ -24,7 +24,7 @@ export default function Home() {
             </Button>
             <Button
               variant="success"
-              className="bg-transparent rounded-full border-2 border-[--colors-primary] px-9"
+              className="bg-[--colors-white] rounded-full border-2 border-[--colors-primary] text-[--colors-primary] px-9"
             >
               Roadmap
             </Button>
