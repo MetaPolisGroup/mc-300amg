@@ -29,7 +29,6 @@ const ClaimModal: React.FC<IClaimProps> = ({
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [roundClaimedData, setRoundClaimedData] = useState<IBetData[]>([]);
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (isConnected && address) {
@@ -45,6 +44,20 @@ const ClaimModal: React.FC<IClaimProps> = ({
       );
     }
   }, [isConnected, address, winningRound]);
+
+  const amountClaim =
+    !isEmpty(roundClaimedData) &&
+    (titleClaim === "Refund"
+      ? toFixedEtherNumber(
+          +ethers.formatEther(BigInt(roundClaimedData?.[0]?.refund)),
+          2
+        )
+      : toFixedEtherNumber(
+          +ethers.formatEther(BigInt(roundClaimedData?.[0]?.refund)) +
+            +ethers.formatEther(BigInt(roundClaimedData?.[0]?.winning_amount)) +
+            +ethers.formatEther(BigInt(roundClaimedData?.[0]?.amount)),
+          2
+        ));
 
   const claimHandler = async () => {
     setIsLoading(true);
@@ -65,7 +78,7 @@ const ClaimModal: React.FC<IClaimProps> = ({
           if (transaction?.status === "success") {
             setIsLoading(false);
             onCancel();
-            dispatch(changeBettedStatusHandler(titleClaim));
+            // dispatch(changeBettedStatusHandler(titleClaim));
             toast.custom((t) => (
               <div
                 className={`${
@@ -123,19 +136,8 @@ const ClaimModal: React.FC<IClaimProps> = ({
       <Icons.Trophy className="m-auto w-14 h-14 text-[--colors-gold] my-10" />
       <div className="flex justify-between font-semibold">
         <span>Collecting</span>
-        {}
         <span>
-          {!isEmpty(roundClaimedData)
-            ? toFixedEtherNumber(
-                +ethers.formatEther(BigInt(roundClaimedData?.[0]?.refund)) +
-                  +ethers.formatEther(
-                    BigInt(roundClaimedData?.[0]?.winning_amount)
-                  ) +
-                  +ethers.formatEther(BigInt(roundClaimedData?.[0]?.amount)),
-                2
-              )
-            : 0}{" "}
-          {CURRENCY_UNIT}
+          {!isEmpty(roundClaimedData) ? amountClaim : 0} {CURRENCY_UNIT}
         </span>
       </div>
       <p className="text-center text-[--colors-text99] my-2">

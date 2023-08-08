@@ -6,4 +6,5 @@ interface IBetData {
   refund: number;
   position: "UP" | "DOWN";
   winning_amount: number;
+  epoch: number;
 }

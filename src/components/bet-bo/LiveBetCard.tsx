@@ -3,7 +3,6 @@ import { Icons } from "../Icons";
 import { isEmpty } from "lodash";
 import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { DocumentData } from "firebase/firestore";
-
 import { useAccount } from "wagmi";
 import AnimatedNumber from "../AnimatedNumber";
 import CalculatingCard from "./CalculatingCard";
@@ -28,32 +27,42 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
   const [chainlinkData, setChainlinkData] = useState<DocumentData[]>();
   const [progressing, setProgressing] = useState<number>(0);
   const [isClient, setIsClient] = useState<boolean>(false);
+  const [roundPrevious, setRoundPrevious] = useState<number>(liveRound);
 
   useEffect(() => {
     getDataFileredByOnSnapshot(
       "predictions",
-      [["epoch", "==", liveRound]],
+      [["epoch", "==", roundPrevious]],
       (docs: DocumentData) => {
-        setLiveBetData(docs as DocumentData[]);
+        setLiveBetData(docs as IBetData[]);
       }
     );
-    if (isClient && isConnected) {
+
+    getAllData("chainlink", (docs: DocumentData) => {
+      setChainlinkData(docs as DocumentData[]);
+    });
+  }, [roundPrevious]);
+
+  useEffect(() => {
+    if (roundPrevious !== liveRound) {
+      setRoundPrevious(liveRound);
+    }
+  }, [liveRound, roundPrevious]);
+
+  useEffect(() => {
+    if (isConnected && roundPrevious) {
       getDataFileredByOnSnapshot(
         "bets",
         [
           ["user_address", "==", address as `0x${string}`],
-          ["epoch", "==", liveRound],
+          ["epoch", "==", roundPrevious],
         ],
         (docs) => {
           setLiveBettedData(docs as IBetData[]);
         }
       );
     }
-
-    getAllData("chainlink", (docs: DocumentData) => {
-      setChainlinkData(docs as DocumentData[]);
-    });
-  }, [isClient, liveRound, address, isConnected]);
+  }, [isConnected, address, roundPrevious]);
 
   useEffect(() => {
     const target = +nextBetData?.lockTimestamp * 1000;
@@ -131,7 +140,8 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
           </div>
           <div className="card-body p-4">
             {!isEmpty(liveBettedData) &&
-              (liveBettedData?.[0]?.position === "UP" ? (
+              (liveBettedData?.[0]?.position === "UP" &&
+              liveBettedData?.[0]?.epoch === liveRound ? (
                 <div className="absolute flex gap-2 z-20 border-2 rounded-2xl border-[--colors-secondary] px-2 py-[2px] ">
                   <Icons.CheckCircle className="text-[--colors-text]" />
                   <span className="text-[--colors-secondary]">ENTERED</span>

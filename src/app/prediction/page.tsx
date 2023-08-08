@@ -14,7 +14,6 @@ import React, { createRef, useEffect, useState } from "react";
 
 const Prediction = () => {
   const [modeSubNavMobile, setModeSubNavMobile] = useState<string>(MODE.CHART);
-  const [currentRound, setCurrentRound] = useState<number>(0);
   const collectWinningsRef = createRef<PopupRef>();
   const [collectWinning, setCollectWinning] = useState<{
     round: number;
@@ -43,21 +42,6 @@ const Prediction = () => {
       clearTimeout(timeSet);
     };
   }, [isScreenMobile]);
-
-  useEffect(() => {
-    getDataFileredByOnSnapshot(
-      "predictions",
-      [
-        ["locked", "==", false],
-        ["cancel", "==", false],
-      ],
-      (docs: DocumentData) => {
-        setCurrentRound(docs?.[0]?.epoch);
-      },
-      undefined,
-      undefined
-    );
-  }, []);
 
   const handlerToggleCollectWinning = (
     status: boolean,
@@ -104,7 +88,7 @@ const Prediction = () => {
                 modeSubNavMobile !== MODE.CARD && isScreenMobile && "hidden"
               )}
             >
-              <Card currentRound={currentRound} />
+              <Card />
             </div>
           </div>
 
