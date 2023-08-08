@@ -61,6 +61,8 @@ const HistoryCard: React.FC<IHistoryProps> = ({
   const ratePrice =
     (historyData?.[0]?.closePrice - historyData?.[0]?.lockPrice) / 10 ** 8;
 
+  console.log(historyBetted?.[0]);
+
   return (
     <React.Fragment>
       {historyData?.[0]?.cancel !== true ? (

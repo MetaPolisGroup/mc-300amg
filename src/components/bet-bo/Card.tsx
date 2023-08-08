@@ -20,17 +20,15 @@ import ClaimModal from "./ClaimModal";
 import Link from "next/link";
 import Image from "next/image";
 
-interface ICard {
-  currentRound: number;
-}
+interface ICard {}
 
-const Card: React.FC<ICard> = ({ currentRound }) => {
+const Card: React.FC<ICard> = () => {
   const { address, isConnected } = useAccount();
   const [winningRound, setWinningRound] = useState<number>();
   const [titleClaimModal, setTitleClaimModal] = useState<string>("");
   const [nextBetData, setNextBetData] = useState<DocumentData[]>([]);
   const [datasBetted, setDatasBetted] = useState<DocumentData[]>([]);
-
+  const [currentRound, setCurrentRound] = useState<number>(0);
   const swiperRef = useRef<SwiperType>();
   const collectWinningsRef = createRef<PopupRef>();
 
@@ -43,9 +41,8 @@ const Card: React.FC<ICard> = ({ currentRound }) => {
       ],
       (docs: DocumentData) => {
         setNextBetData(docs as DocumentData[]);
-      },
-      undefined,
-      undefined
+        setCurrentRound(docs?.[0]?.epoch);
+      }
     );
 
     if (isConnected) {
@@ -75,11 +72,17 @@ const Card: React.FC<ICard> = ({ currentRound }) => {
     round: number
   ) => {
     if (status === true) {
+      console.log("true");
       setWinningRound(round);
       setTitleClaimModal(title);
       return collectWinningsRef.current?.open();
     }
-    return collectWinningsRef.current?.close();
+    if (status === false) {
+      console.log("false");
+      setWinningRound(round);
+      setTitleClaimModal(title);
+      return collectWinningsRef.current?.close();
+    }
   };
 
   return (
