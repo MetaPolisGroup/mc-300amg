@@ -14,7 +14,7 @@ export default function Home() {
           <h1 className="text-[#28C38B] text-3xl md:text-6xl font-semibold">
             Unlimited & Advanced Defi Playground
           </h1>
-          <p className="text-sm md:text-2xl text-[--colors-textSub]">
+          <p className="mt-[10px] mb-5 text-sm md:text-2xl text-[--colors-textSub]">
             Powered by Blockchain technology, giving users transparency and
             fairness to deliver thrilling and enjoyable experiences
           </p>

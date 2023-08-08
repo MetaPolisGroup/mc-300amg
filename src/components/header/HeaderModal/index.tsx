@@ -34,7 +34,7 @@ const HeaderModal = () => {
               <Link
                 key={game.id}
                 href={game.link}
-                className="w-[48%] rounded-3xl overflow-hidden flex justify-center"
+                className="w-[48%] h-[48px] rounded-3xl overflow-hidden flex justify-center"
                 onClick={() => menuModal.current?.close()}
               >
                 <Image
@@ -42,14 +42,14 @@ const HeaderModal = () => {
                   width={250}
                   height={80}
                   alt=""
-                  className="!w-[200%] !h-auto !max-w-none !max-h-none"
+                  className="!w-[200%] !h-auto !max-w-none !max-h-none object-cover"
                 />
               </Link>
             );
           })}
         </div>
         <div>
-          <div className="social-network flex justify-center my-4 py-4 gap-2 border-[--colors-white] border-solid border-t border-b">
+          <div className="social-network flex justify-center my-4 py-4 gap-2 border-[--colors-white] border-solid border-t">
             <Link href={"/"} target="_blank">
               <Icons.Twitter {...socialConfig} />
             </Link>
@@ -71,9 +71,9 @@ const HeaderModal = () => {
           </div>
         </div>
 
-        <div>
+        {/* <div>
           <ChangeMode />
-        </div>
+        </div> */}
       </div>
     );
   };
@@ -86,8 +86,9 @@ const HeaderModal = () => {
       header={false}
       className={classes["header-modal"]}
       selector={
-        <Icons.MenuIcon
-          className="block lg:hidden text-[--colors-textSub]"
+        <Icons.Menu
+          className="block lg:hidden mr-[5px]"
+          fill="var(--colors-textSub)"
           onClick={() => menuModal.current?.open()}
         />
       }
