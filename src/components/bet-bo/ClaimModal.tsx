@@ -48,6 +48,7 @@ const ClaimModal: React.FC<IClaimProps> = ({
 
   const amountClaim = () => {
     let amountClaimed = 0;
+
     if (!isEmpty(roundClaimedData)) {
       if (statusClaim === RESULT_STATUS.WIN) {
         return (amountClaimed = +toFixedEtherNumber(
