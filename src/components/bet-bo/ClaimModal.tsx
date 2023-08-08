@@ -49,35 +49,35 @@ const ClaimModal: React.FC<IClaimProps> = ({
   const amountClaim = () => {
     let amountClaimed = 0;
 
-    // if (!isEmpty(roundClaimedData)) {
-    //   if (statusClaim === RESULT_STATUS.WIN) {
-    //     return (amountClaimed = +toFixedEtherNumber(
-    //       +ethers.formatEther(BigInt(roundClaimedData?.[0]?.amount)) +
-    //         +ethers.formatEther(BigInt(roundClaimedData?.[0]?.winning_amount)),
-    //       2
-    //     ));
-    //   }
-    //   if (statusClaim === RESULT_STATUS.WR) {
-    //     return (amountClaimed = +toFixedEtherNumber(
-    //       +ethers.formatEther(BigInt(roundClaimedData?.[0]?.amount)) +
-    //         +ethers.formatEther(BigInt(roundClaimedData?.[0]?.winning_amount)) +
-    //         +ethers.formatEther(BigInt(roundClaimedData?.[0]?.refund)),
-    //       2
-    //     ));
-    //   }
-    //   if (statusClaim === RESULT_STATUS.LR) {
-    //     return (amountClaimed = +toFixedEtherNumber(
-    //       +ethers.formatEther(BigInt(roundClaimedData?.[0]?.refund)),
-    //       2
-    //     ));
-    //   }
-    //   if (statusClaim === RESULT_STATUS.REFUND) {
-    //     return (amountClaimed = +toFixedEtherNumber(
-    //       +ethers.formatEther(BigInt(roundClaimedData?.[0]?.refund)),
-    //       2
-    //     ));
-    //   }
-    // }
+    if (!isEmpty(roundClaimedData)) {
+      if (statusClaim === RESULT_STATUS.WIN) {
+        return (amountClaimed = +toFixedEtherNumber(
+          +ethers.formatEther(BigInt(roundClaimedData?.[0]?.amount)) +
+            +ethers.formatEther(BigInt(roundClaimedData?.[0]?.winning_amount)),
+          2
+        ));
+      }
+      if (statusClaim === RESULT_STATUS.WR) {
+        return (amountClaimed = +toFixedEtherNumber(
+          +ethers.formatEther(BigInt(roundClaimedData?.[0]?.amount)) +
+            +ethers.formatEther(BigInt(roundClaimedData?.[0]?.winning_amount)) +
+            +ethers.formatEther(BigInt(roundClaimedData?.[0]?.refund)),
+          2
+        ));
+      }
+      if (statusClaim === RESULT_STATUS.LR) {
+        return (amountClaimed = +toFixedEtherNumber(
+          +ethers.formatEther(BigInt(roundClaimedData?.[0]?.refund)),
+          2
+        ));
+      }
+      if (statusClaim === RESULT_STATUS.REFUND) {
+        return (amountClaimed = +toFixedEtherNumber(
+          +ethers.formatEther(BigInt(roundClaimedData?.[0]?.refund)),
+          2
+        ));
+      }
+    }
     return amountClaimed;
   };
 
