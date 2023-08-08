@@ -355,7 +355,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
                 onCollect(
                   true,
                   data?.status,
-                  data?.round?.epoch,
+                  data?.epoch as number,
                   isWin ? "Collect Winnnings" : "Collect Refund"
                 );
                 e.stopPropagation();
