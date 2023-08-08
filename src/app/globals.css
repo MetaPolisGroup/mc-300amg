@@ -89,7 +89,7 @@
   --colors-bronze: #e7974d;
   --colors-secondary: #9a6aff;
   --colors-secondary80: #9a6aff80;
-  --colors-background: #08060b;
+  --colors-background: #252525;
   --colors-backgroundDisabled: #3c3742;
   --colors-backgroundAlt: #27262c;
   --colors-backgroundAlt2: rgba(39, 38, 44, 0.7);
@@ -154,7 +154,7 @@
   --colors-bronze: #e7974d;
   --colors-secondary: #7645d9;
   --colors-secondary80: #7645d980;
-  --colors-background: #faf9fa;
+  --colors-background: #f0f0f0;
   --colors-backgroundDisabled: #e9eaeb;
   --colors-backgroundAlt: #fff;
   --colors-backgroundAlt2: hsla(0, 0%, 100%, 0.7);

@@ -10,6 +10,7 @@ import {
   metaMaskWallet,
   trustWallet,
   rainbowWallet,
+  coinbaseWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
@@ -20,6 +21,7 @@ import { store } from "@/redux/store";
 import { Provider as ProviderRedux } from "react-redux";
 import { TrustWalletOptions } from "@rainbow-me/rainbowkit/dist/wallets/walletConnectors/trustWallet/trustWallet";
 import { SkeletonTheme } from "react-loading-skeleton";
+import { CoinbaseWalletOptions } from "@rainbow-me/rainbowkit/dist/wallets/walletConnectors/coinbaseWallet/coinbaseWallet";
 
 // Walet connect
 const { chains, publicClient } = configureChains(
@@ -27,33 +29,37 @@ const { chains, publicClient } = configureChains(
   [publicProvider()]
 );
 
-// const connectors = connectorsForWallets([
-//   {
-//     groupName: "Recommended",
-//     wallets: [
-//       metaMaskWallet({
-//         projectId: "bd9d8fac308dbb3111f4f6027617462e",
-//         chains,
-//       } as MetaMaskWalletOptions),
+const connectors = connectorsForWallets([
+  {
+    groupName: "Recommended",
+    wallets: [
+      metaMaskWallet({
+        projectId: "bd9d8fac308dbb3111f4f6027617462e",
+        chains,
+      } as MetaMaskWalletOptions),
 
-//       trustWallet({
-//         projectId: "7a8d1dd7222aa046c6766da9c1ba436a",
-//         chains,
-//       } as TrustWalletOptions),
+      // trustWallet({
+      //   projectId: "7a8d1dd7222aa046c6766da9c1ba436a",
+      //   chains,
+      // } as TrustWalletOptions),
 
-//       rainbowWallet({
-//         projectId: "7a8d1dd7222aa046c6766da9c1ba436a",
-//         chains,
-//       } as TrustWalletOptions),
-//     ],
-//   },
-// ]);
+      // rainbowWallet({
+      //   projectId: "7a8d1dd7222aa046c6766da9c1ba436a",
+      //   chains,
+      // }),
+      // coinbaseWallet({
+      //   appName: "notthing",
+      //   chains,
+      // }),
+    ],
+  },
+]);
 
-const { connectors } = getDefaultWallets({
-  appName: "My RainbowKit App",
-  projectId: "7a8d1dd7222aa046c6766da9c1ba436a",
-  chains,
-});
+// const { connectors } = getDefaultWallets({
+//   appName: "My RainbowKit App",
+//   projectId: "7a8d1dd7222aa046c6766da9c1ba436a",
+//   chains,
+// });
 
 const wagmiConfig = createConfig({
   autoConnect: true,
