@@ -9,11 +9,13 @@ import Button from "../ui/Button";
 import { CURRENCY_UNIT } from "@/constants";
 import { toFixedEtherNumber } from "@/utils/format-number";
 import CancelCard from "./CancelCard";
+import { RESULT_STATUS } from "@/constants/history";
 
 interface IHistoryProps {
   historyRound: number;
   showCollectWinningModal?: (
     status: boolean,
+    statusClaim: string,
     title: string,
     round: number
   ) => void;
@@ -26,6 +28,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
   const { isConnected, address } = useAccount();
   const [historyBetted, setHistoryBetted] = useState<IHistory[]>([]);
   const [historyData, setHistoryData] = useState<DocumentData[]>([]);
+  const [roundPrevious, setRoundPrevious] = useState<number>(historyRound);
   const [isClient, setIsClient] = useState<boolean>(false);
 
   useEffect(() => {
@@ -57,11 +60,17 @@ const HistoryCard: React.FC<IHistoryProps> = ({
     setIsClient(true);
   }, []);
 
+  useEffect(() => {
+    if (roundPrevious !== historyRound) {
+      setRoundPrevious(historyRound);
+    }
+  }, [historyRound, roundPrevious]);
+
   // Determine this round up or down (UP: rate > 0, vice versa)
   const ratePrice =
     (historyData?.[0]?.closePrice - historyData?.[0]?.lockPrice) / 10 ** 8;
 
-  console.log(historyBetted?.[0]);
+  // console.log(historyBetted?.[0]);
 
   return (
     <React.Fragment>
@@ -313,6 +322,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                       if (showCollectWinningModal)
                         showCollectWinningModal(
                           true,
+                          RESULT_STATUS.WIN,
                           "Collect Winnings",
                           historyRound
                         );
@@ -334,6 +344,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                       if (showCollectWinningModal)
                         showCollectWinningModal(
                           true,
+                          RESULT_STATUS.WR,
                           "Collect Winnings",
                           historyRound
                         );
@@ -345,7 +356,29 @@ const HistoryCard: React.FC<IHistoryProps> = ({
               )}
 
             {!isEmpty(historyBetted) &&
-              historyBetted?.[0]?.status !== "Win" &&
+              historyBetted?.[0]?.status === "Losing Refund" &&
+              !historyBetted?.[0]?.claimed && (
+                <div className="absolute bottom-[0.05rem] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
+                  <Icons.TrophyIcon className="text-[--colors-gold]" />
+                  <Button
+                    className="bg-[--colors-primary] hover:bg-[--colors-primary] hover:opacity-70"
+                    onClick={() => {
+                      if (showCollectWinningModal)
+                        showCollectWinningModal(
+                          true,
+                          RESULT_STATUS.LR,
+                          "Refund",
+                          historyRound
+                        );
+                    }}
+                  >
+                    Collect Your Refund
+                  </Button>
+                </div>
+              )}
+
+            {!isEmpty(historyBetted) &&
+              historyBetted?.[0]?.status === "Refund" &&
               historyBetted?.[0]?.refund !== 0 &&
               !historyBetted?.[0]?.claimed && (
                 <div className="absolute bottom-[0.05rem] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
@@ -354,7 +387,12 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                     className="bg-[--colors-primary] hover:bg-[--colors-primary] hover:opacity-70"
                     onClick={() => {
                       if (showCollectWinningModal)
-                        showCollectWinningModal(true, "Refund", historyRound);
+                        showCollectWinningModal(
+                          true,
+                          RESULT_STATUS.REFUND,
+                          "Refund",
+                          historyRound
+                        );
                     }}
                   >
                     Collect Your Refund

@@ -10,7 +10,12 @@ import { CURRENCY_UNIT } from "@/constants";
 
 interface IHistoryDataProps {
   data: IHistory;
-  onCollect: (status: boolean, round: number, title: string) => void;
+  onCollect: (
+    status: boolean,
+    statusClaim: string,
+    round: number,
+    title: string
+  ) => void;
 }
 
 const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
@@ -349,6 +354,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
               onClick={(e) => {
                 onCollect(
                   true,
+                  data?.status,
                   data?.round?.epoch,
                   isWin ? "Collect Winnnings" : "Collect Refund"
                 );
