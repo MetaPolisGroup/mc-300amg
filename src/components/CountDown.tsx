@@ -83,7 +83,7 @@ const CountDown: React.FC<ICountDown> = ({ title, onAction }) => {
           className={clsx(
             `w-12 h-12 !rounded-2xl !p-2 ${feature?.className}`,
             feature.disabled &&
-              "cursor-no-drop !active:border-none focus:!border-none hidden md:flex",
+              "!active:border-none focus:!border-none hidden md:flex",
             !feature.disabled &&
               "bg-[--colors-textSubtle] hover:bg-[--colors-textSubtle] hover:opacity-80"
           )}

@@ -20,7 +20,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
   const isRefund = data?.status === RESULT_STATUS.REFUND;
   const isWaiting = data?.status === RESULT_STATUS.WAITING;
   const isWinningRefund = data?.status === RESULT_STATUS.WR;
-  const isLosingWinning = data?.status === RESULT_STATUS.LR;
+  const isLosingRefund = data?.status === RESULT_STATUS.LR;
   const isWin =
     data?.status === RESULT_STATUS.WIN || data?.status === RESULT_STATUS.WR;
   const isLose =
@@ -48,7 +48,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
             className={clsx(
               "flex text-lg font-bold gap-2 uppercase",
               isWin && "text-[--colors-warning]",
-              isLose && "text-[--colors-textSubtle]"
+              isLose && "text-[--colors-light-failure]"
             )}
           >
             {data?.status}{" "}
@@ -80,6 +80,17 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
           </div>
 
           <div className="flex justify-between">
+            <div className="text-sm">Your bet</div>
+            <div className="text-sm font-bold">
+              {toFixedEtherNumber(
+                ethers.formatEther(BigInt(data?.amount + data?.refund)),
+                2
+              ) ?? 0}{" "}
+              {CURRENCY_UNIT}
+            </div>
+          </div>
+
+          <div className="flex justify-between">
             <div className="text-sm">Your position</div>
             <div className="text-sm font-bold">
               {data?.amount
@@ -104,8 +115,8 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
               <div
                 className={clsx(
                   "text-sm font-bold",
-                  (isWin || isRefund) && "text-[--colors-success]",
-                  isLose && "text-[--colors-failure]"
+                  isWin && "text-[--colors-success]",
+                  isLose && "text-[--colors-light-failure]"
                 )}
               >
                 {isWin || isRefund ? "+" : "-"}{" "}
@@ -115,7 +126,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
             </div>
           </div>
 
-          {isWinningRefund || isLosingWinning ? (
+          {isWinningRefund || isLosingRefund ? (
             <div className="flex justify-between">
               <div className="text-sm font-bold">Your refund:</div>
               <div>
@@ -271,7 +282,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
           className={clsx(
             "font-bold",
             isWin && "text-[--colors-success]",
-            isLose && "text-[--colors-failure]"
+            isLose && "text-[--colors-light-failure]"
           )}
         >
           {isWin ? "+" : "-"} {winningAmount}
@@ -332,7 +343,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
           {renderLayoutStatus()}
         </div>
         <div className="flex gap-2">
-          {(isWin || isRefund || isLosingWinning) && data?.claimed === false ? (
+          {(isWin || isRefund || isLosingRefund) && data?.claimed === false ? (
             <button
               className="bg-[--colors-primary] text-sm text-[--colors-white] px-4 py-1 rounded-2xl cursor-pointer hover:opacity-[0.8]"
               onClick={(e) => {
@@ -344,7 +355,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
                 e.stopPropagation();
               }}
             >
-              {isWin ? "Collect" : "Refund"}
+              Collect
             </button>
           ) : null}
           <div>
