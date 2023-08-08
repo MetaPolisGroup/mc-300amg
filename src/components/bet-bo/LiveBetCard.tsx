@@ -72,13 +72,6 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
     if (isConnected && roundPrevious !== liveRound) {
       setRoundPrevious(liveRound);
       getDataFileredByOnSnapshot(
-        "predictions",
-        [["epoch", "==", liveRound]],
-        (docs: DocumentData) => {
-          setLiveBetData(docs as IBetData[]);
-        }
-      );
-      getDataFileredByOnSnapshot(
         "bets",
         [
           ["user_address", "==", address as `0x${string}`],
@@ -139,6 +132,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
   // console.log({ roundPrevious });
   // console.log({ liveRound });
   // console.log({ liveBettedData });
+  console.log({ liveBetData });
 
   return (
     <div
