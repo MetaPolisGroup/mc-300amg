@@ -7,23 +7,27 @@ const Menu = () => {
     <div className="sticky bg-gradient-to-br from-blue-300 to-green-600 bottom-0 z-50">
       <div className="md:hidden flex justify-between text-white px-5 py-3">
         <Link
-          href={"/prediction/leaderboard"}
-          className="flex justify-center flex-col-reverse items-center "
+          href="/prediction/leaderboard"
+          className="flex justify-center flex-col-reverse items-center w-[62px]"
         >
-          <span className="text-sm">Leaderboard</span>
+          <span className="text-[10px] font-light leading-normal">
+            Leaderboard
+          </span>
           <Icons.Leaderboard />
         </Link>
 
-        <div className="flex justify-center flex-col-reverse items-center">
-          <span className="text-sm">Staking</span>
+        <div className="flex justify-center flex-col-reverse items-center w-[62px]">
+          <span className="text-[10px] font-light leading-normal">Staking</span>
           <Icons.Staking />
         </div>
 
         <Link
-          href={"/referrals"}
-          className="flex justify-center flex-col-reverse items-center"
+          href="/referrals"
+          className="flex justify-center flex-col-reverse items-center w-[62px]"
         >
-          <span className="text-sm">Referral</span>
+          <span className="text-[10px] font-light leading-normal">
+            Referral
+          </span>
           <Icons.Referral />
         </Link>
       </div>

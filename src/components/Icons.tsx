@@ -648,6 +648,19 @@ export const Icons = {
       {...props}
     />
   ),
+  Menu: (props: any) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="10"
+      viewBox="0 0 20 10"
+      fill="none"
+      {...props}
+    >
+      <rect width="20" height="2" rx="1" />
+      <rect y="8" width="14" height="2" rx="1" />
+    </svg>
+  ),
 };
 
 export type Icon = keyof typeof Icons;

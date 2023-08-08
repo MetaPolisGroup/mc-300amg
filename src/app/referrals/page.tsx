@@ -6,8 +6,8 @@ import React from "react";
 
 const Referrals = () => {
   return (
-    <main className="w-full min-h-[90vh]">
-      <div className="bg-gradient-to-r from-[--colors-bubblegum1] to-[--colors-bubblegum2] p-6">
+    <main className="w-full min-h-[90vh] bg-[--colors-background]">
+      <div className="p-6">
         <div className="max-w-[1200px] mx-auto">
           <h1 className="text-5xl font-semibold text-[--colors-secondary] md:text-6xl">
             Referrals
