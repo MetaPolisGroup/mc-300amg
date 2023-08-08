@@ -3,12 +3,14 @@ import { Icons } from "../Icons";
 import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { isEmpty } from "lodash";
 import Button from "../ui/Button";
+import { RESULT_STATUS } from "@/constants/history";
 
 interface ICancelCard {
   historyRound: number;
   historyBetted: IHistory;
   showCollectWinningModal?: (
     status: boolean,
+    statusClaim: string,
     title: string,
     round: number
   ) => void;
@@ -66,8 +68,74 @@ const CancelCard: React.FC<ICancelCard> = ({
             </div>
           </div>
         </div>
+        {historyBetted?.status === "Win" &&
+          historyBetted?.refund === 0 &&
+          !historyBetted?.claimed && (
+            <div className="absolute bottom-[0.05rem] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
+              <Icons.TrophyIcon className="text-[--colors-gold]" />
+              <Button
+                className="bg-[--colors-primary] hover:bg-[--colors-primary] hover:opacity-70"
+                onClick={() => {
+                  if (showCollectWinningModal)
+                    showCollectWinningModal(
+                      true,
+                      RESULT_STATUS.WIN,
+                      "Collect Winnings",
+                      historyRound
+                    );
+                }}
+              >
+                Collect Your Winnings
+              </Button>
+            </div>
+          )}
+
         {!isEmpty(historyBetted) &&
-          historyBetted?.status !== "Win" &&
+          historyBetted?.status === "Winning Refund" &&
+          !historyBetted?.claimed && (
+            <div className="absolute bottom-[0.05rem] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
+              <Icons.TrophyIcon className="text-[--colors-gold]" />
+              <Button
+                className="bg-[--colors-primary] hover:bg-[--colors-primary] hover:opacity-70"
+                onClick={() => {
+                  if (showCollectWinningModal)
+                    showCollectWinningModal(
+                      true,
+                      RESULT_STATUS.WR,
+                      "Collect Winnings",
+                      historyRound
+                    );
+                }}
+              >
+                Collect Your Winnings And Refunds
+              </Button>
+            </div>
+          )}
+
+        {!isEmpty(historyBetted) &&
+          historyBetted?.status === "Losing Refund" &&
+          !historyBetted?.claimed && (
+            <div className="absolute bottom-[0.05rem] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
+              <Icons.TrophyIcon className="text-[--colors-gold]" />
+              <Button
+                className="bg-[--colors-primary] hover:bg-[--colors-primary] hover:opacity-70"
+                onClick={() => {
+                  if (showCollectWinningModal)
+                    showCollectWinningModal(
+                      true,
+                      RESULT_STATUS.LR,
+                      "Refund",
+                      historyRound
+                    );
+                }}
+              >
+                Collect Your Refund
+              </Button>
+            </div>
+          )}
+
+        {!isEmpty(historyBetted) &&
+          historyBetted?.status === "Refund" &&
           historyBetted?.refund !== 0 &&
           !historyBetted?.claimed && (
             <div className="absolute bottom-[0.05rem] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
@@ -76,7 +144,12 @@ const CancelCard: React.FC<ICancelCard> = ({
                 className="bg-[--colors-primary] hover:bg-[--colors-primary] hover:opacity-70"
                 onClick={() => {
                   if (showCollectWinningModal)
-                    showCollectWinningModal(true, "Refund", historyRound);
+                    showCollectWinningModal(
+                      true,
+                      RESULT_STATUS.REFUND,
+                      "Refund",
+                      historyRound
+                    );
                 }}
               >
                 Collect Your Refund
