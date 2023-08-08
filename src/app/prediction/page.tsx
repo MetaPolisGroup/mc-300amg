@@ -15,6 +15,7 @@ import React, { createRef, useEffect, useState } from "react";
 const Prediction = () => {
   const [modeSubNavMobile, setModeSubNavMobile] = useState<string>(MODE.CHART);
   const collectWinningsRef = createRef<PopupRef>();
+  const [statusClaim, setStatusClaim] = useState<string>("");
   const [collectWinning, setCollectWinning] = useState<{
     round: number;
     title: string;
@@ -45,6 +46,7 @@ const Prediction = () => {
 
   const handlerToggleCollectWinning = (
     status: boolean,
+    statusClaim: string,
     round: number,
     title: string
   ) => {
@@ -54,6 +56,7 @@ const Prediction = () => {
     });
 
     if (status === true) {
+      setStatusClaim(statusClaim);
       return collectWinningsRef.current?.open();
     }
     return collectWinningsRef.current?.close();
@@ -124,8 +127,9 @@ const Prediction = () => {
           <ClaimModal
             winningRound={collectWinning.round}
             titleClaim={collectWinning.title}
+            statusClaim={statusClaim}
             onCancel={() => {
-              handlerToggleCollectWinning(false, 0, "");
+              handlerToggleCollectWinning(false, "", 0, "");
             }}
           />
         }

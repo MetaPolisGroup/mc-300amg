@@ -44,12 +44,6 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
   }, [roundPrevious]);
 
   useEffect(() => {
-    if (roundPrevious !== liveRound) {
-      setRoundPrevious(liveRound);
-    }
-  }, [liveRound, roundPrevious]);
-
-  useEffect(() => {
     if (isConnected && roundPrevious) {
       getDataFileredByOnSnapshot(
         "bets",
@@ -73,6 +67,29 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
     }, 1000);
     return () => clearInterval(interval);
   }, [nextBetData?.lockTimestamp]);
+
+  useEffect(() => {
+    if (isConnected && roundPrevious !== liveRound) {
+      setRoundPrevious(liveRound);
+      getDataFileredByOnSnapshot(
+        "predictions",
+        [["epoch", "==", liveRound]],
+        (docs: DocumentData) => {
+          setLiveBetData(docs as IBetData[]);
+        }
+      );
+      getDataFileredByOnSnapshot(
+        "bets",
+        [
+          ["user_address", "==", address as `0x${string}`],
+          ["epoch", "==", liveRound],
+        ],
+        (docs) => {
+          setLiveBettedData(docs as IBetData[]);
+        }
+      );
+    }
+  }, [liveRound, roundPrevious, address]);
 
   useEffect(() => {
     setIsClient(true);
@@ -114,10 +131,14 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
           </div>
         </div>
       ));
-  }, [liveBettedData?.[0]?.refund]);
+  }, []);
 
   const ratePrice =
     (+chainlinkData?.[0]?.price - +liveBetData?.[0]?.lockPrice) / 10 ** 8;
+
+  // console.log({ roundPrevious });
+  // console.log({ liveRound });
+  // console.log({ liveBettedData });
 
   return (
     <div

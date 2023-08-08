@@ -70,7 +70,7 @@ const MyRanking = () => {
                   }] text-base font-bold`}
                 >
                   {userInfo?.[0]?.leaderboard.net_winnings > 0 ? "+" : ""}
-                  {userInfo?.[0]?.leaderboard.net_winnings ? (
+                  {userInfo?.[0]?.leaderboard ? (
                     toFixedEtherNumber(
                       ethers.formatEther(
                         BigInt(userInfo?.[0]?.leaderboard.net_winnings)
@@ -142,7 +142,7 @@ const MyRanking = () => {
                 }] font-bold text-base`}
               >
                 {userInfo?.[0]?.leaderboard.net_winnings > 0 ? "+" : ""}
-                {userInfo?.[0]?.leaderboard.net_winnings ? (
+                {userInfo?.[0]?.leaderboard ? (
                   toFixedEtherNumber(
                     ethers.formatEther(
                       BigInt(userInfo?.[0]?.leaderboard.net_winnings)
@@ -163,13 +163,13 @@ const MyRanking = () => {
               Rounds Won
             </span>
             <span className="text-[--colors-text] text-base font-bold flex">
-              {userInfo?.[0]?.leaderboard.round_winning ? (
+              {userInfo?.[0]?.leaderboard ? (
                 userInfo?.[0]?.leaderboard.round_winning
               ) : (
                 <Skeleton width={50} height={20} />
               )}
               /
-              {userInfo?.[0]?.leaderboard.round_played ? (
+              {userInfo?.[0]?.leaderboard ? (
                 userInfo?.[0]?.leaderboard.round_played
               ) : (
                 <Skeleton width={50} height={20} />

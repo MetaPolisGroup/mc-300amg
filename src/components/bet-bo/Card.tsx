@@ -26,6 +26,7 @@ const Card: React.FC<ICard> = () => {
   const { address, isConnected } = useAccount();
   const [winningRound, setWinningRound] = useState<number>();
   const [titleClaimModal, setTitleClaimModal] = useState<string>("");
+  const [statusClaim, setStatusClaim] = useState<string>("");
   const [nextBetData, setNextBetData] = useState<DocumentData[]>([]);
   const [datasBetted, setDatasBetted] = useState<DocumentData[]>([]);
   const [currentRound, setCurrentRound] = useState<number>(0);
@@ -68,6 +69,7 @@ const Card: React.FC<ICard> = () => {
 
   const showCollectWinningHandler = (
     status: boolean,
+    statusClaim: string,
     title: string,
     round: number
   ) => {
@@ -75,12 +77,14 @@ const Card: React.FC<ICard> = () => {
       console.log("true");
       setWinningRound(round);
       setTitleClaimModal(title);
+      setStatusClaim(statusClaim);
       return collectWinningsRef.current?.open();
     }
     if (status === false) {
       console.log("false");
       setWinningRound(round);
       setTitleClaimModal(title);
+      setStatusClaim(statusClaim);
       return collectWinningsRef.current?.close();
     }
   };
@@ -170,8 +174,9 @@ const Card: React.FC<ICard> = () => {
             <ClaimModal
               winningRound={winningRound}
               titleClaim={titleClaimModal}
+              statusClaim={statusClaim}
               onCancel={() => {
-                showCollectWinningHandler(false, "", 0);
+                showCollectWinningHandler(false, "", "", 0);
               }}
             />
           }
