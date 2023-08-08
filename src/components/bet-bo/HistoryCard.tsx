@@ -26,6 +26,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
   const { isConnected, address } = useAccount();
   const [historyBetted, setHistoryBetted] = useState<IHistory[]>([]);
   const [historyData, setHistoryData] = useState<DocumentData[]>([]);
+  const [roundPrevious, setRoundPrevious] = useState<number>(historyRound);
   const [isClient, setIsClient] = useState<boolean>(false);
 
   useEffect(() => {
@@ -56,6 +57,12 @@ const HistoryCard: React.FC<IHistoryProps> = ({
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  useEffect(() => {
+    if (roundPrevious !== historyRound) {
+      setRoundPrevious(historyRound);
+    }
+  }, [historyRound, roundPrevious]);
 
   // Determine this round up or down (UP: rate > 0, vice versa)
   const ratePrice =
