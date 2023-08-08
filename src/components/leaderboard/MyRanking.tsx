@@ -21,8 +21,6 @@ const MyRanking = () => {
     }
   }, [isConnected, address]);
 
-  console.log({ userInfo });
-
   return (
     <div className="mb-8">
       <h2 className="text-base font-semibold text-[--colors-secondary] mb-4 md:text-xl">
