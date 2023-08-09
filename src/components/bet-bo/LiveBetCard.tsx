@@ -74,11 +74,9 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
           setLiveBetted(docs?.[0] as IBetData);
         }
       );
-    }
-    if (isEmpty(liveBettedData)) {
+    } else {
       return setLiveBetted(undefined);
     }
-    console.log("re-rendering");
   }, [isConnected, liveBettedData?.epoch, address, liveBettedData]);
 
   // useEffect(() => {
