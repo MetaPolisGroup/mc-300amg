@@ -69,7 +69,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
   }, [nextBetData?.lockTimestamp]);
 
   useEffect(() => {
-    if (roundPrevious !== liveRound) {
+    if (isConnected && roundPrevious !== liveRound) {
       setRoundPrevious(liveRound);
       getDataFileredByOnSnapshot(
         "predictions",
