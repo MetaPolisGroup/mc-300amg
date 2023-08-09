@@ -7,9 +7,7 @@ import ClaimModal from "@/components/bet-bo/ClaimModal";
 import Chart from "@/components/chart/Chart";
 import DrawerHistory from "@/components/drawer-history/DrawerHistory";
 import Popup, { PopupRef } from "@/components/ui/Modal";
-import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import clsx from "clsx";
-import { DocumentData } from "firebase/firestore";
 import React, { createRef, useEffect, useState } from "react";
 
 const Prediction = () => {
