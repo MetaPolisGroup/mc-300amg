@@ -21,8 +21,6 @@ interface IHistoryDataProps {
 const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
   const [isShowDetail, setIsShowDetail] = useState<boolean>(false);
 
-  console.log({ data });
-
   const isLive = data?.status === RESULT_STATUS.LIVE;
   const isRefund = data?.status === RESULT_STATUS.REFUND;
   const isWaiting = data?.status === RESULT_STATUS.WAITING;
