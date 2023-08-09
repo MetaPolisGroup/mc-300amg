@@ -32,7 +32,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
   useEffect(() => {
     getDataFileredByOnSnapshot(
       "predictions",
-      [["epoch", "==", roundPrevious]],
+      [["epoch", "==", liveRound]],
       (docs: DocumentData) => {
         setLiveBetData(docs as IBetData[]);
       }
@@ -41,7 +41,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
     getAllData("chainlink", (docs: DocumentData) => {
       setChainlinkData(docs as DocumentData[]);
     });
-  }, [roundPrevious]);
+  }, [liveRound]);
 
   useEffect(() => {
     if (isConnected && roundPrevious) {
@@ -132,7 +132,6 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
   // console.log({ roundPrevious });
   // console.log({ liveRound });
   // console.log({ liveBettedData });
-  console.log({ liveBetData });
 
   return (
     <div
