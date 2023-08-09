@@ -9,6 +9,7 @@ export default function Home() {
     <main className="bg-[--colors-background] overflow-hidden min-h-[85vh]">
       <SliderListGame />
       {/* <SliderBannerGame /> */}
+
       <div className="px-4 flex flex-col items-center md:flex-row justify-between md:px-28">
         <div className="flex flex-col gap-3 md:gap-10">
           <h1 className="text-[#28C38B] text-3xl md:text-6xl font-semibold">

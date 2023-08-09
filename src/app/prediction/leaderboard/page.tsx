@@ -4,11 +4,9 @@ import FilterLeaderboard from "@/components/leaderboard/FilterLeaderboard";
 import MyRanking from "@/components/leaderboard/MyRanking";
 import Ranking from "@/components/leaderboard/Ranking";
 import TopRanking from "@/components/leaderboard/TopRanking";
-import SliderListGame from "@/components/sliderListGame";
 import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { DocumentData } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
 const LeaderBoard = () => {
@@ -42,8 +40,6 @@ const LeaderBoard = () => {
 
   return (
     <main className="w-full min-h-[90vh] bg-gradient-to-r from-[--colors-bubblegum1] to-[--colors-bubblegum2]">
-      <SliderListGame />
-
       <div className="p-6">
         <div className="max-w-[1200px] mx-auto">
           <div className="mb-6">
