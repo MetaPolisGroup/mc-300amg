@@ -15,24 +15,28 @@ import { toFixedEtherNumber } from "@/utils/format-number";
 interface ILiveBetCardProps {
   liveRound: number;
   nextBetData: DocumentData;
+  liveBettedData: IBetData | undefined;
 }
 
 const LiveBetCard: React.FC<ILiveBetCardProps> = ({
   liveRound,
   nextBetData,
+  liveBettedData,
 }) => {
   const { address, isConnected } = useAccount();
   const [liveBetData, setLiveBetData] = useState<DocumentData[]>();
-  const [liveBettedData, setLiveBettedData] = useState<IBetData[]>();
   const [chainlinkData, setChainlinkData] = useState<DocumentData[]>();
   const [progressing, setProgressing] = useState<number>(0);
   const [isClient, setIsClient] = useState<boolean>(false);
   const [roundPrevious, setRoundPrevious] = useState<number>(liveRound);
+  const [liveBetted, setLiveBetted] = useState<IBetData | undefined>(
+    liveBettedData
+  );
 
   useEffect(() => {
     getDataFileredByOnSnapshot(
       "predictions",
-      [["epoch", "==", roundPrevious]],
+      [["epoch", "==", liveRound]],
       (docs: DocumentData) => {
         setLiveBetData(docs as IBetData[]);
       }
@@ -41,22 +45,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
     getAllData("chainlink", (docs: DocumentData) => {
       setChainlinkData(docs as DocumentData[]);
     });
-  }, [roundPrevious]);
-
-  useEffect(() => {
-    if (isConnected && roundPrevious) {
-      getDataFileredByOnSnapshot(
-        "bets",
-        [
-          ["user_address", "==", address as `0x${string}`],
-          ["epoch", "==", roundPrevious],
-        ],
-        (docs) => {
-          setLiveBettedData(docs as IBetData[]);
-        }
-      );
-    }
-  }, [isConnected, address, roundPrevious]);
+  }, [liveRound]);
 
   useEffect(() => {
     const target = +nextBetData?.lockTimestamp * 1000;
@@ -69,31 +58,45 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
   }, [nextBetData?.lockTimestamp]);
 
   useEffect(() => {
-    if (isConnected && roundPrevious !== liveRound) {
-      setRoundPrevious(liveRound);
-      getDataFileredByOnSnapshot(
-        "predictions",
-        [["epoch", "==", liveRound]],
-        (docs: DocumentData) => {
-          setLiveBetData(docs as IBetData[]);
-        }
-      );
+    if (
+      isConnected &&
+      address &&
+      !isEmpty(liveBettedData) &&
+      liveBettedData?.epoch !== liveBetted?.epoch
+    ) {
       getDataFileredByOnSnapshot(
         "bets",
         [
           ["user_address", "==", address as `0x${string}`],
-          ["epoch", "==", liveRound],
+          ["epoch", "==", liveBettedData.epoch],
         ],
         (docs) => {
-          setLiveBettedData(docs as IBetData[]);
+          setLiveBetted(docs?.[0] as IBetData);
         }
       );
     }
-  }, [liveRound, roundPrevious, address]);
+  }, [isConnected, liveBettedData?.epoch, address]);
+
+  // useEffect(() => {
+  //   if (isConnected && roundPrevious !== liveRound) {
+  //     setRoundPrevious(liveRound);
+  //     getDataFileredByOnSnapshot(
+  //       "bets",
+  //       [
+  //         ["user_address", "==", address as `0x${string}`],
+  //         ["epoch", "==", liveRound],
+  //       ],
+  //       (docs) => {
+  //         setLiveBettedData(docs as IBetData[]);
+  //       }
+  //     );
+  //     console.log("render");
+  //   }
+  // }, [liveRound, roundPrevious, address]);
 
   useEffect(() => {
     setIsClient(true);
-    if (liveBettedData?.[0]?.refund && liveBettedData?.[0]?.refund > 0)
+    if (liveBetted?.refund && liveBetted?.refund > 0)
       toast.custom((t) => (
         <div
           className={`${
@@ -113,7 +116,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                 <p className="mt-1 text-sm text-[--colors-text]">
                   You has been refunded{" "}
                   {toFixedEtherNumber(
-                    ethers.formatEther(BigInt(liveBettedData?.[0]?.refund)),
+                    ethers.formatEther(BigInt(liveBetted?.refund)),
                     2
                   )}{" "}
                   {CURRENCY_UNIT}
@@ -139,6 +142,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
   // console.log({ roundPrevious });
   // console.log({ liveRound });
   // console.log({ liveBettedData });
+  // console.log({ liveBetted });
 
   return (
     <div
@@ -160,9 +164,8 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
             />
           </div>
           <div className="card-body p-4">
-            {!isEmpty(liveBettedData) &&
-              (liveBettedData?.[0]?.position === "UP" &&
-              liveBettedData?.[0]?.epoch === liveRound ? (
+            {!isEmpty(liveBetted) &&
+              (liveBetted?.position === "UP" ? (
                 <div className="absolute flex gap-2 z-20 border-2 rounded-2xl border-[--colors-secondary] px-2 py-[2px] ">
                   <Icons.CheckCircle className="text-[--colors-text]" />
                   <span className="text-[--colors-secondary]">ENTERED</span>
@@ -328,8 +331,8 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                 </div>
               )}
             </div>
-            {!isEmpty(liveBettedData) &&
-              (liveBettedData?.[0]?.position === "DOWN" ? (
+            {!isEmpty(liveBetted) &&
+              (liveBetted?.position === "DOWN" ? (
                 <div className="absolute right-0 bottom-2 flex gap-2 z-20 border-2 rounded-2xl border-[--colors-secondary] px-2 py-[2px] ">
                   <Icons.CheckCircle className="text-[--colors-text]" />
                   <span className="text-[--colors-secondary]">ENTERED</span>
