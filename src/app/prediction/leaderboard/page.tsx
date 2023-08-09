@@ -39,8 +39,8 @@ const LeaderBoard = () => {
   const ranking = leaderboardData?.[0]?.user_lists.slice(3);
 
   return (
-    <main className="w-full min-h-[90vh] bg-gradient-to-r from-[--colors-bubblegum1] to-[--colors-bubblegum2]">
-      <div className="p-6">
+    <main className="w-full min-h-[90vh]">
+      <div className="bg-gradient-to-r from-[--colors-bubblegum1] to-[--colors-bubblegum2] p-6">
         <div className="max-w-[1200px] mx-auto">
           <div className="mb-6">
             <ul className="flex items-center flex-wrap">
