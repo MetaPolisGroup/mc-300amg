@@ -92,6 +92,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
             </div>
 
             <div className="card-body p-4 opacity-70 group-hover:opacity-100">
+              {/* Show CLAIMED  or REFUND UP title when claimed */}
               {!isEmpty(historyBetted) &&
                 (historyBetted?.[0]?.position === "UP" &&
                 historyBetted?.[0]?.claimed === false ? (
@@ -122,6 +123,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                     </span>
                   </div>
                 )}
+
               <div className="relative -mb-[0.55rem]">
                 {ratePrice > 0 ? (
                   <div className="h-16 mx-auto w-60">
@@ -280,6 +282,9 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                   </div>
                 )}
               </div>
+
+              {/* Show CLAIMED  or REFUND DOWN title when claimed */}
+
               {!isEmpty(historyBetted) &&
                 (historyBetted?.[0]?.position === "DOWN" &&
                 historyBetted?.[0]?.claimed === false ? (
@@ -311,6 +316,9 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                   </div>
                 )}
             </div>
+
+            {/* Show CLAIM CATEGORIES BTN based on conditional */}
+
             {historyBetted?.[0]?.status === "Win" &&
               historyBetted?.[0]?.refund === 0 &&
               !historyBetted?.[0]?.claimed && (

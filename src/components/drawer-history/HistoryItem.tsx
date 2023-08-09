@@ -290,7 +290,11 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
             isLose && "text-[--colors-light-failure]"
           )}
         >
-          {isWin ? "+" : "-"} {winningAmount}
+          {isWin
+            ? `+ ${handlerFormatEther(
+                data?.winning_amount + data?.refund + data?.amount
+              )}`
+            : `- ${winningAmount}`}
         </div>
       </div>
     );
