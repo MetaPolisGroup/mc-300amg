@@ -61,8 +61,8 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
     if (
       isConnected &&
       address &&
-      !isEmpty(liveBettedData) &&
-      liveBettedData?.epoch !== liveBetted?.epoch
+      liveBettedData?.epoch !== liveBetted?.epoch &&
+      !isEmpty(liveBettedData)
     ) {
       getDataFileredByOnSnapshot(
         "bets",
@@ -75,7 +75,11 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
         }
       );
     }
-  }, [isConnected, liveBettedData?.epoch, address]);
+    if (isEmpty(liveBettedData)) {
+      return setLiveBetted(undefined);
+    }
+    console.log("re-rendering");
+  }, [isConnected, liveBettedData?.epoch, address, liveBettedData]);
 
   // useEffect(() => {
   //   if (isConnected && roundPrevious !== liveRound) {
