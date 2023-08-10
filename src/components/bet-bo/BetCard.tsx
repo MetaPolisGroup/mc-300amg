@@ -9,7 +9,7 @@ import { DocumentData } from "firebase/firestore";
 import { ethers } from "ethers";
 import { CURRENCY_UNIT } from "@/constants";
 import { toFixedEtherNumber } from "@/utils/format-number";
-
+import Image from "next/image";
 interface IBetCard {
   currentRound: number;
   nextBetData: DocumentData;
@@ -93,7 +93,7 @@ const BetCard: React.FC<IBetCard> = ({
             ) : null)}
           <div className="relative -mb-[0.55rem]">
             <div className="h-16 mx-auto w-60">
-              <Icons.PayoutUp />
+              <Image src="/images/up.png" width={288} height={64} alt="up" />
               <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                 <div className="text-[--colors-success] font-semibold uppercase text-xl">
                   UP
@@ -186,7 +186,7 @@ const BetCard: React.FC<IBetCard> = ({
           </div>
           <div className="relative -mt-[0.55rem]">
             <div className="h-16 mx-auto w-60">
-              <Icons.PayoutDown />
+              <Image src="/images/down.png" width={288} height={64} alt="up" />
               <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                 <div className="text-[--colors-textSubtle] font-semibold text-sm">
                   {nextBetData?.bearAmount
