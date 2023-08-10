@@ -22,8 +22,6 @@ const LeaderBoard = () => {
     );
   }, []);
 
-  console.log({ leaderboardData });
-
   const queryHandler = (option: string) => {
     getDataFileredByOnSnapshot(
       "leaderboard",
