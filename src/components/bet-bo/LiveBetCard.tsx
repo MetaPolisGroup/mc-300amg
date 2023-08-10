@@ -58,6 +58,9 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
   }, [nextBetData?.lockTimestamp]);
 
   useEffect(() => {
+    console.log(liveRound);
+    console.log(liveBettedData?.epoch !== liveBetted?.epoch);
+    console.log(!isEmpty(liveBettedData));
     if (
       isConnected &&
       address &&
@@ -74,27 +77,28 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
           setLiveBetted(docs?.[0] as IBetData);
         }
       );
-    } else {
+    }
+    if (isEmpty(liveBettedData)) {
       return setLiveBetted(undefined);
     }
-  }, [isConnected, liveBettedData?.epoch, address, liveBettedData]);
-
-  // useEffect(() => {
-  //   if (isConnected && roundPrevious !== liveRound) {
-  //     setRoundPrevious(liveRound);
-  //     getDataFileredByOnSnapshot(
-  //       "bets",
-  //       [
-  //         ["user_address", "==", address as `0x${string}`],
-  //         ["epoch", "==", liveRound],
-  //       ],
-  //       (docs) => {
-  //         setLiveBettedData(docs as IBetData[]);
-  //       }
-  //     );
-  //     console.log("render");
-  //   }
-  // }, [liveRound, roundPrevious, address]);
+    if (
+      isConnected &&
+      address &&
+      !isEmpty(liveBettedData) &&
+      liveBettedData?.epoch !== liveRound
+    ) {
+      getDataFileredByOnSnapshot(
+        "bets",
+        [
+          ["user_address", "==", address as `0x${string}`],
+          ["epoch", "==", liveRound],
+        ],
+        (docs) => {
+          setLiveBetted(docs?.[0] as IBetData);
+        }
+      );
+    }
+  }, [isConnected, liveBettedData?.epoch, address, liveBettedData, liveRound]);
 
   useEffect(() => {
     setIsClient(true);
@@ -144,7 +148,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
   // console.log({ roundPrevious });
   // console.log({ liveRound });
   // console.log({ liveBettedData });
-  // console.log({ liveBetted });
+  console.log({ liveBetted });
 
   return (
     <div
