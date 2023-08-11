@@ -6,6 +6,7 @@ import Card from "@/components/bet-bo/Card";
 import ClaimModal from "@/components/bet-bo/ClaimModal";
 import Chart from "@/components/chart/Chart";
 import DrawerHistory from "@/components/drawer-history/DrawerHistory";
+import SliderListGame from "@/components/sliderListGame";
 import Popup, { PopupRef } from "@/components/ui/Modal";
 import clsx from "clsx";
 import React, { createRef, useEffect, useState } from "react";
@@ -61,7 +62,9 @@ const Prediction = () => {
   };
 
   return (
-    <main className="bg-gradient-to-r from-[--colors-violetAlt1] to-[--colors-violetAlt2] overflow-hidden">
+    <main className="bg-gradient-to-br from-gray-500 to-teal-800 overflow-hidden">
+      {/* <SliderListGame /> */}
+
       <div className="flex overflow-hidden md:min-h-[90vh]">
         <div
           className={clsx(
