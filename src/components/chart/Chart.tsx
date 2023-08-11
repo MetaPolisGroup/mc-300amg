@@ -105,7 +105,7 @@ const Chart: React.FC = () => {
             time: params?.[0]?.axisValue,
           });
 
-          return `${params?.[0]?.axisValue}<br><b>${params?.[0]?.data.toFixed(
+          return `${params?.[0]?.axisValue}<br><b>${params?.[0]?.data?.toFixed(
             4
           )} BNB/USD</b>`;
         },
