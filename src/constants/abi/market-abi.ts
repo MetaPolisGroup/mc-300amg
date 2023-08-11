@@ -845,6 +845,6 @@ const rawMarketABI = `[
   ]`;
 
 export const marketABI = {
-  [ChainType.BSCTESTNET]: rawMarketABI,
-  [ChainType.BSC]: rawMarketABI,
+  [ChainType.BSCTESTNET]: JSON.parse(rawMarketABI),
+  [ChainType.BSC]: JSON.parse(rawMarketABI),
 };
