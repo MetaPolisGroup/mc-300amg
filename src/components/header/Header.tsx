@@ -8,6 +8,7 @@ import ConnectWallet from "../ConnectWallet";
 
 import NAV_HEADER from "@/constants/navConstants";
 import ChangeMode from "../ui/ChangeMode";
+import SliderListGame from "../sliderListGame";
 
 enum EActive {
   "Default" = 1,
@@ -37,7 +38,7 @@ const Header = () => {
 
   return (
     <header className="w-full z-20 bg-[--colors-backgroundAlt]">
-      <nav className="flex justify-between items-center w-full h-full border-b border-[--colors-cardBorder] px-4">
+      <nav className="flex justify-between items-center w-full h-full px-4">
         <div className="navbar p-0 justify-between">
           <div className="navbar-start lg:flex w-auto gap-1">
             <HeaderModal />
@@ -58,6 +59,8 @@ const Header = () => {
           </div>
         </div>
       </nav>
+
+      <SliderListGame />
     </header>
   );
 };
