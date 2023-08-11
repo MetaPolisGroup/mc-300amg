@@ -9,6 +9,8 @@ import { ethers } from "ethers";
 import { CURRENCY_UNIT } from "@/constants";
 import { useAccount } from "wagmi";
 import { isEmpty } from "lodash";
+import TooltipElement from "../ui/Tooltip";
+import Button from "../ui/Button";
 
 const BoxingCard = () => {
   const [showSetBetCard, setShowSetBetCard] = useState<boolean>(false);
@@ -74,8 +76,8 @@ const BoxingCard = () => {
           <div className="relative -mb-[0.55rem]">
             <div className="h-16 mx-auto w-60">
               <div className="flex flex-col justify-start absolute top-0 left-0 w-full h-full">
-                <div className="w-full md:w-[290px] h-12 flex items-center px-4 mb-3 md:mb-5 text-slate-400 text-xl font-light leading-7 bg-[--colors-backgroundAlt] rounded-[20px] border-2 border-slate-400">
-                  Topic
+                <div className="w-full md:w-[290px] h-12 flex items-center px-4 mb-3 md:mb-5 text-slate-400 text-xl font-light leading-7 bg-[--colors-backgroundAlt] rounded-[20px] border-2 border-slate-400 justify-center">
+                  Highlights
                 </div>
                 <div className="text-[--colors-textSubtle] font-semibold text-sm"></div>
               </div>
@@ -124,9 +126,21 @@ const BoxingCard = () => {
                       {CURRENCY_UNIT}
                     </div>
                     <div className="flex flex-1 items-center justify-end text-right text-white text-xs font-bold leading-7">
-                      {userBettedBoxing?.[0]?.position === "UP"
-                        ? "ELON MUSK ENTERED"
-                        : "ELON MUSK"}
+                      {userBettedBoxing?.[0]?.position === "UP" ? (
+                        <TooltipElement
+                          title={`${toFixedEtherNumber(
+                            ethers.formatEther(
+                              BigInt(userBettedBoxing?.[0]?.amount)
+                            ),
+                            2
+                          )} ${CURRENCY_UNIT}`}
+                          classNameText="text-right"
+                        >
+                          ELON MUSK ENTERED
+                        </TooltipElement>
+                      ) : (
+                        "ELON MUSK"
+                      )}
                     </div>
                   </div>
 
@@ -149,9 +163,21 @@ const BoxingCard = () => {
                       {CURRENCY_UNIT}
                     </div>
                     <div className="flex flex-1 items-center justify-end text-right text-white text-xs font-bold leading-7">
-                      {userBettedBoxing?.[0]?.position === "DOWN"
-                        ? "MARK ZUCKERBERG  ENTERED"
-                        : "MARK ZUCKERBERG"}
+                      {userBettedBoxing?.[0]?.position === "DOWN" ? (
+                        <TooltipElement
+                          title={`${toFixedEtherNumber(
+                            ethers.formatEther(
+                              BigInt(userBettedBoxing?.[0]?.amount)
+                            ),
+                            2
+                          )} ${CURRENCY_UNIT}`}
+                          classNameText="text-right"
+                        >
+                          MARK ZUCKERBERG ENTERED
+                        </TooltipElement>
+                      ) : (
+                        "MARK ZUCKERBERG"
+                      )}
                     </div>
                   </div>
                 </>
@@ -172,8 +198,11 @@ const BoxingCard = () => {
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
-                    <div className="flex items-center justify-center text-white text-xs font-bold leading-7">
-                      ELON MUSK
+                    <div className="flex flex-1 justify-between pl-2">
+                      <div className="flex items-center justify-start text-white text-xs font-bold leading-7">
+                        ELON MUSK
+                      </div>
+                      <button className="text-white">Select</button>
                     </div>
                   </div>
 
@@ -192,8 +221,11 @@ const BoxingCard = () => {
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
-                    <div className="flex items-center justify-center text-white text-xs font-bold leading-7">
-                      MARK ZUCKERBERG
+                    <div className="flex flex-1 justify-between pl-2">
+                      <div className="flex items-center justify-center text-white text-xs font-bold leading-7">
+                        MARK ZUCKERBERG
+                      </div>
+                      <button className="text-white">Select</button>
                     </div>
                   </div>
                 </>

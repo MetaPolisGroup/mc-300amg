@@ -145,7 +145,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
   // console.log({ roundPrevious });
   // console.log({ liveRound });
   // console.log({ liveBettedData });
-  console.log({ liveBetted });
+  // console.log({ liveBetted });
 
   return (
     <div
