@@ -10,11 +10,10 @@ import { CURRENCY_UNIT } from "@/constants";
 import { useAccount } from "wagmi";
 import { isEmpty } from "lodash";
 import TooltipElement from "../ui/Tooltip";
-import Button from "../ui/Button";
 
 const BoxingCard = () => {
   const [showSetBetCard, setShowSetBetCard] = useState<boolean>(false);
-  const [yesOrNoStatus, setYesOrNoStatus] = useState<string>("");
+  const [elonOrMarkStatus, setElonOrMarkStatus] = useState<string>("");
   const [boxingData, setBoxingData] = useState<IBoxingData[]>([]);
   const [userBettedBoxing, setUserBettedBoxing] = useState<IBoxingBetted[]>([]);
   const { isConnected, address } = useAccount();
@@ -42,14 +41,14 @@ const BoxingCard = () => {
 
   console.log(userBettedBoxing);
 
-  const enterYesOrNoHandler = (status: string) => {
+  const enterElonOrMarkHandler = (status: string) => {
     setShowSetBetCard(true);
-    if (status === "YES") setYesOrNoStatus("YES");
-    if (status === "NO") setYesOrNoStatus("NO");
+    if (status === "ELON") setElonOrMarkStatus("ELON");
+    if (status === "MARK") setElonOrMarkStatus("MARK");
   };
 
-  const changeYesOrNoHandler = (status: string) => {
-    setYesOrNoStatus(status);
+  const changeElonOrMarkHandler = (status: string) => {
+    setElonOrMarkStatus(status);
     inputRef.current?.focus();
   };
 
@@ -114,7 +113,7 @@ const BoxingCard = () => {
                         : ""
                     }`}
                   >
-                    <div className="w-44 py-[7px] px-4 text-[--colors-contrast] text-xl font-light leading-7 bg-[--colors-backgroundAlt] rounded-[14px]">
+                    <div className="w-40 py-[7px] px-4 text-[--colors-contrast] text-base font-light leading-7 bg-[--colors-backgroundAlt] rounded-[14px]">
                       {boxingData?.[0]?.bullAmount
                         ? toFixedEtherNumber(
                             ethers.formatEther(
@@ -125,33 +124,34 @@ const BoxingCard = () => {
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
-                    <div className="flex flex-1 items-center justify-end text-right text-white text-xs font-bold leading-7">
-                      {userBettedBoxing?.[0]?.position === "UP" ? (
-                        <TooltipElement
-                          title={`${toFixedEtherNumber(
-                            ethers.formatEther(
-                              BigInt(userBettedBoxing?.[0]?.amount)
-                            ),
-                            2
-                          )} ${CURRENCY_UNIT}`}
-                          classNameText="text-right"
-                        >
-                          ELON MUSK ENTERED
-                        </TooltipElement>
-                      ) : (
-                        "ELON MUSK"
-                      )}
+                    <div className="flex flex-1 items-center justify-between pl-2 text-white text-xs font-bold leading-7">
+                      <div>ELON</div>
+                      <div>
+                        {userBettedBoxing?.[0]?.position === "UP" && (
+                          <TooltipElement
+                            title={`${toFixedEtherNumber(
+                              ethers.formatEther(
+                                BigInt(userBettedBoxing?.[0]?.amount)
+                              ),
+                              2
+                            )} ${CURRENCY_UNIT}`}
+                            classNameText="text-right"
+                          >
+                            SELECTED
+                          </TooltipElement>
+                        )}
+                      </div>
                     </div>
                   </div>
 
                   <div
-                    className={`w-full h-[54px] flex items-center justify-between p-[6px] pr-4 bg-gradient-to-br from-slate-400 to-indigo-800 rounded-[20px] cursor-pointer ${
+                    className={`w-full h-[54px] flex items-center justify-between p-[6px] bg-gradient-to-br from-slate-400 to-indigo-800 rounded-[20px] cursor-pointer ${
                       userBettedBoxing?.[0]?.position !== "DOWN"
                         ? "from-slate-500 to-slate-600 cursor-not-allowed opacity-60"
                         : ""
                     }`}
                   >
-                    <div className="w-44 py-[7px] px-4 text-[--colors-contrast] text-xl font-light leading-7 bg-[--colors-backgroundAlt] rounded-[14px]">
+                    <div className="w-40 py-[7px] px-4 text-[--colors-contrast] text-base font-light leading-7 bg-[--colors-backgroundAlt] rounded-[14px]">
                       {boxingData?.[0]?.bearAmount
                         ? toFixedEtherNumber(
                             ethers.formatEther(
@@ -162,8 +162,9 @@ const BoxingCard = () => {
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
-                    <div className="flex flex-1 items-center justify-end text-right text-white text-xs font-bold leading-7">
-                      {userBettedBoxing?.[0]?.position === "DOWN" ? (
+                    <div className="flex flex-1 items-center justify-between text-white text-xs pl-2 font-bold leading-7">
+                      <div>MARK ZUCKERBERG</div>
+                      {userBettedBoxing?.[0]?.position === "DOWN" && (
                         <TooltipElement
                           title={`${toFixedEtherNumber(
                             ethers.formatEther(
@@ -173,21 +174,16 @@ const BoxingCard = () => {
                           )} ${CURRENCY_UNIT}`}
                           classNameText="text-right"
                         >
-                          MARK ZUCKERBERG ENTERED
+                          SELECTED
                         </TooltipElement>
-                      ) : (
-                        "MARK ZUCKERBERG"
                       )}
                     </div>
                   </div>
                 </>
               ) : (
                 <>
-                  <div
-                    className="w-full flex-1 h-[54px] flex items-center justify-between p-[6px] pr-4 bg-gradient-to-br from-slate-400 to-indigo-800 rounded-[20px] cursor-pointer"
-                    onClick={() => enterYesOrNoHandler("YES")}
-                  >
-                    <div className="w-44 py-[7px] px-4 text-[--colors-contrast] text-xl font-light leading-7 bg-[--colors-backgroundAlt] rounded-[14px]">
+                  <div className="w-full flex-1 h-[54px] flex items-center justify-between pl-2 bg-[#A1A0CA] rounded-[20px]">
+                    <div className="w-44 py-[7px] px-4 text-[--colors-contrast] text-base font-light leading-7 bg-[--colors-backgroundAlt] rounded-[14px]">
                       {boxingData?.[0]?.bullAmount
                         ? toFixedEtherNumber(
                             ethers.formatEther(
@@ -202,15 +198,17 @@ const BoxingCard = () => {
                       <div className="flex items-center justify-start text-white text-xs font-bold leading-7">
                         ELON MUSK
                       </div>
-                      <button className="text-white">Select</button>
+                      <button
+                        className="text-white py-4 px-2 md:px-8 bg-gradient-to-br from-slate-400 to-indigo-800 rounded-r-2xl"
+                        onClick={() => enterElonOrMarkHandler("ELON")}
+                      >
+                        Select
+                      </button>
                     </div>
                   </div>
 
-                  <div
-                    className="w-full flex-1 h-[54px] flex items-center justify-between p-[6px] pr-4 bg-gradient-to-br from-slate-400 to-indigo-800 rounded-[20px] cursor-pointer"
-                    onClick={() => enterYesOrNoHandler("NO")}
-                  >
-                    <div className="w-44 py-[7px] px-4 text-[--colors-contrast] text-xl font-light leading-7 bg-[--colors-backgroundAlt] rounded-[14px]">
+                  <div className="w-full flex-1 h-[54px] flex items-center justify-between pl-2 bg-[#A1A0CA] rounded-[20px]">
+                    <div className="w-44 py-[7px] px-4 text-[--colors-contrast] text-base font-light leading-7 bg-[--colors-backgroundAlt] rounded-[14px]">
                       {boxingData?.[0]?.bearAmount
                         ? toFixedEtherNumber(
                             ethers.formatEther(
@@ -225,7 +223,12 @@ const BoxingCard = () => {
                       <div className="flex items-center justify-center text-white text-xs font-bold leading-7">
                         MARK ZUCKERBERG
                       </div>
-                      <button className="text-white">Select</button>
+                      <button
+                        className="text-white py-4 px-2 md:px-8 bg-gradient-to-br from-slate-400 to-indigo-800 rounded-r-2xl"
+                        onClick={() => enterElonOrMarkHandler("MARK")}
+                      >
+                        Select
+                      </button>
                     </div>
                   </div>
                 </>
@@ -237,8 +240,8 @@ const BoxingCard = () => {
 
       <SetBoxingBetPosition
         showSetBetCard={showSetBetCard}
-        yesOrNoStatus={yesOrNoStatus}
-        onEnterYesOrNo={changeYesOrNoHandler}
+        elonOrMarkStatus={elonOrMarkStatus}
+        onEnterElonOrMark={changeElonOrMarkHandler}
         onBackward={backwardHandler}
         currentRound={EMarketTypes.BOXING.toString()}
         onPlacedBet={placedBetHandler}

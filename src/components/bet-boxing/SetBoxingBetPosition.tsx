@@ -20,8 +20,8 @@ import { RootState } from "@/redux/store";
 
 interface ISetBoxingBetPositionProps {
   showSetBetCard?: boolean;
-  yesOrNoStatus?: string;
-  onEnterYesOrNo?: (status: string) => void;
+  elonOrMarkStatus?: string;
+  onEnterElonOrMark?: (status: string) => void;
   onBackward?: (status: boolean) => void;
   currentRound: string;
   onPlacedBet?: (status: boolean) => void;
@@ -30,8 +30,8 @@ interface ISetBoxingBetPositionProps {
 
 const SetBetBoxingPosition: React.FC<ISetBoxingBetPositionProps> = ({
   showSetBetCard,
-  yesOrNoStatus,
-  onEnterYesOrNo,
+  elonOrMarkStatus,
+  onEnterElonOrMark,
   onBackward,
   currentRound,
   onPlacedBet,
@@ -53,8 +53,8 @@ const SetBetBoxingPosition: React.FC<ISetBoxingBetPositionProps> = ({
   const [approveValue, setApproveValue] = useState<number>(0);
 
   useEffect(() => {
-    if (yesOrNoStatus !== "") inputRef?.current?.focus();
-  }, [inputRef, yesOrNoStatus]);
+    if (elonOrMarkStatus !== "") inputRef?.current?.focus();
+  }, [inputRef, elonOrMarkStatus]);
 
   useEffect(() => {
     setIsClient(true);
@@ -88,8 +88,8 @@ const SetBetBoxingPosition: React.FC<ISetBoxingBetPositionProps> = ({
     }
   };
 
-  const changeYesOrNoHandler = (status: string) => {
-    if (onEnterYesOrNo) return onEnterYesOrNo(status);
+  const changeElonOrMarkHandler = (status: string) => {
+    if (onEnterElonOrMark) return onEnterElonOrMark(status);
   };
 
   const backwardHandler = () => {
@@ -270,7 +270,7 @@ const SetBetBoxingPosition: React.FC<ISetBoxingBetPositionProps> = ({
     try {
       // betBull is Bet up
 
-      if (yesOrNoStatus === "YES") {
+      if (elonOrMarkStatus === "ELON") {
         const { request } = await publicClient.simulateContract({
           account: address,
           address: CONSTANTS.ADDRESS.MARKET,
@@ -346,7 +346,7 @@ const SetBetBoxingPosition: React.FC<ISetBoxingBetPositionProps> = ({
                           Success!
                         </p>
                         <p className="mt-1 text-sm text-[--colors-text]">
-                          {yesOrNoStatus} position entered
+                          {elonOrMarkStatus} position entered
                         </p>
                         <a
                           href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
@@ -391,7 +391,7 @@ const SetBetBoxingPosition: React.FC<ISetBoxingBetPositionProps> = ({
                           Error!
                         </p>
                         <p className="mt-1 text-sm text-[--colors-text]">
-                          {yesOrNoStatus} position entered
+                          {elonOrMarkStatus} position entered
                         </p>
                         <a
                           href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
@@ -418,7 +418,7 @@ const SetBetBoxingPosition: React.FC<ISetBoxingBetPositionProps> = ({
           }
         }
       }
-      if (yesOrNoStatus === "NO") {
+      if (elonOrMarkStatus === "MARK") {
         const { request } = await publicClient.simulateContract({
           account: address,
           address: CONSTANTS.ADDRESS.MARKET,
@@ -453,7 +453,7 @@ const SetBetBoxingPosition: React.FC<ISetBoxingBetPositionProps> = ({
                           Success!
                         </p>
                         <p className="mt-1 text-sm text-[--colors-text]">
-                          {yesOrNoStatus} position entered
+                          {elonOrMarkStatus} position entered
                         </p>
                         <a
                           href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
@@ -498,7 +498,7 @@ const SetBetBoxingPosition: React.FC<ISetBoxingBetPositionProps> = ({
                           Error!
                         </p>
                         <p className="mt-1 text-sm text-[--colors-text]">
-                          {yesOrNoStatus} position entered
+                          {elonOrMarkStatus} position entered
                         </p>
                         <a
                           href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
@@ -547,21 +547,21 @@ const SetBetBoxingPosition: React.FC<ISetBoxingBetPositionProps> = ({
           />
           <span className="text-[--colors-text]">Set Position</span>
         </div>
-        {yesOrNoStatus === "YES" ? (
+        {elonOrMarkStatus === "ELON" ? (
           <Button
             className="text-[--colors-white] bg-[--colors-success] hover:bg-[--colors-success] hover:opacity-[0.8]"
             type="button"
-            onClick={() => changeYesOrNoHandler("NO")}
+            onClick={() => changeElonOrMarkHandler("MARK")}
           >
-            <span>YES</span>
+            <span>ELON MUSK</span>
           </Button>
         ) : (
           <Button
             className="text-[--colors-white] bg-[--colors-failure] hover:bg-[--colors-failure] hover:opacity-[0.8]"
             type="button"
-            onClick={() => changeYesOrNoHandler("YES")}
+            onClick={() => changeElonOrMarkHandler("ELON")}
           >
-            <span>NO</span>
+            <span>MARK ZUCKERBERG</span>
           </Button>
         )}
       </div>
