@@ -70,7 +70,7 @@ const SetElectionBetPostion: React.FC<ISetBoxingBetPositionProps> = ({
       address: CONSTANTS.ADDRESS.TOKEN,
       abi: CONSTANTS.ABI.TOKEN,
       functionName: "allowance",
-      args: [address, CONSTANTS.ADDRESS.PREDICTION],
+      args: [address, CONSTANTS.ADDRESS.MARKET],
     });
 
     setApproveValue(Number(ethers.formatEther(data.toString())));
@@ -160,7 +160,7 @@ const SetElectionBetPostion: React.FC<ISetBoxingBetPositionProps> = ({
         abi: CONSTANTS.ABI.TOKEN,
         functionName: "approve",
         args: [
-          CONSTANTS.ADDRESS.PREDICTION,
+          CONSTANTS.ADDRESS.MARKET,
           ethers.parseEther((+amount + 1).toString()),
         ],
       });
@@ -273,8 +273,8 @@ const SetElectionBetPostion: React.FC<ISetBoxingBetPositionProps> = ({
       if (yesOrNoStatus === "YES") {
         const { request } = await publicClient.simulateContract({
           account: address,
-          address: CONSTANTS.ADDRESS.PREDICTION,
-          abi: CONSTANTS.ABI.PREDICTION,
+          address: CONSTANTS.ADDRESS.MARKET,
+          abi: CONSTANTS.ABI.MARKET,
           functionName: "betBull",
           args: [currentRound, ethers.parseUnits(amount, "ether")],
         });
@@ -421,8 +421,8 @@ const SetElectionBetPostion: React.FC<ISetBoxingBetPositionProps> = ({
       if (yesOrNoStatus === "NO") {
         const { request } = await publicClient.simulateContract({
           account: address,
-          address: CONSTANTS.ADDRESS.PREDICTION,
-          abi: CONSTANTS.ABI.PREDICTION,
+          address: CONSTANTS.ADDRESS.MARKET,
+          abi: CONSTANTS.ABI.MARKET,
           functionName: "betBear",
           args: [currentRound, ethers.parseUnits(amount, "ether")],
         });

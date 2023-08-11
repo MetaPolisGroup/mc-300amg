@@ -137,7 +137,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
           </div>
         </div>
       ));
-  }, []);
+  }, [liveBetted?.refund]);
 
   const ratePrice =
     (+chainlinkData?.[0]?.price - +liveBetData?.[0]?.lockPrice) / 10 ** 8;
@@ -145,7 +145,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
   // console.log({ roundPrevious });
   // console.log({ liveRound });
   // console.log({ liveBettedData });
-  // console.log({ liveBetted });
+  console.log({ liveBetted });
 
   return (
     <div

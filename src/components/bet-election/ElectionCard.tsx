@@ -50,7 +50,7 @@ const ElectionCard = () => {
       }`}
     >
       <div
-        className={`card z-20 w-96 shadow-xl backface-hidden ${
+        className={`card z-20 w-96 md:w-[505px] shadow-xl backface-hidden ${
           showSetBetCard && "z-10"
         }`}
       >
@@ -70,8 +70,8 @@ const ElectionCard = () => {
             pharetra donec nisl. Et faucibus interdum varius leo eu.
           </div>
 
-          <div className="flex justify-between gap-4">
-            <div className="flex flex-col flex-1">
+          <div className="flex flex-col md:flex-row justify-between gap-2">
+            <div className="flex gap-2 items-center md:flex-col md:items-start md:w-1/3">
               <div className="text-[--colors-contrast] text-base font-light leading-snug">
                 Total Volumn
               </div>
@@ -88,7 +88,7 @@ const ElectionCard = () => {
               </div>
             </div>
 
-            <div className="w-full flex-1 sm:w-auto flex flex-wrap gap-y-3 justify-end">
+            <div className="w-full md:w-2/3 flex flex-wrap gap-y-3 justify-end">
               <div
                 className="w-full md:max-w-[290px] h-[54px] flex items-center justify-between p-[6px] pr-4 bg-gradient-to-br from-slate-400 to-indigo-800 rounded-[20px] cursor-pointer"
                 onClick={() => enterYesOrNoHandler("YES")}
@@ -104,8 +104,8 @@ const ElectionCard = () => {
                     : 0}{" "}
                   {CURRENCY_UNIT}
                 </div>
-                <div className="flex items-center justify-center text-white text-xl font-bold leading-7">
-                  Yes
+                <div className="flex items-center justify-center text-white text-sm font-bold leading-7">
+                  YES
                 </div>
               </div>
 
@@ -124,8 +124,8 @@ const ElectionCard = () => {
                     : 0}{" "}
                   {CURRENCY_UNIT}
                 </div>
-                <div className="flex items-center justify-center text-white text-xl font-bold leading-7">
-                  No
+                <div className="flex items-center justify-center text-white text-sm font-bold leading-7">
+                  NO
                 </div>
               </div>
             </div>
@@ -137,7 +137,7 @@ const ElectionCard = () => {
         yesOrNoStatus={yesOrNoStatus}
         onEnterYesOrNo={changeYesOrNoHandler}
         onBackward={backwardHandler}
-        currentRound={"1"}
+        currentRound={EMarketTypes.ELECTION.toString()}
         onPlacedBet={placedBetHandler}
         inputRef={inputRef}
       />

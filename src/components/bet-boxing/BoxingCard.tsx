@@ -7,11 +7,15 @@ import { EMarketTypes } from "@/constants/marketsType";
 import { toFixedEtherNumber } from "@/utils/format-number";
 import { ethers } from "ethers";
 import { CURRENCY_UNIT } from "@/constants";
+import { useAccount } from "wagmi";
+import { isEmpty } from "lodash";
 
 const BoxingCard = () => {
   const [showSetBetCard, setShowSetBetCard] = useState<boolean>(false);
   const [yesOrNoStatus, setYesOrNoStatus] = useState<string>("");
   const [boxingData, setBoxingData] = useState<IBoxingData[]>([]);
+  const [userBettedBoxing, setUserBettedBoxing] = useState<IBoxingBetted[]>([]);
+  const { isConnected, address } = useAccount();
 
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
@@ -23,7 +27,18 @@ const BoxingCard = () => {
         setBoxingData(docs as IBoxingData[]);
       }
     );
-  }, []);
+    if (isConnected && address) {
+      getDataFileredByOnSnapshot(
+        "bets_market",
+        [["user_address", "==", address as `0x${string}`]],
+        (docs) => {
+          setUserBettedBoxing(docs as IBoxingBetted[]);
+        }
+      );
+    }
+  }, [isConnected, address]);
+
+  console.log(userBettedBoxing);
 
   const enterYesOrNoHandler = (status: string) => {
     setShowSetBetCard(true);
@@ -51,7 +66,7 @@ const BoxingCard = () => {
       }`}
     >
       <div
-        className={`card z-20 w-96 shadow-xl backface-hidden ${
+        className={`card z-20 w-96 md:w-[505px] shadow-xl backface-hidden ${
           showSetBetCard && "z-10"
         }`}
       >
@@ -66,13 +81,13 @@ const BoxingCard = () => {
               </div>
             </div>
           </div>
-          <div className="mb-5 md:mb-10 text-[--colors-contrast] text-xl font-bold leading-7">
-            Lorem ipsum dolor sit amet consectetur. Leo et aliquam imperdiet
-            pharetra donec nisl. Et faucibus interdum varius leo eu.
+          <div className="mb-5 md:mb-10 text-[--colors-contrast] text-base font-bold leading-7">
+            An epic showdown is here! Elon Musk vs Mark Zuckerberg Who&apos;s
+            gonna win?
           </div>
 
-          <div className="flex justify-between gap-4">
-            <div className="flex flex-col flex-1">
+          <div className="flex flex-col justify-between gap-2">
+            <div className="flex gap-2 items-center">
               <div className="text-[--colors-contrast] text-base font-light leading-snug">
                 Total Volumn
               </div>
@@ -87,42 +102,102 @@ const BoxingCard = () => {
               </div>
             </div>
 
-            <div className="w-full flex-1 sm:w-auto flex flex-wrap gap-y-3 justify-end">
-              <div
-                className="w-full md:max-w-[290px] h-[54px] flex items-center justify-between p-[6px] pr-4 bg-gradient-to-br from-slate-400 to-indigo-800 rounded-[20px] cursor-pointer"
-                onClick={() => enterYesOrNoHandler("YES")}
-              >
-                <div className="w-36 py-[7px] px-4 text-[--colors-contrast] text-xl font-light leading-7 bg-[--colors-backgroundAlt] rounded-[14px]">
-                  {boxingData?.[0]?.bullAmount
-                    ? toFixedEtherNumber(
-                        ethers.formatEther(BigInt(boxingData?.[0]?.bullAmount)),
-                        2
-                      )
-                    : 0}{" "}
-                  {CURRENCY_UNIT}
-                </div>
-                <div className="flex items-center justify-center text-white text-xl font-bold leading-7">
-                  Yes
-                </div>
-              </div>
+            <div className="w-full flex flex-col gap-y-3 justify-end">
+              {!isEmpty(userBettedBoxing) ? (
+                <>
+                  <div
+                    className={`w-full h-[54px] flex items-center justify-between p-[6px] pr-4 bg-gradient-to-br from-slate-400 to-indigo-800 rounded-[20px] cursor-pointer ${
+                      userBettedBoxing?.[0]?.position !== "UP"
+                        ? "from-slate-500 to-slate-600 cursor-not-allowed opacity-60"
+                        : ""
+                    }`}
+                  >
+                    <div className="w-44 py-[7px] px-4 text-[--colors-contrast] text-xl font-light leading-7 bg-[--colors-backgroundAlt] rounded-[14px]">
+                      {boxingData?.[0]?.bullAmount
+                        ? toFixedEtherNumber(
+                            ethers.formatEther(
+                              BigInt(boxingData?.[0]?.bullAmount)
+                            ),
+                            2
+                          )
+                        : 0}{" "}
+                      {CURRENCY_UNIT}
+                    </div>
+                    <div className="flex flex-1 items-center justify-end text-right text-white text-xs font-bold leading-7">
+                      {userBettedBoxing?.[0]?.position === "UP"
+                        ? "ELON MUSK ENTERED"
+                        : "ELON MUSK"}
+                    </div>
+                  </div>
 
-              <div
-                className="w-full md:max-w-[290px] h-[54px] flex items-center justify-between p-[6px] pr-4 bg-gradient-to-br from-slate-400 to-indigo-800 rounded-[20px] cursor-pointer"
-                onClick={() => enterYesOrNoHandler("NO")}
-              >
-                <div className="w-36 py-[7px] px-4 text-[--colors-contrast] text-xl font-light leading-7 bg-[--colors-backgroundAlt] rounded-[14px]">
-                  {boxingData?.[0]?.bearAmount
-                    ? toFixedEtherNumber(
-                        ethers.formatEther(BigInt(boxingData?.[0]?.bearAmount)),
-                        2
-                      )
-                    : 0}{" "}
-                  {CURRENCY_UNIT}
-                </div>
-                <div className="flex items-center justify-center text-white text-xl font-bold leading-7">
-                  No
-                </div>
-              </div>
+                  <div
+                    className={`w-full h-[54px] flex items-center justify-between p-[6px] pr-4 bg-gradient-to-br from-slate-400 to-indigo-800 rounded-[20px] cursor-pointer ${
+                      userBettedBoxing?.[0]?.position !== "DOWN"
+                        ? "from-slate-500 to-slate-600 cursor-not-allowed opacity-60"
+                        : ""
+                    }`}
+                  >
+                    <div className="w-44 py-[7px] px-4 text-[--colors-contrast] text-xl font-light leading-7 bg-[--colors-backgroundAlt] rounded-[14px]">
+                      {boxingData?.[0]?.bearAmount
+                        ? toFixedEtherNumber(
+                            ethers.formatEther(
+                              BigInt(boxingData?.[0]?.bearAmount)
+                            ),
+                            2
+                          )
+                        : 0}{" "}
+                      {CURRENCY_UNIT}
+                    </div>
+                    <div className="flex flex-1 items-center justify-end text-right text-white text-xs font-bold leading-7">
+                      {userBettedBoxing?.[0]?.position === "DOWN"
+                        ? "MARK ZUCKERBERG  ENTERED"
+                        : "MARK ZUCKERBERG"}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div
+                    className="w-full flex-1 h-[54px] flex items-center justify-between p-[6px] pr-4 bg-gradient-to-br from-slate-400 to-indigo-800 rounded-[20px] cursor-pointer"
+                    onClick={() => enterYesOrNoHandler("YES")}
+                  >
+                    <div className="w-44 py-[7px] px-4 text-[--colors-contrast] text-xl font-light leading-7 bg-[--colors-backgroundAlt] rounded-[14px]">
+                      {boxingData?.[0]?.bullAmount
+                        ? toFixedEtherNumber(
+                            ethers.formatEther(
+                              BigInt(boxingData?.[0]?.bullAmount)
+                            ),
+                            2
+                          )
+                        : 0}{" "}
+                      {CURRENCY_UNIT}
+                    </div>
+                    <div className="flex items-center justify-center text-white text-xs font-bold leading-7">
+                      ELON MUSK
+                    </div>
+                  </div>
+
+                  <div
+                    className="w-full flex-1 h-[54px] flex items-center justify-between p-[6px] pr-4 bg-gradient-to-br from-slate-400 to-indigo-800 rounded-[20px] cursor-pointer"
+                    onClick={() => enterYesOrNoHandler("NO")}
+                  >
+                    <div className="w-44 py-[7px] px-4 text-[--colors-contrast] text-xl font-light leading-7 bg-[--colors-backgroundAlt] rounded-[14px]">
+                      {boxingData?.[0]?.bearAmount
+                        ? toFixedEtherNumber(
+                            ethers.formatEther(
+                              BigInt(boxingData?.[0]?.bearAmount)
+                            ),
+                            2
+                          )
+                        : 0}{" "}
+                      {CURRENCY_UNIT}
+                    </div>
+                    <div className="flex items-center justify-center text-white text-xs font-bold leading-7">
+                      MARK ZUCKERBERG
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -133,7 +208,7 @@ const BoxingCard = () => {
         yesOrNoStatus={yesOrNoStatus}
         onEnterYesOrNo={changeYesOrNoHandler}
         onBackward={backwardHandler}
-        currentRound={"1"}
+        currentRound={EMarketTypes.BOXING.toString()}
         onPlacedBet={placedBetHandler}
         inputRef={inputRef}
       />
