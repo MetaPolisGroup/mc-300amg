@@ -81,14 +81,12 @@ const HistoryCard: React.FC<IHistoryProps> = ({
               "card z-20 w-80 bg-[--colors-backgroundAlt] group shadow-xl transition-all hover:opacity-100"
             }
           >
-            <div className="flex justify-between items-center opacity-70 bg-[--colors-cardBorder] h-9 p-2 rounded-t-2xl group-hover:opacity-100">
+            <div className="flex justify-between items-center opacity-70 bg-[--colors-primary-second] h-9 p-2 rounded-t-2xl group-hover:opacity-100">
               <div className="flex items-center gap-2">
-                <Icons.Ban className="text-[--colors-textDisabled]" />
-                <span className="text-[--colors-textDisabled]">Expired</span>
+                <Icons.Ban className="text-[--colors-white]" />
+                <span className="text-[--colors-white]">Expired</span>
               </div>
-              <div className="text-[--colors-textDisabled]">
-                #{historyRound}
-              </div>
+              <div className="text-[--colors-white]">#{historyRound}</div>
             </div>
 
             <div className="card-body p-4 opacity-70 group-hover:opacity-100">
@@ -602,7 +600,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
             {!isEmpty(historyBetted) &&
               historyBetted?.[0]?.status === "Losing Refund" &&
               !historyBetted?.[0]?.claimed && (
-                <div className="absolute bottom-[0.05rem] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
+                <div className="absolute bottom-[-1px] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
                   <Icons.TrophyIcon className="text-[--colors-gold]" />
                   <Button
                     className="bg-[--colors-primary] hover:bg-[--colors-primary] hover:opacity-70"
@@ -625,7 +623,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
               historyBetted?.[0]?.status === "Refund" &&
               historyBetted?.[0]?.refund !== 0 &&
               !historyBetted?.[0]?.claimed && (
-                <div className="absolute bottom-[0.05rem] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
+                <div className="absolute bottom-[-1px] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
                   <Icons.TrophyIcon className="text-[--colors-gold]" />
                   <Button
                     className="bg-[--colors-primary] hover:bg-[--colors-primary] hover:opacity-70"

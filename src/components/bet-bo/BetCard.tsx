@@ -76,7 +76,7 @@ const BetCard: React.FC<IBetCard> = ({
           showSetBetCard && "z-10"
         }`}
       >
-        <div className="flex justify-between items-center bg-[--colors-secondary] h-9 p-2 rounded-t-2xl">
+        <div className="flex justify-between items-center bg-[--colors-primary] h-9 p-2 rounded-t-2xl">
           <div className="flex items-center gap-2">
             <Icons.PlayCircle className="text-[--colors-white]" />
             <span className="text-[--colors-white]">Next</span>

@@ -25,12 +25,14 @@ const CancelCard: React.FC<ICancelCard> = ({
   return (
     <div className={`w-full flex justify-center items-center relative`}>
       <div className={"card z-20 w-80 bg-[--colors-backgroundAlt] shadow-xl"}>
-        <div className="flex justify-between items-center bg-[--colors-gold] h-9 p-2 rounded-t-2xl">
+        <div className="flex justify-between items-center bg-[--colors-cardBorder] h-9 p-2 rounded-t-2xl">
           <div className="flex items-center gap-2">
-            <Icons.Ban className="text-[--colors-white]" />
-            <span className="text-[--colors-white]">Cancelled</span>
+            <Icons.Ban className="text-[--colors-textDisabled]" />
+            <span className="text-[--colors-textDisabled]">Cancelled</span>
           </div>
-          <div className="text-[--colors-white] text-xs">#{historyRound}</div>
+          <div className="text-[--colors-textDisabled] text-xs">
+            #{historyRound}
+          </div>
         </div>
 
         <div className="card-body p-4">
