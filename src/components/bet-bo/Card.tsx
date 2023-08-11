@@ -26,9 +26,12 @@ const Card: React.FC<ICard> = () => {
   const { address, isConnected } = useAccount();
   const [winningRound, setWinningRound] = useState<number>();
   const [titleClaimModal, setTitleClaimModal] = useState<string>("");
+  const [statusClaim, setStatusClaim] = useState<string>("");
   const [nextBetData, setNextBetData] = useState<DocumentData[]>([]);
   const [datasBetted, setDatasBetted] = useState<DocumentData[]>([]);
   const [currentRound, setCurrentRound] = useState<number>(0);
+
+  const [liveBettedData, setLiveBettedData] = useState<IBetData[]>();
   const swiperRef = useRef<SwiperType>();
   const collectWinningsRef = createRef<PopupRef>();
 
@@ -62,25 +65,41 @@ const Card: React.FC<ICard> = () => {
     }
   }, [currentRound]);
 
+  useEffect(() => {
+    if (isConnected) {
+      getDataFileredByOnSnapshot(
+        "bets",
+        [
+          ["user_address", "==", address as `0x${string}`],
+          ["epoch", "==", +currentRound - 1],
+        ],
+        (docs) => {
+          setLiveBettedData(docs as IBetData[]);
+        }
+      );
+    }
+  }, [isConnected, address, currentRound]);
+
   const dataBettedInCurrentRound = datasBetted.find(
     (dataBetted: DocumentData) => dataBetted.epoch === currentRound
   );
 
   const showCollectWinningHandler = (
     status: boolean,
+    statusClaim: string,
     title: string,
     round: number
   ) => {
     if (status === true) {
-      console.log("true");
       setWinningRound(round);
       setTitleClaimModal(title);
+      setStatusClaim(statusClaim);
       return collectWinningsRef.current?.open();
     }
     if (status === false) {
-      console.log("false");
       setWinningRound(round);
       setTitleClaimModal(title);
+      setStatusClaim(statusClaim);
       return collectWinningsRef.current?.close();
     }
   };
@@ -140,6 +159,7 @@ const Card: React.FC<ICard> = () => {
             <LiveBetCard
               liveRound={+currentRound - 1}
               nextBetData={nextBetData[0]}
+              liveBettedData={liveBettedData?.[0]}
             />
           </SwiperSlide>
           <SwiperSlide>
@@ -170,8 +190,9 @@ const Card: React.FC<ICard> = () => {
             <ClaimModal
               winningRound={winningRound}
               titleClaim={titleClaimModal}
+              statusClaim={statusClaim}
               onCancel={() => {
-                showCollectWinningHandler(false, "", 0);
+                showCollectWinningHandler(false, "", "", 0);
               }}
             />
           }

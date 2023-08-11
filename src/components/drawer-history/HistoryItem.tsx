@@ -10,7 +10,12 @@ import { CURRENCY_UNIT } from "@/constants";
 
 interface IHistoryDataProps {
   data: IHistory;
-  onCollect: (status: boolean, round: number, title: string) => void;
+  onCollect: (
+    status: boolean,
+    statusClaim: string,
+    round: number,
+    title: string
+  ) => void;
 }
 
 const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
@@ -285,7 +290,11 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
             isLose && "text-[--colors-light-failure]"
           )}
         >
-          {isWin ? "+" : "-"} {winningAmount}
+          {isWin
+            ? `+ ${handlerFormatEther(
+                data?.winning_amount + data?.refund + data?.amount
+              )}`
+            : `- ${winningAmount}`}
         </div>
       </div>
     );
@@ -349,7 +358,8 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
               onClick={(e) => {
                 onCollect(
                   true,
-                  data?.round?.epoch,
+                  data?.status,
+                  data?.epoch as number,
                   isWin ? "Collect Winnnings" : "Collect Refund"
                 );
                 e.stopPropagation();

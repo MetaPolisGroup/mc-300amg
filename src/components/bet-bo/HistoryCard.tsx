@@ -9,11 +9,13 @@ import Button from "../ui/Button";
 import { CURRENCY_UNIT } from "@/constants";
 import { toFixedEtherNumber } from "@/utils/format-number";
 import CancelCard from "./CancelCard";
+import { RESULT_STATUS } from "@/constants/history";
 
 interface IHistoryProps {
   historyRound: number;
   showCollectWinningModal?: (
     status: boolean,
+    statusClaim: string,
     title: string,
     round: number
   ) => void;
@@ -26,6 +28,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
   const { isConnected, address } = useAccount();
   const [historyBetted, setHistoryBetted] = useState<IHistory[]>([]);
   const [historyData, setHistoryData] = useState<DocumentData[]>([]);
+  const [roundPrevious, setRoundPrevious] = useState<number>(historyRound);
   const [isClient, setIsClient] = useState<boolean>(false);
 
   useEffect(() => {
@@ -57,11 +60,17 @@ const HistoryCard: React.FC<IHistoryProps> = ({
     setIsClient(true);
   }, []);
 
+  useEffect(() => {
+    if (roundPrevious !== historyRound) {
+      setRoundPrevious(historyRound);
+    }
+  }, [historyRound, roundPrevious]);
+
   // Determine this round up or down (UP: rate > 0, vice versa)
   const ratePrice =
     (historyData?.[0]?.closePrice - historyData?.[0]?.lockPrice) / 10 ** 8;
 
-  console.log(historyBetted?.[0]);
+  console.log({ historyData });
 
   return (
     <React.Fragment>
@@ -83,6 +92,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
             </div>
 
             <div className="card-body p-4 opacity-70 group-hover:opacity-100">
+              {/* Show CLAIMED  or REFUND UP title when claimed */}
               {!isEmpty(historyBetted) &&
                 (historyBetted?.[0]?.position === "UP" &&
                 historyBetted?.[0]?.claimed === false ? (
@@ -113,10 +123,70 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                     </span>
                   </div>
                 )}
+
               <div className="relative -mb-[0.55rem]">
                 {ratePrice > 0 ? (
                   <div className="h-16 mx-auto w-60">
-                    <Icons.PayoutUpSuccess />
+                    <svg
+                      height="65px"
+                      width="240px"
+                      viewBox="0 0 240 65"
+                      color="text"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="sc-231a1e38-0 dPwWVs"
+                    >
+                      <g filter="url(#filter0_i)">
+                        <path
+                          d="M10.0001 49.2757L10.0003 64H234L234 49.2753C234 42.5136 229.749 36.4819 223.381 34.2077L138.48 3.8859C127.823 0.0796983 116.177 0.0796931 105.519 3.8859L20.6188 34.2076C14.2508 36.4819 10.0001 42.5138 10.0001 49.2757Z"
+                          fill="#2ccece"
+                        ></path>
+                      </g>
+                      <defs>
+                        <filter
+                          id="filter0_i"
+                          x="10.0001"
+                          y="1.03125"
+                          width="224"
+                          height="62.9688"
+                          filterUnits="userSpaceOnUse"
+                          color-interpolation-filters="sRGB"
+                        >
+                          <feFlood
+                            flood-opacity="0"
+                            result="BackgroundImageFix"
+                          ></feFlood>
+                          <feBlend
+                            mode="normal"
+                            in="SourceGraphic"
+                            in2="BackgroundImageFix"
+                            result="shape"
+                          ></feBlend>
+                          <feColorMatrix
+                            in="SourceAlpha"
+                            type="matrix"
+                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                            result="hardAlpha"
+                          ></feColorMatrix>
+                          <feOffset></feOffset>
+                          <feGaussianBlur stdDeviation="1"></feGaussianBlur>
+                          <feComposite
+                            in2="hardAlpha"
+                            operator="arithmetic"
+                            k2="-1"
+                            k3="1"
+                          ></feComposite>
+                          <feColorMatrix
+                            type="matrix"
+                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0"
+                          ></feColorMatrix>
+                          <feBlend
+                            mode="normal"
+                            in2="shape"
+                            result="effect1_innerShadow"
+                          ></feBlend>
+                        </filter>
+                      </defs>
+                    </svg>
                     <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                       <div
                         className={`text-[--colors-white] font-semibold uppercase text-xl`}
@@ -138,7 +208,66 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                   </div>
                 ) : (
                   <div className="h-16 mx-auto w-60">
-                    <Icons.PayoutUp />
+                    <svg
+                      height="65px"
+                      width="240px"
+                      viewBox="0 0 240 65"
+                      color="text"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="sc-231a1e38-0 dPwWVs"
+                    >
+                      <g filter="url(#filter0_i)">
+                        <path
+                          d="M10.0001 49.2757L10.0003 64H234L234 49.2753C234 42.5136 229.749 36.4819 223.381 34.2077L138.48 3.8859C127.823 0.0796983 116.177 0.0796931 105.519 3.8859L20.6188 34.2076C14.2508 36.4819 10.0001 42.5138 10.0001 49.2757Z"
+                          fill="#353547"
+                        ></path>
+                      </g>
+                      <defs>
+                        <filter
+                          id="filter0_i"
+                          x="10.0001"
+                          y="1.03125"
+                          width="224"
+                          height="62.9688"
+                          filterUnits="userSpaceOnUse"
+                          color-interpolation-filters="sRGB"
+                        >
+                          <feFlood
+                            flood-opacity="0"
+                            result="BackgroundImageFix"
+                          ></feFlood>
+                          <feBlend
+                            mode="normal"
+                            in="SourceGraphic"
+                            in2="BackgroundImageFix"
+                            result="shape"
+                          ></feBlend>
+                          <feColorMatrix
+                            in="SourceAlpha"
+                            type="matrix"
+                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                            result="hardAlpha"
+                          ></feColorMatrix>
+                          <feOffset></feOffset>
+                          <feGaussianBlur stdDeviation="1"></feGaussianBlur>
+                          <feComposite
+                            in2="hardAlpha"
+                            operator="arithmetic"
+                            k2="-1"
+                            k3="1"
+                          ></feComposite>
+                          <feColorMatrix
+                            type="matrix"
+                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0"
+                          ></feColorMatrix>
+                          <feBlend
+                            mode="normal"
+                            in2="shape"
+                            result="effect1_innerShadow"
+                          ></feBlend>
+                        </filter>
+                      </defs>
+                    </svg>
                     <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                       <div
                         className={`text-[--colors-success] font-semibold uppercase text-xl`}
@@ -231,7 +360,66 @@ const HistoryCard: React.FC<IHistoryProps> = ({
               <div className="relative -mt-[0.55rem]">
                 {ratePrice > 0 ? (
                   <div className="h-16 mx-auto w-60">
-                    <Icons.PayoutDown />
+                    <svg
+                      height="65px"
+                      width="240px"
+                      viewBox="0 0 240 65"
+                      color="text"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="sc-231a1e38-0 dPwWVs"
+                    >
+                      <g filter="url(#filter0_i)">
+                        <path
+                          d="M10.0001 15.7243L10.0003 1H234L234 15.7247C234 22.4864 229.749 28.5181 223.381 30.7923L138.48 61.1141C127.823 64.9203 116.177 64.9203 105.519 61.1141L20.6188 30.7924C14.2508 28.5181 10.0001 22.4862 10.0001 15.7243Z"
+                          fill="#353547"
+                        ></path>
+                      </g>
+                      <defs>
+                        <filter
+                          id="filter0_i"
+                          x="10.0001"
+                          y="1"
+                          width="224"
+                          height="62.9688"
+                          filterUnits="userSpaceOnUse"
+                          color-interpolation-filters="sRGB"
+                        >
+                          <feFlood
+                            flood-opacity="0"
+                            result="BackgroundImageFix"
+                          ></feFlood>
+                          <feBlend
+                            mode="normal"
+                            in="SourceGraphic"
+                            in2="BackgroundImageFix"
+                            result="shape"
+                          ></feBlend>
+                          <feColorMatrix
+                            in="SourceAlpha"
+                            type="matrix"
+                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                            result="hardAlpha"
+                          ></feColorMatrix>
+                          <feOffset></feOffset>
+                          <feGaussianBlur stdDeviation="1"></feGaussianBlur>
+                          <feComposite
+                            in2="hardAlpha"
+                            operator="arithmetic"
+                            k2="-1"
+                            k3="1"
+                          ></feComposite>
+                          <feColorMatrix
+                            type="matrix"
+                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0"
+                          ></feColorMatrix>
+                          <feBlend
+                            mode="normal"
+                            in2="shape"
+                            result="effect1_innerShadow"
+                          ></feBlend>
+                        </filter>
+                      </defs>
+                    </svg>
                     <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                       <div className="text-[--colors-textSubtle] font-semibold text-sm">
                         {historyData?.[0]?.bearAmount
@@ -251,7 +439,66 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                   </div>
                 ) : (
                   <div className="h-16 mx-auto w-60">
-                    <Icons.PayoutDownFailure />
+                    <svg
+                      height="65px"
+                      width="240px"
+                      viewBox="0 0 240 65"
+                      color="text"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="sc-231a1e38-0 dPwWVs"
+                    >
+                      <g filter="url(#filter0_i)">
+                        <path
+                          d="M10.0001 15.7243L10.0003 1H234L234 15.7247C234 22.4864 229.749 28.5181 223.381 30.7923L138.48 61.1141C127.823 64.9203 116.177 64.9203 105.519 61.1141L20.6188 30.7924C14.2508 28.5181 10.0001 22.4862 10.0001 15.7243Z"
+                          fill="#ee7e3e"
+                        ></path>
+                      </g>
+                      <defs>
+                        <filter
+                          id="filter0_i"
+                          x="10.0001"
+                          y="1"
+                          width="224"
+                          height="62.9688"
+                          filterUnits="userSpaceOnUse"
+                          color-interpolation-filters="sRGB"
+                        >
+                          <feFlood
+                            flood-opacity="0"
+                            result="BackgroundImageFix"
+                          ></feFlood>
+                          <feBlend
+                            mode="normal"
+                            in="SourceGraphic"
+                            in2="BackgroundImageFix"
+                            result="shape"
+                          ></feBlend>
+                          <feColorMatrix
+                            in="SourceAlpha"
+                            type="matrix"
+                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                            result="hardAlpha"
+                          ></feColorMatrix>
+                          <feOffset></feOffset>
+                          <feGaussianBlur stdDeviation="1"></feGaussianBlur>
+                          <feComposite
+                            in2="hardAlpha"
+                            operator="arithmetic"
+                            k2="-1"
+                            k3="1"
+                          ></feComposite>
+                          <feColorMatrix
+                            type="matrix"
+                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0"
+                          ></feColorMatrix>
+                          <feBlend
+                            mode="normal"
+                            in2="shape"
+                            result="effect1_innerShadow"
+                          ></feBlend>
+                        </filter>
+                      </defs>
+                    </svg>
                     <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                       <div className="text-[--colors-white] font-semibold text-sm">
                         {historyData?.[0]?.bearAmount
@@ -271,6 +518,9 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                   </div>
                 )}
               </div>
+
+              {/* Show CLAIMED  or REFUND DOWN title when claimed */}
+
               {!isEmpty(historyBetted) &&
                 (historyBetted?.[0]?.position === "DOWN" &&
                 historyBetted?.[0]?.claimed === false ? (
@@ -302,6 +552,9 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                   </div>
                 )}
             </div>
+
+            {/* Show CLAIM CATEGORIES BTN based on conditional */}
+
             {historyBetted?.[0]?.status === "Win" &&
               historyBetted?.[0]?.refund === 0 &&
               !historyBetted?.[0]?.claimed && (
@@ -313,6 +566,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                       if (showCollectWinningModal)
                         showCollectWinningModal(
                           true,
+                          RESULT_STATUS.WIN,
                           "Collect Winnings",
                           historyRound
                         );
@@ -334,6 +588,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                       if (showCollectWinningModal)
                         showCollectWinningModal(
                           true,
+                          RESULT_STATUS.WR,
                           "Collect Winnings",
                           historyRound
                         );
@@ -345,7 +600,29 @@ const HistoryCard: React.FC<IHistoryProps> = ({
               )}
 
             {!isEmpty(historyBetted) &&
-              historyBetted?.[0]?.status !== "Win" &&
+              historyBetted?.[0]?.status === "Losing Refund" &&
+              !historyBetted?.[0]?.claimed && (
+                <div className="absolute bottom-[0.05rem] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
+                  <Icons.TrophyIcon className="text-[--colors-gold]" />
+                  <Button
+                    className="bg-[--colors-primary] hover:bg-[--colors-primary] hover:opacity-70"
+                    onClick={() => {
+                      if (showCollectWinningModal)
+                        showCollectWinningModal(
+                          true,
+                          RESULT_STATUS.LR,
+                          "Refund",
+                          historyRound
+                        );
+                    }}
+                  >
+                    Collect Your Refund
+                  </Button>
+                </div>
+              )}
+
+            {!isEmpty(historyBetted) &&
+              historyBetted?.[0]?.status === "Refund" &&
               historyBetted?.[0]?.refund !== 0 &&
               !historyBetted?.[0]?.claimed && (
                 <div className="absolute bottom-[0.05rem] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
@@ -354,7 +631,12 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                     className="bg-[--colors-primary] hover:bg-[--colors-primary] hover:opacity-70"
                     onClick={() => {
                       if (showCollectWinningModal)
-                        showCollectWinningModal(true, "Refund", historyRound);
+                        showCollectWinningModal(
+                          true,
+                          RESULT_STATUS.REFUND,
+                          "Refund",
+                          historyRound
+                        );
                     }}
                   >
                     Collect Your Refund

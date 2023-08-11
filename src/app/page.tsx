@@ -9,12 +9,13 @@ export default function Home() {
     <main className="bg-[--colors-background] overflow-hidden min-h-[85vh]">
       <SliderListGame />
       {/* <SliderBannerGame /> */}
+
       <div className="px-4 flex flex-col items-center md:flex-row justify-between md:px-28">
         <div className="flex flex-col gap-3 md:gap-10">
           <h1 className="text-[#28C38B] text-3xl md:text-6xl font-semibold">
             Unlimited & Advanced Defi Playground
           </h1>
-          <p className="text-sm md:text-2xl text-[--colors-textSub]">
+          <p className="mt-[10px] mb-5 text-sm md:text-2xl text-[--colors-textSub]">
             Powered by Blockchain technology, giving users transparency and
             fairness to deliver thrilling and enjoyable experiences
           </p>

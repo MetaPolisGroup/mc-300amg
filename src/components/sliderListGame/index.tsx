@@ -22,8 +22,8 @@ const SliderListGame: React.FC = () => {
     return games.map((games, index) => {
       return (
         <SwiperSlide key={`${games.id}${index}`}>
-          <Link href={games.link} className="mx-2">
-            <div className="w-[520px] h-[60px] sm:h-[140px] rounded-[60px] bg-[--colors-background-slider] overflow-hidden flex items-center justify-center text-[--colors-textSubtle] font-bold select-none cursor-pointer">
+          <Link href={games.link} className="mx-2 block">
+            <div className="w-[130px] sm:w-[520px] h-[60px] sm:h-[140px] rounded-[60px] overflow-hidden flex items-center justify-center text-[--colors-textSubtle] font-bold select-none cursor-pointer">
               <Image
                 src={games.img}
                 sizes="1000"
@@ -31,7 +31,7 @@ const SliderListGame: React.FC = () => {
                 height={50}
                 alt={games.id}
                 className={clsx(
-                  "max-w-fit !w-[560px]",
+                  "max-w-fit w-[250px] sm:!w-[560px]",
                   index === 3 && "h-[60px] sm:h-auto"
                 )}
               />

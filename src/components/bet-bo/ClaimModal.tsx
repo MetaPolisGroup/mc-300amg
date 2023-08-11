@@ -7,21 +7,22 @@ import { publicClient } from "@/lib/contract-config";
 import { useAccount, useWalletClient } from "wagmi";
 import { CONSTANTS, CURRENCY_UNIT } from "@/constants";
 import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
+import { isEmpty } from "lodash";
 import { toFixedEtherNumber } from "@/utils/format-number";
 import { ethers } from "ethers";
-import { isEmpty } from "lodash";
-import { useAppDispatch } from "@/redux/hooks";
-import { changeBettedStatusHandler } from "@/redux/features/bet/betSlice";
+import { RESULT_STATUS } from "@/constants/history";
 
 interface IClaimProps {
   titleClaim: string;
   winningRound: number | undefined;
+  statusClaim?: string;
   onCancel: () => void;
 }
 
 const ClaimModal: React.FC<IClaimProps> = ({
   winningRound,
   titleClaim,
+  statusClaim,
   onCancel,
 }) => {
   const { isConnected, address } = useAccount();
@@ -45,19 +46,39 @@ const ClaimModal: React.FC<IClaimProps> = ({
     }
   }, [isConnected, address, winningRound]);
 
-  const amountClaim =
-    !isEmpty(roundClaimedData) &&
-    (titleClaim === "Refund"
-      ? toFixedEtherNumber(
-          +ethers.formatEther(BigInt(roundClaimedData?.[0]?.refund)),
-          2
-        )
-      : toFixedEtherNumber(
-          +ethers.formatEther(BigInt(roundClaimedData?.[0]?.refund)) +
-            +ethers.formatEther(BigInt(roundClaimedData?.[0]?.winning_amount)) +
-            +ethers.formatEther(BigInt(roundClaimedData?.[0]?.amount)),
+  const amountClaim = () => {
+    let amountClaimed = 0;
+
+    if (!isEmpty(roundClaimedData)) {
+      if (statusClaim === RESULT_STATUS.WIN) {
+        return (amountClaimed = +toFixedEtherNumber(
+          +ethers.formatEther(BigInt(roundClaimedData?.[0]?.amount)) +
+            +ethers.formatEther(BigInt(roundClaimedData?.[0]?.winning_amount)),
           2
         ));
+      }
+      if (statusClaim === RESULT_STATUS.WR) {
+        return (amountClaimed = +toFixedEtherNumber(
+          +ethers.formatEther(BigInt(roundClaimedData?.[0]?.amount)) +
+            +ethers.formatEther(BigInt(roundClaimedData?.[0]?.winning_amount)) +
+            +ethers.formatEther(BigInt(roundClaimedData?.[0]?.refund)),
+          2
+        ));
+      }
+      if (statusClaim === RESULT_STATUS.LR) {
+        return (amountClaimed = +toFixedEtherNumber(
+          +ethers.formatEther(BigInt(roundClaimedData?.[0]?.refund)),
+          2
+        ));
+      }
+      if (statusClaim === RESULT_STATUS.REFUND) {
+        return (amountClaimed = +toFixedEtherNumber(
+          +ethers.formatEther(BigInt(roundClaimedData?.[0]?.refund)),
+          2
+        ));
+      }
+    }
+  };
 
   const claimHandler = async () => {
     setIsLoading(true);
@@ -137,7 +158,7 @@ const ClaimModal: React.FC<IClaimProps> = ({
       <div className="flex justify-between font-semibold">
         <span>Collecting</span>
         <span>
-          {!isEmpty(roundClaimedData) ? amountClaim : 0} {CURRENCY_UNIT}
+          {!isEmpty(roundClaimedData) ? amountClaim() : 0} {CURRENCY_UNIT}
         </span>
       </div>
       <p className="text-center text-[--colors-text99] my-2">

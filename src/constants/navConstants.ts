@@ -8,7 +8,7 @@ const NAV_HEADER = [
     // renderDot: "bg-[--colors-success]",
     items: [
       {
-        title: "BO",
+        title: "Prediction",
         link: "/prediction",
       },
       {

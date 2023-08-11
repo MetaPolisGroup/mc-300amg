@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Icons } from "../Icons";
 import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { DocumentData } from "firebase/firestore";
+import Image from "next/image";
 
 interface IFutureCard {
   futureRound: number;
@@ -62,7 +63,7 @@ const FutureCard: React.FC<IFutureCard> = ({ futureRound, plusMinute }) => {
         <div className="card-body p-4">
           <div className="relative -mb-[0.55rem]">
             <div className="h-16 mx-auto w-60">
-              <Icons.PayoutUp />
+              <Image src="/images/up.png" width={288} height={64} alt="up" />
               <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                 <div
                   className={`text-[--colors-textDisabled] font-semibold uppercase text-xl`}
@@ -86,7 +87,7 @@ const FutureCard: React.FC<IFutureCard> = ({ futureRound, plusMinute }) => {
           </div>
           <div className="relative -mt-[0.55rem]">
             <div className="h-16 mx-auto w-60">
-              <Icons.PayoutDown />
+              <Image src="/images/down.png" width={288} height={64} alt="up" />
               <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                 <div className="text-[--colors-textDisabled] font-semibold uppercase text-xl">
                   DOWN

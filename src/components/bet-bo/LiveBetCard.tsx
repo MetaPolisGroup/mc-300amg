@@ -15,24 +15,27 @@ import { toFixedEtherNumber } from "@/utils/format-number";
 interface ILiveBetCardProps {
   liveRound: number;
   nextBetData: DocumentData;
+  liveBettedData: IBetData | undefined;
 }
 
 const LiveBetCard: React.FC<ILiveBetCardProps> = ({
   liveRound,
   nextBetData,
+  liveBettedData,
 }) => {
   const { address, isConnected } = useAccount();
   const [liveBetData, setLiveBetData] = useState<DocumentData[]>();
-  const [liveBettedData, setLiveBettedData] = useState<IBetData[]>();
   const [chainlinkData, setChainlinkData] = useState<DocumentData[]>();
   const [progressing, setProgressing] = useState<number>(0);
   const [isClient, setIsClient] = useState<boolean>(false);
-  const [roundPrevious, setRoundPrevious] = useState<number>(liveRound);
+  const [liveBetted, setLiveBetted] = useState<IBetData | undefined>(
+    liveBettedData
+  );
 
   useEffect(() => {
     getDataFileredByOnSnapshot(
       "predictions",
-      [["epoch", "==", roundPrevious]],
+      [["epoch", "==", liveRound]],
       (docs: DocumentData) => {
         setLiveBetData(docs as IBetData[]);
       }
@@ -41,28 +44,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
     getAllData("chainlink", (docs: DocumentData) => {
       setChainlinkData(docs as DocumentData[]);
     });
-  }, [roundPrevious]);
-
-  useEffect(() => {
-    if (roundPrevious !== liveRound) {
-      setRoundPrevious(liveRound);
-    }
-  }, [liveRound, roundPrevious]);
-
-  useEffect(() => {
-    if (isConnected && roundPrevious) {
-      getDataFileredByOnSnapshot(
-        "bets",
-        [
-          ["user_address", "==", address as `0x${string}`],
-          ["epoch", "==", roundPrevious],
-        ],
-        (docs) => {
-          setLiveBettedData(docs as IBetData[]);
-        }
-      );
-    }
-  }, [isConnected, address, roundPrevious]);
+  }, [liveRound]);
 
   useEffect(() => {
     const target = +nextBetData?.lockTimestamp * 1000;
@@ -75,8 +57,48 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
   }, [nextBetData?.lockTimestamp]);
 
   useEffect(() => {
+    if (
+      isConnected &&
+      address &&
+      liveBettedData?.epoch !== liveBetted?.epoch &&
+      !isEmpty(liveBettedData)
+    ) {
+      getDataFileredByOnSnapshot(
+        "bets",
+        [
+          ["user_address", "==", address as `0x${string}`],
+          ["epoch", "==", liveBettedData.epoch],
+        ],
+        (docs) => {
+          setLiveBetted(docs?.[0] as IBetData);
+        }
+      );
+    }
+    if (isEmpty(liveBettedData)) {
+      return setLiveBetted(undefined);
+    }
+    if (
+      isConnected &&
+      address &&
+      !isEmpty(liveBettedData) &&
+      liveBettedData?.epoch !== liveRound
+    ) {
+      getDataFileredByOnSnapshot(
+        "bets",
+        [
+          ["user_address", "==", address as `0x${string}`],
+          ["epoch", "==", liveRound],
+        ],
+        (docs) => {
+          setLiveBetted(docs?.[0] as IBetData);
+        }
+      );
+    }
+  }, [isConnected, liveBettedData?.epoch, address, liveBettedData, liveRound]);
+
+  useEffect(() => {
     setIsClient(true);
-    if (liveBettedData?.[0]?.refund && liveBettedData?.[0]?.refund > 0)
+    if (liveBetted?.refund && liveBetted?.refund > 0)
       toast.custom((t) => (
         <div
           className={`${
@@ -96,7 +118,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                 <p className="mt-1 text-sm text-[--colors-text]">
                   You has been refunded{" "}
                   {toFixedEtherNumber(
-                    ethers.formatEther(BigInt(liveBettedData?.[0]?.refund)),
+                    ethers.formatEther(BigInt(liveBetted?.refund)),
                     2
                   )}{" "}
                   {CURRENCY_UNIT}
@@ -114,10 +136,15 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
           </div>
         </div>
       ));
-  }, [liveBettedData?.[0]?.refund]);
+  }, []);
 
   const ratePrice =
     (+chainlinkData?.[0]?.price - +liveBetData?.[0]?.lockPrice) / 10 ** 8;
+
+  // console.log({ roundPrevious });
+  // console.log({ liveRound });
+  // console.log({ liveBettedData });
+  // console.log({ liveBetted });
 
   return (
     <div
@@ -139,9 +166,8 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
             />
           </div>
           <div className="card-body p-4">
-            {!isEmpty(liveBettedData) &&
-              (liveBettedData?.[0]?.position === "UP" &&
-              liveBettedData?.[0]?.epoch === liveRound ? (
+            {!isEmpty(liveBetted) &&
+              (liveBetted?.position === "UP" ? (
                 <div className="absolute flex gap-2 z-20 border-2 rounded-2xl border-[--colors-secondary] px-2 py-[2px] ">
                   <Icons.CheckCircle className="text-[--colors-text]" />
                   <span className="text-[--colors-secondary]">ENTERED</span>
@@ -150,7 +176,66 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
             <div className="relative -mb-[0.55rem]">
               {ratePrice > 0 ? (
                 <div className="h-16 mx-auto w-60">
-                  <Icons.PayoutUpSuccess />
+                  <svg
+                    height="65px"
+                    width="240px"
+                    viewBox="0 0 240 65"
+                    color="text"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="sc-231a1e38-0 dPwWVs"
+                  >
+                    <g filter="url(#filter0_i)">
+                      <path
+                        d="M10.0001 49.2757L10.0003 64H234L234 49.2753C234 42.5136 229.749 36.4819 223.381 34.2077L138.48 3.8859C127.823 0.0796983 116.177 0.0796931 105.519 3.8859L20.6188 34.2076C14.2508 36.4819 10.0001 42.5138 10.0001 49.2757Z"
+                        fill="#2ccece"
+                      ></path>
+                    </g>
+                    <defs>
+                      <filter
+                        id="filter0_i"
+                        x="10.0001"
+                        y="1.03125"
+                        width="224"
+                        height="62.9688"
+                        filterUnits="userSpaceOnUse"
+                        color-interpolation-filters="sRGB"
+                      >
+                        <feFlood
+                          flood-opacity="0"
+                          result="BackgroundImageFix"
+                        ></feFlood>
+                        <feBlend
+                          mode="normal"
+                          in="SourceGraphic"
+                          in2="BackgroundImageFix"
+                          result="shape"
+                        ></feBlend>
+                        <feColorMatrix
+                          in="SourceAlpha"
+                          type="matrix"
+                          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                          result="hardAlpha"
+                        ></feColorMatrix>
+                        <feOffset></feOffset>
+                        <feGaussianBlur stdDeviation="1"></feGaussianBlur>
+                        <feComposite
+                          in2="hardAlpha"
+                          operator="arithmetic"
+                          k2="-1"
+                          k3="1"
+                        ></feComposite>
+                        <feColorMatrix
+                          type="matrix"
+                          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0"
+                        ></feColorMatrix>
+                        <feBlend
+                          mode="normal"
+                          in2="shape"
+                          result="effect1_innerShadow"
+                        ></feBlend>
+                      </filter>
+                    </defs>
+                  </svg>
                   <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                     <div
                       className={`text-[--colors-white] font-semibold uppercase text-xl`}
@@ -172,7 +257,66 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                 </div>
               ) : (
                 <div className="h-16 mx-auto w-60">
-                  <Icons.PayoutUp />
+                  <svg
+                    height="65px"
+                    width="240px"
+                    viewBox="0 0 240 65"
+                    color="text"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="sc-231a1e38-0 dPwWVs"
+                  >
+                    <g filter="url(#filter0_i)">
+                      <path
+                        d="M10.0001 49.2757L10.0003 64H234L234 49.2753C234 42.5136 229.749 36.4819 223.381 34.2077L138.48 3.8859C127.823 0.0796983 116.177 0.0796931 105.519 3.8859L20.6188 34.2076C14.2508 36.4819 10.0001 42.5138 10.0001 49.2757Z"
+                        fill="#353547"
+                      ></path>
+                    </g>
+                    <defs>
+                      <filter
+                        id="filter0_i"
+                        x="10.0001"
+                        y="1.03125"
+                        width="224"
+                        height="62.9688"
+                        filterUnits="userSpaceOnUse"
+                        color-interpolation-filters="sRGB"
+                      >
+                        <feFlood
+                          flood-opacity="0"
+                          result="BackgroundImageFix"
+                        ></feFlood>
+                        <feBlend
+                          mode="normal"
+                          in="SourceGraphic"
+                          in2="BackgroundImageFix"
+                          result="shape"
+                        ></feBlend>
+                        <feColorMatrix
+                          in="SourceAlpha"
+                          type="matrix"
+                          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                          result="hardAlpha"
+                        ></feColorMatrix>
+                        <feOffset></feOffset>
+                        <feGaussianBlur stdDeviation="1"></feGaussianBlur>
+                        <feComposite
+                          in2="hardAlpha"
+                          operator="arithmetic"
+                          k2="-1"
+                          k3="1"
+                        ></feComposite>
+                        <feColorMatrix
+                          type="matrix"
+                          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0"
+                        ></feColorMatrix>
+                        <feBlend
+                          mode="normal"
+                          in2="shape"
+                          result="effect1_innerShadow"
+                        ></feBlend>
+                      </filter>
+                    </defs>
+                  </svg>
                   <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                     <div
                       className={`text-[--colors-success] font-semibold uppercase text-xl`}
@@ -267,7 +411,66 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
             <div className="relative -mt-[0.55rem]">
               {ratePrice > 0 ? (
                 <div className="h-16 mx-auto w-60">
-                  <Icons.PayoutDown />
+                  <svg
+                    height="65px"
+                    width="240px"
+                    viewBox="0 0 240 65"
+                    color="text"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="sc-231a1e38-0 dPwWVs"
+                  >
+                    <g filter="url(#filter0_i)">
+                      <path
+                        d="M10.0001 15.7243L10.0003 1H234L234 15.7247C234 22.4864 229.749 28.5181 223.381 30.7923L138.48 61.1141C127.823 64.9203 116.177 64.9203 105.519 61.1141L20.6188 30.7924C14.2508 28.5181 10.0001 22.4862 10.0001 15.7243Z"
+                        fill="#353547"
+                      ></path>
+                    </g>
+                    <defs>
+                      <filter
+                        id="filter0_i"
+                        x="10.0001"
+                        y="1"
+                        width="224"
+                        height="62.9688"
+                        filterUnits="userSpaceOnUse"
+                        color-interpolation-filters="sRGB"
+                      >
+                        <feFlood
+                          flood-opacity="0"
+                          result="BackgroundImageFix"
+                        ></feFlood>
+                        <feBlend
+                          mode="normal"
+                          in="SourceGraphic"
+                          in2="BackgroundImageFix"
+                          result="shape"
+                        ></feBlend>
+                        <feColorMatrix
+                          in="SourceAlpha"
+                          type="matrix"
+                          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                          result="hardAlpha"
+                        ></feColorMatrix>
+                        <feOffset></feOffset>
+                        <feGaussianBlur stdDeviation="1"></feGaussianBlur>
+                        <feComposite
+                          in2="hardAlpha"
+                          operator="arithmetic"
+                          k2="-1"
+                          k3="1"
+                        ></feComposite>
+                        <feColorMatrix
+                          type="matrix"
+                          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0"
+                        ></feColorMatrix>
+                        <feBlend
+                          mode="normal"
+                          in2="shape"
+                          result="effect1_innerShadow"
+                        ></feBlend>
+                      </filter>
+                    </defs>
+                  </svg>
                   <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                     <div className="text-[--colors-textSubtle] font-semibold text-sm">
                       {liveBetData?.[0]?.bearAmount
@@ -287,7 +490,66 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                 </div>
               ) : (
                 <div className="h-16 mx-auto w-60">
-                  <Icons.PayoutDownFailure />
+                  <svg
+                    height="65px"
+                    width="240px"
+                    viewBox="0 0 240 65"
+                    color="text"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="sc-231a1e38-0 dPwWVs"
+                  >
+                    <g filter="url(#filter0_i)">
+                      <path
+                        d="M10.0001 15.7243L10.0003 1H234L234 15.7247C234 22.4864 229.749 28.5181 223.381 30.7923L138.48 61.1141C127.823 64.9203 116.177 64.9203 105.519 61.1141L20.6188 30.7924C14.2508 28.5181 10.0001 22.4862 10.0001 15.7243Z"
+                        fill="#ee7e3e"
+                      ></path>
+                    </g>
+                    <defs>
+                      <filter
+                        id="filter0_i"
+                        x="10.0001"
+                        y="1"
+                        width="224"
+                        height="62.9688"
+                        filterUnits="userSpaceOnUse"
+                        color-interpolation-filters="sRGB"
+                      >
+                        <feFlood
+                          flood-opacity="0"
+                          result="BackgroundImageFix"
+                        ></feFlood>
+                        <feBlend
+                          mode="normal"
+                          in="SourceGraphic"
+                          in2="BackgroundImageFix"
+                          result="shape"
+                        ></feBlend>
+                        <feColorMatrix
+                          in="SourceAlpha"
+                          type="matrix"
+                          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                          result="hardAlpha"
+                        ></feColorMatrix>
+                        <feOffset></feOffset>
+                        <feGaussianBlur stdDeviation="1"></feGaussianBlur>
+                        <feComposite
+                          in2="hardAlpha"
+                          operator="arithmetic"
+                          k2="-1"
+                          k3="1"
+                        ></feComposite>
+                        <feColorMatrix
+                          type="matrix"
+                          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0"
+                        ></feColorMatrix>
+                        <feBlend
+                          mode="normal"
+                          in2="shape"
+                          result="effect1_innerShadow"
+                        ></feBlend>
+                      </filter>
+                    </defs>
+                  </svg>
                   <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                     <div className="text-[--colors-white] font-semibold text-sm">
                       {liveBetData?.[0]?.bearAmount
@@ -307,8 +569,8 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                 </div>
               )}
             </div>
-            {!isEmpty(liveBettedData) &&
-              (liveBettedData?.[0]?.position === "DOWN" ? (
+            {!isEmpty(liveBetted) &&
+              (liveBetted?.position === "DOWN" ? (
                 <div className="absolute right-0 bottom-2 flex gap-2 z-20 border-2 rounded-2xl border-[--colors-secondary] px-2 py-[2px] ">
                   <Icons.CheckCircle className="text-[--colors-text]" />
                   <span className="text-[--colors-secondary]">ENTERED</span>
