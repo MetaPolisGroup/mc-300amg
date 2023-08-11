@@ -18,6 +18,29 @@ const SliderListGame: React.FC = () => {
   const [games, setGames] =
     useState<{ id: string; img: string; link: string }[]>(LIST_GAME);
 
+  const renderCardGamesDesktop = () => {
+    return games.map((games, index) => {
+      return (
+        <Link
+          key={`${games.id}${index}`}
+          href={games.link}
+          className="block w-[24%] rounded-[60px]"
+        >
+          <div className="w-full rounded-[60px] overflow-hidden flex items-center justify-center text-[--colors-textSubtle] font-bold select-none cursor-pointer">
+            <Image
+              src={games.img}
+              sizes="1000"
+              width={100}
+              height={50}
+              alt={games.id}
+              className={clsx("max-w-fit w-full h-auto rounded-[60px]")}
+            />
+          </div>
+        </Link>
+      );
+    });
+  };
+
   const renderCardGames = () => {
     return games.map((games, index) => {
       return (
@@ -43,17 +66,23 @@ const SliderListGame: React.FC = () => {
   };
 
   return (
-    <div className={clsx(classes["list-game"])}>
-      <Swiper
-        slidesPerView={"auto"}
-        spaceBetween={24}
-        freeMode={false}
-        modules={[FreeMode, Pagination]}
-        // centeredSlides={true}
-        slideToClickedSlide={true}
-      >
-        {renderCardGames()}
-      </Swiper>
+    <div className={clsx(classes["list-game"], "bg-[--colors-backgroundAlt]")}>
+      <div className="hidden sm:flex justify-between py-3 px-7">
+        {renderCardGamesDesktop()}
+      </div>
+
+      <div className="block sm:hidden">
+        <Swiper
+          slidesPerView={"auto"}
+          spaceBetween={24}
+          freeMode={false}
+          modules={[FreeMode, Pagination]}
+          // centeredSlides={true}
+          slideToClickedSlide={true}
+        >
+          {renderCardGames()}
+        </Swiper>
+      </div>
     </div>
   );
 };
