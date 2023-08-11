@@ -137,7 +137,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
           </div>
         </div>
       ));
-  }, []);
+  }, [liveBetted?.refund]);
 
   const ratePrice =
     (+chainlinkData?.[0]?.price - +liveBetData?.[0]?.lockPrice) / 10 ** 8;
