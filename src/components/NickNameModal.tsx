@@ -67,7 +67,6 @@ const NickNameModal = () => {
       if (response) {
         setIsLoading(false);
         setShowUserNickname(false);
-        console.log(response);
         toast.custom((t) => (
           <div
             className={`${

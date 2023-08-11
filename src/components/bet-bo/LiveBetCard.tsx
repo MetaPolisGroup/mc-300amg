@@ -155,14 +155,14 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
         <div className={"card w-80 z-20 bg-[--colors-backgroundAlt] shadow-xl"}>
           <div className="flex justify-between items-center bg-[--colors-backgroundAlt] h-9 p-2 rounded-t-2xl">
             <div className="flex items-center gap-2">
-              <Icons.PlayCircle className="text-[--colors-secondary]" />
-              <span className="text-[--colors-secondary]">Live</span>
+              <Icons.PlayCircle className="text-[--colors-primary]" />
+              <span className="text-[--colors-primary]">Live</span>
             </div>
-            <div className="text-[--colors-secondary]">#{liveRound}</div>
+            <div className="text-[--colors-primary]">#{liveRound}</div>
           </div>
           <div className="w-full bg-[--colors-input] h-2.5 ">
             <div
-              className="bg-[--colors-secondary] h-2.5"
+              className="bg-[--colors-primary] h-2.5"
               style={{ width: `${(progressing * 100) / 300}%` }}
             />
           </div>

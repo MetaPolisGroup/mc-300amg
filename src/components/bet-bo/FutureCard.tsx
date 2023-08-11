@@ -52,8 +52,8 @@ const FutureCard: React.FC<IFutureCard> = ({ futureRound, plusMinute }) => {
       <div className={"card z-20 w-80 bg-[--colors-backgroundAlt] shadow-xl"}>
         <div className="flex justify-between items-center bg-[--colors-cardBorder] h-9 p-2 rounded-t-2xl">
           <div className="flex items-center gap-2">
-            <Icons.Clock3 className="text-[--colors-text]" />
-            <span className="text-[--colors-text]">Later</span>
+            <Icons.Clock3 className="text-[--colors-primary]" />
+            <span className="text-[--colors-primary]">Later</span>
           </div>
           <div className="text-[--colors-textSubtle] text-xs">
             #{futureRound}

@@ -1,13 +1,12 @@
 "use client";
-import SliderListGame from "@/components/sliderListGame";
-import SliderBannerGame from "@/components/sliderBannerGame";
+
 import Image from "next/image";
 import Button from "@/components/ui/Button";
+import SliderBannerGame from "@/components/sliderBannerGame";
 
 export default function Home() {
   return (
     <main className="bg-[--colors-background] overflow-hidden min-h-[85vh]">
-      <SliderListGame />
       {/* <SliderBannerGame /> */}
 
       <div className="px-4 flex flex-col items-center md:flex-row justify-between md:px-28">

@@ -34,7 +34,7 @@ const HeaderModal = () => {
               <Link
                 key={game.id}
                 href={game.link}
-                className="w-[48%] h-[48px] rounded-3xl overflow-hidden flex justify-center"
+                className="w-[48%] h-[48px] rounded-3xl overflow-hidden flex justify-center items-center"
                 onClick={() => menuModal.current?.close()}
               >
                 <Image

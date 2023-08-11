@@ -18,20 +18,20 @@ import {
 import Button from "../ui/Button";
 import { RootState } from "@/redux/store";
 
-interface ISetBetPositionProps {
+interface ISetBoxingBetPositionProps {
   showSetBetCard?: boolean;
-  upOrDownStatus?: string;
-  onEnterUpOrDown?: (status: string) => void;
+  yesOrNoStatus?: string;
+  onEnterYesOrNo?: (status: string) => void;
   onBackward?: (status: boolean) => void;
   currentRound: string;
   onPlacedBet?: (status: boolean) => void;
   inputRef?: React.MutableRefObject<HTMLInputElement | null>;
 }
 
-const SetBetPosition: React.FC<ISetBetPositionProps> = ({
+const SetElectionBetPostion: React.FC<ISetBoxingBetPositionProps> = ({
   showSetBetCard,
-  upOrDownStatus,
-  onEnterUpOrDown,
+  yesOrNoStatus,
+  onEnterYesOrNo,
   onBackward,
   currentRound,
   onPlacedBet,
@@ -53,8 +53,8 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   const [approveValue, setApproveValue] = useState<number>(0);
 
   useEffect(() => {
-    if (upOrDownStatus !== "") inputRef?.current?.focus();
-  }, [inputRef, upOrDownStatus]);
+    if (yesOrNoStatus !== "") inputRef?.current?.focus();
+  }, [inputRef, yesOrNoStatus]);
 
   useEffect(() => {
     setIsClient(true);
@@ -70,7 +70,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
       address: CONSTANTS.ADDRESS.TOKEN,
       abi: CONSTANTS.ABI.TOKEN,
       functionName: "allowance",
-      args: [address, CONSTANTS.ADDRESS.PREDICTION],
+      args: [address, CONSTANTS.ADDRESS.MARKET],
     });
 
     setApproveValue(Number(ethers.formatEther(data.toString())));
@@ -88,8 +88,8 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
     }
   };
 
-  const changeUpOrDownHandler = (status: string) => {
-    if (onEnterUpOrDown) return onEnterUpOrDown(status);
+  const changeYesOrNoHandler = (status: string) => {
+    if (onEnterYesOrNo) return onEnterYesOrNo(status);
   };
 
   const backwardHandler = () => {
@@ -100,6 +100,8 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
     const {
       target: { value },
     } = event;
+    const percentage = ((+value * 100) / +balance!).toFixed(2);
+    setPercentage(+percentage);
     setAmount(value);
   };
 
@@ -158,7 +160,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
         abi: CONSTANTS.ABI.TOKEN,
         functionName: "approve",
         args: [
-          CONSTANTS.ADDRESS.PREDICTION,
+          CONSTANTS.ADDRESS.MARKET,
           ethers.parseEther((+amount + 1).toString()),
         ],
       });
@@ -268,11 +270,11 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
     try {
       // betBull is Bet up
 
-      if (upOrDownStatus === "UP") {
+      if (yesOrNoStatus === "YES") {
         const { request } = await publicClient.simulateContract({
           account: address,
-          address: CONSTANTS.ADDRESS.PREDICTION,
-          abi: CONSTANTS.ABI.PREDICTION,
+          address: CONSTANTS.ADDRESS.MARKET,
+          abi: CONSTANTS.ABI.MARKET,
           functionName: "betBull",
           args: [currentRound, ethers.parseUnits(amount, "ether")],
         });
@@ -344,7 +346,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
                           Success!
                         </p>
                         <p className="mt-1 text-sm text-[--colors-text]">
-                          {upOrDownStatus} position entered
+                          {yesOrNoStatus} position entered
                         </p>
                         <a
                           href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
@@ -389,7 +391,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
                           Error!
                         </p>
                         <p className="mt-1 text-sm text-[--colors-text]">
-                          {upOrDownStatus} position entered
+                          {yesOrNoStatus} position entered
                         </p>
                         <a
                           href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
@@ -416,11 +418,11 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
           }
         }
       }
-      if (upOrDownStatus === "DOWN") {
+      if (yesOrNoStatus === "NO") {
         const { request } = await publicClient.simulateContract({
           account: address,
-          address: CONSTANTS.ADDRESS.PREDICTION,
-          abi: CONSTANTS.ABI.PREDICTION,
+          address: CONSTANTS.ADDRESS.MARKET,
+          abi: CONSTANTS.ABI.MARKET,
           functionName: "betBear",
           args: [currentRound, ethers.parseUnits(amount, "ether")],
         });
@@ -451,7 +453,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
                           Success!
                         </p>
                         <p className="mt-1 text-sm text-[--colors-text]">
-                          {upOrDownStatus} position entered
+                          {yesOrNoStatus} position entered
                         </p>
                         <a
                           href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
@@ -496,7 +498,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
                           Error!
                         </p>
                         <p className="mt-1 text-sm text-[--colors-text]">
-                          {upOrDownStatus} position entered
+                          {yesOrNoStatus} position entered
                         </p>
                         <a
                           href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
@@ -533,7 +535,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
 
   return (
     <div
-      className={`card absolute z-10 w-80 shadow-xl backface-hidden translate-rotateY bg-[--colors-backgroundAlt] ${
+      className={`card w-96 absolute top-0 z-10 shadow-xl backface-hidden translate-rotateY bg-[--colors-backgroundAlt] ${
         showSetBetCard && "z-20"
       }`}
     >
@@ -545,23 +547,21 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
           />
           <span className="text-[--colors-text]">Set Position</span>
         </div>
-        {upOrDownStatus === "UP" ? (
+        {yesOrNoStatus === "YES" ? (
           <Button
             className="text-[--colors-white] bg-[--colors-success] hover:bg-[--colors-success] hover:opacity-[0.8]"
             type="button"
-            onClick={() => changeUpOrDownHandler("DOWN")}
+            onClick={() => changeYesOrNoHandler("NO")}
           >
-            <Icons.ArrowDown className="rotate-180" />
-            <span>UP</span>
+            <span>YES</span>
           </Button>
         ) : (
           <Button
             className="text-[--colors-white] bg-[--colors-failure] hover:bg-[--colors-failure] hover:opacity-[0.8]"
             type="button"
-            onClick={() => changeUpOrDownHandler("UP")}
+            onClick={() => changeYesOrNoHandler("YES")}
           >
-            <Icons.ArrowDown />
-            <span>DOWN</span>
+            <span>NO</span>
           </Button>
         )}
       </div>
@@ -698,7 +698,7 @@ const SetBetPosition: React.FC<ISetBetPositionProps> = ({
   );
 };
 
-export default React.memo(SetBetPosition);
+export default React.memo(SetElectionBetPostion);
 
 const BUTTONS_PERCENT = [
   {

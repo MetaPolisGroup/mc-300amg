@@ -17,7 +17,7 @@ const HeaderChart: React.FC<IHeaderChart> = ({ time, price }) => {
   return (
     <div className="flex items-center gap-3 pt-5 px-3 bg-[--colors-backgroundAlt] lg:bg-[--colors-gradientBubblegum]">
       <div className="flex items-center gap-2">
-        <div className="text-[--colors-text] font-bold text-[32px] md:text-[40px]">
+        <div className="text-[--colors-white] font-bold text-[32px] md:text-[40px]">
           {price}
         </div>
         <div className="font-bold text-[--colors-textSubtle] text-xl">

@@ -158,7 +158,7 @@ export default function Footer() {
 
         {showElement && (
           <div
-            className="fixed cursor-pointer right-[30px] bottom-[91px] md:right-[65px] md:bottom-[45px] flex w-[7%] sm:w-[5%] items-center justify-around bg-[--colors-primary] rounded-xl font-bold py-1 md:py-3"
+            className="fixed cursor-pointer right-[30px] bottom-[91px] md:right-[65px] md:bottom-[45px] flex w-[7%] sm:w-[5%] items-center justify-around bg-[--colors-primary] rounded-xl font-bold py-1 md:py-3 text-[--colors-invertedContrast]"
             onClick={() => {
               if (typeof window !== "undefined")
                 window.scrollTo({ top: 0, behavior: "smooth" });

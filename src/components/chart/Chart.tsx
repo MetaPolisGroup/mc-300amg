@@ -105,7 +105,7 @@ const Chart: React.FC = () => {
             time: params?.[0]?.axisValue,
           });
 
-          return `${params?.[0]?.axisValue}<br><b>${params?.[0]?.data.toFixed(
+          return `${params?.[0]?.axisValue}<br><b>${params?.[0]?.data?.toFixed(
             4
           )} BNB/USD</b>`;
         },
@@ -115,7 +115,7 @@ const Chart: React.FC = () => {
         boundaryGap: false,
         data: time,
         axisLabel: {
-          color: "#9a6aff",
+          color: "#74ddca",
           fontWeight: 500,
         },
       },
@@ -134,7 +134,7 @@ const Chart: React.FC = () => {
           formatter: (value: any) => {
             return `${value.toFixed(4)}`;
           },
-          color: "#9a6aff",
+          color: "#74ddca",
           fontWeight: 500,
         },
       },

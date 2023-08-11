@@ -90,17 +90,17 @@ export const NAV_SUB_HEADER = [
 export const LIST_GAME = [
   {
     id: "prediction",
-    img: "/images/game/prediction.svg",
+    img: "/images/game/prediction.png",
     link: "/prediction",
   },
   {
     id: "diee",
-    img: "/images/game/dice.svg",
+    img: "/images/game/dice.png",
     link: "/",
   },
   {
     id: "sport",
-    img: "/images/game/sport.svg",
+    img: "/images/game/sport.png",
     link: "/",
   },
   {
