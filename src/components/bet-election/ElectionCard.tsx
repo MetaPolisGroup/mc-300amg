@@ -43,7 +43,7 @@ const ElectionCard = () => {
     }
   }, [isConnected, address]);
 
-  console.log(userBettedElection?.[0]);
+  // console.log(userBettedElection?.[0]);
 
   const enterYesOrNoHandler = (status: string) => {
     setShowSetBetCard(true);
@@ -66,7 +66,7 @@ const ElectionCard = () => {
 
   return (
     <div
-      className={`w-full md:w-1/4 flex h-[485px] justify-center items-center relative transition-transform duration-700 preverve-3d ${
+      className={`w-full md:w-1/3 flex h-[485px] justify-center items-center relative transition-transform duration-700 preverve-3d ${
         showSetBetCard === true && "rotateY-180"
       }`}
     >
@@ -76,16 +76,12 @@ const ElectionCard = () => {
         }`}
       >
         <div className="card-body rounded-2xl p-4 bg-[--colors-backgroundAlt]">
-          <div className="relative -mb-[0.55rem]">
-            <div className="h-16 mx-auto w-60">
-              <div className="flex items-center justify-between absolute top-0 left-0 w-full h-full">
-                <div className="w-full md:w-[290px] h-12 flex items-center justify-center px-4 mb-3 md:mb-5 text-slate-400 text-xl font-light leading-7 bg-[--colors-backgroundAlt] rounded-[20px] border-2 border-slate-400">
-                  Elections
-                </div>
-                <div className="text-[--colors-textSubtle] font-semibold h-12">
-                  Coming soon
-                </div>
-              </div>
+          <div className="flex items-center justify-between">
+            <div className="w-1/3 flex items-center px-4 py-2 text-slate-400 text-xl font-light leading-7 bg-[--colors-backgroundAlt] rounded-[20px] border-2 border-slate-400 justify-center">
+              Election
+            </div>
+            <div className="text-[--colors-textSubtle] font-semibold">
+              Coming soon
             </div>
           </div>
           <div className="mb-5 md:mb-10 text-[--colors-contrast] text-xl font-bold leading-7">
@@ -97,7 +93,7 @@ const ElectionCard = () => {
           <div className="flex flex-col justify-between gap-2">
             <div className="flex gap-2 items-center">
               <div className="text-[--colors-contrast] text-base font-light leading-snug">
-                Total Volumn
+                Total Volume
               </div>
               <div className="text-slate-400 text-[26px] font-bold leading-9">
                 {electionData?.[0]?.totalAmount

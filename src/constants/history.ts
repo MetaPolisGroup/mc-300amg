@@ -39,3 +39,12 @@ export const USER_DIRECTION = {
 };
 
 export const LIST_RADIO = [RADIO.ALL, RADIO.UNREFUNDED, RADIO.UNCOLECTED];
+
+export const RESULT_MARKET_STATUS = {
+  WIN: "Win",
+  LOSE: "Lose",
+  WAITING: "Waiting",
+  REFUND: "Refund",
+  WR: "Winning Refund",
+  LR: "Losing Refund",
+};
