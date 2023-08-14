@@ -553,7 +553,7 @@ const SetElectionBetPostion: React.FC<ISetBoxingBetPositionProps> = ({
             type="button"
             onClick={() => changeYesOrNoHandler("NO")}
           >
-            <span>YES</span>
+            <span>CANDIDATE 1</span>
           </Button>
         ) : (
           <Button
@@ -561,7 +561,7 @@ const SetElectionBetPostion: React.FC<ISetBoxingBetPositionProps> = ({
             type="button"
             onClick={() => changeYesOrNoHandler("YES")}
           >
-            <span>NO</span>
+            <span>CANDIDATE 2</span>
           </Button>
         )}
       </div>

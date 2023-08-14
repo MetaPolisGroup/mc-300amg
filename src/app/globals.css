@@ -118,6 +118,8 @@
   --colors-lightBlueRight: #28c38b;
   --colors-background-slider: #303030;
   --colors-textSub: #fff;
+  --colors-win: #2cce80;
+  --colors-lose: #f44b40;
   --colors-gradientBubblegum: linear-gradient(139.73deg, #313d5c, #3d2a54);
   --colors-gradientInverseBubblegum: linear-gradient(
     139.73deg,
@@ -185,6 +187,8 @@
   --colors-lightBlueLeft: #28c38b;
   --colors-lightBlueRight: #28c38b;
   --colors-background-slider: #ffffff;
+  --colors-win: #2cce80;
+  --colors-lose: #f44b40;
   --colors-gradientBubblegum: linear-gradient(139.73deg, #e5fdff, #f3efff);
   --colors-gradientInverseBubblegum: linear-gradient(
     139.73deg,

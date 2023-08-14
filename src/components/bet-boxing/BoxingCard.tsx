@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import SetBoxingBetPosition from "./SetBoxingBetPosition";
 import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
+import TooltipElement from "../ui/Tooltip";
 import { DocumentData } from "firebase/firestore";
 import { EMarketTypes } from "@/constants/marketsType";
 import { toFixedEtherNumber } from "@/utils/format-number";
@@ -9,14 +10,19 @@ import { ethers } from "ethers";
 import { CURRENCY_UNIT } from "@/constants";
 import { useAccount } from "wagmi";
 import { isEmpty } from "lodash";
-import TooltipElement from "../ui/Tooltip";
+import { useCountdown } from "@/hooks/useCountDown";
 
-const BoxingCard = () => {
+interface IBoxingCard {
+  targetDate: number;
+}
+
+const BoxingCard: React.FC<IBoxingCard> = ({ targetDate }) => {
   const [showSetBetCard, setShowSetBetCard] = useState<boolean>(false);
   const [elonOrMarkStatus, setElonOrMarkStatus] = useState<string>("");
   const [boxingData, setBoxingData] = useState<IBoxingData[]>([]);
   const [userBettedBoxing, setUserBettedBoxing] = useState<IBoxingBetted[]>([]);
   const { isConnected, address } = useAccount();
+  const [days, hours, minutes, seconds] = useCountdown(targetDate);
 
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
@@ -31,15 +37,16 @@ const BoxingCard = () => {
     if (isConnected && address) {
       getDataFileredByOnSnapshot(
         "bets_market",
-        [["user_address", "==", address as `0x${string}`]],
+        [
+          ["user_address", "==", address as `0x${string}`],
+          ["epoch", "==", EMarketTypes.BOXING],
+        ],
         (docs) => {
           setUserBettedBoxing(docs as IBoxingBetted[]);
         }
       );
     }
   }, [isConnected, address]);
-
-  console.log(userBettedBoxing);
 
   const enterElonOrMarkHandler = (status: string) => {
     setShowSetBetCard(true);
@@ -62,7 +69,7 @@ const BoxingCard = () => {
 
   return (
     <div
-      className={`w-full flex h-[485px] justify-center items-center relative transition-transform duration-700 preverve-3d ${
+      className={`w-full md:w-1/3 flex h-[485px] justify-center items-center relative transition-transform duration-700 preverve-3d ${
         showSetBetCard === true && "rotateY-180"
       }`}
     >
@@ -72,25 +79,27 @@ const BoxingCard = () => {
         }`}
       >
         <div className="card-body rounded-2xl p-4 bg-[--colors-backgroundAlt]">
-          <div className="relative -mb-[0.55rem]">
-            <div className="h-16 mx-auto w-60">
-              <div className="flex flex-col justify-start absolute top-0 left-0 w-full h-full">
-                <div className="w-full md:w-[290px] h-12 flex items-center px-4 mb-3 md:mb-5 text-slate-400 text-xl font-light leading-7 bg-[--colors-backgroundAlt] rounded-[20px] border-2 border-slate-400 justify-center">
-                  Highlights
-                </div>
-                <div className="text-[--colors-textSubtle] font-semibold text-sm"></div>
-              </div>
+          <div className="flex items-center justify-between">
+            <div className="w-1/3 flex items-center px-4 py-2 text-slate-400 text-xl font-light leading-7 bg-[--colors-backgroundAlt] rounded-[20px] border-2 border-slate-400 justify-center">
+              Highlights
+            </div>
+            <div className="text-[--colors-textSubtle] font-semibold">
+              {+days + +hours + +minutes + +seconds <= 0
+                ? "Expried"
+                : `${days}d:${hours}h:${minutes}m:${seconds}s`}
             </div>
           </div>
+
           <div className="mb-5 md:mb-10 text-[--colors-contrast] text-base font-bold leading-7">
-            An epic showdown is here! Elon Musk vs Mark Zuckerberg Who&apos;s
-            gonna win?
+            <p>An epic showdown is here!</p>
+            <p>Elon Musk vs Mark Zuckerberg</p>
+            Who&apos;s gonna win?
           </div>
 
           <div className="flex flex-col justify-between gap-2">
             <div className="flex gap-2 items-center">
               <div className="text-[--colors-contrast] text-base font-light leading-snug">
-                Total Volumn
+                Total Volume
               </div>
               <div className="text-slate-400 text-[26px] font-bold leading-9">
                 {boxingData?.[0]?.totalAmount
