@@ -13,7 +13,7 @@ import { isEmpty } from "lodash";
 import { useCountdown } from "@/hooks/useCountDown";
 
 interface IBoxingCard {
-  targetDate: number;
+  targetDate: Date;
 }
 
 const BoxingCard: React.FC<IBoxingCard> = ({ targetDate }) => {
@@ -22,7 +22,7 @@ const BoxingCard: React.FC<IBoxingCard> = ({ targetDate }) => {
   const [boxingData, setBoxingData] = useState<IBoxingData[]>([]);
   const [userBettedBoxing, setUserBettedBoxing] = useState<IBoxingBetted[]>([]);
   const { isConnected, address } = useAccount();
-  const [days, hours, minutes, seconds] = useCountdown(targetDate);
+  const [days, hours, minutes, seconds] = useCountdown<Date>(targetDate);
 
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 

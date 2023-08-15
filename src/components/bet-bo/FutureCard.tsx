@@ -16,7 +16,10 @@ const FutureCard: React.FC<IFutureCard> = ({ futureRound, plusMinute }) => {
   useEffect(() => {
     getDataFileredByOnSnapshot(
       "predictions",
-      [["locked", "==", false]],
+      [
+        ["locked", "==", false],
+        ["cancel", "==", false],
+      ],
       (docs: DocumentData) => {
         setNextBetData(docs as DocumentData[]);
       }
