@@ -2,6 +2,8 @@
 import BoxingCard from "@/components/bet-boxing/BoxingCard";
 import HistoryBoxingCard from "@/components/bet-boxing/HistoryBoxingCard";
 import ElectionCard from "@/components/bet-election/ElectionCard";
+import HistoryElectionCard from "@/components/bet-election/HistoryElectionCard";
+import SetElectionBetPostion from "@/components/bet-election/SetElectionBetPostion";
 import { BOXING_START_DATE } from "@/constants";
 import { EMarketTypes } from "@/constants/marketsType";
 import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
@@ -12,10 +14,14 @@ import { useAccount } from "wagmi";
 const MarketPage = () => {
   const { isConnected, address } = useAccount();
   const [userBettedBoxing, setUserBettedBoxing] = useState<IBoxingBetted[]>([]);
-  const [boxingData, setBoxingData] = useState<IBoxingData[]>([]);
-  const NOW_IN_MS = new Date().getTime();
+  const [userBettedElection, setUserBettedElection] = useState<
+    IElectionBetted[]
+  >([]);
 
-  const dateTimeAfterBoxingDate = NOW_IN_MS + BOXING_START_DATE;
+  const [boxingData, setBoxingData] = useState<IBoxingData[]>([]);
+  const [electionData, setElectionData] = useState<IElectionData[]>([]);
+
+  const dateTimeAfterBoxingDate = BOXING_START_DATE;
 
   useEffect(() => {
     getDataFileredByOnSnapshot(
@@ -23,6 +29,13 @@ const MarketPage = () => {
       [["epoch", "==", EMarketTypes.BOXING]],
       (docs: DocumentData) => {
         setBoxingData(docs as IBoxingData[]);
+      }
+    );
+    getDataFileredByOnSnapshot(
+      "markets",
+      [["epoch", "==", EMarketTypes.ELECTION]],
+      (docs: DocumentData) => {
+        setElectionData(docs as IElectionData[]);
       }
     );
   }, []);
@@ -37,6 +50,16 @@ const MarketPage = () => {
         ],
         (docs) => {
           setUserBettedBoxing(docs as IBoxingBetted[]);
+        }
+      );
+      getDataFileredByOnSnapshot(
+        "bets_market",
+        [
+          ["user_address", "==", address as `0x${string}`],
+          ["epoch", "==", EMarketTypes.ELECTION],
+        ],
+        (docs) => {
+          setUserBettedElection(docs as IElectionBetted[]);
         }
       );
     }
@@ -54,7 +77,12 @@ const MarketPage = () => {
         ) : (
           <BoxingCard targetDate={dateTimeAfterBoxingDate} />
         )}
-        <ElectionCard />
+
+        {electionData?.[0]?.result !== "Waiting" ? (
+          <HistoryElectionCard userBettedElection={userBettedElection?.[0]} />
+        ) : (
+          <ElectionCard />
+        )}
         {/* <ElectionCard />
         <BoxingCard />
         <ElectionCard />
