@@ -78,7 +78,7 @@ const ElectionCard = () => {
         <div className="card-body rounded-2xl p-4 bg-[--colors-backgroundAlt]">
           <div className="flex items-center justify-between">
             <div className="w-1/3 flex items-center px-4 py-2 text-slate-400 text-xl font-light leading-7 bg-[--colors-backgroundAlt] rounded-[20px] border-2 border-slate-400 justify-center">
-              Election
+              Elections
             </div>
             <div className="text-[--colors-textSubtle] font-semibold">
               Coming soon
