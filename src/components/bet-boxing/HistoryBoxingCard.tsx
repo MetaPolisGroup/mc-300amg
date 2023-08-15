@@ -232,7 +232,7 @@ const HistoryBoxingCard: React.FC<IHistoryBoxingCard> = ({
                     </div>
                     <div className="flex flex-1 items-center justify-between text-white text-xs pl-2 font-bold leading-7">
                       <div>MARK ZUCKERBERG</div>
-                      {boxingData?.[0].result === "Down" &&
+                      {boxingData?.[0]?.result === "Down" &&
                         boxingData?.[0]?.result.toLowerCase() !==
                           userBettedData?.position.toLowerCase() && (
                           <button className="w-20 text-white p-3 bg-gradient-to-br from-[--colors-win] to-[--colors-win] rounded-r-2xl uppercase">
