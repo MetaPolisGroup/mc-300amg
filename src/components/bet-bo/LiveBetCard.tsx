@@ -99,7 +99,13 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
 
   useEffect(() => {
     setIsClient(true);
-    if (liveBetted?.refund && liveBetted?.refund > 0)
+
+    if (
+      liveBetted?.refund &&
+      liveBetted?.refund > 0 &&
+      liveBetted?.epoch === liveRound &&
+      liveBetted?.status === "Live"
+    ) {
       toast.custom((t) => (
         <div
           className={`${
@@ -137,7 +143,8 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
           </div>
         </div>
       ));
-  }, [liveBetted?.refund]);
+    }
+  }, [liveBetted, liveRound]);
 
   const ratePrice =
     (+chainlinkData?.[0]?.price - +liveBetData?.[0]?.lockPrice) / 10 ** 8;
