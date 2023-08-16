@@ -1,21 +1,77 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import clsx from "clsx";
 import { Icons } from "../Icons";
+import { isEmpty } from "lodash";
+import { useAccount } from "wagmi";
+
 import ItemHistory from "./ItemHistory";
-import { LIST_MODE, LIST_RADIO, MODE, RADIO } from "@/constants/history";
+import { DocumentData } from "firebase/firestore";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
+
+import {
+  LIST_MODE,
+  LIST_RADIO,
+  MODE,
+  RADIO,
+  RESULT_STATUS,
+} from "@/constants/history";
 
 interface IMarketHistory {
   onClose: () => void;
 }
 
 const MarkerHistory: React.FC<IMarketHistory> = ({ onClose }) => {
+  const { isConnected, address } = useAccount();
+
   const [mode, setMode] = useState<any>(LIST_MODE[0]);
   const [radioChecked, setRadioChecked] = useState<string>(RADIO.ALL);
 
+  const [dataHistory, setDataHistory] = useState<DocumentData[]>([]);
+  const [originalHistoryData, setOriginalHistoryData] = useState<
+    DocumentData[]
+  >([]);
+
+  useEffect(() => {
+    if (isConnected && address) {
+      getDataFileredByOnSnapshot(
+        "bets_market",
+        [["user_address", "==", address as `0x${string}`]],
+        (docs: DocumentData) => {
+          setDataHistory(docs as DocumentData[]);
+          setOriginalHistoryData(docs as DocumentData[]);
+        }
+      );
+    }
+  }, [isConnected, address]);
+
+  console.log({ dataHistory });
+
   const handleSelectRadio = (value: string) => {
     setRadioChecked(value);
+
+    if (value === RADIO.UNREFUNDED) {
+      const historyDataFilted = originalHistoryData.filter(
+        (history) =>
+          (history?.status === RESULT_STATUS.REFUND ||
+            history?.status === RESULT_STATUS.LR) &&
+          history?.claimed === false
+      );
+      return setDataHistory(historyDataFilted);
+    }
+
+    if (value === RADIO.UNCOLECTED) {
+      const historyDataFilted = originalHistoryData.filter(
+        (history) =>
+          (history?.status === RESULT_STATUS.WIN ||
+            history?.status === RESULT_STATUS.WR) &&
+          history?.claimed === false
+      );
+      return setDataHistory(historyDataFilted);
+    }
+
+    return setDataHistory(originalHistoryData);
   };
 
   const renderMode = () => {
@@ -90,6 +146,25 @@ const MarkerHistory: React.FC<IMarketHistory> = ({ onClose }) => {
     );
   };
 
+  const renderHistoryContent = () => {
+    if (mode.id === MODE.ROUNDS && !isEmpty(dataHistory))
+      return dataHistory
+        .sort((a, b) => b.epoch - a.epoch)
+        .map((data) => <ItemHistory key={data.id} data={data as IHistory} />);
+
+    return (
+      <div className="text-center p-6 h-[58vh] lg:h-auto">
+        <p className="mb-2 text-xl font-bold">
+          No prediction history available
+        </p>
+        <p className="text-base font-medium">
+          If you are sure you should see history here, make sure you’re
+          connected to the correct wallet and try again.
+        </p>
+      </div>
+    );
+  };
+
   return (
     <div>
       <div
@@ -112,9 +187,7 @@ const MarkerHistory: React.FC<IMarketHistory> = ({ onClose }) => {
 
       <div className="bg-[--colors-backgroundAlt] text-[--colors-text]">
         <div className="overflow-y-auto lg:max-h-[75vh]">
-          <ItemHistory />
-          <ItemHistory />
-          <ItemHistory />
+          {renderHistoryContent()}
         </div>
       </div>
     </div>

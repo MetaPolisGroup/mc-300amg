@@ -36,6 +36,8 @@ export const RESULT_STATUS = {
 export const USER_DIRECTION = {
   UP: "UP",
   DOWN: "DOWN",
+  ELON: "ELON",
+  MARK: "MARK",
 };
 
 export const LIST_RADIO = [RADIO.ALL, RADIO.UNREFUNDED, RADIO.UNCOLECTED];
@@ -48,3 +50,8 @@ export const RESULT_MARKET_STATUS = {
   WR: "Winning Refund",
   LR: "Losing Refund",
 };
+
+export const OPTIONS_BET_MARKET = [
+  { option1: "ELON MUSK", option2: "MARK ZUCKERBERG" },
+  { option1: "CANDIDATE 1", option2: "CANDIDATE 2" },
+];

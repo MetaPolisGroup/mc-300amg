@@ -66,7 +66,7 @@ const ElectionCard = () => {
 
   return (
     <div
-      className={`w-full md:w-1/3 flex h-[485px] justify-center items-center relative transition-transform duration-700 preverve-3d ${
+      className={`w-full lg:w-[500px] flex h-[485px] justify-center items-center relative transition-transform duration-700 preverve-3d ${
         showSetBetCard === true && "rotateY-180"
       }`}
     >
