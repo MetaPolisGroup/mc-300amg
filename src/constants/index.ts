@@ -7,6 +7,9 @@ import { predictionABI, marketABI, tokenABI } from "./abi/index";
 const CURRENT_NETWORK = ChainType.BSCTESTNET;
 
 export const CURRENCY_UNIT = "PRX";
+
+export const BOXING_START_DATE = new Date("2023-08-24");
+
 export const CONSTANTS = {
   ADDRESS: {
     TOKEN: tokenAddr[CURRENT_NETWORK],

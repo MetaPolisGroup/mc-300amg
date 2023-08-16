@@ -16,12 +16,8 @@ const NAV_HEADER = [
         link: "/",
       },
       {
-        title: "Mark Zuckerberg vs. Elon Musk",
-        link: "/",
-      },
-      {
-        title: "American Election",
-        link: "/",
+        title: "Market",
+        link: "/market",
       },
       {
         title: "Football",

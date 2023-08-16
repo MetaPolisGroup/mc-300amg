@@ -120,11 +120,12 @@ const ClaimModal: React.FC<IClaimProps> = ({
                         Your prizes have been sent to your wallet
                       </p>
                       <a
-                        href={`https://testnet.bscscan.com/tx/${0x344324234}`}
+                        href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
                         className="mt-1 text-sm text-[--colors-primary]"
                         target="_blank"
                       >
-                        View on BscScan: {getEllipsisTxt("0x4324234")}
+                        View on BscScan:{" "}
+                        {getEllipsisTxt(transaction.transactionHash)}
                       </a>
                     </div>
                   </div>

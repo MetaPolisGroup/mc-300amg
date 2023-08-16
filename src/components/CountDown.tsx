@@ -38,7 +38,10 @@ const CountDown: React.FC<ICountDown> = ({ title, onAction }) => {
   useEffect(() => {
     getDataFileredByOnSnapshot(
       "predictions",
-      [["locked", "==", false]],
+      [
+        ["locked", "==", false],
+        ["cancel", "==", false],
+      ],
       (docs: DocumentData) => {
         setNextBetData(docs as DocumentData[]);
       }
@@ -51,6 +54,7 @@ const CountDown: React.FC<ICountDown> = ({ title, onAction }) => {
       const now = new Date().getTime();
       const different = target - now;
       const m = Math.floor((different % (1000 * 60 * 60)) / (1000 * 60));
+
       const s = Math.floor((different % (1000 * 60)) / 1000);
       setMinute(m);
       setSecond(s);
@@ -62,6 +66,7 @@ const CountDown: React.FC<ICountDown> = ({ title, onAction }) => {
   const renderTime = () => {
     const _minute = minute < 10 ? `0${minute}` : minute;
     const _second = second < 10 ? `0${second}` : second;
+
     return (
       <>
         {+_minute >= 0 && +_second >= 0 ? (
