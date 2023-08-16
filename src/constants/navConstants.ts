@@ -11,18 +11,18 @@ const NAV_HEADER = [
         title: "Prediction",
         link: "/prediction",
       },
-      {
-        title: "Dice",
-        link: "/",
-      },
+      // {
+      //   title: "Dice",
+      //   link: "/",
+      // },
       {
         title: "Market",
         link: "/market",
       },
-      {
-        title: "Football",
-        link: "/",
-      },
+      // {
+      //   title: "Football",
+      //   link: "/",
+      // },
     ],
   },
   {
@@ -89,16 +89,16 @@ export const LIST_GAME = [
     img: "/images/game/prediction.png",
     link: "/prediction",
   },
-  {
-    id: "diee",
-    img: "/images/game/dice.png",
-    link: "/",
-  },
-  {
-    id: "sport",
-    img: "/images/game/sport.png",
-    link: "/",
-  },
+  // {
+  //   id: "diee",
+  //   img: "/images/game/dice.png",
+  //   link: "/",
+  // },
+  // {
+  //   id: "sport",
+  //   img: "/images/game/sport.png",
+  //   link: "/",
+  // },
   {
     id: "market",
     img: "/images/game/market.png",
