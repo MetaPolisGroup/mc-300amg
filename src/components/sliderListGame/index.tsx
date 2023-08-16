@@ -67,7 +67,7 @@ const SliderListGame: React.FC = () => {
 
   return (
     <div className={clsx(classes["list-game"], "bg-[--colors-backgroundAlt]")}>
-      <div className="hidden sm:flex justify-between py-3 px-7">
+      <div className="hidden sm:flex justify-center gap-3 py-3 px-7">
         {renderCardGamesDesktop()}
       </div>
 
