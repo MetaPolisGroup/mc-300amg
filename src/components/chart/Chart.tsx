@@ -7,6 +7,7 @@ import {
   LegendComponent,
   TooltipComponent,
   TitleComponent,
+  MarkLineComponent,
 } from "echarts/components";
 import { LineChart, LineSeriesOption } from "echarts/charts";
 import { UniversalTransition } from "echarts/features";
@@ -29,6 +30,7 @@ echarts.use([
   LegendComponent,
   TooltipComponent,
   TitleComponent,
+  MarkLineComponent,
 ]);
 
 type EChartsOption = echarts.ComposeOption<
@@ -89,6 +91,28 @@ const Chart: React.FC = () => {
       time = [...time, dayjs(chart.created_at * 1000).format("h:mm A")];
       price = [...price, _price];
     });
+
+    const markLine =
+      price.length > 0
+        ? {
+            symbol: "none",
+            label: {
+              color: "#fff",
+            },
+            lineStyle: {
+              color: "#fff",
+            },
+            data: [
+              {
+                name: "target",
+                yAxis: price?.[price.length - 1],
+                label: {
+                  show: true,
+                },
+              },
+            ],
+          }
+        : {};
 
     const option: EChartsOption = {
       tooltip: {
@@ -152,6 +176,7 @@ const Chart: React.FC = () => {
           itemStyle: { borderColor: "#ffc700" },
           lineStyle: { color: "#19c0cc" },
           smooth: false,
+          markLine,
         },
       ],
       grid: {
@@ -161,6 +186,7 @@ const Chart: React.FC = () => {
         containLabel: true,
       },
     };
+
     option && myChart.setOption(option);
   }, [chartData]);
 

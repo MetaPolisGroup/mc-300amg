@@ -351,7 +351,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
 
           {renderLayoutStatus()}
         </div>
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
           {(isWin || isRefund || isLosingRefund) && data?.claimed === false ? (
             <button
               className="bg-[--colors-primary] text-sm text-[--colors-white] px-4 py-1 rounded-2xl cursor-pointer hover:opacity-[0.8]"
