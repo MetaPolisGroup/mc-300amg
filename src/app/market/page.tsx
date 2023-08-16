@@ -95,7 +95,7 @@ const MarketPage = () => {
             </button>
           </div>
 
-          <div className="flex flex-col md:flex-row md:flex-wrap justify-center gap-2">
+          <div className="flex flex-col md:flex-row flex-wrap justify-center gap-2">
             {boxingData?.[0]?.result !== "Waiting" ? (
               <HistoryBoxingCard userBettedData={userBettedBoxing?.[0]} />
             ) : (
