@@ -14,6 +14,7 @@ interface IRound {
   lockOracleId: number;
   locked: boolean;
   startTimestamp: number;
+  result: string;
 }
 
 interface IHistory {

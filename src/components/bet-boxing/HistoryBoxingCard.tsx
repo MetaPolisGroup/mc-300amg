@@ -109,7 +109,7 @@ const HistoryBoxingCard: React.FC<IHistoryBoxingCard> = ({
 
   return (
     <div
-      className={`w-full md:w-1/3 flex h-[485px] justify-center items-center relative`}
+      className={`w-full lg:w-[500px] flex h-[485px] justify-center items-center relative`}
     >
       <div className="card z-20 w-96 md:w-[505px] shadow-xl">
         <div className="card-body rounded-2xl p-4 bg-[--colors-backgroundAlt]">
