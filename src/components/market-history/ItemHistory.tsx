@@ -6,10 +6,11 @@ import { ethers } from "ethers";
 import { Icons } from "../Icons";
 import { CURRENCY_UNIT } from "@/constants";
 
-import { replaceDotToComma, toFixedEtherNumber } from "@/utils/format-number";
+import { toFixedEtherNumber } from "@/utils/format-number";
 import {
   RESULT_STATUS,
   USER_DIRECTION,
+  NAME_ROUND_MARKET,
   OPTIONS_BET_MARKET,
 } from "@/constants/history";
 
@@ -383,7 +384,11 @@ const ItemHistory: React.FC<IItemHistory> = ({ data }) => {
         <div className="flex items-center gap-4">
           <div className="text-center">
             <div className="text-xs">Round</div>
-            <div className="text-[--colors-text] font-bold">{data?.epoch}</div>
+            <div className="text-[--colors-text] font-bold min-w-[68px]">
+              {NAME_ROUND_MARKET.length >= Number(data?.epoch)
+                ? NAME_ROUND_MARKET[(data?.epoch as number) - 1]
+                : data?.epoch}
+            </div>
           </div>
           {renderWinningAmount()}
 
