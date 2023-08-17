@@ -375,7 +375,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                         );
                     }}
                   >
-                    Collect Your Winnings And Refunds
+                    Collect Your Winnings + Refunds
                   </Button>
                 </div>
               )}

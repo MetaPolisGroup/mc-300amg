@@ -19,6 +19,8 @@ import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import ClaimModal from "./ClaimModal";
 import Link from "next/link";
 import Image from "next/image";
+import { ethers } from "ethers";
+import { toFixedEtherNumber } from "@/utils/format-number";
 
 interface ICard {}
 
