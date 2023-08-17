@@ -55,3 +55,5 @@ export const OPTIONS_BET_MARKET = [
   { option1: "ELON MUSK", option2: "MARK ZUCKERBERG" },
   { option1: "CANDIDATE 1", option2: "CANDIDATE 2" },
 ];
+
+export const NAME_ROUND_MARKET = ["Boxing", "Election"];

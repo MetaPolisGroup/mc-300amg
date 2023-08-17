@@ -51,33 +51,53 @@ const ClaimModal: React.FC<IClaimProps> = ({
 
     if (!isEmpty(roundClaimedData)) {
       if (statusClaim === RESULT_STATUS.WIN) {
-        return (amountClaimed = +toFixedEtherNumber(
-          +ethers.formatEther(BigInt(roundClaimedData?.[0]?.amount)) +
-            +ethers.formatEther(BigInt(roundClaimedData?.[0]?.winning_amount)),
-          2
-        ));
+        const amountFormatter = +ethers.formatEther(
+          BigInt(roundClaimedData?.[0]?.amount)
+        );
+        const winningAmountFormatter = +ethers.formatEther(
+          BigInt(roundClaimedData?.[0]?.winning_amount)
+        );
+        return (amountClaimed = +(
+          amountFormatter + winningAmountFormatter
+        ).toFixed(2)).toLocaleString("en-US");
       }
       if (statusClaim === RESULT_STATUS.WR) {
-        return (amountClaimed = +toFixedEtherNumber(
-          +ethers.formatEther(BigInt(roundClaimedData?.[0]?.amount)) +
-            +ethers.formatEther(BigInt(roundClaimedData?.[0]?.winning_amount)) +
-            +ethers.formatEther(BigInt(roundClaimedData?.[0]?.refund)),
-          2
-        ));
+        const amountFormatter = +ethers.formatEther(
+          BigInt(roundClaimedData?.[0]?.amount)
+        );
+        const winningAmountFormatter = +ethers.formatEther(
+          BigInt(roundClaimedData?.[0]?.winning_amount)
+        );
+        const refundFormatter = +ethers.formatEther(
+          BigInt(roundClaimedData?.[0]?.refund)
+        );
+        return (amountClaimed = +(
+          amountFormatter +
+          winningAmountFormatter +
+          refundFormatter
+        ).toFixed(2)).toLocaleString("en-US");
       }
       if (statusClaim === RESULT_STATUS.LR) {
-        return (amountClaimed = +toFixedEtherNumber(
-          +ethers.formatEther(BigInt(roundClaimedData?.[0]?.refund)),
-          2
-        ));
+        const refundFormatter = +ethers.formatEther(
+          BigInt(roundClaimedData?.[0]?.refund)
+        );
+
+        return (amountClaimed = +refundFormatter.toFixed(2)).toLocaleString(
+          "en-US"
+        );
       }
+
       if (statusClaim === RESULT_STATUS.REFUND) {
-        return (amountClaimed = +toFixedEtherNumber(
-          +ethers.formatEther(BigInt(roundClaimedData?.[0]?.refund)),
-          2
-        ));
+        const refundFormatter = +ethers.formatEther(
+          BigInt(roundClaimedData?.[0]?.refund)
+        );
+
+        return (amountClaimed = +refundFormatter.toFixed(2)).toLocaleString(
+          "en-US"
+        );
       }
     }
+    return amountClaimed;
   };
 
   const claimHandler = async () => {

@@ -46,8 +46,6 @@ const MarkerHistory: React.FC<IMarketHistory> = ({ onClose }) => {
     }
   }, [isConnected, address]);
 
-  console.log({ dataHistory });
-
   const handleSelectRadio = (value: string) => {
     setRadioChecked(value);
 
