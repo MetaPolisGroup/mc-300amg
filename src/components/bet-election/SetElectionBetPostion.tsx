@@ -17,6 +17,7 @@ import {
 } from "@/redux/features/bet/betSlice";
 import Button from "../ui/Button";
 import { RootState } from "@/redux/store";
+import { EEntitites } from "./ElectionCard";
 
 interface ISetBoxingBetPositionProps {
   showSetBetCard?: boolean;
@@ -270,7 +271,7 @@ const SetElectionBetPostion: React.FC<ISetBoxingBetPositionProps> = ({
     try {
       // betBull is Bet up
 
-      if (yesOrNoStatus === "YES") {
+      if (yesOrNoStatus === EEntitites.DemocraticParty) {
         const { request } = await publicClient.simulateContract({
           account: address,
           address: CONSTANTS.ADDRESS.MARKET,
@@ -418,7 +419,7 @@ const SetElectionBetPostion: React.FC<ISetBoxingBetPositionProps> = ({
           }
         }
       }
-      if (yesOrNoStatus === "NO") {
+      if (yesOrNoStatus === EEntitites.RepublicanParty) {
         const { request } = await publicClient.simulateContract({
           account: address,
           address: CONSTANTS.ADDRESS.MARKET,
@@ -547,21 +548,21 @@ const SetElectionBetPostion: React.FC<ISetBoxingBetPositionProps> = ({
           />
           <span className="text-[--colors-text]">Set Position</span>
         </div>
-        {yesOrNoStatus === "YES" ? (
+        {yesOrNoStatus === EEntitites.DemocraticParty ? (
           <Button
             className="text-[--colors-white] bg-[--colors-success] hover:bg-[--colors-success] hover:opacity-[0.8]"
             type="button"
-            onClick={() => changeYesOrNoHandler("NO")}
+            onClick={() => changeYesOrNoHandler(EEntitites.RepublicanParty)}
           >
-            <span>CANDIDATE 1</span>
+            <span>{yesOrNoStatus}</span>
           </Button>
         ) : (
           <Button
             className="text-[--colors-white] bg-[--colors-failure] hover:bg-[--colors-failure] hover:opacity-[0.8]"
             type="button"
-            onClick={() => changeYesOrNoHandler("YES")}
+            onClick={() => changeYesOrNoHandler(EEntitites.DemocraticParty)}
           >
-            <span>CANDIDATE 2</span>
+            <span>{yesOrNoStatus}</span>
           </Button>
         )}
       </div>

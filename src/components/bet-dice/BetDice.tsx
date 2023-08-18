@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import Button from "../ui/Button";
 
+import Dice from "react-dice-roll";
+
 enum EMode {
   OVER = 1,
   UNDER,
 }
 
-const Dice = () => {
+const BetDice = () => {
   const [color, setColor] = useState("#922922");
   const [isActive, setIsActive] = useState<EMode | undefined>();
   const handleChangeMode = (mode: EMode) => {
@@ -21,7 +23,26 @@ const Dice = () => {
           className={`w-[272px] md:w-[496px] md:h-[584px] relative z-10 h-[272px] flex justify-center m-auto flex-col rounded-[40px] bg-[#922922] border-[3px] md:border-[7px] items-center p-[40px]`}
         >
           <div className="mx-auto w-[142px] h-[142px] mb-6 rounded-full md:hidden bg-[#B53D2D]" />
-          <div className="mx-auto w-[310px] rounded-full h-[310px] mb-6 hidden md:block bg-[#B53D2D]" />
+          <div className="mx-auto w-[310px] rounded-full h-[310px] mb-6 hidden md:flex md:flex-col justify-center items-center gap-5 bg-[#B53D2D]">
+            <Dice
+              cheatValue={2}
+              size={70}
+              onRoll={(value) => console.log(value)}
+              triggers={["Enter"]}
+            />
+            <div className="flex gap-5">
+              <Dice
+                cheatValue={4}
+                size={70}
+                onRoll={(value) => console.log(value)}
+              />
+              <Dice
+                cheatValue={3}
+                size={70}
+                onRoll={(value) => console.log(value)}
+              />
+            </div>
+          </div>
           <div
             style={{
               backgroundColor: color === "#922922" ? "#FFD3AA" : color,
@@ -207,7 +228,7 @@ const Dice = () => {
   );
 };
 
-export default Dice;
+export default BetDice;
 
 const CountdownTimer: React.FC<{ initialTime: number }> = ({ initialTime }) => {
   const [time, setTime] = useState(initialTime);

@@ -4,7 +4,8 @@ import React, { useState } from "react";
 import clsx from "clsx";
 import { Icons } from "@/components/Icons";
 import DiceHistory from "@/components/dice-history";
-import Dice from "@/components/bet-dice/Dice";
+
+import BetDice from "@/components/bet-dice/BetDice";
 
 const ChineseDice = () => {
   const [isShowHistory, setIsShowHistory] = useState<boolean>(false);
@@ -29,7 +30,7 @@ const ChineseDice = () => {
             </button>
           </div>
 
-          <Dice />
+          <BetDice />
         </div>
 
         <div
