@@ -77,7 +77,9 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({
       const historyDataFilted = originalHistoryData.filter(
         (history) =>
           (history?.status === RESULT_STATUS.WIN ||
-            history?.status === RESULT_STATUS.WR) &&
+            history?.status === RESULT_STATUS.WR ||
+            history?.status === RESULT_STATUS.REFUND ||
+            history?.status === RESULT_STATUS.LR) &&
           history?.claimed === false
       );
       return setDataHistory(historyDataFilted);
