@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import clsx from "clsx";
 import { ethers } from "ethers";
@@ -13,12 +13,15 @@ import {
   NAME_ROUND_MARKET,
   OPTIONS_BET_MARKET,
 } from "@/constants/history";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
+import { DocumentData } from "firebase/firestore";
 
 interface IItemHistory {
   data: IHistory;
 }
 
 const ItemHistory: React.FC<IItemHistory> = ({ data }) => {
+  const [round, setRound] = useState<IRound>();
   const [isShowDetail, setIsShowDetail] = useState<boolean>(false);
 
   const isLive = data?.status === RESULT_STATUS.LIVE;
@@ -30,6 +33,20 @@ const ItemHistory: React.FC<IItemHistory> = ({ data }) => {
     data?.status === RESULT_STATUS.WIN || data?.status === RESULT_STATUS.WR;
   const isLose =
     data?.status === RESULT_STATUS.LOSE || data?.status === RESULT_STATUS.LR;
+
+  useEffect(() => {
+    if (isLive || isWaiting) {
+      getDataFileredByOnSnapshot(
+        "markets",
+        [["epoch", "==", data.epoch]],
+        (docs: DocumentData) => {
+          setRound(docs?.[0]);
+        }
+      );
+    }
+
+    if (!isLive || !isWaiting) setRound(data?.round);
+  }, [data, isLive, isWaiting]);
 
   const handlerFormatEther = (value: number) => {
     return toFixedEtherNumber(ethers?.formatEther(BigInt(value)), 2);
@@ -146,19 +163,16 @@ const ItemHistory: React.FC<IItemHistory> = ({ data }) => {
               </div>
             </div>
 
-            {renderRow(
-              "Prize pool",
-              handlerFormatEther(data?.round.totalAmount)
-            )}
+            {renderRow("Prize pool", handlerFormatEther(round!.totalAmount))}
 
             {renderRow(
               OPTIONS_BET_MARKET[(data.epoch as number) - 1].option1,
-              handlerFormatEther(data?.round?.bullAmount)
+              handlerFormatEther(round?.bullAmount!)
             )}
 
             {renderRow(
               OPTIONS_BET_MARKET[(data.epoch as number) - 1].option2,
-              handlerFormatEther(data?.round?.bearAmount)
+              handlerFormatEther(round?.bearAmount!)
             )}
           </div>
         </div>
@@ -277,7 +291,7 @@ const ItemHistory: React.FC<IItemHistory> = ({ data }) => {
   const renderRoundHistory = () => {
     if (isLive || isWaiting) return null;
 
-    const _isUP = data?.round?.result === USER_DIRECTION.UP;
+    const _isUP = round?.result === USER_DIRECTION.UP;
 
     return (
       <>
@@ -315,9 +329,9 @@ const ItemHistory: React.FC<IItemHistory> = ({ data }) => {
           <div className="flex justify-between mb-1">
             <div className="text-sm font-bold">Prize Pool:</div>
             <div className="text-sm font-bold">
-              {data?.round?.totalAmount
+              {round?.totalAmount
                 ? toFixedEtherNumber(
-                    ethers.formatEther(BigInt(data?.round?.totalAmount)),
+                    ethers.formatEther(BigInt(round?.totalAmount)),
                     2
                   )
                 : 0}{" "}
@@ -330,9 +344,9 @@ const ItemHistory: React.FC<IItemHistory> = ({ data }) => {
             </div>
             <div className="text-xs">
               <span className="font-bold">
-                {data?.round?.bullAmount
+                {round?.bullAmount
                   ? toFixedEtherNumber(
-                      ethers.formatEther(BigInt(data?.round?.bullAmount)),
+                      ethers.formatEther(BigInt(round?.bullAmount)),
                       2
                     )
                   : 0}{" "}
@@ -346,9 +360,9 @@ const ItemHistory: React.FC<IItemHistory> = ({ data }) => {
             </div>
             <div className="text-xs">
               <span className="font-bold">
-                {data?.round?.bearAmount
+                {round?.bearAmount
                   ? toFixedEtherNumber(
-                      ethers.formatEther(BigInt(data?.round?.bearAmount)),
+                      ethers.formatEther(BigInt(round?.bearAmount)),
                       2
                     )
                   : 0}{" "}
