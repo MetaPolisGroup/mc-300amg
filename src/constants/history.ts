@@ -9,7 +9,7 @@ export const MODE = {
 export const RADIO = {
   ALL: "All",
   UNREFUNDED: "UnRefunded",
-  UNCOLECTED: "Uncollected",
+  UNCOLECTED: "UnCollected",
 };
 
 export const LIST_MODE = [
