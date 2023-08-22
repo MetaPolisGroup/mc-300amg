@@ -69,7 +69,7 @@ const BoxingCard: React.FC<IBoxingCard> = ({ targetDate }) => {
 
   return (
     <div
-      className={`w-full md:w-1/3 flex h-[485px] justify-center items-center relative transition-transform duration-700 preverve-3d ${
+      className={`flex h-[485px] justify-center items-center relative transition-transform duration-700 preverve-3d ${
         showSetBetCard === true && "rotateY-180"
       }`}
     >
@@ -83,7 +83,7 @@ const BoxingCard: React.FC<IBoxingCard> = ({ targetDate }) => {
             <div className="w-1/3 flex items-center px-4 py-2 text-slate-400 text-xl font-light leading-7 bg-[--colors-backgroundAlt] rounded-[20px] border-2 border-slate-400 justify-center">
               Highlights
             </div>
-            <div className="text-[--colors-textSubtle] font-semibold">
+            <div className="text-[--colors-market] font-semibold">
               {+days + +hours + +minutes + +seconds <= 0
                 ? "Expried"
                 : `${days}d:${hours}h:${minutes}m:${seconds}s`}
@@ -101,7 +101,7 @@ const BoxingCard: React.FC<IBoxingCard> = ({ targetDate }) => {
               <div className="text-[--colors-contrast] text-base font-light leading-snug">
                 Total Volume
               </div>
-              <div className="text-slate-400 text-[26px] font-bold leading-9">
+              <div className="text-[--colors-market] text-[26px] font-bold leading-9">
                 {boxingData?.[0]?.totalAmount
                   ? toFixedEtherNumber(
                       ethers.formatEther(BigInt(boxingData?.[0]?.totalAmount)),
@@ -116,10 +116,10 @@ const BoxingCard: React.FC<IBoxingCard> = ({ targetDate }) => {
               {!isEmpty(userBettedBoxing) ? (
                 <>
                   <div
-                    className={`w-full h-[54px] flex items-center justify-between p-[6px] pr-4 bg-gradient-to-br from-slate-400 to-indigo-800 rounded-[20px] cursor-pointer ${
+                    className={`w-full h-[54px] flex items-center justify-between p-[6px] pr-4 rounded-[20px] cursor-pointer ${
                       userBettedBoxing?.[0]?.position !== "UP"
                         ? "from-slate-500 to-slate-600 cursor-not-allowed opacity-60"
-                        : ""
+                        : "bg-[--colors-market-bold]"
                     }`}
                   >
                     <div className="w-40 py-[7px] px-4 text-[--colors-contrast] text-base font-light leading-7 bg-[--colors-backgroundAlt] rounded-[14px]">
@@ -133,7 +133,7 @@ const BoxingCard: React.FC<IBoxingCard> = ({ targetDate }) => {
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
-                    <div className="flex flex-1 items-center justify-between pl-2 text-white text-xs font-bold leading-7">
+                    <div className="flex flex-1 items-center justify-between pl-2 text-white text-xs leading-7">
                       <div>ELON</div>
                       <div>
                         {userBettedBoxing?.[0]?.position === "UP" && (
@@ -171,7 +171,7 @@ const BoxingCard: React.FC<IBoxingCard> = ({ targetDate }) => {
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
-                    <div className="flex flex-1 items-center justify-between text-white text-xs pl-2 font-bold leading-7">
+                    <div className="flex flex-1 items-center justify-between text-white text-xs pl-2 leading-7">
                       <div>MARK ZUCKERBERG</div>
                       {userBettedBoxing?.[0]?.position === "DOWN" && (
                         <TooltipElement
@@ -208,7 +208,8 @@ const BoxingCard: React.FC<IBoxingCard> = ({ targetDate }) => {
                         ELON MUSK
                       </div>
                       <button
-                        className="text-white py-4 px-2 md:px-8 bg-gradient-to-br from-slate-400 to-indigo-800 rounded-r-2xl"
+                        className="text-white py-4 px-2 md:px-8 rounded-r-2xl"
+                        style={{ background: "var(--colors-gradient-market)" }}
                         onClick={() => enterElonOrMarkHandler("ELON")}
                       >
                         Select
@@ -233,7 +234,8 @@ const BoxingCard: React.FC<IBoxingCard> = ({ targetDate }) => {
                         MARK ZUCKERBERG
                       </div>
                       <button
-                        className="text-white py-4 px-2 md:px-8 bg-gradient-to-br from-slate-400 to-indigo-800 rounded-r-2xl"
+                        className="text-white py-4 px-2 md:px-8 rounded-r-2xl"
+                        style={{ background: "var(--colors-gradient-market)" }}
                         onClick={() => enterElonOrMarkHandler("MARK")}
                       >
                         Select

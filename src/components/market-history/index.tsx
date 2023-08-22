@@ -81,9 +81,9 @@ const MarkerHistory: React.FC<IMarketHistory> = ({ onClose }) => {
               key={btn.id}
               className={clsx(
                 "w-1/2 text-base font-bold",
-                btn.id !== mode.id && "text-[--colors-textSubtle]",
+                btn.id !== mode.id && "text-[--colors-market]",
                 btn.id === mode.id &&
-                  "bg-[--colors-textSubtle] text-[--colors-backgroundAlt] rounded-2xl"
+                  "bg-[--colors-market] text-[--colors-backgroundAlt] rounded-2xl"
               )}
               onClick={() => {
                 setMode(btn);
@@ -108,7 +108,7 @@ const MarkerHistory: React.FC<IMarketHistory> = ({ onClose }) => {
               className={clsx(
                 "relative w-6 h-6 cursor-pointer  rounded-full border-2 border-solid",
                 radio === radioChecked &&
-                  "border-[--colors-success] bg-[--colors-success]",
+                  "border-[--colors-market-bold] bg-[--colors-market-bold]",
                 radio !== radioChecked &&
                   "border-[--colors-disabled] bg-[--colors-cardBorder]"
               )}
@@ -134,10 +134,10 @@ const MarkerHistory: React.FC<IMarketHistory> = ({ onClose }) => {
 
     return (
       <div>
-        <div className="text-[--colors-textSubtle] text-xs font-medium">
+        <div className="text-[--colors-market-bold] text-xs font-medium">
           Filter
         </div>
-        <div className="flex gap-4 text-[--colors-text] text-base font-medium">
+        <div className="flex gap-4 text-[--colors-market-text] text-base font-medium">
           {renderListRadio()}
         </div>
       </div>
@@ -170,9 +170,11 @@ const MarkerHistory: React.FC<IMarketHistory> = ({ onClose }) => {
         style={{ background: "var(--colors-gradientBubblegum)" }}
       >
         <div className="flex justify-between mb-8">
-          <div className="text-[--colors-text] text-xl font-bold">History</div>
+          <div className="text-[--colors-market-text] text-xl font-bold">
+            History
+          </div>
           <button
-            className="text-[--colors-primary] flex items-center gap-2 text-base font-bold"
+            className="text-[--colors-market-bold] flex items-center gap-2 text-base font-bold"
             onClick={() => onClose()}
           >
             Close <Icons.ArrowRight className="w-5 h-5" />
@@ -183,7 +185,7 @@ const MarkerHistory: React.FC<IMarketHistory> = ({ onClose }) => {
         {renderFilter()}
       </div>
 
-      <div className="bg-[--colors-backgroundAlt] text-[--colors-text]">
+      <div className="bg-[--colors-backgroundAlt] text-[--colors-market-text]">
         <div className="overflow-y-auto lg:max-h-[75vh]">
           {renderHistoryContent()}
         </div>

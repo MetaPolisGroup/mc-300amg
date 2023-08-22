@@ -107,9 +107,7 @@ const HistoryElectionCard: React.FC<IHistoryElectionCard> = ({
   };
 
   return (
-    <div
-      className={`w-full md:w-1/3 flex h-[485px] justify-center items-center relative`}
-    >
+    <div className={`flex h-[485px] justify-center items-center relative`}>
       <div className="card z-20 w-96 md:w-[505px] shadow-xl">
         <div className="card-body rounded-2xl p-4 bg-[--colors-backgroundAlt]">
           <div className="flex items-center justify-between mb-5">

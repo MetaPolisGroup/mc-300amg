@@ -122,6 +122,10 @@
   --colors-textSub: #fff;
   --colors-win: #2cce80;
   --colors-lose: #f44b40;
+  --colors-market: #a1a0ca;
+  --colors-market-bold: #746db2;
+  --colors-market-text: #f4eeff;
+  --colors-gradient-market: linear-gradient(135deg, #a1a0ca 0%, #473999 100%);
   --colors-gradientBubblegum: linear-gradient(139.73deg, #313d5c, #3d2a54);
   --colors-gradientInverseBubblegum: linear-gradient(
     139.73deg,
@@ -191,6 +195,10 @@
   --colors-background-slider: #ffffff;
   --colors-win: #2cce80;
   --colors-lose: #f44b40;
+  --colors-market: #a1a0ca;
+  --colors-market-bold: #746db2;
+  --colors-market-text: #746db2;
+  --colors-gradient-market: linear-gradient(135deg, #a1a0ca 0%, #473999 100%);
   --colors-gradientBubblegum: linear-gradient(139.73deg, #e5fdff, #f3efff);
   --colors-gradientInverseBubblegum: linear-gradient(
     139.73deg,
