@@ -31,6 +31,7 @@ export const RESULT_STATUS = {
   REFUND: "Refund",
   WR: "Winning Refund",
   LR: "Losing Refund",
+  DRAW: "Draw",
 };
 
 export const USER_DIRECTION = {

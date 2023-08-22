@@ -13,6 +13,12 @@ const FutureCard: React.FC<IFutureCard> = ({ futureRound, plusMinute }) => {
   const [minute, setMinute] = useState<number>(0);
   const [second, setSecond] = useState<number>(0);
   const [nextBetData, setNextBetData] = useState<DocumentData[]>([]);
+
+  let theme;
+  if (typeof window !== "undefined") {
+    theme = localStorage.getItem("theme") || "dark";
+  }
+
   useEffect(() => {
     getDataFileredByOnSnapshot(
       "predictions",
@@ -41,6 +47,7 @@ const FutureCard: React.FC<IFutureCard> = ({ futureRound, plusMinute }) => {
 
     return () => clearInterval(interval);
   }, [nextBetData, plusMinute]);
+
   const renderTime = () => {
     const _minute = minute < 10 ? `0${minute}` : minute;
     const _second = second < 10 ? `0${second}` : second;
@@ -66,7 +73,17 @@ const FutureCard: React.FC<IFutureCard> = ({ futureRound, plusMinute }) => {
         <div className="card-body p-4">
           <div className="relative -mb-[0.55rem]">
             <div className="h-16 mx-auto w-60">
+              {/* {theme === "dark" ? ( */}
               <Image src="/images/up.png" width={288} height={64} alt="up" />
+              {/* ) : (
+                <Image
+                  src="/images/prediction_light.png"
+                  width={288}
+                  height={64}
+                  alt="down"
+                  className="rotate-180 h-[61.8px]"
+                />
+              )} */}
               <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                 <div
                   className={`text-[--colors-textDisabled] font-semibold uppercase text-xl`}
@@ -90,7 +107,16 @@ const FutureCard: React.FC<IFutureCard> = ({ futureRound, plusMinute }) => {
           </div>
           <div className="relative -mt-[0.55rem]">
             <div className="h-16 mx-auto w-60">
+              {/* {theme === "dark" ? ( */}
               <Image src="/images/down.png" width={288} height={64} alt="up" />
+              {/* ) : (
+                <Image
+                  src="/images/prediction_light.png"
+                  width={288}
+                  height={64}
+                  alt="down light"
+                />
+              )} */}
               <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                 <div className="text-[--colors-textDisabled] font-semibold uppercase text-xl">
                   DOWN
@@ -98,13 +124,6 @@ const FutureCard: React.FC<IFutureCard> = ({ futureRound, plusMinute }) => {
               </div>
             </div>
           </div>
-          {/* {!isEmpty(dataBetted) &&
-            (dataBetted?.status === "DOWN" ? (
-              <div className="absolute right-0 bottom-2 flex gap-2 z-20 border-2 rounded-2xl border-[--colors-secondary] px-2 py-[2px] ">
-                <Icons.CheckCircle className="text-[--colors-text]" />
-                <span className="text-[--colors-secondary]">ENTERED</span>
-              </div>
-            ) : null)} */}
         </div>
       </div>
     </div>

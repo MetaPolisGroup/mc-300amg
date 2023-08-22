@@ -32,6 +32,11 @@ const HistoryCard: React.FC<IHistoryProps> = ({
   const [roundPrevious, setRoundPrevious] = useState<number>(historyRound);
   const [isClient, setIsClient] = useState<boolean>(false);
 
+  let theme;
+  if (typeof window !== "undefined") {
+    theme = localStorage.getItem("theme") || "dark";
+  }
+
   useEffect(() => {
     // Get all round history data
     getDataFileredByOnSnapshot(
@@ -122,7 +127,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                 )}
 
               <div className="relative -mb-[0.55rem]">
-                {ratePrice > 0 ? (
+                {ratePrice > 0 && (
                   <div className="h-16 mx-auto w-60">
                     <Image
                       src="/images/prediction_up.png"
@@ -149,7 +154,8 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                       </div>
                     </div>
                   </div>
-                ) : (
+                )}
+                {ratePrice <= 0 && (
                   <div className="h-16 mx-auto w-60">
                     <Image
                       src="/images/up.png"
@@ -180,7 +186,9 @@ const HistoryCard: React.FC<IHistoryProps> = ({
               </div>
               <div
                 className={`rounded-2xl border-2 border-[${
-                  ratePrice > 0 ? "--colors-success" : "--colors-failure"
+                  ratePrice > 0 && "--colors-success"
+                }] border-[${ratePrice < 0 && "--colors-failure"}] border-[${
+                  ratePrice === 0 && "--colors-text"
                 }] p-[2px]`}
               >
                 <div className="bg-[--colors-backgroundAlt] rounded-xl p-4 flex flex-col gap-1">
@@ -188,20 +196,28 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                     Last Price
                   </div>
                   <div className="flex justify-between items-center">
-                    {ratePrice > 0 ? (
+                    {ratePrice > 0 && (
                       <div
                         className={`text-[--colors-success] font-semibold text-xl`}
                       >
                         ${(historyData?.[0]?.closePrice / 10 ** 8).toFixed(4)}
                       </div>
-                    ) : (
+                    )}
+                    {ratePrice < 0 && (
                       <div
                         className={`text-[--colors-failure] font-semibold text-xl`}
                       >
                         ${(historyData?.[0]?.closePrice / 10 ** 8).toFixed(4)}
                       </div>
                     )}
-                    {ratePrice > 0 ? (
+                    {ratePrice === 0 && (
+                      <div
+                        className={`text-[--colors-text] font-semibold text-xl`}
+                      >
+                        ${(historyData?.[0]?.closePrice / 10 ** 8).toFixed(4)}
+                      </div>
+                    )}
+                    {ratePrice > 0 && (
                       <div
                         className={`flex gap-1 justify-center items-center bg-[--colors-success] py-1 px-1 rounded`}
                       >
@@ -210,12 +226,22 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                           ${ratePrice.toFixed(4)}
                         </span>
                       </div>
-                    ) : (
+                    )}
+                    {ratePrice < 0 && (
                       <div
                         className={`flex gap-1 justify-center items-center bg-[--colors-failure] py-1 px-2 rounded`}
                       >
                         <Icons.ArrowDown className="text-[--colors-white]" />
                         <span className="text-[--colors-white] font-medium text-base uppercase ml-1">
+                          ${ratePrice.toFixed(4)}
+                        </span>
+                      </div>
+                    )}
+                    {ratePrice === 0 && (
+                      <div
+                        className={`flex gap-1 justify-center items-center bg-[--colors-text] py-1 px-2 rounded`}
+                      >
+                        <span className="text-gray-950 font-medium text-base uppercase ml-1">
                           ${ratePrice.toFixed(4)}
                         </span>
                       </div>
@@ -247,7 +273,7 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                 </div>
               </div>
               <div className="relative -mt-[0.55rem]">
-                {ratePrice > 0 ? (
+                {ratePrice >= 0 && (
                   <div className="h-16 mx-auto w-60">
                     <Image
                       src="/images/down.png"
@@ -272,7 +298,8 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                       </div>
                     </div>
                   </div>
-                ) : (
+                )}
+                {ratePrice < 0 && (
                   <div className="h-16 mx-auto w-60">
                     <Image
                       src="/images/prediction_down.png"
@@ -415,6 +442,29 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                         showCollectWinningModal(
                           true,
                           RESULT_STATUS.REFUND,
+                          "Refund",
+                          historyRound
+                        );
+                    }}
+                  >
+                    Collect Your Refund
+                  </Button>
+                </div>
+              )}
+
+            {!isEmpty(historyBetted) &&
+              historyBetted?.[0]?.status === "Draw" &&
+              historyBetted?.[0]?.refund !== 0 &&
+              !historyBetted?.[0]?.claimed && (
+                <div className="absolute bottom-[-1px] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
+                  <Icons.TrophyIcon className="text-[--colors-gold]" />
+                  <Button
+                    className="bg-[--colors-primary] hover:bg-[--colors-primary] hover:opacity-70"
+                    onClick={() => {
+                      if (showCollectWinningModal)
+                        showCollectWinningModal(
+                          true,
+                          RESULT_STATUS.DRAW,
                           "Refund",
                           historyRound
                         );

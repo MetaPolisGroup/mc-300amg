@@ -26,6 +26,11 @@ const BetCard: React.FC<IBetCard> = ({
   const [minutes, setMinutes] = useState<number>(0);
   const [seconds, setSeconds] = useState<number>(0);
 
+  let theme;
+  if (typeof window !== "undefined") {
+    theme = localStorage.getItem("theme") || "dark";
+  }
+
   useEffect(() => {
     const target = +nextBetData?.lockTimestamp * 1000;
     const interval = setInterval(() => {
@@ -91,9 +96,18 @@ const BetCard: React.FC<IBetCard> = ({
                 <span className="text-[--colors-secondary]">ENTERED</span>
               </div>
             ) : null)}
-          <div className="relative -mb-[0.55rem]">
+          <div className="relative -mb-[0.45rem]">
             <div className="h-16 mx-auto w-60">
-              <Image src="/images/up.png" width={288} height={64} alt="up" />
+              <Image src="/images/up.png" width={288} height={62} alt="up" />
+              {/* ) : (
+                <Image
+                  src="/images/prediction_light.png"
+                  width={288}
+                  height={62}
+                  alt="down light"
+                  className="rotate-180"
+                />
+              )} */}
               <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                 <div className="text-[--colors-success] font-semibold uppercase text-xl">
                   UP
@@ -186,7 +200,16 @@ const BetCard: React.FC<IBetCard> = ({
           </div>
           <div className="relative -mt-[0.55rem]">
             <div className="h-16 mx-auto w-60">
+              {/* {theme === "dark" ? ( */}
               <Image src="/images/down.png" width={288} height={64} alt="up" />
+              {/* ) : (
+                <Image
+                  src="/images/prediction_light.png"
+                  width={288}
+                  height={64}
+                  alt="down light"
+                />
+              )} */}
               <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                 <div className="text-[--colors-textSubtle] font-semibold text-sm">
                   {nextBetData?.bearAmount

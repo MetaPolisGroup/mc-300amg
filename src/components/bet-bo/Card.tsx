@@ -19,8 +19,6 @@ import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import ClaimModal from "./ClaimModal";
 import Link from "next/link";
 import Image from "next/image";
-import { ethers } from "ethers";
-import { toFixedEtherNumber } from "@/utils/format-number";
 
 interface ICard {}
 
@@ -32,6 +30,7 @@ const Card: React.FC<ICard> = () => {
   const [nextBetData, setNextBetData] = useState<DocumentData[]>([]);
   const [datasBetted, setDatasBetted] = useState<DocumentData[]>([]);
   const [currentRound, setCurrentRound] = useState<number>(0);
+  const [theme, setTheme] = useState<string>("dark");
 
   const [liveBettedData, setLiveBettedData] = useState<IBetData[]>();
   const swiperRef = useRef<SwiperType>();
