@@ -102,7 +102,7 @@ const HeaderItem: React.FC<IHeaderItem> = ({ data }) => {
         <label
           tabIndex={0}
           className={clsx(
-            "btn text-[--colors-textSubtle] flex-nowrap gap-3 border-0 !m-0 py-4 px-2 xl:p-4 !min-h-fit !normal-case !rounded-[20px] h-[48px] font-bold",
+            "btn text-[--colors-contrast] flex-nowrap gap-3 border-0 !m-0 py-4 px-2 xl:p-4 !min-h-fit !normal-case !rounded-[20px] h-[48px] font-bold",
             data.title !== "Staking (Coming soon)" &&
               "hover:bg-[--colors-tertiary]",
             data.title === "Staking (Coming soon)" &&
@@ -116,7 +116,7 @@ const HeaderItem: React.FC<IHeaderItem> = ({ data }) => {
       {data.items?.length !== 0 ? (
         <ul
           tabIndex={0}
-          className="dropdown-content z-10 menu px-0 shadow bg-[--colors-backgroundAlt] text-[--colors-textSubtle] rounded-box min-w-[280px] border-2 border-solid border-[--colors-cardBorder]"
+          className="dropdown-content z-10 menu px-0 shadow bg-[--colors-backgroundAlt] text-[--colors-contrast] rounded-box min-w-[280px] border-2 border-solid border-[--colors-cardBorder]"
         >
           {renderNavSubItem(data.items)}
         </ul>

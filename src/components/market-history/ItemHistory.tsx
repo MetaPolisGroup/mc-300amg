@@ -73,7 +73,7 @@ const ItemHistory: React.FC<IItemHistory> = ({ data }) => {
 
     return (
       <div className="text-center">
-        <div className="text-xs">Your Result</div>
+        <div className="text-xs text-[--colors-contrast]">Your Result</div>
         <div
           className={clsx(
             "font-bold",
@@ -397,8 +397,8 @@ const ItemHistory: React.FC<IItemHistory> = ({ data }) => {
       >
         <div className="flex items-center gap-4">
           <div className="text-center">
-            <div className="text-xs">Round</div>
-            <div className="text-[--colors-text] font-bold min-w-[68px]">
+            <div className="text-xs text-[--colors-contrast]">Round</div>
+            <div className="text-[--colors-market-text] font-bold min-w-[68px]">
               {NAME_ROUND_MARKET.length >= Number(data?.epoch)
                 ? NAME_ROUND_MARKET[(data?.epoch as number) - 1]
                 : data?.epoch}
@@ -411,7 +411,8 @@ const ItemHistory: React.FC<IItemHistory> = ({ data }) => {
         <div className="flex items-center gap-2">
           {(isWin || isRefund || isLosingRefund) && data?.claimed === false ? (
             <button
-              className="bg-[--colors-primary] text-sm text-[--colors-white] px-4 py-1 rounded-2xl cursor-pointer hover:opacity-[0.8]"
+              className="text-sm text-[--colors-white] px-4 py-1 rounded-2xl cursor-pointer hover:opacity-[0.8]"
+              style={{ background: "var(--colors-gradient-market)" }}
               onClick={(e) => {
                 // onCollect(
                 //   true,

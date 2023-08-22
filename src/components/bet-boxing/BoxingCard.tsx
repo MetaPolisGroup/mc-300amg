@@ -69,7 +69,7 @@ const BoxingCard: React.FC<IBoxingCard> = ({ targetDate }) => {
 
   return (
     <div
-      className={`w-full md:w-1/3 flex h-[485px] justify-center items-center relative transition-transform duration-700 preverve-3d ${
+      className={`flex h-[485px] justify-center items-center relative transition-transform duration-700 preverve-3d ${
         showSetBetCard === true && "rotateY-180"
       }`}
     >
@@ -83,7 +83,7 @@ const BoxingCard: React.FC<IBoxingCard> = ({ targetDate }) => {
             <div className="w-1/3 flex items-center px-4 py-2 text-slate-400 text-xl font-light leading-7 bg-[--colors-backgroundAlt] rounded-[20px] border-2 border-slate-400 justify-center">
               Highlights
             </div>
-            <div className="text-[--colors-textSubtle] font-semibold">
+            <div className="text-[--colors-market] font-semibold">
               {+days + +hours + +minutes + +seconds <= 0
                 ? "Expried"
                 : `${days}d:${hours}h:${minutes}m:${seconds}s`}
@@ -101,7 +101,7 @@ const BoxingCard: React.FC<IBoxingCard> = ({ targetDate }) => {
               <div className="text-[--colors-contrast] text-base font-light leading-snug">
                 Total Volume
               </div>
-              <div className="text-slate-400 text-[26px] font-bold leading-9">
+              <div className="text-[--colors-market] text-[26px] font-bold leading-9">
                 {boxingData?.[0]?.totalAmount
                   ? toFixedEtherNumber(
                       ethers.formatEther(BigInt(boxingData?.[0]?.totalAmount)),
