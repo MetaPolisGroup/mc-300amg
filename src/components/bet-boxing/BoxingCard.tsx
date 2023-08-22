@@ -119,13 +119,8 @@ const BoxingCard: React.FC<IBoxingCard> = ({ targetDate }) => {
                     className={`w-full h-[54px] flex items-center justify-between p-[6px] pr-4 rounded-[20px] cursor-pointer ${
                       userBettedBoxing?.[0]?.position !== "UP"
                         ? "from-slate-500 to-slate-600 cursor-not-allowed opacity-60"
-                        : ""
+                        : "bg-[--colors-market-bold]"
                     }`}
-                    style={
-                      userBettedBoxing?.[0]?.position === "UP"
-                        ? { background: "var(--colors-gradient-market)" }
-                        : {}
-                    }
                   >
                     <div className="w-40 py-[7px] px-4 text-[--colors-contrast] text-base font-light leading-7 bg-[--colors-backgroundAlt] rounded-[14px]">
                       {boxingData?.[0]?.bullAmount
@@ -138,7 +133,7 @@ const BoxingCard: React.FC<IBoxingCard> = ({ targetDate }) => {
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
-                    <div className="flex flex-1 items-center justify-between pl-2 text-white text-xs font-bold leading-7">
+                    <div className="flex flex-1 items-center justify-between pl-2 text-white text-xs leading-7">
                       <div>ELON</div>
                       <div>
                         {userBettedBoxing?.[0]?.position === "UP" && (
@@ -176,7 +171,7 @@ const BoxingCard: React.FC<IBoxingCard> = ({ targetDate }) => {
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
-                    <div className="flex flex-1 items-center justify-between text-white text-xs pl-2 font-bold leading-7">
+                    <div className="flex flex-1 items-center justify-between text-white text-xs pl-2 leading-7">
                       <div>MARK ZUCKERBERG</div>
                       {userBettedBoxing?.[0]?.position === "DOWN" && (
                         <TooltipElement

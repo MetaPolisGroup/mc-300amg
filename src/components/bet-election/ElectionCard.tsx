@@ -115,13 +115,8 @@ const ElectionCard = () => {
                     className={`w-full h-[54px] flex items-center justify-between p-[6px] pr-4 rounded-[20px] cursor-pointer ${
                       userBettedElection?.[0]?.position !== "UP"
                         ? "from-slate-500 to-slate-600 cursor-not-allowed opacity-60"
-                        : ""
+                        : "bg-[--colors-market-bold]"
                     }`}
-                    style={
-                      userBettedElection?.[0]?.position === "UP"
-                        ? { background: "var(--colors-gradient-market)" }
-                        : {}
-                    }
                   >
                     <div className="w-40 py-[7px] px-4 text-[--colors-contrast] text-base font-light leading-7 bg-[--colors-backgroundAlt] rounded-[14px]">
                       {electionData?.[0]?.bullAmount
@@ -134,7 +129,7 @@ const ElectionCard = () => {
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
-                    <div className="flex flex-1 items-center justify-between pl-2 text-white text-xs font-bold leading-7">
+                    <div className="flex flex-1 items-center justify-between pl-2 text-white text-xs leading-7">
                       <div>CADIDATE 1</div>
                       <div>
                         {userBettedElection?.[0]?.position === "UP" && (
@@ -172,7 +167,7 @@ const ElectionCard = () => {
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
-                    <div className="flex flex-1 items-center justify-between text-white text-xs pl-2 font-bold leading-7">
+                    <div className="flex flex-1 items-center justify-between text-white text-xs pl-2 leading-7">
                       <div>CADIDATE 2</div>
                       {userBettedElection?.[0]?.position === "DOWN" && (
                         <TooltipElement
