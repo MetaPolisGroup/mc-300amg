@@ -102,7 +102,7 @@ const HeaderItem: React.FC<IHeaderItem> = ({ data }) => {
         <label
           tabIndex={0}
           className={clsx(
-            "btn text-[--colors-contrast] flex-nowrap gap-3 border-0 !m-0 py-4 px-2 xl:p-4 !min-h-fit !normal-case !rounded-[20px] h-[48px] font-bold",
+            "btn text-[--colors-contrast] flex-nowrap gap-3 border-0 !m-0 py-4 px-2 xl:p-4 !min-h-fit !normal-case !rounded-[20px] h-[48px]",
             data.title !== "Staking (Coming soon)" &&
               "hover:bg-[--colors-tertiary]",
             data.title === "Staking (Coming soon)" &&

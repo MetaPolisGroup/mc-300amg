@@ -18,7 +18,7 @@ const Header = () => {
     <header className="w-full z-20 bg-[--colors-backgroundAlt]">
       <nav className="flex justify-between items-center w-full h-full px-4">
         <div className="navbar p-0 justify-between">
-          <div className="navbar-start lg:flex w-auto gap-1 lg:gap-3">
+          <div className="navbar-start lg:flex w-auto gap-1 lg:gap-16">
             <HeaderModal />
             <a
               className="normal-case text-xl text-[--colors-textSubtle]"

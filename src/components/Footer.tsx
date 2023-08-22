@@ -106,7 +106,7 @@ export default function Footer() {
           <div className="hidden lg:flex items-center md:mx-0 mx-auto gap-5">
             <Icons.Twitter
               fill="var(--colors-contrast)"
-              size={25}
+              size={20}
               color="var(--colors-contrast)"
               cursor="pointer"
             />
@@ -120,13 +120,13 @@ export default function Footer() {
             />
             <Icons.Instagram
               color="var(--colors-contrast)"
-              size={25}
+              size={20}
               cursor="pointer"
             />
             <Icons.GithubIcon
               color="var(--colors-contrast)"
               fill="var(--colors-contrast)"
-              size={25}
+              size={20}
               cursor="pointer"
             />
 
