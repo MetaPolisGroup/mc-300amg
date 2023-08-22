@@ -105,34 +105,34 @@ export default function Footer() {
         <div className="mx-auto pb-3 md:pb-10 flex items-center flex-nowrap justify-between">
           <div className="hidden lg:flex items-center md:mx-0 mx-auto gap-5">
             <Icons.Twitter
-              fill="var(--colors-textSubtle)"
-              size={25}
-              color="var(--colors-textSubtle)"
+              fill="var(--colors-contrast)"
+              size={20}
+              color="var(--colors-contrast)"
               cursor="pointer"
             />
             <Icons.Telegram
-              fill="var(--colors-textSubtle)"
-              color="var(--colors-textSubtle)"
+              fill="var(--colors-contrast)"
+              color="var(--colors-contrast)"
             />
             <Icons.Reddit
-              fill="var(--colors-textSubtle)"
-              color="var(--colors-textSubtle)"
+              fill="var(--colors-contrast)"
+              color="var(--colors-contrast)"
             />
             <Icons.Instagram
-              color="var(--colors-textSubtle)"
-              size={25}
+              color="var(--colors-contrast)"
+              size={20}
               cursor="pointer"
             />
             <Icons.GithubIcon
-              color="var(--colors-textSubtle)"
-              fill="var(--colors-textSubtle)"
-              size={25}
+              color="var(--colors-contrast)"
+              fill="var(--colors-contrast)"
+              size={20}
               cursor="pointer"
             />
 
             <Icons.YoutubeIcon
-              fill="var(--colors-textSubtle)"
-              color="var(--colors-textSubtle)"
+              fill="var(--colors-contrast)"
+              color="var(--colors-contrast)"
             />
 
             <ChangeMode />
@@ -145,12 +145,12 @@ export default function Footer() {
           <div className="flex  items-center gap-3 sm:gap-5 mr-[15%] md:mr-[15%] lg:mr-[10%] pr-3 sm:pr-0">
             <div className="flex items-center gap-2">
               <Image src="/svgs/prx-logo.svg" width={30} height={30} alt="" />
-              <p className="text-[#00CEEA] text-base md:text-xl font-medium">
+              <p className="text-[--colors-primary] text-base md:text-xl font-medium">
                 $0.01
               </p>
             </div>
             <div className="text-[--colors-invertedContrast] flex px-2 items-center justify-center py-1 bg-[--colors-primary] rounded-full font-bold">
-              <button className="text-base md:text-xl">Buy PRX</button>
+              <button className="text-base">Buy PRX</button>
               <Icons.ArrowRight />
             </div>
           </div>

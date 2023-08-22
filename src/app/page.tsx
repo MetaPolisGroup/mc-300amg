@@ -9,8 +9,8 @@ export default function Home() {
     <main className="bg-[--colors-background] overflow-hidden min-h-[85vh]">
       {/* <SliderBannerGame /> */}
 
-      <div className="px-4 flex flex-col items-center md:flex-row justify-between md:px-28">
-        <div className="flex flex-col gap-3 md:gap-10">
+      <div className="px-4 flex flex-col items-center lg:flex-row justify-between md:px-28">
+        <div className="flex flex-col gap-3 md:gap-10 w-full lg:w-1/2">
           <h1 className="text-[#28C38B] text-3xl md:text-6xl font-semibold">
             Unlimited & Advanced Defi Playground
           </h1>
@@ -30,12 +30,16 @@ export default function Home() {
             </Button>
           </div>
         </div>
-        <Image
-          src="/images/banners/PRX_herobanner-01 1.png"
-          width={680}
-          height={800}
-          alt="banner hero"
-        />
+
+        <div className="w-full lg:w-1/2">
+          <Image
+            src="/images/banners/PRX_herobanner-01 1.png"
+            width={680}
+            height={800}
+            alt="banner hero"
+            className="!w-full"
+          />
+        </div>
       </div>
     </main>
   );

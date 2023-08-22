@@ -88,10 +88,10 @@ const MarketPage = () => {
             </h1>
 
             <button
-              className="bg-[--colors-primary] h-fit p-3 rounded-xl"
+              className="bg-[--colors-backgroundAlt] h-fit p-3 rounded-xl"
               onClick={() => setIsShowHistory(!isShowHistory)}
             >
-              <Icons.History className="text-[--colors-white]" />
+              <Icons.History className="text-[--colors-market-text]" />
             </button>
           </div>
 

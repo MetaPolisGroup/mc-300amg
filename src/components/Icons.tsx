@@ -128,7 +128,7 @@ export const Icons = {
     <svg
       viewBox="0 0 30 30"
       xmlns="http://www.w3.org/2000/svg"
-      width="25px"
+      width="20px"
       className="sc-231a1e38-0 gUXTeE"
       style={{ cursor: "pointer" }}
       {...props}
@@ -418,7 +418,7 @@ export const Icons = {
   Telegram: (props: any) => (
     <svg
       viewBox="0 0 20 20"
-      width="25px"
+      width="20px"
       xmlns="http://www.w3.org/2000/svg"
       className="sc-231a1e38-0 fVYtuI"
       style={{ cursor: "pointer" }}
@@ -431,7 +431,7 @@ export const Icons = {
     <svg
       viewBox="0 0 20 20"
       xmlns="http://www.w3.org/2000/svg"
-      width="25px"
+      width="20px"
       className="sc-231a1e38-0 gUXTeE"
       style={{ cursor: "pointer" }}
       {...props}
