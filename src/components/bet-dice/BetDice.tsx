@@ -3,6 +3,8 @@ import Button from "../ui/Button";
 import Dice from "react-dice-roll";
 import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { DocumentData } from "firebase/firestore";
+import { toFixedEtherNumber } from "@/utils/format-number";
+import { ethers } from "ethers";
 
 enum EMode {
   OVER = 1,
@@ -41,7 +43,25 @@ const BetDice = () => {
           style={{ borderColor: color }}
           className={`w-[272px] md:w-[496px] md:h-[584px] relative z-10 h-[272px] flex justify-center m-auto flex-col rounded-[40px] bg-[#922922] border-[3px] md:border-[7px] items-center p-[40px]`}
         >
-          <div className="mx-auto w-[142px] h-[142px] mb-6 rounded-full md:hidden bg-[#B53D2D]" />
+          <div className="mx-auto flex flex-col justify-center items-center w-[142px] h-[142px] gap-2 mb-6 rounded-full md:hidden bg-[#B53D2D]">
+            <Dice
+              cheatValue={2}
+              size={40}
+              onRoll={(value) => console.log(value)}
+            />
+            <div className="flex gap-5">
+              <Dice
+                cheatValue={4}
+                size={40}
+                onRoll={(value) => console.log(value)}
+              />
+              <Dice
+                cheatValue={3}
+                size={40}
+                onRoll={(value) => console.log(value)}
+              />
+            </div>
+          </div>
           <div className="mx-auto w-[310px] rounded-full h-[310px] mb-6 hidden md:flex md:flex-col justify-center items-center gap-5 bg-[#B53D2D]">
             <Dice
               cheatValue={2}
@@ -107,7 +127,12 @@ const BetDice = () => {
                   />
                 </svg>
                 <span className="text-xl left-1/2 transform -translate-x-[40%] top-[30%] absolute text-white">
-                  0,000,000,000.0
+                  {diceData?.[0]?.bearAmount
+                    ? toFixedEtherNumber(
+                        ethers.formatEther(BigInt(diceData?.[0]?.bearAmount)),
+                        2
+                      )
+                    : 0}
                 </span>
               </div>
               <Button className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[107px] h-[40px] ml-auto">
@@ -149,7 +174,12 @@ const BetDice = () => {
                   />
                 </svg>
                 <span className="text-xl left-1/2 transform -translate-x-[55%] top-[30%] absolute text-white">
-                  0,000,000,000.0
+                  {diceData?.[0]?.bullAmount
+                    ? toFixedEtherNumber(
+                        ethers.formatEther(BigInt(diceData?.[0]?.bullAmount)),
+                        2
+                      )
+                    : 0}
                 </span>
               </div>
               <Button className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[107px] h-[40px] mr-auto">
@@ -191,7 +221,12 @@ const BetDice = () => {
                   />
                 </svg>
                 <span className="text-[10px] left-1/2 transform -translate-x-[40%] top-[30%] absolute text-white">
-                  0,000,000,000.0
+                  {diceData?.[0]?.bearAmount
+                    ? toFixedEtherNumber(
+                        ethers.formatEther(BigInt(diceData?.[0]?.bearAmount)),
+                        2
+                      )
+                    : 0}
                 </span>
               </div>
               <Button className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[85px] h-[20px] ml-auto">
@@ -232,7 +267,12 @@ const BetDice = () => {
                   />
                 </svg>
                 <span className="text-[10px] left-1/2 transform -translate-x-[55%] top-[30%] absolute text-white">
-                  0,000,000,000.0
+                  {diceData?.[0]?.bullAmount
+                    ? toFixedEtherNumber(
+                        ethers.formatEther(BigInt(diceData?.[0]?.bullAmount)),
+                        2
+                      )
+                    : 0}
                 </span>
               </div>
               <Button className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[85px] h-[20px] mr-auto">

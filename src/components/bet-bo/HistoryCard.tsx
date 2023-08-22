@@ -451,6 +451,29 @@ const HistoryCard: React.FC<IHistoryProps> = ({
                   </Button>
                 </div>
               )}
+
+            {!isEmpty(historyBetted) &&
+              historyBetted?.[0]?.status === "Draw" &&
+              historyBetted?.[0]?.refund !== 0 &&
+              !historyBetted?.[0]?.claimed && (
+                <div className="absolute bottom-[-1px] w-full bg-[--colors-secondary] flex justify-between items-center p-4 rounded-b-2xl opacity-100 z-30">
+                  <Icons.TrophyIcon className="text-[--colors-gold]" />
+                  <Button
+                    className="bg-[--colors-primary] hover:bg-[--colors-primary] hover:opacity-70"
+                    onClick={() => {
+                      if (showCollectWinningModal)
+                        showCollectWinningModal(
+                          true,
+                          RESULT_STATUS.DRAW,
+                          "Refund",
+                          historyRound
+                        );
+                    }}
+                  >
+                    Collect Your Refund
+                  </Button>
+                </div>
+              )}
           </div>
         </div>
       ) : (

@@ -73,9 +73,9 @@ const FutureCard: React.FC<IFutureCard> = ({ futureRound, plusMinute }) => {
         <div className="card-body p-4">
           <div className="relative -mb-[0.55rem]">
             <div className="h-16 mx-auto w-60">
-              {theme === "dark" ? (
-                <Image src="/images/up.png" width={288} height={64} alt="up" />
-              ) : (
+              {/* {theme === "dark" ? ( */}
+              <Image src="/images/up.png" width={288} height={64} alt="up" />
+              {/* ) : (
                 <Image
                   src="/images/prediction_light.png"
                   width={288}
@@ -83,7 +83,7 @@ const FutureCard: React.FC<IFutureCard> = ({ futureRound, plusMinute }) => {
                   alt="down"
                   className="rotate-180 h-[61.8px]"
                 />
-              )}
+              )} */}
               <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                 <div
                   className={`text-[--colors-textDisabled] font-semibold uppercase text-xl`}
@@ -107,21 +107,16 @@ const FutureCard: React.FC<IFutureCard> = ({ futureRound, plusMinute }) => {
           </div>
           <div className="relative -mt-[0.55rem]">
             <div className="h-16 mx-auto w-60">
-              {theme === "dark" ? (
-                <Image
-                  src="/images/down.png"
-                  width={288}
-                  height={64}
-                  alt="up"
-                />
-              ) : (
+              {/* {theme === "dark" ? ( */}
+              <Image src="/images/down.png" width={288} height={64} alt="up" />
+              {/* ) : (
                 <Image
                   src="/images/prediction_light.png"
                   width={288}
                   height={64}
                   alt="down light"
                 />
-              )}
+              )} */}
               <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                 <div className="text-[--colors-textDisabled] font-semibold uppercase text-xl">
                   DOWN

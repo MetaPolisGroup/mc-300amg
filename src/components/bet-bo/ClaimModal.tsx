@@ -61,6 +61,7 @@ const ClaimModal: React.FC<IClaimProps> = ({
           amountFormatter + winningAmountFormatter
         ).toFixed(2)).toLocaleString("en-US");
       }
+
       if (statusClaim === RESULT_STATUS.WR) {
         const amountFormatter = +ethers.formatEther(
           BigInt(roundClaimedData?.[0]?.amount)
@@ -77,6 +78,7 @@ const ClaimModal: React.FC<IClaimProps> = ({
           refundFormatter
         ).toFixed(2)).toLocaleString("en-US");
       }
+
       if (statusClaim === RESULT_STATUS.LR) {
         const refundFormatter = +ethers.formatEther(
           BigInt(roundClaimedData?.[0]?.refund)
@@ -93,6 +95,16 @@ const ClaimModal: React.FC<IClaimProps> = ({
         );
 
         return (amountClaimed = +refundFormatter.toFixed(2)).toLocaleString(
+          "en-US"
+        );
+      }
+
+      if (statusClaim === RESULT_STATUS.DRAW) {
+        const amountFormatter = +ethers.formatEther(
+          BigInt(roundClaimedData?.[0]?.amount)
+        );
+
+        return (amountClaimed = +amountFormatter.toFixed(2)).toLocaleString(
           "en-US"
         );
       }
@@ -119,7 +131,6 @@ const ClaimModal: React.FC<IClaimProps> = ({
           if (transaction?.status === "success") {
             setIsLoading(false);
             onCancel();
-            // dispatch(changeBettedStatusHandler(titleClaim));
             toast.custom((t) => (
               <div
                 className={`${
