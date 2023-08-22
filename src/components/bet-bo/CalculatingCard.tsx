@@ -8,6 +8,11 @@ interface ICalculatingCardProps {
 }
 
 const CalculatingCard: React.FC<ICalculatingCardProps> = ({ liveRound }) => {
+  let theme;
+  if (typeof window !== "undefined") {
+    theme = localStorage.getItem("theme") || "dark";
+  }
+
   return (
     <div className={"card w-80 z-20 bg-[--colors-backgroundAlt] shadow-xl"}>
       <div className="flex justify-between items-center bg-[--colors-backgroundAlt] h-9 p-2 rounded-t-2xl">
@@ -20,7 +25,17 @@ const CalculatingCard: React.FC<ICalculatingCardProps> = ({ liveRound }) => {
       <div className="card-body p-4">
         <div className="relative -mb-[0.55rem]">
           <div className="h-16 mx-auto w-60">
-            <Image src="/images/up.png" width={288} height={64} alt="up" />
+            {theme === "dark" ? (
+              <Image src="/images/up.png" width={288} height={64} alt="up" />
+            ) : (
+              <Image
+                src="/images/prediction_light.png"
+                width={288}
+                height={64}
+                alt="down light"
+                className="rotate-180"
+              />
+            )}
             <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
               <div
                 className={`text-[--colors-textDisabled] font-semibold uppercase text-xl`}
@@ -51,7 +66,16 @@ const CalculatingCard: React.FC<ICalculatingCardProps> = ({ liveRound }) => {
         </div>
         <div className="relative -mt-[0.55rem]">
           <div className="h-16 mx-auto w-60">
-            <Image src="/images/down.png" width={288} height={64} alt="up" />
+            {theme === "dark" ? (
+              <Image src="/images/down.png" width={288} height={64} alt="up" />
+            ) : (
+              <Image
+                src="/images/prediction_light.png"
+                width={288}
+                height={64}
+                alt="down light"
+              />
+            )}
             <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
               <div className="text-[--colors-textDisabled] font-semibold uppercase text-xl">
                 DOWN

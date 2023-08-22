@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../ui/Button";
-
 import Dice from "react-dice-roll";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
+import { DocumentData } from "firebase/firestore";
 
 enum EMode {
   OVER = 1,
@@ -11,10 +12,28 @@ enum EMode {
 const BetDice = () => {
   const [color, setColor] = useState("#922922");
   const [isActive, setIsActive] = useState<EMode | undefined>();
+  const [diceData, setDiceData] = useState<IDiceData[]>([]);
+
   const handleChangeMode = (mode: EMode) => {
     setIsActive(mode);
     setColor(isActive !== EMode.OVER ? "#FFFFFF" : "black");
   };
+
+  useEffect(() => {
+    getDataFileredByOnSnapshot(
+      "dices",
+      [
+        ["closed", "==", false],
+        ["cancel", "==", false],
+      ],
+      (docs: DocumentData) => {
+        setDiceData(docs as IDiceData[]);
+      }
+    );
+  }, []);
+
+  console.log(diceData);
+
   return (
     <div className="overflow-hidden flex justify-center py-5">
       <div className="relative">
@@ -28,7 +47,6 @@ const BetDice = () => {
               cheatValue={2}
               size={70}
               onRoll={(value) => console.log(value)}
-              triggers={["Enter"]}
             />
             <div className="flex gap-5">
               <Dice

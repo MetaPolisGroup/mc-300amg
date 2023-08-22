@@ -22,6 +22,11 @@ const CancelCard: React.FC<ICancelCard> = ({
   historyBetted,
   showCollectWinningModal,
 }) => {
+  let theme;
+  if (typeof window !== "undefined") {
+    theme = localStorage.getItem("theme") || "dark";
+  }
+
   return (
     <div className={`w-full flex justify-center items-center relative`}>
       <div className={"card z-20 w-80 bg-[--colors-backgroundAlt] shadow-xl"}>
@@ -38,7 +43,17 @@ const CancelCard: React.FC<ICancelCard> = ({
         <div className="card-body p-4">
           <div className="relative -mb-[0.55rem]">
             <div className="h-16 mx-auto w-60">
-              <Image src="/images/up.png" width={288} height={64} alt="up" />
+              {theme === "dark" ? (
+                <Image src="/images/up.png" width={288} height={64} alt="up" />
+              ) : (
+                <Image
+                  src="/images/prediction_light.png"
+                  width={288}
+                  height={64}
+                  alt="up light"
+                  className="rotate-180 h-[61.5px]"
+                />
+              )}
               <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                 <div
                   className={`text-[--colors-textDisabled] font-semibold uppercase text-xl`}
@@ -62,7 +77,21 @@ const CancelCard: React.FC<ICancelCard> = ({
           </div>
           <div className="relative -mt-[0.55rem]">
             <div className="h-16 mx-auto w-60">
-              <Image src="/images/down.png" width={288} height={64} alt="up" />
+              {theme === "dark" ? (
+                <Image
+                  src="/images/down.png"
+                  width={288}
+                  height={64}
+                  alt="up"
+                />
+              ) : (
+                <Image
+                  src="/images/prediction_light.png"
+                  width={288}
+                  height={64}
+                  alt="up light"
+                />
+              )}
               <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                 <div className="text-[--colors-textDisabled] font-semibold uppercase text-xl">
                   DOWN

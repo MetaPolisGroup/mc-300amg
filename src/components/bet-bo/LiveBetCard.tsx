@@ -33,6 +33,11 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
     liveBettedData
   );
 
+  let theme;
+  if (typeof window !== "undefined") {
+    theme = localStorage.getItem("theme") || "dark";
+  }
+
   useEffect(() => {
     getDataFileredByOnSnapshot(
       "predictions",
@@ -187,7 +192,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                 </div>
               ) : null)}
             <div className="relative -mb-[0.55rem]">
-              {ratePrice > 0 ? (
+              {ratePrice > 0 && (
                 <div className="h-16 mx-auto w-60">
                   <Image
                     src="/images/prediction_up.png"
@@ -214,14 +219,26 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                     </div>
                   </div>
                 </div>
-              ) : (
+              )}
+
+              {ratePrice <= 0 && (
                 <div className="h-16 mx-auto w-60">
-                  <Image
-                    src="/images/up.png"
-                    width={288}
-                    height={64}
-                    alt=" up"
-                  />
+                  {theme === "dark" ? (
+                    <Image
+                      src="/images/up.png"
+                      width={288}
+                      height={64}
+                      alt=" up"
+                    />
+                  ) : (
+                    <Image
+                      src="/images/prediction_light.png"
+                      width={288}
+                      height={64}
+                      alt="up light"
+                      className="rotate-180 h-[61.5px]"
+                    />
+                  )}
                   <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                     <div
                       className={`text-[--colors-success] font-semibold uppercase text-xl`}
@@ -245,7 +262,9 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
             </div>
             <div
               className={`rounded-2xl border-2 border-[${
-                ratePrice > 0 ? "--colors-success" : "--colors-failure"
+                ratePrice > 0 && "--colors-success"
+              }] border-[${ratePrice < 0 && "--colors-failure"}] border-[${
+                ratePrice === 0 && "--colors-text"
               }] p-[2px]`}
             >
               <div className="bg-[--colors-backgroundAlt] rounded-xl p-4 flex flex-col gap-1">
@@ -255,7 +274,9 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                 <div className="flex justify-between items-center">
                   <div
                     className={`flex items-center text-[${
-                      ratePrice > 0 ? "--colors-success" : "--colors-failure"
+                      ratePrice > 0 && "--colors-success"
+                    }] text-[${ratePrice < 0 && "--colors-failure"}] text-[${
+                      ratePrice === 0 && "--colors-text"
                     }] font-semibold text-xl min-h-[36px]`}
                   >
                     <span>$</span>
@@ -268,7 +289,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                       }
                     />
                   </div>
-                  {ratePrice > 0 ? (
+                  {ratePrice > 0 && (
                     <div
                       className={`flex gap-1 justify-center items-center bg-[--colors-success] py-1 px-2 rounded`}
                     >
@@ -277,12 +298,22 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                         ${ratePrice.toFixed(4)}
                       </span>
                     </div>
-                  ) : (
+                  )}
+                  {ratePrice < 0 && (
                     <div
                       className={`flex gap-1 justify-center items-center bg-[--colors-failure] py-1 px-2 rounded`}
                     >
                       <Icons.ArrowDown className="text-[--colors-white]" />
                       <span className="text-[--colors-white] font-medium text-base uppercase ml-1">
+                        ${ratePrice.toFixed(4)}
+                      </span>
+                    </div>
+                  )}
+                  {ratePrice === 0 && (
+                    <div
+                      className={`flex gap-1 justify-center items-center bg-[--colors-text] py-1 px-2 rounded`}
+                    >
+                      <span className="text-gray-950 font-medium text-base uppercase ml-1">
                         ${ratePrice.toFixed(4)}
                       </span>
                     </div>
@@ -314,14 +345,23 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
               </div>
             </div>
             <div className="relative -mt-[0.55rem]">
-              {ratePrice > 0 ? (
+              {ratePrice >= 0 && (
                 <div className="h-16 mx-auto w-60">
-                  <Image
-                    src="/images/down.png"
-                    width={288}
-                    height={64}
-                    alt="down"
-                  />
+                  {theme === "dark" ? (
+                    <Image
+                      src="/images/down.png"
+                      width={288}
+                      height={64}
+                      alt="down"
+                    />
+                  ) : (
+                    <Image
+                      src="/images/prediction_light.png"
+                      width={288}
+                      height={64}
+                      alt="up light"
+                    />
+                  )}
                   <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                     <div className="text-[--colors-textSubtle] font-semibold text-sm">
                       {liveBetData?.[0]?.bearAmount
@@ -339,7 +379,9 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                     </div>
                   </div>
                 </div>
-              ) : (
+              )}
+
+              {ratePrice < 0 && (
                 <div className="h-16 mx-auto w-60">
                   <Image
                     src="/images/prediction_down.png"
@@ -347,6 +389,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                     height={64}
                     alt=" up"
                   />
+
                   <div className="flex items-center flex-col justify-center absolute top-0 left-0 w-full h-full">
                     <div className="text-[--colors-white] font-semibold text-sm">
                       {liveBetData?.[0]?.bearAmount
@@ -366,6 +409,7 @@ const LiveBetCard: React.FC<ILiveBetCardProps> = ({
                 </div>
               )}
             </div>
+
             {!isEmpty(liveBetted) &&
               (liveBetted?.position === "DOWN" ? (
                 <div className="absolute right-0 bottom-2 flex gap-2 z-20 border-2 rounded-2xl border-[--colors-secondary] px-2 py-[2px] ">
