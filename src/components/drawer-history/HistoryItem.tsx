@@ -1,12 +1,17 @@
 "use client";
+import React, { useEffect, useState } from "react";
 
-import React, { useState } from "react";
 import clsx from "clsx";
 import { ethers } from "ethers";
 import { Icons } from "../Icons";
 import { replaceDotToComma, toFixedEtherNumber } from "@/utils/format-number";
 import { RESULT_STATUS } from "@/constants/history";
 import { CURRENCY_UNIT } from "@/constants";
+
+import { DocumentData } from "firebase/firestore";
+import getAllData from "@/helpers/getAllDataByOnSnapshot";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
+import AnimatedNumber from "../AnimatedNumber";
 
 interface IHistoryDataProps {
   data: IHistory;
@@ -19,7 +24,9 @@ interface IHistoryDataProps {
 }
 
 const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
+  const [round, setRound] = useState<IRound>();
   const [isShowDetail, setIsShowDetail] = useState<boolean>(false);
+  const [chainlinkData, setChainlinkData] = useState<DocumentData[]>();
 
   const isLive = data?.status === RESULT_STATUS.LIVE;
   const isRefund = data?.status === RESULT_STATUS.REFUND;
@@ -41,8 +48,29 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
       : handlerFormatEther(data?.refund)
     : handlerFormatEther(data?.winning_amount);
 
-  const ratePrice =
-    (data?.round?.closePrice - data?.round?.lockPrice) / 10 ** 8;
+  const ratePrice = isLive
+    ? (+chainlinkData?.[0]?.price - round?.lockPrice!) / 10 ** 8
+    : (round?.closePrice! - round?.lockPrice!) / 10 ** 8;
+
+  useEffect(() => {
+    if (isLive || isWaiting) {
+      getDataFileredByOnSnapshot(
+        "predictions",
+        [["epoch", "==", data.epoch]],
+        (docs: DocumentData) => {
+          setRound(docs?.[0]);
+        }
+      );
+    }
+
+    if (!isLive || !isWaiting) setRound(data?.round);
+  }, [data, isLive, isWaiting]);
+
+  useEffect(() => {
+    getAllData("chainlink", (docs: DocumentData) => {
+      setChainlinkData(docs as DocumentData[]);
+    });
+  }, []);
 
   const renderYourHistory = () => {
     return (
@@ -166,6 +194,22 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
     );
   };
 
+  const renderClosePrice = () => {
+    if (isLive || isWaiting)
+      return (
+        <div className="flex">
+          $
+          <AnimatedNumber
+            startNumber={+(round?.lockPrice! / 10 ** 8).toFixed(4)}
+            endNumber={+(chainlinkData?.[0]?.price / 10 ** 8).toFixed(4)}
+          />
+        </div>
+      );
+
+    return `$
+  ${replaceDotToComma((round?.closePrice! / 10 ** 8).toFixed(4).toString())}`;
+  };
+
   const renderRoundHistory = () => {
     return (
       <>
@@ -190,10 +234,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
                   : "text-[--colors-failure]"
               )}
             >
-              $
-              {replaceDotToComma(
-                (data?.round?.closePrice / 10 ** 8).toFixed(4).toString()
-              )}
+              {renderClosePrice()}
             </div>
             <div
               className={clsx(
@@ -215,19 +256,17 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
             <div className="text-sm">Locked Price:</div>
             <div className="text-sm">
               $
-              {data?.round?.lockPrice
-                ? replaceDotToComma(
-                    (data?.round?.lockPrice / 10 ** 8).toFixed(4)
-                  )
+              {round?.lockPrice
+                ? replaceDotToComma((round?.lockPrice / 10 ** 8).toFixed(4))
                 : 0}
             </div>
           </div>
           <div className="flex justify-between mb-1">
             <div className="text-sm font-bold">Prize Pool:</div>
             <div className="text-sm font-bold">
-              {data?.round?.totalAmount
+              {round?.totalAmount
                 ? toFixedEtherNumber(
-                    ethers.formatEther(BigInt(data?.round?.totalAmount)),
+                    ethers.formatEther(BigInt(round?.totalAmount)),
                     2
                   )
                 : 0}{" "}
@@ -238,9 +277,9 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
             <div className="text-xs">UP:</div>
             <div className="text-xs">
               <span className="font-bold">
-                {data?.round?.bullAmount
+                {round?.bullAmount
                   ? toFixedEtherNumber(
-                      ethers.formatEther(BigInt(data?.round?.bullAmount)),
+                      ethers.formatEther(BigInt(round?.bullAmount)),
                       2
                     )
                   : 0}{" "}
@@ -252,9 +291,9 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
             <div className="text-xs">DOWN:</div>
             <div className="text-xs">
               <span className="font-bold">
-                {data?.round?.bearAmount
+                {round?.bearAmount
                   ? toFixedEtherNumber(
-                      ethers.formatEther(BigInt(data?.round?.bullAmount)),
+                      ethers.formatEther(BigInt(round?.bearAmount)),
                       2
                     )
                   : 0}{" "}
