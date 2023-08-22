@@ -136,13 +136,8 @@ const ElectionCard = () => {
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
-<<<<<<< HEAD
                     <div className="flex flex-1 items-center justify-between pl-2 text-white text-xs font-bold leading-7 uppercase">
                       <div>Democratic Party</div>
-=======
-                    <div className="flex flex-1 items-center justify-between pl-2 text-white text-xs leading-7">
-                      <div>CADIDATE 1</div>
->>>>>>> dev
                       <div>
                         {userBettedElection?.[0]?.position === "UP" && (
                           <TooltipElement
@@ -179,13 +174,8 @@ const ElectionCard = () => {
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
-<<<<<<< HEAD
                     <div className="flex flex-1 items-center justify-between text-white text-xs pl-2 font-bold leading-7 uppercase">
                       <div>Republican Party</div>
-=======
-                    <div className="flex flex-1 items-center justify-between text-white text-xs pl-2 leading-7">
-                      <div>CADIDATE 2</div>
->>>>>>> dev
                       {userBettedElection?.[0]?.position === "DOWN" && (
                         <TooltipElement
                           title={`${toFixedEtherNumber(
@@ -204,16 +194,8 @@ const ElectionCard = () => {
                 </>
               ) : (
                 <>
-<<<<<<< HEAD
                   <div className="w-full flex-1 h-[54px] flex items-center justify-between pl-2 bg-[#A1A0CA] rounded-[20px] cursor-pointer">
                     <div className="w-44 py-[7px] px-4 text-[--colors-contrast] text-xl font-light leading-7 bg-[--colors-backgroundAlt] rounded-[14px]">
-=======
-                  <div
-                    className="w-full flex-1 h-[54px] flex items-center justify-between pl-2 bg-[#A1A0CA] rounded-[20px] cursor-pointer"
-                    onClick={() => enterYesOrNoHandler("YES")}
-                  >
-                    <div className="w-44 py-[7px] px-4 text-[--colors-contrast] text-base font-light leading-7 bg-[--colors-backgroundAlt] rounded-[14px]">
->>>>>>> dev
                       {electionData?.[0]?.bullAmount
                         ? toFixedEtherNumber(
                             ethers.formatEther(
@@ -229,16 +211,10 @@ const ElectionCard = () => {
                         Democratic Party
                       </div>
                       <button
-<<<<<<< HEAD
                         className="text-white py-4 px-2 md:px-8 bg-gradient-to-br from-slate-400 to-indigo-800 rounded-r-2xl"
                         onClick={() =>
                           enterYesOrNoHandler(EEntitites.DemocraticParty)
                         }
-=======
-                        className="text-white py-4 px-2 md:px-8 rounded-r-2xl"
-                        style={{ background: "var(--colors-gradient-market)" }}
-                        onClick={() => enterYesOrNoHandler("YES")}
->>>>>>> dev
                       >
                         Select
                       </button>
@@ -262,16 +238,10 @@ const ElectionCard = () => {
                         Republican Party
                       </div>
                       <button
-<<<<<<< HEAD
                         className="text-white py-4 px-2 md:px-8 bg-gradient-to-br from-slate-400 to-indigo-800 rounded-r-2xl"
                         onClick={() =>
                           enterYesOrNoHandler(EEntitites.RepublicanParty)
                         }
-=======
-                        className="text-white py-4 px-2 md:px-8 rounded-r-2xl"
-                        style={{ background: "var(--colors-gradient-market)" }}
-                        onClick={() => enterYesOrNoHandler("NO")}
->>>>>>> dev
                       >
                         Select
                       </button>
