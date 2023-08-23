@@ -63,7 +63,9 @@ const MarkerHistory: React.FC<IMarketHistory> = ({ onClose }) => {
       const historyDataFilted = originalHistoryData.filter(
         (history) =>
           (history?.status === RESULT_STATUS.WIN ||
-            history?.status === RESULT_STATUS.WR) &&
+            history?.status === RESULT_STATUS.WR ||
+            history?.status === RESULT_STATUS.LR ||
+            history?.status === RESULT_STATUS.REFUND) &&
           history?.claimed === false
       );
       return setDataHistory(historyDataFilted);
@@ -83,9 +85,12 @@ const MarkerHistory: React.FC<IMarketHistory> = ({ onClose }) => {
                 "w-1/2 text-base font-bold",
                 btn.id !== mode.id && "text-[--colors-market]",
                 btn.id === mode.id &&
-                  "bg-[--colors-market] text-[--colors-backgroundAlt] rounded-2xl"
+                  "bg-[--colors-market] text-[--colors-backgroundAlt] rounded-2xl",
+                btn.id === MODE.PNL && "!cursor-not-allowed"
               )}
               onClick={() => {
+                if (btn.id === MODE.PNL) return;
+
                 setMode(btn);
               }}
             >

@@ -136,8 +136,8 @@ const ElectionCard = () => {
                         : 0}{" "}
                       {CURRENCY_UNIT}
                     </div>
-                    <div className="flex flex-1 items-center justify-between pl-2 text-white text-xs font-bold leading-7 uppercase">
-                      <div>Democratic Party</div>
+                    <div className="flex flex-1 items-center justify-between pl-2 text-white text-xs leading-7 uppercase">
+                      <div className="font-bold">Democratic Party</div>
                       <div>
                         {userBettedElection?.[0]?.position === "UP" && (
                           <TooltipElement
@@ -147,7 +147,7 @@ const ElectionCard = () => {
                               ),
                               2
                             )} ${CURRENCY_UNIT}`}
-                            classNameText="text-right"
+                            classNameText="text-right font-light"
                           >
                             SELECTED
                           </TooltipElement>
@@ -195,7 +195,7 @@ const ElectionCard = () => {
               ) : (
                 <>
                   <div className="w-full flex-1 h-[54px] flex items-center justify-between pl-2 bg-[#A1A0CA] rounded-[20px] cursor-pointer">
-                    <div className="w-44 py-[7px] px-4 text-[--colors-contrast] text-xl font-light leading-7 bg-[--colors-backgroundAlt] rounded-[14px]">
+                    <div className="w-44 py-[7px] px-4 text-[--colors-contrast] text-base font-light leading-7 bg-[--colors-backgroundAlt] rounded-[14px]">
                       {electionData?.[0]?.bullAmount
                         ? toFixedEtherNumber(
                             ethers.formatEther(
@@ -211,7 +211,8 @@ const ElectionCard = () => {
                         Democratic Party
                       </div>
                       <button
-                        className="text-white py-4 px-2 md:px-8 bg-gradient-to-br from-slate-400 to-indigo-800 rounded-r-2xl"
+                        className="text-white py-4 px-2 md:px-8 rounded-r-2xl"
+                        style={{ background: "var(--colors-gradient-market)" }}
                         onClick={() =>
                           enterYesOrNoHandler(EEntitites.DemocraticParty)
                         }
@@ -238,7 +239,8 @@ const ElectionCard = () => {
                         Republican Party
                       </div>
                       <button
-                        className="text-white py-4 px-2 md:px-8 bg-gradient-to-br from-slate-400 to-indigo-800 rounded-r-2xl"
+                        className="text-white py-4 px-2 md:px-8 rounded-r-2xl"
+                        style={{ background: "var(--colors-gradient-market)" }}
                         onClick={() =>
                           enterYesOrNoHandler(EEntitites.RepublicanParty)
                         }

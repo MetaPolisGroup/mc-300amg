@@ -78,8 +78,9 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({
         (history) =>
           (history?.status === RESULT_STATUS.WIN ||
             history?.status === RESULT_STATUS.WR ||
-            history?.status === RESULT_STATUS.REFUND ||
-            history?.status === RESULT_STATUS.LR) &&
+            history?.status === RESULT_STATUS.LR ||
+            history?.status === RESULT_STATUS.DRAW ||
+            history?.status === RESULT_STATUS.REFUND) &&
           history?.claimed === false
       );
       return setDataHistory(historyDataFilted);
@@ -99,9 +100,12 @@ const DrawerHistory: React.FC<IDrawerHistory> = ({
                 "w-1/2 text-base font-bold",
                 btn.id !== mode.id && "text-[--colors-textSubtle]",
                 btn.id === mode.id &&
-                  "bg-[--colors-textSubtle] text-[--colors-backgroundAlt] rounded-2xl"
+                  "bg-[--colors-textSubtle] text-[--colors-backgroundAlt] rounded-2xl",
+                btn.id === MODE.PNL && "!cursor-not-allowed"
               )}
               onClick={() => {
+                if (btn.id === MODE.PNL) return;
+
                 setMode(btn);
               }}
             >

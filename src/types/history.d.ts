@@ -1,20 +1,24 @@
 interface IRound {
-  closePrice: number;
-  delele: boolean;
-  lockTimestamp: number;
-  closeTimestamp: number;
-  bullAmount: number;
   id: string;
-  lockPrice: number;
   epoch: number;
-  closeOracleId: number;
-  totalAmount: number;
-  bearAmount: number;
-  closed: boolean;
-  lockOracleId: number;
-  locked: boolean;
-  startTimestamp: number;
   result: string;
+  delele: boolean;
+
+  locked: boolean;
+  closed: boolean;
+  cancel: boolean;
+  lockPrice: number;
+
+  bearAmount: number;
+  closePrice: number;
+  bullAmount: number;
+  totalAmount: number;
+
+  lockOracleId: number;
+  lockTimestamp: number;
+  closeOracleId: number;
+  closeTimestamp: number;
+  startTimestamp: number;
 }
 
 interface IHistory {

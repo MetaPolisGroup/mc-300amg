@@ -23,7 +23,7 @@ const ChangeMode: React.FC<IChangeModeProps> = (props) => {
   return (
     <div
       onClick={toggleSwitch}
-      style={{ height: HWrapper ?? "50px", width: WWrapper ?? "80px" }}
+      style={{ height: HWrapper ?? "40px", width: WWrapper ?? "70px" }}
       className={`transition-colors duration-500 flex-start flex  rounded-[50px] ${
         isOn ? "bg-yellow-300" : "bg-black/90"
       } p-[5px] shadow-inner hover:cursor-pointer  ${
@@ -32,7 +32,7 @@ const ChangeMode: React.FC<IChangeModeProps> = (props) => {
       data-toggle-theme="dark,light"
     >
       <motion.div
-        style={{ height: H ?? "40px", width: W ?? "40px" }}
+        style={{ height: H ?? "30px", width: W ?? "30px" }}
         className={`flex
         }] items-center justify-center rounded-full ${
           isOn ? "bg-yellow-500" : "bg-gray-800"

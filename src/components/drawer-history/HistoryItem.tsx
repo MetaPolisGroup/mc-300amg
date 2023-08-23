@@ -28,8 +28,11 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
   const [isShowDetail, setIsShowDetail] = useState<boolean>(false);
   const [chainlinkData, setChainlinkData] = useState<DocumentData[]>();
 
+  console.log({ data });
+
   const isLive = data?.status === RESULT_STATUS.LIVE;
   const isRefund = data?.status === RESULT_STATUS.REFUND;
+  const isDraw = data?.status === RESULT_STATUS.DRAW;
   const isWaiting = data?.status === RESULT_STATUS.WAITING;
   const isWinningRefund = data?.status === RESULT_STATUS.WR;
   const isLosingRefund = data?.status === RESULT_STATUS.LR;
@@ -152,8 +155,10 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
                   isLose && "text-[--colors-light-failure]"
                 )}
               >
-                {isWin || isRefund ? "+" : "-"}{" "}
-                {isRefund ? handlerFormatEther(data?.refund) : winningAmount}{" "}
+                {isWin || isRefund || isDraw ? "+" : "-"}{" "}
+                {isRefund || isDraw
+                  ? handlerFormatEther(data?.refund)
+                  : winningAmount}{" "}
                 {CURRENCY_UNIT}
               </div>
             </div>
@@ -211,6 +216,16 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
   };
 
   const renderRoundHistory = () => {
+    const renderArrow = () => {
+      if (isDraw) return null;
+
+      return ratePrice > 0 ? (
+        <Icons.ArrowUp className="w-[20px] h-[20px]" />
+      ) : (
+        <Icons.ArrowDown className="w-[20px] h-[20px]" />
+      );
+    };
+
     return (
       <>
         <div className="text-lg font-bold mb-2">Round History</div>
@@ -219,7 +234,8 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
             "border-2 border-solid rounded-2xl p-3",
             ratePrice > 0
               ? "border-[--colors-success]"
-              : "border-[--colors-failure]"
+              : "border-[--colors-failure]",
+            isDraw && "!border-[#e7e3eb]"
           )}
         >
           <div className="text-xs text-[--colors-textSubtle] font-bold mb-2">
@@ -241,15 +257,11 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
                 "flex gap-1 items-center rounded-lg p-2 text-sm font-bold",
                 ratePrice > 0
                   ? "bg-[--colors-success]"
-                  : "bg-[--colors-failure]"
+                  : "bg-[--colors-failure]",
+                isDraw && "!text-[#191326] !bg-[#e7e3eb]"
               )}
             >
-              {ratePrice > 0 ? (
-                <Icons.ArrowUp className="w-[20px] h-[20px]" />
-              ) : (
-                <Icons.ArrowDown className="w-[20px] h-[20px]" />
-              )}{" "}
-              ${ratePrice.toFixed(4)}
+              {renderArrow()} ${isDraw ? "0.0000" : ratePrice.toFixed(4)}
             </div>
           </div>
           <div className="flex justify-between mb-1">
@@ -309,7 +321,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
   const renderWinningAmount = () => {
     if (isWaiting || isLive) return null;
 
-    if (isRefund)
+    if (isRefund || isDraw)
       return (
         <div className="text-center">
           <div className="text-xs">Your Result</div>
@@ -391,7 +403,8 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
           {renderLayoutStatus()}
         </div>
         <div className="flex items-center gap-2">
-          {(isWin || isRefund || isLosingRefund) && data?.claimed === false ? (
+          {(isWin || isRefund || isLosingRefund || isDraw) &&
+          data?.claimed === false ? (
             <button
               className="bg-[--colors-primary] text-sm text-[--colors-white] px-4 py-1 rounded-2xl cursor-pointer hover:opacity-[0.8]"
               onClick={(e) => {

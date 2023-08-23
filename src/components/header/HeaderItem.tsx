@@ -80,7 +80,7 @@ const HeaderItem: React.FC<IHeaderItem> = ({ data }) => {
           className="hover:bg-[--colors-tertiary] h-[48px] flex justify-between items-center flex-nowrap flex-row px-4"
         >
           <a href={item.link} className="w-full">
-            <span className="p-0 font-semibold">{item.title}</span>
+            <span className="p-0 font-light">{item.title}</span>
             <span className="p-0">{renderSubContent(item)}</span>
           </a>
         </li>
@@ -102,7 +102,7 @@ const HeaderItem: React.FC<IHeaderItem> = ({ data }) => {
         <label
           tabIndex={0}
           className={clsx(
-            "btn text-[--colors-contrast] flex-nowrap gap-3 border-0 !m-0 py-4 px-2 xl:p-4 !min-h-fit !normal-case !rounded-[20px] h-[48px]",
+            "btn text-[--colors-contrast] flex-nowrap gap-3 border-0 !m-0 py-4 px-2 xl:p-4 !min-h-fit !normal-case !rounded-[20px] h-[48px] font-light",
             data.title !== "Staking (Coming soon)" &&
               "hover:bg-[--colors-tertiary]",
             data.title === "Staking (Coming soon)" &&
