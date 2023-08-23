@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Button from "../ui/Button";
-import Dice from "react-dice-roll";
+import Dice from "../Dice";
 import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { DocumentData } from "firebase/firestore";
 import { toFixedEtherNumber } from "@/utils/format-number";
@@ -11,10 +11,16 @@ enum EMode {
   UNDER,
 }
 
-const BetDice = () => {
+interface IDiceDataProps {
+  diceData: IDiceData;
+}
+
+const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
   const [color, setColor] = useState("#922922");
   const [isActive, setIsActive] = useState<EMode | undefined>();
-  const [diceData, setDiceData] = useState<IDiceData[]>([]);
+  const [prevDiceData, setPrevDiceData] = useState<IDiceData>(diceData);
+  const [minute, setMinute] = useState<number>(0);
+  const [second, setSecond] = useState<number>(0);
 
   const handleChangeMode = (mode: EMode) => {
     setIsActive(mode);
@@ -25,16 +31,43 @@ const BetDice = () => {
     getDataFileredByOnSnapshot(
       "dices",
       [
-        ["closed", "==", false],
-        ["cancel", "==", false],
+        // ["closed", "==", true],
+        // ["cancel", "==", false],
+        ["epoch", "==", diceData?.epoch - 1],
       ],
       (docs: DocumentData) => {
-        setDiceData(docs as IDiceData[]);
+        setPrevDiceData(docs?.[0] as IDiceData);
       }
     );
-  }, []);
+  }, [diceData?.epoch]);
 
-  console.log(diceData);
+  useEffect(() => {
+    const target = +diceData?.closeTimestamp * 1000;
+
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const different = target - now;
+      const m = Math.floor((different % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((different % (1000 * 60)) / 1000);
+      setMinute(m);
+      setSecond(s);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [diceData]);
+
+  const renderTime = () => {
+    const _minute = minute < 10 ? `0${minute}` : minute;
+    const _second = second < 10 ? `0${second}` : second;
+    return (
+      <>
+        {+_minute >= 0 && +_second >= 0 ? `${_minute}:${_second}` : "Closing"}
+      </>
+    );
+  };
+
+  console.log({ diceData });
+  console.log({ prevDiceData });
 
   return (
     <div className="overflow-hidden flex justify-center py-5">
@@ -45,39 +78,33 @@ const BetDice = () => {
         >
           <div className="mx-auto flex flex-col justify-center items-center w-[142px] h-[142px] gap-2 mb-6 rounded-full md:hidden bg-[#B53D2D]">
             <Dice
-              cheatValue={2}
+              cheatValue={prevDiceData?.dice1 && prevDiceData.dice1}
               size={40}
-              onRoll={(value) => console.log(value)}
             />
             <div className="flex gap-5">
               <Dice
-                cheatValue={4}
+                cheatValue={prevDiceData?.dice2 && prevDiceData?.dice2}
                 size={40}
-                onRoll={(value) => console.log(value)}
               />
               <Dice
-                cheatValue={3}
+                cheatValue={prevDiceData?.dice3 && prevDiceData?.dice3}
                 size={40}
-                onRoll={(value) => console.log(value)}
               />
             </div>
           </div>
           <div className="mx-auto w-[310px] rounded-full h-[310px] mb-6 hidden md:flex md:flex-col justify-center items-center gap-5 bg-[#B53D2D]">
             <Dice
-              cheatValue={2}
+              cheatValue={prevDiceData?.dice1 && prevDiceData.dice1}
               size={70}
-              onRoll={(value) => console.log(value)}
             />
             <div className="flex gap-5">
               <Dice
-                cheatValue={4}
+                cheatValue={prevDiceData?.dice2 && prevDiceData?.dice2}
                 size={70}
-                onRoll={(value) => console.log(value)}
               />
               <Dice
-                cheatValue={3}
+                cheatValue={prevDiceData?.dice3 && prevDiceData?.dice3}
                 size={70}
-                onRoll={(value) => console.log(value)}
               />
             </div>
           </div>
@@ -88,7 +115,8 @@ const BetDice = () => {
             className={`w-[218px] h-[58px] md:w-[384px] md:h-[125px] rounded-[20px] flex justify-center items-center`}
           >
             <div className="text-5xl text-[#922922] font-bold">
-              <CountdownTimer initialTime={60} />
+              {/* <CountdownTimer initialTime={60} /> */}
+              {renderTime()}
             </div>
           </div>
         </div>
@@ -127,9 +155,9 @@ const BetDice = () => {
                   />
                 </svg>
                 <span className="text-xl left-1/2 transform -translate-x-[40%] top-[30%] absolute text-white">
-                  {diceData?.[0]?.bearAmount
+                  {diceData?.bearAmount
                     ? toFixedEtherNumber(
-                        ethers.formatEther(BigInt(diceData?.[0]?.bearAmount)),
+                        ethers.formatEther(BigInt(diceData?.bearAmount)),
                         2
                       )
                     : 0}
@@ -174,9 +202,9 @@ const BetDice = () => {
                   />
                 </svg>
                 <span className="text-xl left-1/2 transform -translate-x-[55%] top-[30%] absolute text-white">
-                  {diceData?.[0]?.bullAmount
+                  {diceData?.bullAmount
                     ? toFixedEtherNumber(
-                        ethers.formatEther(BigInt(diceData?.[0]?.bullAmount)),
+                        ethers.formatEther(BigInt(diceData?.bullAmount)),
                         2
                       )
                     : 0}
@@ -221,9 +249,9 @@ const BetDice = () => {
                   />
                 </svg>
                 <span className="text-[10px] left-1/2 transform -translate-x-[40%] top-[30%] absolute text-white">
-                  {diceData?.[0]?.bearAmount
+                  {diceData?.bearAmount
                     ? toFixedEtherNumber(
-                        ethers.formatEther(BigInt(diceData?.[0]?.bearAmount)),
+                        ethers.formatEther(BigInt(diceData?.bearAmount)),
                         2
                       )
                     : 0}
@@ -267,9 +295,9 @@ const BetDice = () => {
                   />
                 </svg>
                 <span className="text-[10px] left-1/2 transform -translate-x-[55%] top-[30%] absolute text-white">
-                  {diceData?.[0]?.bullAmount
+                  {diceData?.bullAmount
                     ? toFixedEtherNumber(
-                        ethers.formatEther(BigInt(diceData?.[0]?.bullAmount)),
+                        ethers.formatEther(BigInt(diceData?.bullAmount)),
                         2
                       )
                     : 0}
@@ -287,24 +315,3 @@ const BetDice = () => {
 };
 
 export default BetDice;
-
-const CountdownTimer: React.FC<{ initialTime: number }> = ({ initialTime }) => {
-  const [time, setTime] = useState(initialTime);
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      setTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = time % 60;
-    return `${minutes.toString().padStart(2, "0")}:${seconds
-      .toString()
-      .padStart(2, "0")}`;
-  };
-
-  return <span>{formatTime(time)}</span>;
-};
