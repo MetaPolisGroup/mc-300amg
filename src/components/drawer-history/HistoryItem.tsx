@@ -28,8 +28,6 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
   const [isShowDetail, setIsShowDetail] = useState<boolean>(false);
   const [chainlinkData, setChainlinkData] = useState<DocumentData[]>();
 
-  console.log({ data });
-
   const isLive = data?.status === RESULT_STATUS.LIVE;
   const isRefund = data?.status === RESULT_STATUS.REFUND;
   const isDraw = data?.status === RESULT_STATUS.DRAW;
