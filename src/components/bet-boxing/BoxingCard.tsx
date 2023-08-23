@@ -134,7 +134,7 @@ const BoxingCard: React.FC<IBoxingCard> = ({ targetDate }) => {
                       {CURRENCY_UNIT}
                     </div>
                     <div className="flex flex-1 items-center justify-between pl-2 text-white text-xs leading-7">
-                      <div>ELON</div>
+                      <div className="font-bold">ELON</div>
                       <div>
                         {userBettedBoxing?.[0]?.position === "UP" && (
                           <TooltipElement
@@ -144,7 +144,7 @@ const BoxingCard: React.FC<IBoxingCard> = ({ targetDate }) => {
                               ),
                               2
                             )} ${CURRENCY_UNIT}`}
-                            classNameText="text-right"
+                            classNameText="text-right font-light"
                           >
                             SELECTED
                           </TooltipElement>
@@ -172,7 +172,7 @@ const BoxingCard: React.FC<IBoxingCard> = ({ targetDate }) => {
                       {CURRENCY_UNIT}
                     </div>
                     <div className="flex flex-1 items-center justify-between text-white text-xs pl-2 leading-7">
-                      <div>MARK ZUCKERBERG</div>
+                      <div className="font-bold">MARK ZUCKERBERG</div>
                       {userBettedBoxing?.[0]?.position === "DOWN" && (
                         <TooltipElement
                           title={`${toFixedEtherNumber(

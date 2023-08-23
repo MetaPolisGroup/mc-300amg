@@ -19,12 +19,15 @@ export default function Home() {
             fairness to deliver thrilling and enjoyable experiences
           </p>
           <div className="flex gap-2 items-center">
-            <Button variant="success" className="rounded-full px-9">
+            <Button
+              variant="success"
+              className="rounded-full px-9 hover:opacity-90"
+            >
               Categories
             </Button>
             <Button
               variant="success"
-              className="bg-[--colors-white] rounded-full border-2 border-[--colors-primary] text-[--colors-primary] px-9"
+              className="bg-[--colors-white] rounded-full border-2 border-[--colors-primary] text-[--colors-primary] px-9 hover:text-[--colors-white] hover:opacity-1"
             >
               Roadmap
             </Button>
