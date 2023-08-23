@@ -1,13 +1,27 @@
 "use client";
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import { Icons } from "@/components/Icons";
 import DiceHistory from "@/components/dice-history";
-
 import BetDice from "@/components/bet-dice/BetDice";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
+import { DocumentData } from "firebase/firestore";
 
 const ChineseDice = () => {
+  const [diceData, setDiceData] = useState<IDiceData[]>([]);
+  useEffect(() => {
+    getDataFileredByOnSnapshot(
+      "dices",
+      [
+        ["closed", "==", false],
+        ["cancel", "==", false],
+      ],
+      (docs: DocumentData) => {
+        setDiceData(docs as IDiceData[]);
+      }
+    );
+  }, []);
+
   const [isShowHistory, setIsShowHistory] = useState<boolean>(false);
 
   return (
@@ -30,7 +44,7 @@ const ChineseDice = () => {
             </button>
           </div>
 
-          <BetDice />
+          <BetDice diceData={diceData?.[0]} />
         </div>
 
         <div
