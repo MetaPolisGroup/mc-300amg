@@ -5,6 +5,8 @@ import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { DocumentData } from "firebase/firestore";
 import { toFixedEtherNumber } from "@/utils/format-number";
 import { ethers } from "ethers";
+import SetDicePosition from "./SetDicePosition";
+import { EDiceStatus } from "@/constants/dice-types";
 
 enum EMode {
   OVER = 1,
@@ -19,6 +21,8 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
   const [color, setColor] = useState("#922922");
   const [isActive, setIsActive] = useState<EMode | undefined>();
   const [prevDiceData, setPrevDiceData] = useState<IDiceData>(diceData);
+  const [showSetBetCard, setShowSetBetCard] = useState<boolean>(false);
+  const [underOrOverStatus, setUnderOrOverStatus] = useState<string>("");
   const [minute, setMinute] = useState<number>(0);
   const [second, setSecond] = useState<number>(0);
 
@@ -66,59 +70,89 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
     );
   };
 
-  console.log({ diceData });
-  console.log({ prevDiceData });
+  const enterUnderOrOverHandler = (status: string) => {
+    setShowSetBetCard(true);
+    if (status === EDiceStatus.OVER) setUnderOrOverStatus(EDiceStatus.OVER);
+    if (status === EDiceStatus.UNDER) setUnderOrOverStatus(EDiceStatus.UNDER);
+  };
+
+  const changeUnderOrOverHanlder = (status: string) => {
+    setUnderOrOverStatus(status);
+    inputRef.current?.focus();
+  };
+
+  const backwardHandler = (status: boolean) => {
+    setShowSetBetCard(status);
+  };
+
+  const placedBetHandler = (status: boolean) => {
+    setShowSetBetCard(status);
+  };
+  const inputRef = React.useRef<HTMLInputElement | null>(null);
 
   return (
     <div className="overflow-hidden flex justify-center py-5">
       <div className="relative">
         <div
           style={{ borderColor: color }}
-          className={`w-[272px] md:w-[496px] md:h-[584px] relative z-10 h-[272px] flex justify-center m-auto flex-col rounded-[40px] bg-[#922922] border-[3px] md:border-[7px] items-center p-[40px]`}
+          className={`w-[272px] md:w-[496px] md:h-[584px] relative z-10 h-[272px] flex justify-center m-auto flex-col rounded-[40px] bg-[#922922] border-[3px] md:border-[7px] items-center p-[40px] transition-transform duration-700 preverve-3d ${
+            showSetBetCard === true && "rotateY-180"
+          }`}
         >
-          <div className="mx-auto flex flex-col justify-center items-center w-[142px] h-[142px] gap-2 mb-6 rounded-full md:hidden bg-[#B53D2D]">
-            <Dice
-              cheatValue={prevDiceData?.dice1 && prevDiceData.dice1}
-              size={40}
-            />
-            <div className="flex gap-5">
+          <div>
+            <div className="mx-auto flex flex-col justify-center items-center w-[142px] h-[142px] gap-2 mb-6 rounded-full md:hidden bg-[#B53D2D]">
               <Dice
-                cheatValue={prevDiceData?.dice2 && prevDiceData?.dice2}
+                cheatValue={prevDiceData?.dice1 && prevDiceData.dice1}
                 size={40}
               />
-              <Dice
-                cheatValue={prevDiceData?.dice3 && prevDiceData?.dice3}
-                size={40}
-              />
+              <div className="flex gap-5">
+                <Dice
+                  cheatValue={prevDiceData?.dice2 && prevDiceData?.dice2}
+                  size={40}
+                />
+                <Dice
+                  cheatValue={prevDiceData?.dice3 && prevDiceData?.dice3}
+                  size={40}
+                />
+              </div>
             </div>
-          </div>
-          <div className="mx-auto w-[310px] rounded-full h-[310px] mb-6 hidden md:flex md:flex-col justify-center items-center gap-5 bg-[#B53D2D]">
-            <Dice
-              cheatValue={prevDiceData?.dice1 && prevDiceData.dice1}
-              size={70}
-            />
-            <div className="flex gap-5">
+            <div className="mx-auto w-[310px] rounded-full h-[310px] mb-6 hidden md:flex md:flex-col justify-center items-center gap-5 bg-[#B53D2D]">
               <Dice
-                cheatValue={prevDiceData?.dice2 && prevDiceData?.dice2}
+                cheatValue={prevDiceData?.dice1 && prevDiceData.dice1}
                 size={70}
               />
-              <Dice
-                cheatValue={prevDiceData?.dice3 && prevDiceData?.dice3}
-                size={70}
-              />
+              <div className="flex gap-5">
+                <Dice
+                  cheatValue={prevDiceData?.dice2 && prevDiceData?.dice2}
+                  size={70}
+                />
+                <Dice
+                  cheatValue={prevDiceData?.dice3 && prevDiceData?.dice3}
+                  size={70}
+                />
+              </div>
+            </div>
+            <div
+              style={{
+                backgroundColor: color === "#922922" ? "#FFD3AA" : color,
+              }}
+              className={`w-[218px] h-[58px] md:w-[384px] md:h-[125px] rounded-[20px] flex justify-center items-center`}
+            >
+              <div className="text-5xl text-[#922922] font-bold">
+                {/* <CountdownTimer initialTime={60} /> */}
+                {renderTime()}
+              </div>
             </div>
           </div>
-          <div
-            style={{
-              backgroundColor: color === "#922922" ? "#FFD3AA" : color,
-            }}
-            className={`w-[218px] h-[58px] md:w-[384px] md:h-[125px] rounded-[20px] flex justify-center items-center`}
-          >
-            <div className="text-5xl text-[#922922] font-bold">
-              {/* <CountdownTimer initialTime={60} /> */}
-              {renderTime()}
-            </div>
-          </div>
+          <SetDicePosition
+            showSetBetCard={showSetBetCard}
+            underOrOverStatus={underOrOverStatus}
+            onEnterOverOrUnder={changeUnderOrOverHanlder}
+            onBackward={backwardHandler}
+            currentRound={diceData?.epoch.toString()}
+            onPlacedBet={placedBetHandler}
+            inputRef={inputRef}
+          />
         </div>
         <div className="flex gap-[10px] my-[20px] md:absolute md:top-[15px] md:gap-[260px] md:-left-[500px]">
           <div
@@ -163,7 +197,11 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
                     : 0}
                 </span>
               </div>
-              <Button className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[107px] h-[40px] ml-auto">
+              <Button
+                className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[107px] h-[40px] ml-auto"
+                onClick={() => enterUnderOrOverHandler(EDiceStatus.UNDER)}
+                disabled={minute < 1 && second < 10 ? true : false}
+              >
                 Bet
               </Button>
             </div>
@@ -210,7 +248,11 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
                     : 0}
                 </span>
               </div>
-              <Button className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[107px] h-[40px] mr-auto">
+              <Button
+                className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[107px] h-[40px] mr-auto"
+                onClick={() => enterUnderOrOverHandler(EDiceStatus.OVER)}
+                disabled={minute < 1 && second < 10 ? true : false}
+              >
                 Bet
               </Button>
             </div>
@@ -257,7 +299,13 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
                     : 0}
                 </span>
               </div>
-              <Button className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[85px] h-[20px] ml-auto">
+              <Button
+                className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[85px] h-[20px] ml-auto"
+                onClick={() => {
+                  enterUnderOrOverHandler(EDiceStatus.UNDER);
+                }}
+                disabled={minute < 1 && second < 10 ? true : false}
+              >
                 Bet
               </Button>
             </div>
@@ -303,7 +351,11 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
                     : 0}
                 </span>
               </div>
-              <Button className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[85px] h-[20px] mr-auto">
+              <Button
+                className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[85px] h-[20px] mr-auto"
+                onClick={() => enterUnderOrOverHandler(EDiceStatus.OVER)}
+                disabled={minute < 1 && second < 10 ? true : false}
+              >
                 Bet
               </Button>
             </div>

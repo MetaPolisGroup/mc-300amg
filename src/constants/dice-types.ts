@@ -35,3 +35,8 @@ export type TFaceTransformMap = {
 export type TDefaultFaceGrid = {
   [key in TValue]: number[];
 };
+
+export enum EDiceStatus {
+  "UNDER" = "UNDER",
+  "OVER" = "OVER",
+}
