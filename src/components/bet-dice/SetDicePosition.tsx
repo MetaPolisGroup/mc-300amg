@@ -70,7 +70,7 @@ const SetDicePosition: React.FC<ISetBetPositionProps> = ({
       address: CONSTANTS.ADDRESS.TOKEN,
       abi: CONSTANTS.ABI.TOKEN,
       functionName: "allowance",
-      args: [address, CONSTANTS.ADDRESS.PREDICTION],
+      args: [address, CONSTANTS.ADDRESS.DICE],
     });
 
     setApproveValue(Number(ethers.formatEther(data.toString())));
@@ -158,7 +158,7 @@ const SetDicePosition: React.FC<ISetBetPositionProps> = ({
         abi: CONSTANTS.ABI.TOKEN,
         functionName: "approve",
         args: [
-          CONSTANTS.ADDRESS.PREDICTION,
+          CONSTANTS.ADDRESS.DICE,
           ethers.parseEther((+amount + 1).toString()),
         ],
       });
@@ -271,8 +271,8 @@ const SetDicePosition: React.FC<ISetBetPositionProps> = ({
       if (underOrOverStatus === EDiceStatus.OVER) {
         const { request } = await publicClient.simulateContract({
           account: address,
-          address: CONSTANTS.ADDRESS.PREDICTION,
-          abi: CONSTANTS.ABI.PREDICTION,
+          address: CONSTANTS.ADDRESS.DICE,
+          abi: CONSTANTS.ABI.DICE,
           functionName: "betBull",
           args: [currentRound, ethers.parseUnits(amount, "ether")],
         });
@@ -419,8 +419,8 @@ const SetDicePosition: React.FC<ISetBetPositionProps> = ({
       if (underOrOverStatus === EDiceStatus.UNDER) {
         const { request } = await publicClient.simulateContract({
           account: address,
-          address: CONSTANTS.ADDRESS.PREDICTION,
-          abi: CONSTANTS.ABI.PREDICTION,
+          address: CONSTANTS.ADDRESS.DICE,
+          abi: CONSTANTS.ABI.DICE,
           functionName: "betBear",
           args: [currentRound, ethers.parseUnits(amount, "ether")],
         });
