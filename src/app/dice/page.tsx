@@ -1,14 +1,29 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
+
 import clsx from "clsx";
 import { Icons } from "@/components/Icons";
-import DiceHistory from "@/components/dice-history";
-import BetDice from "@/components/bet-dice/BetDice";
-import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { DocumentData } from "firebase/firestore";
+import DiceHistory from "@/components/dice-history";
+
+import BetDice from "@/components/bet-dice/BetDice";
+import Popup, { PopupRef } from "@/components/ui/Modal";
+import ClaimModal from "@/components/bet-bo/ClaimModal";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 
 const ChineseDice = () => {
   const [diceData, setDiceData] = useState<IDiceData[]>([]);
+  const [statusClaim, setStatusClaim] = useState<string>("");
+  const [collectWinning, setCollectWinning] = useState<{
+    round: number;
+    title: string;
+  }>({
+    round: 0,
+    title: "Collect Winnnings",
+  });
+
+  const collectWinningsRef = createRef<PopupRef>();
+
   useEffect(() => {
     getDataFileredByOnSnapshot(
       "dices",
@@ -23,6 +38,24 @@ const ChineseDice = () => {
   }, []);
 
   const [isShowHistory, setIsShowHistory] = useState<boolean>(false);
+
+  const handlerToggleCollectWinning = (
+    status: boolean,
+    statusClaim: string,
+    round: number,
+    title: string
+  ) => {
+    setCollectWinning({
+      round: round,
+      title: title,
+    });
+
+    if (status === true) {
+      setStatusClaim(statusClaim);
+      return collectWinningsRef.current?.open();
+    }
+    return collectWinningsRef.current?.close();
+  };
 
   return (
     <main className="bg-gradient-to-r from-[--colors-violetAlt1] to-[--colors-violetAlt2]">
@@ -57,10 +90,35 @@ const ChineseDice = () => {
           )}
         >
           {isShowHistory ? (
-            <DiceHistory onClose={() => setIsShowHistory(false)} />
+            <DiceHistory
+              onClose={() => setIsShowHistory(false)}
+              onCollect={handlerToggleCollectWinning}
+            />
           ) : null}
         </div>
       </div>
+
+      <Popup
+        ref={collectWinningsRef}
+        width={300}
+        footer={false}
+        closable
+        title={collectWinning.title}
+        styleContent={{
+          background: "var(--colors-backgroundAlt)",
+          color: "var(--colors-text)",
+        }}
+        content={
+          <ClaimModal
+            winningRound={collectWinning.round}
+            titleClaim={collectWinning.title}
+            statusClaim={statusClaim}
+            onCancel={() => {
+              handlerToggleCollectWinning(false, "", 0, "");
+            }}
+          />
+        }
+      />
     </main>
   );
 };
