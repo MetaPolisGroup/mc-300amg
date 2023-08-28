@@ -1,3 +1,5 @@
+import { EEntitites } from "@/components/bet-election/ElectionCard";
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {};
 
@@ -54,7 +56,7 @@ export const RESULT_MARKET_STATUS = {
 
 export const OPTIONS_BET_MARKET = [
   { option1: "ELON MUSK", option2: "MARK ZUCKERBERG" },
-  { option1: "CANDIDATE 1", option2: "CANDIDATE 2" },
+  { option1: "DEMOCRATIC PARTY", option2: "REPUBLICAN PARTY" },
 ];
 
 export const NAME_ROUND_MARKET = ["Boxing", "Election"];

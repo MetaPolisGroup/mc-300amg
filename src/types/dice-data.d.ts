@@ -14,3 +14,19 @@ interface IDiceData {
   sum: number;
   totalAmount: number;
 }
+
+interface IDiceBet {
+  amount: number;
+  claimed: boolean;
+  claimed_amount: number;
+  created_at: number;
+  delete: boolean;
+  epoch: number;
+  id: string;
+  position: string;
+  refund: number;
+  round: IDiceData;
+  status: string;
+  user_address: string;
+  winning_amount: number;
+}

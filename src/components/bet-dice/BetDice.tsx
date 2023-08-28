@@ -7,6 +7,8 @@ import { toFixedEtherNumber } from "@/utils/format-number";
 import { ethers } from "ethers";
 import SetDicePosition from "./SetDicePosition";
 import { EDiceStatus } from "@/constants/dice-types";
+import { useAccount } from "wagmi";
+import { isEmpty } from "lodash";
 
 enum EMode {
   OVER = 1,
@@ -25,6 +27,9 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
   const [underOrOverStatus, setUnderOrOverStatus] = useState<string>("");
   const [minute, setMinute] = useState<number>(0);
   const [second, setSecond] = useState<number>(0);
+  const [diceBetted, setDiceBetted] = useState<IDiceBet[]>([]);
+
+  const { isConnected, address } = useAccount();
 
   const handleChangeMode = (mode: EMode) => {
     setIsActive(mode);
@@ -37,7 +42,7 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
       [
         // ["closed", "==", true],
         // ["cancel", "==", false],
-        ["epoch", "==", diceData?.epoch - 1],
+        ["epoch", "==", diceData ? diceData.epoch - 1 : 1],
       ],
       (docs: DocumentData) => {
         setPrevDiceData(docs?.[0] as IDiceData);
@@ -60,6 +65,21 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
     return () => clearInterval(interval);
   }, [diceData]);
 
+  useEffect(() => {
+    if (isConnected && address) {
+      getDataFileredByOnSnapshot(
+        "bets_dice",
+        [
+          ["user_address", "==", address],
+          ["epoch", "==", diceData ? diceData.epoch : 1],
+        ],
+        (docs) => {
+          setDiceBetted(docs as IDiceBet[]);
+        }
+      );
+    }
+  }, [isConnected, address, diceData]);
+  console.log(diceBetted?.[0]);
   const renderTime = () => {
     const _minute = minute < 10 ? `0${minute}` : minute;
     const _second = second < 10 ? `0${second}` : second;
@@ -197,13 +217,33 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
                     : 0}
                 </span>
               </div>
-              <Button
-                className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[107px] h-[40px] ml-auto"
-                onClick={() => enterUnderOrOverHandler(EDiceStatus.UNDER)}
-                disabled={minute < 1 && second < 10 ? true : false}
-              >
-                Bet
-              </Button>
+              {!isEmpty(diceBetted) && diceBetted?.[0]?.position === "DOWN" && (
+                <Button
+                  className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[107px] h-[40px] ml-auto"
+                  disabled={true}
+                >
+                  Selected
+                </Button>
+              )}
+
+              {!isEmpty(diceBetted) && diceBetted?.[0]?.position !== "DOWN" && (
+                <Button
+                  className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[107px] h-[40px] ml-auto"
+                  disabled={true}
+                >
+                  Bet
+                </Button>
+              )}
+
+              {isEmpty(diceBetted) && (
+                <Button
+                  className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[107px] h-[40px] ml-auto"
+                  onClick={() => enterUnderOrOverHandler(EDiceStatus.UNDER)}
+                  disabled={minute < 1 && second < 10 ? true : false}
+                >
+                  Bet
+                </Button>
+              )}
             </div>
           </div>
           <div
@@ -248,13 +288,33 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
                     : 0}
                 </span>
               </div>
-              <Button
-                className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[107px] h-[40px] mr-auto"
-                onClick={() => enterUnderOrOverHandler(EDiceStatus.OVER)}
-                disabled={minute < 1 && second < 10 ? true : false}
-              >
-                Bet
-              </Button>
+              {!isEmpty(diceBetted) && diceBetted?.[0]?.position === "UP" && (
+                <Button
+                  className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[107px] h-[40px] mr-auto"
+                  disabled={true}
+                >
+                  Selected
+                </Button>
+              )}
+
+              {!isEmpty(diceBetted) && diceBetted?.[0]?.position !== "UP" && (
+                <Button
+                  className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[107px] h-[40px] mr-auto"
+                  disabled={true}
+                >
+                  Bet
+                </Button>
+              )}
+
+              {isEmpty(diceBetted) && (
+                <Button
+                  className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[107px] h-[40px] mr-auto"
+                  onClick={() => enterUnderOrOverHandler(EDiceStatus.OVER)}
+                  disabled={minute < 1 && second < 10 ? true : false}
+                >
+                  Bet
+                </Button>
+              )}
             </div>
           </div>
           <div
@@ -299,15 +359,33 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
                     : 0}
                 </span>
               </div>
-              <Button
-                className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[85px] h-[20px] ml-auto"
-                onClick={() => {
-                  enterUnderOrOverHandler(EDiceStatus.UNDER);
-                }}
-                disabled={minute < 1 && second < 10 ? true : false}
-              >
-                Bet
-              </Button>
+              {!isEmpty(diceBetted) && diceBetted?.[0]?.position === "DOWN" && (
+                <Button
+                  className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[85px] h-[20px] ml-auto"
+                  disabled={true}
+                >
+                  Selected
+                </Button>
+              )}
+              {!isEmpty(diceBetted) && diceBetted?.[0]?.position !== "DOWN" && (
+                <Button
+                  className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[85px] h-[20px] ml-auto"
+                  disabled={true}
+                >
+                  Bet
+                </Button>
+              )}
+              {isEmpty(diceBetted) && (
+                <Button
+                  className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[85px] h-[20px] ml-auto"
+                  onClick={() => {
+                    enterUnderOrOverHandler(EDiceStatus.UNDER);
+                  }}
+                  disabled={minute < 1 && second < 10 ? true : false}
+                >
+                  Bet
+                </Button>
+              )}
             </div>
           </div>
           <div
@@ -351,13 +429,31 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
                     : 0}
                 </span>
               </div>
-              <Button
-                className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[85px] h-[20px] mr-auto"
-                onClick={() => enterUnderOrOverHandler(EDiceStatus.OVER)}
-                disabled={minute < 1 && second < 10 ? true : false}
-              >
-                Bet
-              </Button>
+              {!isEmpty(diceBetted) && diceBetted?.[0]?.position === "UP" && (
+                <Button
+                  className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[85px] h-[20px] mr-auto"
+                  disabled={true}
+                >
+                  Selected
+                </Button>
+              )}
+              {!isEmpty(diceBetted) && diceBetted?.[0]?.position !== "UP" && (
+                <Button
+                  className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[85px] h-[20px] mr-auto"
+                  disabled={true}
+                >
+                  Bet
+                </Button>
+              )}
+              {isEmpty(diceBetted) && (
+                <Button
+                  className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[85px] h-[20px] mr-auto"
+                  onClick={() => enterUnderOrOverHandler(EDiceStatus.OVER)}
+                  disabled={minute < 1 && second < 10 ? true : false}
+                >
+                  Bet
+                </Button>
+              )}
             </div>
           </div>
         </div>

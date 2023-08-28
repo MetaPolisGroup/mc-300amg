@@ -12,6 +12,7 @@ import { getEllipsisTxt } from "@/utils/formmater-address";
 import { publicClient } from "@/lib/contract-config";
 import { useAccount, useWalletClient } from "wagmi";
 import { Loader2 } from "lucide-react";
+import { EEntitites } from "./ElectionCard";
 
 interface IHistoryElectionCard {
   userBettedElection: IElectionBetted;
@@ -164,7 +165,7 @@ const HistoryElectionCard: React.FC<IHistoryElectionCard> = ({
                       {CURRENCY_UNIT}
                     </div>
                     <div className="flex flex-1 items-center justify-between pl-2 text-white text-xs font-bold leading-7">
-                      <div>CADIDATE 1</div>
+                      <div>{EEntitites.DemocraticParty}</div>
                       {electionData?.[0]?.result === "Up" &&
                         electionData?.[0]?.result.toLowerCase() !==
                           userBettedElection?.position.toLowerCase() && (
@@ -230,7 +231,7 @@ const HistoryElectionCard: React.FC<IHistoryElectionCard> = ({
                       {CURRENCY_UNIT}
                     </div>
                     <div className="flex flex-1 items-center justify-between text-white text-xs pl-2 font-bold leading-7">
-                      <div>CADIDATE 2</div>
+                      <div>{EEntitites.RepublicanParty}</div>
                       {electionData?.[0]?.result === "Down" &&
                         electionData?.[0]?.result.toLowerCase() !==
                           userBettedElection?.position.toLowerCase() && (
@@ -293,7 +294,7 @@ const HistoryElectionCard: React.FC<IHistoryElectionCard> = ({
                     </div>
                     <div className="flex flex-1 justify-between pl-2">
                       <div className="flex items-center justify-start text-white text-xs font-bold leading-7">
-                        CADIDATE 1
+                        {EEntitites.DemocraticParty}
                       </div>
                       {electionData?.[0]?.result === "Up" ? (
                         <button className="w-16 text-white py-4 bg-gradient-to-br from-[--colors-win] to-[--colors-win] rounded-r-2xl uppercase cursor-not-allowed">
@@ -321,7 +322,7 @@ const HistoryElectionCard: React.FC<IHistoryElectionCard> = ({
                     </div>
                     <div className="flex flex-1 justify-between pl-2">
                       <div className="flex items-center justify-center text-white text-xs font-bold leading-7">
-                        CADIDATE 2
+                        {EEntitites.RepublicanParty}
                       </div>
                       {electionData?.[0]?.result === "Down" ? (
                         <button className="w-16 text-white py-4 bg-gradient-to-br from-[--colors-win] to-[--colors-win] rounded-r-2xl uppercase cursor-not-allowed">

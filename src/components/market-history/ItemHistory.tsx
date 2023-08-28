@@ -154,7 +154,7 @@ const ItemHistory: React.FC<IItemHistory> = ({ data }) => {
               <div
                 className={clsx(
                   "text-sm font-bold flex gap-1 items-center p-1 rounded-md",
-                  "bg-[--colors-success]"
+                  "bg-[--colors-success] uppercase"
                 )}
               >
                 {data?.position === USER_DIRECTION.UP
