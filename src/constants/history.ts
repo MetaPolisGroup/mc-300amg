@@ -28,12 +28,13 @@ export const LIST_MODE = [
 export const RESULT_STATUS = {
   WIN: "Win",
   LOSE: "Lose",
-  WAITING: "Waiting",
   LIVE: "Live",
-  REFUND: "Refund",
-  WR: "Winning Refund",
-  LR: "Losing Refund",
   DRAW: "Draw",
+
+  REFUND: "Refund",
+  WAITING: "Waiting",
+  LR: "Losing Refund",
+  WR: "Winning Refund",
 };
 
 export const USER_DIRECTION = {

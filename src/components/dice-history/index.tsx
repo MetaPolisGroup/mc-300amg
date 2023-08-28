@@ -1,15 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import clsx from "clsx";
 import { Icons } from "../Icons";
+import { isEmpty } from "lodash";
+import { useAccount } from "wagmi";
+
+import HistoryItem from "./DiceHistoryItem";
 import { DocumentData } from "firebase/firestore";
+import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import { LIST_MODE, LIST_RADIO, MODE, RADIO } from "@/constants/history";
 
 interface IDiceHistory {
   onClose: () => void;
+  onCollect: (
+    status: boolean,
+    statusClaim: string,
+    round: number,
+    title: string
+  ) => void;
 }
 
-const DiceHistory: React.FC<IDiceHistory> = ({ onClose }) => {
+const DiceHistory: React.FC<IDiceHistory> = ({ onClose, onCollect }) => {
+  const { isConnected, address } = useAccount();
+
   const [mode, setMode] = useState<any>(LIST_MODE[0]);
   const [radioChecked, setRadioChecked] = useState<string>(RADIO.ALL);
 
@@ -17,6 +30,21 @@ const DiceHistory: React.FC<IDiceHistory> = ({ onClose }) => {
   const [originalHistoryData, setOriginalHistoryData] = useState<
     DocumentData[]
   >([]);
+
+  console.log(dataHistory);
+
+  useEffect(() => {
+    if (isConnected && address) {
+      getDataFileredByOnSnapshot(
+        "bets_dice",
+        [["user_address", "==", address as `0x${string}`]],
+        (docs: DocumentData) => {
+          setDataHistory(docs as DocumentData[]);
+          setOriginalHistoryData(docs as DocumentData[]);
+        }
+      );
+    }
+  }, [isConnected, address]);
 
   const handleSelectRadio = (value: string) => {
     setRadioChecked(value);
@@ -95,17 +123,17 @@ const DiceHistory: React.FC<IDiceHistory> = ({ onClose }) => {
   };
 
   const renderHistory = () => {
-    // if (mode.id === MODE.ROUNDS && !isEmpty(dataHistory)) {
-    //   return dataHistory
-    //     .sort((a, b) => b.epoch - a.epoch)
-    //     .map((data) => (
-    //       <HistoryItem
-    //         onCollect={onCollect}
-    //         key={data.id}
-    //         data={data as IHistory}
-    //       />
-    //     ));
-    // }
+    if (mode.id === MODE.ROUNDS && !isEmpty(dataHistory)) {
+      return dataHistory
+        .sort((a, b) => b.epoch - a.epoch)
+        .map((data) => (
+          <HistoryItem
+            onCollect={onCollect}
+            key={data.id}
+            data={data as IHistory}
+          />
+        ));
+    }
 
     return (
       <div className="text-center p-6 h-[58vh] lg:h-auto">
