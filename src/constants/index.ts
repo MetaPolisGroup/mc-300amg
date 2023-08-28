@@ -13,7 +13,7 @@ const CURRENT_NETWORK = ChainType.BSCTESTNET;
 
 export const CURRENCY_UNIT = "PRX";
 
-export const BOXING_START_DATE = new Date("2023-08-24");
+export const BOXING_START_DATE = new Date("2023-09-10");
 
 export const CONSTANTS = {
   ADDRESS: {
