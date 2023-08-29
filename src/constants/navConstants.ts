@@ -11,10 +11,10 @@ const NAV_HEADER = [
         title: "Prediction",
         link: "/prediction",
       },
-      // {
-      //   title: "Dice",
-      //   link: "/",
-      // },
+      {
+        title: "Dice",
+        link: "/dice",
+      },
       {
         title: "Market",
         link: "/market",
@@ -89,11 +89,11 @@ export const LIST_GAME = [
     img: "/images/game/prediction.png",
     link: "/prediction",
   },
-  // {
-  //   id: "diee",
-  //   img: "/images/game/dice.png",
-  //   link: "/",
-  // },
+  {
+    id: "diee",
+    img: "/images/game/dice.png",
+    link: "/dice",
+  },
   // {
   //   id: "sport",
   //   img: "/images/game/sport.png",
