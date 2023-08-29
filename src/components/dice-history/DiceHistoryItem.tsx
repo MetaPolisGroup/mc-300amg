@@ -14,7 +14,7 @@ import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 import AnimatedNumber from "../AnimatedNumber";
 
 interface IHistoryDataProps {
-  data: IHistory;
+  data: IHistoryDice;
   onCollect: (
     status: boolean,
     statusClaim: string,
@@ -24,9 +24,11 @@ interface IHistoryDataProps {
 }
 
 const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
-  const [round, setRound] = useState<IRound>();
+  const [round, setRound] = useState<IRoundDice>();
   const [isShowDetail, setIsShowDetail] = useState<boolean>(false);
   const [chainlinkData, setChainlinkData] = useState<DocumentData[]>();
+
+  const isUp = round?.sum! > 10;
 
   const isLive = data?.status === RESULT_STATUS.LIVE;
   const isRefund = data?.status === RESULT_STATUS.REFUND;
@@ -49,14 +51,10 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
       : handlerFormatEther(data?.refund)
     : handlerFormatEther(data?.winning_amount);
 
-  const ratePrice = isLive
-    ? (+chainlinkData?.[0]?.price - round?.lockPrice!) / 10 ** 8
-    : (round?.closePrice! - round?.lockPrice!) / 10 ** 8;
-
   useEffect(() => {
     if (isLive || isWaiting) {
       getDataFileredByOnSnapshot(
-        "predictions",
+        "dices",
         [["epoch", "==", data.epoch]],
         (docs: DocumentData) => {
           setRound(docs?.[0]);
@@ -197,31 +195,13 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
     );
   };
 
-  const renderClosePrice = () => {
-    if (isLive || isWaiting)
-      return (
-        <div className="flex">
-          $
-          <AnimatedNumber
-            startNumber={+(round?.lockPrice! / 10 ** 8).toFixed(4)}
-            endNumber={+(chainlinkData?.[0]?.price / 10 ** 8).toFixed(4)}
-          />
-        </div>
-      );
-
-    return `$
-  ${replaceDotToComma((round?.closePrice! / 10 ** 8).toFixed(4).toString())}`;
-  };
-
   const renderRoundHistory = () => {
     const renderArrow = () => {
       if (isDraw) return null;
 
-      return ratePrice > 0 ? (
-        <Icons.ArrowUp className="w-[20px] h-[20px]" />
-      ) : (
-        <Icons.ArrowDown className="w-[20px] h-[20px]" />
-      );
+      if (isUp) return <Icons.ArrowUp className="w-[20px] h-[20px]" />;
+
+      return <Icons.ArrowDown className="w-[20px] h-[20px]" />;
     };
 
     return (
@@ -230,45 +210,27 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
         <div
           className={clsx(
             "border-2 border-solid rounded-2xl p-3",
-            ratePrice > 0
-              ? "border-[--colors-success]"
-              : "border-[--colors-failure]",
+            isUp ? "border-[--colors-success]" : "border-[--colors-failure]",
             isDraw && "!border-[#e7e3eb]"
           )}
         >
-          <div className="text-xs text-[--colors-textSubtle] font-bold mb-2">
-            CLOSED PRICE
-          </div>
           <div className="flex justify-between mb-3">
             <div
               className={clsx(
                 "text-2xl font-bold",
-                ratePrice > 0
-                  ? "text-[--colors-success]"
-                  : "text-[--colors-failure]"
+                isUp ? "text-[--colors-success]" : "text-[--colors-failure]"
               )}
             >
-              {renderClosePrice()}
+              Sum:
             </div>
             <div
               className={clsx(
                 "flex gap-1 items-center rounded-lg p-2 text-sm font-bold",
-                ratePrice > 0
-                  ? "bg-[--colors-success]"
-                  : "bg-[--colors-failure]",
+                isUp ? "bg-[--colors-success]" : "bg-[--colors-failure]",
                 isDraw && "!text-[#191326] !bg-[#e7e3eb]"
               )}
             >
-              {renderArrow()} ${isDraw ? "0.0000" : ratePrice.toFixed(4)}
-            </div>
-          </div>
-          <div className="flex justify-between mb-1">
-            <div className="text-sm">Locked Price:</div>
-            <div className="text-sm">
-              $
-              {round?.lockPrice
-                ? replaceDotToComma((round?.lockPrice / 10 ** 8).toFixed(4))
-                : 0}
+              {renderArrow()} {isUp ? "Up" : "Down"}
             </div>
           </div>
           <div className="flex justify-between mb-1">

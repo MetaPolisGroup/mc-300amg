@@ -130,7 +130,7 @@ const DiceHistory: React.FC<IDiceHistory> = ({ onClose, onCollect }) => {
           <HistoryItem
             onCollect={onCollect}
             key={data.id}
-            data={data as IHistory}
+            data={data as IHistoryDice}
           />
         ));
     }

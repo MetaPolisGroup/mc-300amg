@@ -21,6 +21,23 @@ interface IRound {
   startTimestamp: number;
 }
 
+interface IRoundDice {
+  id: string;
+  sum: number;
+  epoch: number;
+  dice1: number;
+  dice2: number;
+  dice3: number;
+  closed: boolean;
+  cancel: boolean;
+  delele: boolean;
+  bearAmount: number;
+  bullAmount: number;
+  totalAmount: number;
+  closeTimestamp: number;
+  startTimestamp: number;
+}
+
 interface IHistory {
   id: string;
   epoch: string | number;
@@ -35,4 +52,20 @@ interface IHistory {
   claimed_amount: number;
   winning_amount: number;
   round: IRound;
+}
+
+interface IHistoryDice {
+  id: string;
+  epoch: number;
+  amount: number;
+  refund: number;
+  status: string;
+  delete: boolean;
+  claimed: boolean;
+  position: string;
+  created_at: number;
+  user_address: string;
+  winning_amount: number;
+  claimed_amount: number;
+  round: IRoundDice;
 }

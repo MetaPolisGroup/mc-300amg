@@ -121,7 +121,7 @@ const ElectionCard = () => {
                   <div
                     className={`w-full h-[54px] flex items-center justify-between p-[6px] pr-4 rounded-[20px] cursor-pointer ${
                       userBettedElection?.[0]?.position !== "UP"
-                        ? "from-slate-500 to-slate-600 cursor-not-allowed opacity-60"
+                        ? "bg-gradient-to-br from-slate-500 to-slate-600 cursor-not-allowed opacity-60"
                         : "bg-[--colors-market-bold]"
                     }`}
                   >
@@ -157,10 +157,10 @@ const ElectionCard = () => {
                   </div>
 
                   <div
-                    className={`w-full h-[54px] flex items-center justify-between p-[6px] bg-gradient-to-br from-slate-400 to-indigo-800 rounded-[20px] cursor-pointer ${
+                    className={`w-full h-[54px] flex items-center justify-between p-[6px]  from-slate-400 to-indigo-800 rounded-[20px] cursor-pointer ${
                       userBettedElection?.[0]?.position !== "DOWN"
-                        ? "from-slate-500 to-slate-600 cursor-not-allowed opacity-60"
-                        : ""
+                        ? "bg-gradient-to-br !from-slate-500 !to-slate-600 cursor-not-allowed opacity-60"
+                        : "bg-[--colors-market-bold]"
                     }`}
                   >
                     <div className="w-40 py-[7px] px-4 text-[--colors-contrast] text-base font-light leading-7 bg-[--colors-backgroundAlt] rounded-[14px]">
