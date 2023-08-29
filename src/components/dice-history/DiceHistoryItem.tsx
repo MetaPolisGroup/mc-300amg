@@ -221,7 +221,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
                 isUp ? "text-[--colors-success]" : "text-[--colors-failure]"
               )}
             >
-              Sum:
+              {`Sum: ${round?.sum}`}
             </div>
             <div
               className={clsx(
