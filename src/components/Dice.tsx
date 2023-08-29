@@ -42,7 +42,7 @@ type TDiceRef = {
 
 const Dice = (props: TProps) => {
   const {
-    rollingTime = 1000,
+    rollingTime = 8000,
     onRoll,
     defaultValue = 6,
     size = 250,

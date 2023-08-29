@@ -126,7 +126,13 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
     <div className="overflow-hidden flex justify-center py-5">
       <div className="relative">
         <div
-          style={{ borderColor: color }}
+          style={{
+            borderColor: !isEmpty(diceBettedFiltered)
+              ? diceBettedFiltered?.[0]?.position === "UP"
+                ? "#000"
+                : "#fff"
+              : "#922922",
+          }}
           className={`w-[272px] md:w-[496px] md:h-[584px] relative z-10 h-[272px] flex justify-center m-auto flex-col rounded-[40px] bg-[#922922] border-[3px] md:border-[7px] items-center p-[40px] transition-transform duration-700 preverve-3d ${
             showSetBetCard === true && "rotateY-180"
           }`}
@@ -166,7 +172,11 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
             </div>
             <div
               style={{
-                backgroundColor: color === "#922922" ? "#FFD3AA" : color,
+                backgroundColor: !isEmpty(diceBettedFiltered)
+                  ? diceBettedFiltered?.[0]?.position === "UP"
+                    ? "#000"
+                    : "#fff"
+                  : "#FFD3AA",
               }}
               className={`w-[218px] h-[58px] md:w-[384px] md:h-[125px] rounded-[20px] flex justify-center items-center`}
             >
@@ -200,7 +210,13 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
             >
               <path
                 d="M296.681 467.827L727 467.827C760.137 467.827 787 440.964 787 407.827L787 60.1732C787 27.0361 760.137 0.173094 727 0.173095L296.681 0.173092C283.893 0.173092 271.44 4.25886 261.137 11.8345L24.7388 185.661C-7.86915 209.638 -7.86915 258.362 24.7388 282.339L261.137 456.165C271.44 463.741 283.893 467.827 296.681 467.827Z"
-                fill={isActive === EMode.OVER ? "#FFFFFF" : "#FFD3AA"}
+                fill={
+                  !isEmpty(diceBettedFiltered)
+                    ? diceBettedFiltered?.[0]?.position === "DOWN"
+                      ? "#fff"
+                      : "#FFD3AA"
+                    : "#FFD3AA"
+                }
               />
             </svg>
             <div className="flex flex-col absolute top-[130px] left-[20px] w-[300px] right-[15px]">
@@ -281,7 +297,13 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
             >
               <path
                 d="M490.319 0.173167L60 0.173158C26.8629 0.173157 5.25638e-06 27.0361 4.86122e-06 60.1732L7.15494e-07 407.827C3.20338e-07 440.964 26.8629 467.827 60 467.827L490.319 467.827C503.107 467.827 515.56 463.741 525.863 456.166L762.261 282.339C794.869 258.362 794.869 209.638 762.261 185.661L525.863 11.8345C515.56 4.25892 503.107 0.173167 490.319 0.173167Z"
-                fill={isActive === EMode.UNDER ? "#303030" : "#FFD3AA"}
+                fill={
+                  !isEmpty(diceBettedFiltered)
+                    ? diceBettedFiltered?.[0]?.position === "UP"
+                      ? "#000"
+                      : "#FFD3AA"
+                    : "#FFD3AA"
+                }
               />
             </svg>
             <div className="flex flex-col absolute top-[130px]  w-[300px] right-[5px]">
@@ -361,7 +383,13 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
             >
               <path
                 d="M82.017 138L138 138C149.046 138 158 129.046 158 118L158 20C158 8.9543 149.046 -4.35715e-07 138 -9.73197e-07L82.017 -6.94595e-07C77.5065 -7.35827e-07 73.1284 1.52466 69.5937 4.32643L7.77412 53.3264C-2.3281 61.3338 -2.3281 76.6662 7.77412 84.6736L69.5937 133.674C73.1284 136.475 77.5065 138 82.017 138Z"
-                fill={isActive === EMode.OVER ? "#FFFFFF" : "#FFD3AA"}
+                fill={
+                  !isEmpty(diceBettedFiltered)
+                    ? diceBettedFiltered?.[0]?.position === "DOWN"
+                      ? "#fff"
+                      : "#FFD3AA"
+                    : "#FFD3AA"
+                }
               />
             </svg>
             <div className="flex flex-col absolute top-[25px] right-[15px]">
@@ -440,7 +468,13 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
             >
               <path
                 d="M75.983 1.61985e-06L20 4.26371e-07C8.9543 1.90893e-07 -3.49494e-06 8.9543 -3.62666e-06 20L-4.7953e-06 118C-4.92701e-06 129.046 8.9543 138 20 138L75.983 138C80.4935 138 84.8716 136.475 88.4063 133.674L150.226 84.6736C160.328 76.6663 160.328 61.3338 150.226 53.3264L88.4063 4.32643C84.8716 1.52466 80.4935 1.71601e-06 75.983 1.61985e-06Z"
-                fill={isActive === EMode.UNDER ? "#303030" : "#FFD3AA"}
+                fill={
+                  !isEmpty(diceBettedFiltered)
+                    ? diceBettedFiltered?.[0]?.position === "UP"
+                      ? "#000"
+                      : "#FFD3AA"
+                    : "#FFD3AA"
+                }
               />
             </svg>
             <div className="flex flex-col absolute top-[25px] right-[30px]">
