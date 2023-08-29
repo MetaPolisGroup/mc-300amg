@@ -9,6 +9,8 @@ import SetDicePosition from "./SetDicePosition";
 import { EDiceStatus } from "@/constants/dice-types";
 import { useAccount } from "wagmi";
 import { isEmpty } from "lodash";
+import TooltipElement from "../ui/Tooltip";
+import { CURRENCY_UNIT } from "@/constants";
 
 enum EMode {
   OVER = 1,
@@ -25,6 +27,7 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
   const [prevDiceData, setPrevDiceData] = useState<IDiceData>(diceData);
   const [showSetBetCard, setShowSetBetCard] = useState<boolean>(false);
   const [underOrOverStatus, setUnderOrOverStatus] = useState<string>("");
+  const [currentRound, setCurrentRound] = useState<number>(diceData?.epoch | 0);
   const [minute, setMinute] = useState<number>(0);
   const [second, setSecond] = useState<number>(0);
   const [diceBetted, setDiceBetted] = useState<IDiceBet[]>([]);
@@ -65,21 +68,30 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
     return () => clearInterval(interval);
   }, [diceData]);
 
+  if (currentRound !== diceData?.epoch) {
+    setCurrentRound(diceData?.epoch);
+  }
+
   useEffect(() => {
-    if (isConnected && address) {
+    if (isConnected && address && currentRound) {
       getDataFileredByOnSnapshot(
         "bets_dice",
         [
           ["user_address", "==", address],
-          ["epoch", "==", diceData ? diceData.epoch : 1],
+          ["epoch", "==", currentRound],
         ],
         (docs) => {
           setDiceBetted(docs as IDiceBet[]);
         }
       );
     }
-  }, [isConnected, address, diceData]);
-  console.log(diceBetted?.[0]);
+  }, [isConnected, address, diceData?.epoch, currentRound]);
+
+  // Filter diceBetted Arr that get previous round, not know why get prev data while current round was updated in latest round
+  const diceBettedFiltered = diceBetted.filter(
+    (dice) => dice.epoch === currentRound
+  );
+
   const renderTime = () => {
     const _minute = minute < 10 ? `0${minute}` : minute;
     const _second = second < 10 ? `0${second}` : second;
@@ -217,25 +229,35 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
                     : 0}
                 </span>
               </div>
-              {!isEmpty(diceBetted) && diceBetted?.[0]?.position === "DOWN" && (
-                <Button
-                  className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[107px] h-[40px] ml-auto"
-                  disabled={true}
-                >
-                  Selected
-                </Button>
-              )}
+              {!isEmpty(diceBettedFiltered) &&
+                diceBettedFiltered?.[0]?.position === "DOWN" && (
+                  // <TooltipElement
+                  //   title={`${toFixedEtherNumber(
+                  //     ethers.formatEther(BigInt(diceBetted?.[0]?.amount)),
+                  //     2
+                  //   )} ${CURRENCY_UNIT}`}
+                  //   classNameText="ml-auto"
+                  // >
+                  // </TooltipElement>
+                  <Button
+                    className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[107px] h-[40px] ml-auto"
+                    disabled={true}
+                  >
+                    Selected
+                  </Button>
+                )}
 
-              {!isEmpty(diceBetted) && diceBetted?.[0]?.position !== "DOWN" && (
-                <Button
-                  className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[107px] h-[40px] ml-auto"
-                  disabled={true}
-                >
-                  Bet
-                </Button>
-              )}
+              {!isEmpty(diceBettedFiltered) &&
+                diceBettedFiltered?.[0]?.position !== "DOWN" && (
+                  <Button
+                    className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[107px] h-[40px] ml-auto"
+                    disabled={true}
+                  >
+                    Bet
+                  </Button>
+                )}
 
-              {isEmpty(diceBetted) && (
+              {isEmpty(diceBettedFiltered) && (
                 <Button
                   className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[107px] h-[40px] ml-auto"
                   onClick={() => enterUnderOrOverHandler(EDiceStatus.UNDER)}
@@ -288,25 +310,34 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
                     : 0}
                 </span>
               </div>
-              {!isEmpty(diceBetted) && diceBetted?.[0]?.position === "UP" && (
-                <Button
-                  className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[107px] h-[40px] mr-auto"
-                  disabled={true}
-                >
-                  Selected
-                </Button>
-              )}
+              {!isEmpty(diceBettedFiltered) &&
+                diceBettedFiltered?.[0]?.position === "UP" && (
+                  // <TooltipElement
+                  //   title={`${toFixedEtherNumber(
+                  //     ethers.formatEther(BigInt(diceBetted?.[0]?.amount)),
+                  //     2
+                  //   )} ${CURRENCY_UNIT}`}
+                  // >
+                  // </TooltipElement>
+                  <Button
+                    className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[107px] h-[40px] mr-auto"
+                    disabled={true}
+                  >
+                    Selected
+                  </Button>
+                )}
 
-              {!isEmpty(diceBetted) && diceBetted?.[0]?.position !== "UP" && (
-                <Button
-                  className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[107px] h-[40px] mr-auto"
-                  disabled={true}
-                >
-                  Bet
-                </Button>
-              )}
+              {!isEmpty(diceBettedFiltered) &&
+                diceBettedFiltered?.[0]?.position !== "UP" && (
+                  <Button
+                    className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[107px] h-[40px] mr-auto"
+                    disabled={true}
+                  >
+                    Bet
+                  </Button>
+                )}
 
-              {isEmpty(diceBetted) && (
+              {isEmpty(diceBettedFiltered) && (
                 <Button
                   className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[107px] h-[40px] mr-auto"
                   onClick={() => enterUnderOrOverHandler(EDiceStatus.OVER)}
@@ -359,23 +390,32 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
                     : 0}
                 </span>
               </div>
-              {!isEmpty(diceBetted) && diceBetted?.[0]?.position === "DOWN" && (
-                <Button
-                  className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[85px] h-[20px] ml-auto"
-                  disabled={true}
-                >
-                  Selected
-                </Button>
-              )}
-              {!isEmpty(diceBetted) && diceBetted?.[0]?.position !== "DOWN" && (
-                <Button
-                  className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[85px] h-[20px] ml-auto"
-                  disabled={true}
-                >
-                  Bet
-                </Button>
-              )}
-              {isEmpty(diceBetted) && (
+              {!isEmpty(diceBettedFiltered) &&
+                diceBettedFiltered?.[0]?.position === "DOWN" && (
+                  // <TooltipElement
+                  //   title={`${toFixedEtherNumber(
+                  //     ethers.formatEther(BigInt(diceBetted?.[0]?.amount)),
+                  //     2
+                  //   )} ${CURRENCY_UNIT}`}
+                  // >
+                  // </TooltipElement>
+                  <Button
+                    className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[85px] h-[20px] ml-auto"
+                    disabled={true}
+                  >
+                    Selected
+                  </Button>
+                )}
+              {!isEmpty(diceBettedFiltered) &&
+                diceBettedFiltered?.[0]?.position !== "DOWN" && (
+                  <Button
+                    className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[85px] h-[20px] ml-auto"
+                    disabled={true}
+                  >
+                    Bet
+                  </Button>
+                )}
+              {isEmpty(diceBettedFiltered) && (
                 <Button
                   className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[85px] h-[20px] ml-auto"
                   onClick={() => {
@@ -429,23 +469,32 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
                     : 0}
                 </span>
               </div>
-              {!isEmpty(diceBetted) && diceBetted?.[0]?.position === "UP" && (
-                <Button
-                  className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[85px] h-[20px] mr-auto"
-                  disabled={true}
-                >
-                  Selected
-                </Button>
-              )}
-              {!isEmpty(diceBetted) && diceBetted?.[0]?.position !== "UP" && (
-                <Button
-                  className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[85px] h-[20px] mr-auto"
-                  disabled={true}
-                >
-                  Bet
-                </Button>
-              )}
-              {isEmpty(diceBetted) && (
+              {!isEmpty(diceBettedFiltered) &&
+                diceBettedFiltered?.[0]?.position === "UP" && (
+                  // <TooltipElement
+                  //   title={`${toFixedEtherNumber(
+                  //     ethers.formatEther(BigInt(diceBetted?.[0]?.amount)),
+                  //     2
+                  //   )} ${CURRENCY_UNIT}`}
+                  // >
+                  // </TooltipElement>
+                  <Button
+                    className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[85px] h-[20px] mr-auto"
+                    disabled={true}
+                  >
+                    Selected
+                  </Button>
+                )}
+              {!isEmpty(diceBettedFiltered) &&
+                diceBettedFiltered?.[0]?.position !== "UP" && (
+                  <Button
+                    className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[85px] h-[20px] mr-auto"
+                    disabled={true}
+                  >
+                    Bet
+                  </Button>
+                )}
+              {isEmpty(diceBettedFiltered) && (
                 <Button
                   className="bg-gradient-to-br from-[#FFBA88] to-[#EE6033] rounded-[20px] p-2 w-[85px] h-[20px] mr-auto"
                   onClick={() => enterUnderOrOverHandler(EDiceStatus.OVER)}
