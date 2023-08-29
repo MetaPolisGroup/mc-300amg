@@ -151,12 +151,12 @@ export default function Footer() {
             </div>
             <div className="text-[--colors-invertedContrast] flex px-2 items-center justify-center py-1 bg-[--colors-primary] rounded-full font-bold">
               <button className="text-base">Buy PRX</button>
-              <Icons.ArrowRight />
+              {/* <Icons.ArrowRight /> */}
             </div>
           </div>
         </div>
 
-        {showElement && (
+        {/* {showElement && (
           <div
             className="fixed cursor-pointer right-[30px] bottom-[88px] md:right-[65px] md:bottom-[45px] flex w-[7%] sm:w-[5%] items-center justify-around bg-[--colors-primary] rounded-xl font-bold py-1 md:py-3 text-[--colors-invertedContrast]"
             onClick={() => {
@@ -166,7 +166,7 @@ export default function Footer() {
           >
             <Icons.ArrowUp size={20} />
           </div>
-        )}
+        )} */}
       </div>
     </footer>
   );
