@@ -8,7 +8,7 @@ import DiceHistory from "@/components/dice-history";
 
 import BetDice from "@/components/bet-dice/BetDice";
 import Popup, { PopupRef } from "@/components/ui/Modal";
-import ClaimModal from "@/components/bet-bo/ClaimModal";
+import DiceClaimModal from "@/components/bet-dice/DiceClaimModal";
 import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
 
 const ChineseDice = () => {
@@ -109,7 +109,7 @@ const ChineseDice = () => {
           color: "var(--colors-text)",
         }}
         content={
-          <ClaimModal
+          <DiceClaimModal
             winningRound={collectWinning.round}
             titleClaim={collectWinning.title}
             statusClaim={statusClaim}

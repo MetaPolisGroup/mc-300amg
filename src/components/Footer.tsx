@@ -33,7 +33,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="bg-[--colors-backgroundAlt]">
+    <footer className="bg-[--colors-backgroundAlt] pb-[63px] md:pb-0">
       <div className=" md:block relative container px-3 sm:px-5 pt-3 md:pt-10 mx-auto">
         {/* <div className=" flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
           <div className="flex-grow gap-[33px] flex flex-wrap md:flex-nowrap  md:text-left text-center ">
@@ -142,7 +142,7 @@ export default function Footer() {
             <ChangeMode />
           </div>
 
-          <div className="flex  items-center gap-3 sm:gap-5 mr-[15%] md:mr-[15%] lg:mr-[10%] pr-3 sm:pr-0">
+          <div className="flex items-center gap-3 sm:gap-5">
             <div className="flex items-center gap-2">
               <Image src="/svgs/prx-logo.svg" width={30} height={30} alt="" />
               <p className="text-[--colors-primary] text-base md:text-xl font-medium">
