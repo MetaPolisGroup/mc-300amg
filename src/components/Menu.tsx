@@ -29,7 +29,7 @@ const Menu = () => {
   };
 
   return (
-    <div className="sticky bg-gradient-to-br from-blue-300 to-green-600 bottom-0 z-50">
+    <div className="fixed w-full bg-gradient-to-br from-blue-300 to-green-600 bottom-[-1px] z-50">
       <div className="md:hidden flex justify-between text-white px-5 py-3">
         <Link
           href="/prediction/leaderboard"
