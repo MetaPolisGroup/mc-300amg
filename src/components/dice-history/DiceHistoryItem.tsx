@@ -45,8 +45,6 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
     return toFixedEtherNumber(ethers?.formatEther(BigInt(value)), 2);
   };
 
-  console.log({ data });
-
   const winningAmount = isLose
     ? data?.amount !== 0
       ? handlerFormatEther(data?.amount)
