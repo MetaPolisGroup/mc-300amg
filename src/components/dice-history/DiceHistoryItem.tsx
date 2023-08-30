@@ -245,6 +245,24 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
               {CURRENCY_UNIT}
             </div>
           </div>
+
+          {isWaiting || isLive ? (
+            <div className="flex justify-between mb-1">
+              <div className="text-xs">Your bet:</div>
+              <div className="text-xs">
+                <span className="font-bold">
+                  {round?.bullAmount
+                    ? toFixedEtherNumber(
+                        ethers.formatEther(BigInt(data?.amount)),
+                        2
+                      )
+                    : 0}{" "}
+                  {CURRENCY_UNIT}
+                </span>
+              </div>
+            </div>
+          ) : null}
+
           <div className="flex justify-between mb-1">
             <div className="text-xs">UP:</div>
             <div className="text-xs">
@@ -259,6 +277,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
               </span>
             </div>
           </div>
+
           <div className="flex justify-between mb-1">
             <div className="text-xs">DOWN:</div>
             <div className="text-xs">
