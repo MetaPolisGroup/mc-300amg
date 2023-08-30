@@ -117,8 +117,8 @@ const DiceClaimModal: React.FC<IClaimProps> = ({
     try {
       const { request } = await publicClient.simulateContract({
         account: address,
-        address: CONSTANTS.ADDRESS.PREDICTION,
-        abi: CONSTANTS.ABI.PREDICTION,
+        address: CONSTANTS.ADDRESS.DICE,
+        abi: CONSTANTS.ABI.DICE,
         functionName: "claim",
         args: [[winningRound]],
       });
