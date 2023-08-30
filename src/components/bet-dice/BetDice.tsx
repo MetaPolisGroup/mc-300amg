@@ -124,6 +124,8 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
   };
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
+  console.log(diceBettedFiltered?.[0]);
+
   return (
     <>
       <div className="overflow-hidden flex justify-center py-5">
@@ -137,7 +139,7 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
                 : "#922922",
             }}
             className={`w-[272px] md:w-[496px] md:h-[584px] relative z-10 h-[272px] flex justify-center m-auto flex-col rounded-[40px] bg-[#922922] border-[3px] md:border-[7px] items-center p-[40px] transition-transform duration-700 preverve-3d ${
-              showSetBetCard === true && "rotateY-180"
+              showSetBetCard === true && "rotateY-180 h-[420px]"
             }`}
           >
             <div>
@@ -412,7 +414,7 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
                       fill="#EE6033"
                     />
                   </svg>
-                  <span className="text-[10px] left-1/2 transform -translate-x-[40%] top-[30%] absolute text-white">
+                  <span className="text-base left-1/2 transform -translate-x-[40%] top-[30%] absolute text-white">
                     {diceData?.bearAmount
                       ? toFixedEtherNumber(
                           ethers.formatEther(BigInt(diceData?.bearAmount)),
@@ -497,7 +499,7 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
                       fill="#B53D2D"
                     />
                   </svg>
-                  <span className="text-[10px] left-1/2 transform -translate-x-[55%] top-[30%] absolute text-white">
+                  <span className="text-base left-1/2 transform -translate-x-[55%] top-[30%] absolute text-white">
                     {diceData?.bullAmount
                       ? toFixedEtherNumber(
                           ethers.formatEther(BigInt(diceData?.bullAmount)),

@@ -533,7 +533,7 @@ const SetDicePosition: React.FC<ISetBetPositionProps> = ({
 
   return (
     <div
-      className={`card w-[272px] h-[272px] md:w-[496px] md:h-[584px] absolute z-10 shadow-xl backface-hidden translate-rotateY bg-[--colors-backgroundAlt] ${
+      className={`card w-[272px] h-[430px] md:w-[496px] md:h-[584px] absolute z-10 shadow-xl backface-hidden translate-rotateY bg-[--colors-backgroundAlt] ${
         showSetBetCard && "z-20"
       }`}
     >
@@ -597,7 +597,7 @@ const SetDicePosition: React.FC<ISetBetPositionProps> = ({
               Balance: {balance.toLocaleString("en-US")} {CURRENCY_UNIT}
             </div>
           ) : null)}
-        <div className="hidden md:block w-full h-12 relative mb-6">
+        <div className="w-full h-12 relative mb-6">
           <div className="h-8">
             <Icons.HeartIcon />
           </div>
@@ -625,7 +625,7 @@ const SetDicePosition: React.FC<ISetBetPositionProps> = ({
             {percentage}%
           </div>
         </div>
-        <div className="hidden md:flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-4">
           {BUTTONS_PERCENT.map((buttonPrecent) => (
             <Button
               key={buttonPrecent.id}
@@ -637,7 +637,7 @@ const SetDicePosition: React.FC<ISetBetPositionProps> = ({
             </Button>
           ))}
         </div>
-        <div className="hidden md:flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-4">
           {BUTTONS_AMOUNT.map((buttonAmount) => (
             <Button
               key={buttonAmount.id}
