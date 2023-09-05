@@ -42,7 +42,7 @@ type TDiceRef = {
 
 const Dice = (props: TProps) => {
   const {
-    rollingTime = 8000,
+    rollingTime = 6000,
     onRoll,
     defaultValue = 6,
     size = 250,
@@ -69,6 +69,7 @@ const Dice = (props: TProps) => {
       diceAudio = new Audio(sound);
       diceAudio.play();
     }
+    console.log("first");
     setRolling(true);
     setTimeout(() => {
       let rollValue = Math.floor(Math.random() * 6 + 1) as TValue;
