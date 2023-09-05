@@ -4,14 +4,14 @@ import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import { ethers } from "ethers";
 import { Icons } from "../Icons";
-import { replaceDotToComma, toFixedEtherNumber } from "@/utils/format-number";
-import { RESULT_STATUS } from "@/constants/history";
 import { CURRENCY_UNIT } from "@/constants";
+
+import { RESULT_STATUS, USER_DIRECTION } from "@/constants/history";
+import { replaceDotToComma, toFixedEtherNumber } from "@/utils/format-number";
 
 import { DocumentData } from "firebase/firestore";
 import getAllData from "@/helpers/getAllDataByOnSnapshot";
 import getDataFileredByOnSnapshot from "@/helpers/getDataFilteredByOnSnapshot";
-import AnimatedNumber from "../AnimatedNumber";
 
 interface IHistoryDataProps {
   data: IHistoryDice;
@@ -97,17 +97,21 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
             <div
               className={clsx(
                 "text-sm font-bold flex gap-1 items-center p-1 rounded-md",
-                data?.position === "UP"
+                data?.position === USER_DIRECTION.UP
                   ? "bg-[--colors-success]"
                   : "bg-[--colors-failure]"
               )}
             >
-              {data?.position === "UP" ? (
+              {data?.position === USER_DIRECTION.UP ? (
                 <Icons.ArrowUp className="w-[20px] h-[20px]" />
               ) : (
                 <Icons.ArrowDown className="w-[20px] h-[20px]" />
               )}{" "}
-              {data?.position}
+              {data?.position === USER_DIRECTION.UP
+                ? "OVER"
+                : data?.position === USER_DIRECTION.DOWN
+                ? "UNDER"
+                : data?.position}
             </div>
           </div>
 
@@ -230,7 +234,7 @@ const HistoryItem: React.FC<IHistoryDataProps> = ({ data, onCollect }) => {
                 isDraw && "!text-[#191326] !bg-[#e7e3eb]"
               )}
             >
-              {renderArrow()} {isUp ? "Up" : "Down"}
+              {renderArrow()} {isUp ? "OVER" : "UNDER"}
             </div>
           </div>
           <div className="flex justify-between mb-1">
