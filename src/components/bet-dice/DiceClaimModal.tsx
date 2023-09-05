@@ -11,6 +11,8 @@ import { isEmpty } from "lodash";
 import { toFixedEtherNumber } from "@/utils/format-number";
 import { ethers } from "ethers";
 import { RESULT_STATUS } from "@/constants/history";
+import { useAppDispatch } from "@/redux/hooks";
+import { changeBettedStatusHandler } from "@/redux/features/bet/betSlice";
 
 interface IClaimProps {
   titleClaim: string;
@@ -30,6 +32,8 @@ const DiceClaimModal: React.FC<IClaimProps> = ({
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [roundClaimedData, setRoundClaimedData] = useState<IBetData[]>([]);
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (isConnected && address) {
@@ -130,6 +134,7 @@ const DiceClaimModal: React.FC<IClaimProps> = ({
           });
           if (transaction?.status === "success") {
             setIsLoading(false);
+            dispatch(changeBettedStatusHandler("Betted dice"));
             onCancel();
             toast.custom((t) => (
               <div
