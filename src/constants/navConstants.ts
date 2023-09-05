@@ -48,6 +48,12 @@ const NAV_HEADER = [
     // renderDot: "bg-[--colors-success]",
     items: [],
   },
+  {
+    id: "NFTs",
+    title: "NFTs",
+    link: "/mint",
+    items: [],
+  },
 ];
 
 export const NAV_SUB_HEADER = [

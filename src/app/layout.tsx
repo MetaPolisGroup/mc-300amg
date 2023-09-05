@@ -23,7 +23,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" data-theme="dark">
-      <body className={`${inter.className} overscroll-none`}>
+      <body
+        className={`${inter.className} overscroll-none bg-[--colors-backgroundAlt]`}
+      >
         <Provider>
           <Header />
           <NickNameModal />

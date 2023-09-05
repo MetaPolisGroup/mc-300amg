@@ -23,7 +23,7 @@ const Menu = () => {
         onClick={openAccountModal}
       >
         <span className="text-[10px] font-light leading-normal">Logout</span>
-        <Icons.LogOut />
+        <Icons.LogOutPredix fill="#fff" className="w-6" />
       </div>
     ) : null;
   };
@@ -49,6 +49,14 @@ const Menu = () => {
             Referral
           </span>
           <Icons.Referral />
+        </Link>
+
+        <Link
+          href="/mint"
+          className="flex justify-center flex-col-reverse items-center w-[62px]"
+        >
+          <span className="text-[10px] font-light leading-normal">NFTs</span>
+          <Icons.NftsPredix fill="#fff" className="w-6" />
         </Link>
 
         <div className="flex justify-center flex-col-reverse items-center w-[62px]">
