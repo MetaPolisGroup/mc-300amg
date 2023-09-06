@@ -124,7 +124,7 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
   };
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
-  console.log(diceBettedFiltered?.[0]);
+  console.log({ currentRound });
 
   return (
     <>
@@ -147,15 +147,18 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
                 <Dice
                   cheatValue={prevDiceData?.dice1 && prevDiceData.dice1}
                   size={40}
+                  epoch={currentRound}
                 />
                 <div className="flex gap-5">
                   <Dice
                     cheatValue={prevDiceData?.dice2 && prevDiceData?.dice2}
                     size={40}
+                    epoch={currentRound}
                   />
                   <Dice
                     cheatValue={prevDiceData?.dice3 && prevDiceData?.dice3}
                     size={40}
+                    epoch={currentRound}
                   />
                 </div>
               </div>
@@ -163,15 +166,18 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
                 <Dice
                   cheatValue={prevDiceData?.dice1 && prevDiceData.dice1}
                   size={70}
+                  epoch={currentRound}
                 />
                 <div className="flex gap-5">
                   <Dice
                     cheatValue={prevDiceData?.dice2 && prevDiceData?.dice2}
                     size={70}
+                    epoch={currentRound}
                   />
                   <Dice
                     cheatValue={prevDiceData?.dice3 && prevDiceData?.dice3}
                     size={70}
+                    epoch={currentRound}
                   />
                 </div>
               </div>
