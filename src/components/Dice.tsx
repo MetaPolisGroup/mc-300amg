@@ -53,6 +53,7 @@ const Dice = (props: TProps) => {
     placement,
     sound,
     triggers = ["click"],
+    epoch,
     ...rest
   } = props;
   const [value, setValue] = useState<TValue>(defaultValue);
@@ -64,27 +65,31 @@ const Dice = (props: TProps) => {
   const [buttonStyles, setButtonStyles] = useState<React.CSSProperties>({});
 
   useEffect(() => {
+    console.log({ epoch });
     let diceAudio: HTMLAudioElement;
     if (sound) {
       diceAudio = new Audio(sound);
       diceAudio.play();
     }
-    console.log("first");
-    setRolling(true);
-    setTimeout(() => {
-      let rollValue = Math.floor(Math.random() * 6 + 1) as TValue;
 
-      if (value) rollValue = value;
-      if (cheatValue) rollValue = cheatValue;
+    if (epoch !== undefined) {
+      console.log("first");
+      setRolling(true);
+      setTimeout(() => {
+        let rollValue = Math.floor(Math.random() * 6 + 1) as TValue;
 
-      setRolling(false);
-      setValue(rollValue);
+        if (value) rollValue = value;
+        if (cheatValue) rollValue = cheatValue;
 
-      if (diceAudio) diceAudio.pause();
-      if (!onRoll) return;
-      onRoll(rollValue);
-    }, rollingTime);
-  }, [cheatValue]);
+        setRolling(false);
+        setValue(rollValue);
+
+        if (diceAudio) diceAudio.pause();
+        if (!onRoll) return;
+        onRoll(rollValue);
+      }, rollingTime);
+    }
+  }, [epoch]);
 
   const handleDiceRoll = (value?: TValue) => {
     let diceAudio: HTMLAudioElement;
