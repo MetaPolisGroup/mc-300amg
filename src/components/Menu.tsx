@@ -23,13 +23,13 @@ const Menu = () => {
         onClick={openAccountModal}
       >
         <span className="text-[10px] font-light leading-normal">Logout</span>
-        <Icons.LogOut />
+        <Icons.LogOutPredix fill="#fff" className="w-6" />
       </div>
     ) : null;
   };
 
   return (
-    <div className="sticky bg-gradient-to-br from-blue-300 to-green-600 bottom-0 z-50">
+    <div className="fixed w-full bg-gradient-to-br from-blue-300 to-green-600 bottom-[-1px] z-50">
       <div className="md:hidden flex justify-between text-white px-5 py-3">
         <Link
           href="/prediction/leaderboard"
@@ -49,6 +49,14 @@ const Menu = () => {
             Referral
           </span>
           <Icons.Referral />
+        </Link>
+
+        <Link
+          href="/mint"
+          className="flex justify-center flex-col-reverse items-center w-[62px]"
+        >
+          <span className="text-[10px] font-light leading-normal">NFTs</span>
+          <Icons.NftsPredix fill="#fff" className="w-6" />
         </Link>
 
         <div className="flex justify-center flex-col-reverse items-center w-[62px]">
