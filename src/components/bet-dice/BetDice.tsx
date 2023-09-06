@@ -24,8 +24,6 @@ interface IDiceDataProps {
 }
 
 const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
-  const [color, setColor] = useState("#922922");
-  const [isActive, setIsActive] = useState<EMode | undefined>();
   const [prevDiceData, setPrevDiceData] = useState<IDiceData>(diceData);
   const [showSetBetCard, setShowSetBetCard] = useState<boolean>(false);
   const [underOrOverStatus, setUnderOrOverStatus] = useState<string>("");
@@ -35,11 +33,6 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
   const [diceBetted, setDiceBetted] = useState<IDiceBet[]>([]);
 
   const { isConnected, address } = useAccount();
-
-  const handleChangeMode = (mode: EMode) => {
-    setIsActive(mode);
-    setColor(isActive !== EMode.OVER ? "#FFFFFF" : "black");
-  };
 
   useEffect(() => {
     getDataFileredByOnSnapshot(
@@ -123,8 +116,6 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
     setShowSetBetCard(status);
   };
   const inputRef = React.useRef<HTMLInputElement | null>(null);
-
-  console.log({ currentRound });
 
   return (
     <>
