@@ -411,7 +411,7 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
                       fill="#EE6033"
                     />
                   </svg>
-                  <span className="text-base left-1/2 transform -translate-x-[40%] top-[30%] absolute text-white">
+                  <span className="text-base left-[60%] transform -translate-x-[40%] top-[18%] absolute text-white">
                     {diceData?.bearAmount
                       ? toFixedEtherNumber(
                           ethers.formatEther(BigInt(diceData?.bearAmount)),
@@ -496,7 +496,7 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
                       fill="#B53D2D"
                     />
                   </svg>
-                  <span className="text-base left-1/2 transform -translate-x-[55%] top-[30%] absolute text-white">
+                  <span className="text-base left-[40%] transform -translate-x-[55%] top-[18%] absolute text-white">
                     {diceData?.bullAmount
                       ? toFixedEtherNumber(
                           ethers.formatEther(BigInt(diceData?.bullAmount)),
