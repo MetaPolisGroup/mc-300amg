@@ -8,12 +8,13 @@ import {
   diceAddr,
 } from "./address/index";
 import { predictionABI, marketABI, tokenABI, diceABI } from "./abi/index";
+import { COLLECTIONS } from "./collections-data";
 
 const CURRENT_NETWORK = ChainType.BSCTESTNET;
 
 export const CURRENCY_UNIT = "PRX";
 
-export const BOXING_START_DATE = new Date("2023-09-10");
+export const BOXING_START_DATE = new Date("2023-09-20");
 
 export const CONSTANTS = {
   ADDRESS: {
@@ -31,4 +32,5 @@ export const CONSTANTS = {
   AMOUNT_REQUIRED: AMOUNT_MINIMUM_REQUIRED[CURRENCY_UNIT].VALUE,
   CHAIN: chain[CURRENT_NETWORK],
   PROVIDER: provider(CURRENT_NETWORK),
+  COLLECTIONS: COLLECTIONS[0],
 };

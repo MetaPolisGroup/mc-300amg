@@ -24,8 +24,6 @@ interface IDiceDataProps {
 }
 
 const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
-  const [color, setColor] = useState("#922922");
-  const [isActive, setIsActive] = useState<EMode | undefined>();
   const [prevDiceData, setPrevDiceData] = useState<IDiceData>(diceData);
   const [showSetBetCard, setShowSetBetCard] = useState<boolean>(false);
   const [underOrOverStatus, setUnderOrOverStatus] = useState<string>("");
@@ -35,11 +33,6 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
   const [diceBetted, setDiceBetted] = useState<IDiceBet[]>([]);
 
   const { isConnected, address } = useAccount();
-
-  const handleChangeMode = (mode: EMode) => {
-    setIsActive(mode);
-    setColor(isActive !== EMode.OVER ? "#FFFFFF" : "black");
-  };
 
   useEffect(() => {
     getDataFileredByOnSnapshot(
@@ -124,8 +117,6 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
   };
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
-  console.log(diceBettedFiltered?.[0]);
-
   return (
     <>
       <div className="overflow-hidden flex justify-center py-5">
@@ -147,15 +138,18 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
                 <Dice
                   cheatValue={prevDiceData?.dice1 && prevDiceData.dice1}
                   size={40}
+                  epoch={currentRound}
                 />
                 <div className="flex gap-5">
                   <Dice
                     cheatValue={prevDiceData?.dice2 && prevDiceData?.dice2}
                     size={40}
+                    epoch={currentRound}
                   />
                   <Dice
                     cheatValue={prevDiceData?.dice3 && prevDiceData?.dice3}
                     size={40}
+                    epoch={currentRound}
                   />
                 </div>
               </div>
@@ -163,15 +157,18 @@ const BetDice: React.FC<IDiceDataProps> = ({ diceData }) => {
                 <Dice
                   cheatValue={prevDiceData?.dice1 && prevDiceData.dice1}
                   size={70}
+                  epoch={currentRound}
                 />
                 <div className="flex gap-5">
                   <Dice
                     cheatValue={prevDiceData?.dice2 && prevDiceData?.dice2}
                     size={70}
+                    epoch={currentRound}
                   />
                   <Dice
                     cheatValue={prevDiceData?.dice3 && prevDiceData?.dice3}
                     size={70}
+                    epoch={currentRound}
                   />
                 </div>
               </div>
