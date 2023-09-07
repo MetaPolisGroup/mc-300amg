@@ -64,6 +64,8 @@ const Dice = (props: TProps) => {
   );
   const [buttonStyles, setButtonStyles] = useState<React.CSSProperties>({});
 
+  const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
+
   useEffect(() => {
     let diceAudio: HTMLAudioElement;
     if (sound) {
@@ -72,6 +74,8 @@ const Dice = (props: TProps) => {
     }
 
     if (epoch !== undefined) {
+      if (isFirstRender) return setIsFirstRender(false);
+
       setRolling(true);
       setTimeout(() => {
         let rollValue = Math.floor(Math.random() * 6 + 1) as TValue;
