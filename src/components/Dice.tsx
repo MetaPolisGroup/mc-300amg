@@ -67,6 +67,12 @@ const Dice = (props: TProps) => {
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
 
   useEffect(() => {
+    if (cheatValue !== undefined) {
+      return setValue(cheatValue);
+    }
+  }, [cheatValue]);
+
+  useEffect(() => {
     let diceAudio: HTMLAudioElement;
     if (sound) {
       diceAudio = new Audio(sound);
@@ -84,7 +90,6 @@ const Dice = (props: TProps) => {
         if (cheatValue) rollValue = cheatValue;
 
         setRolling(false);
-        setValue(rollValue);
 
         if (diceAudio) diceAudio.pause();
         if (!onRoll) return;
