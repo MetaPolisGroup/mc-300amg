@@ -9,6 +9,7 @@
     display: -ms-flex;
     display: -o-flex;
     display: flex;
+    flex-direction: column;
     padding: 180px 0 80px;
   }
   .metaportal_fn_mint_top .mint_left:after {

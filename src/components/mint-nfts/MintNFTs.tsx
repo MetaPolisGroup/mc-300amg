@@ -6,7 +6,7 @@ import Input from "../ui/Input";
 import { formatInputField } from "@/utils/format-inputField";
 
 const MintNFTs = () => {
-  const [quantity, setQuantity] = useState<number>(0);
+  const [quantity, setQuantity] = useState<number>(1);
 
   const handleClick = () => {};
 
