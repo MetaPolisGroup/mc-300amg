@@ -1,7 +1,7 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 
 import Image from "next/image";
-import { metadata } from "./DashboardLayout";
+import { metadata } from "./ListNFTs";
 
 const LayoutItem: FC<metadata> = ({ image, name, edition, description }) => {
   return (
