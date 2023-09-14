@@ -228,7 +228,7 @@ const MintNFTs = () => {
                         Success!
                       </p>
                       <p className="mt-1 text-sm text-[--colors-text]">
-                        entered
+                        Mint is successfull!
                       </p>
                       <a
                         href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
@@ -271,7 +271,7 @@ const MintNFTs = () => {
                         Error!
                       </p>
                       <p className="mt-1 text-sm text-[--colors-text]">
-                        position entered
+                        Mint is failed!
                       </p>
                       <a
                         href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
@@ -413,36 +413,32 @@ const MintNFTs = () => {
           {isClient &&
             (!isConnected ? (
               <Button
-                className="w-full bg-[--colors-primary] text-[--colors-white] hover:bg-[--colors-primary] hover:opacity-[0.8] rounded-2xl"
+                className="w-full md:w-1/2 bg-[--colors-primary] text-[--colors-white] hover:bg-[--colors-primary] hover:opacity-[0.8] rounded-2xl"
                 type="button"
                 disabled
               >
                 Please Connect Wallet
               </Button>
             ) : approveValue < quantity * 300 ? (
-              <>
-                <Button
-                  className="w-full bg-[--colors-primary] text-[--colors-white] hover:bg-[--colors-primary] hover:opacity-[0.8] rounded-2xl"
-                  type="button"
-                  disabled={isApproveLoading}
-                  onClick={approveHandler}
-                  isLoading={isApproveLoading}
-                >
-                  Approve
-                </Button>
-              </>
+              <Button
+                className="w-full md:w-1/2 bg-[--colors-primary] text-[--colors-white] hover:bg-[--colors-primary] hover:opacity-[0.8] rounded-2xl"
+                type="button"
+                disabled={isApproveLoading}
+                onClick={approveHandler}
+                isLoading={isApproveLoading}
+              >
+                Approve
+              </Button>
             ) : (
-              <div>
-                <Button
-                  className="w-full bg-[--colors-primary] text-[--colors-white] hover:bg-[--colors-primary] hover:opacity-[0.8] rounded-2xl"
-                  type="button"
-                  disabled={isLoading}
-                  onClick={handleClick}
-                  isLoading={isLoading}
-                >
-                  Unbox
-                </Button>
-              </div>
+              <Button
+                className="w-full md:w-1/2 bg-[--colors-primary] text-[--colors-white] hover:bg-[--colors-primary] hover:opacity-[0.8] rounded-2xl"
+                type="button"
+                disabled={isLoading}
+                onClick={handleClick}
+                isLoading={isLoading}
+              >
+                Unbox
+              </Button>
             ))}
 
           <p

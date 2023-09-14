@@ -5,7 +5,7 @@ import Button from "../ui/Button";
 import { useCountdown } from "@/hooks/useCountDown";
 import { metadata } from "./GameDashboardContent";
 
-const LayoutItemContent: FC<metadata> = ({
+const LayoutItemContent: FC<any> = ({
   description,
   dna,
   edition,
