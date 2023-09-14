@@ -6,8 +6,15 @@ import {
   marketAddr,
   tokenAddr,
   diceAddr,
+  nftAddr,
 } from "./address/index";
-import { predictionABI, marketABI, tokenABI, diceABI } from "./abi/index";
+import {
+  predictionABI,
+  marketABI,
+  tokenABI,
+  diceABI,
+  nftABI,
+} from "./abi/index";
 import { COLLECTIONS } from "./collections-data";
 
 const CURRENT_NETWORK = ChainType.BSCTESTNET;
@@ -22,12 +29,14 @@ export const CONSTANTS = {
     PREDICTION: predictionAddr[CURRENT_NETWORK],
     MARKET: marketAddr[CURRENT_NETWORK],
     DICE: diceAddr[CURRENT_NETWORK],
+    NFT: nftAddr[CURRENT_NETWORK],
   },
   ABI: {
     TOKEN: tokenABI[CURRENT_NETWORK],
     PREDICTION: predictionABI[CURRENT_NETWORK],
     MARKET: marketABI[CURRENT_NETWORK],
     DICE: diceABI[CURRENT_NETWORK],
+    NFT: nftABI[CURRENT_NETWORK],
   },
   AMOUNT_REQUIRED: AMOUNT_MINIMUM_REQUIRED[CURRENCY_UNIT].VALUE,
   CHAIN: chain[CURRENT_NETWORK],

@@ -1,14 +1,307 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../ui/Button";
 import { CONSTANTS } from "@/constants";
 import Input from "../ui/Input";
 import { formatInputField } from "@/utils/format-inputField";
+import { useAccount, useWalletClient } from "wagmi";
+import { publicClient } from "@/lib/contract-config";
+import toast from "react-hot-toast";
+import { changeBettedStatusHandler } from "@/redux/features/bet/betSlice";
+import { getEllipsisTxt } from "@/utils/formmater-address";
+import { Icons } from "../Icons";
+import { ethers } from "ethers";
 
 const MintNFTs = () => {
   const [quantity, setQuantity] = useState<number>(1);
+  const { data: walletClient } = useWalletClient();
+  const { address, isConnected } = useAccount();
+  const [approveValue, setApproveValue] = useState<number>(0);
+  const [isClient, setIsClient] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isApproveLoading, setIsApproveLoading] = useState<boolean>(false);
 
-  const handleClick = () => {};
+  // UseEffects
+
+  useEffect(() => {
+    setIsClient(true);
+    if (isConnected && address) {
+      getApprove();
+    }
+  }, [isConnected, address]);
+
+  // Functions
+  const getApprove = async () => {
+    const data: any = await publicClient.readContract({
+      address: CONSTANTS.ADDRESS.TOKEN,
+      abi: CONSTANTS.ABI.TOKEN,
+      functionName: "allowance",
+      args: [address, CONSTANTS.ADDRESS.NFT],
+    });
+
+    setApproveValue(Number(ethers.formatEther(data.toString())));
+  };
+
+  const approveHandler = async () => {
+    setIsApproveLoading(true);
+    try {
+      const { request: reqToken } = await publicClient.simulateContract({
+        account: address,
+        address: CONSTANTS.ADDRESS.TOKEN,
+        abi: CONSTANTS.ABI.TOKEN,
+        functionName: "approve",
+        args: [
+          CONSTANTS.ADDRESS.NFT,
+          ethers.parseEther((quantity * 300).toString()),
+        ],
+      });
+      if (reqToken) {
+        const hash = await walletClient?.writeContract(reqToken);
+        if (hash) {
+          const transactionToken = await publicClient.waitForTransactionReceipt(
+            {
+              hash,
+            }
+          );
+          if (transactionToken?.status === "success") {
+            setIsApproveLoading(false);
+            toast.custom((t) => (
+              <div
+                className={`${
+                  t.visible ? "animate-enter" : "animate-leave"
+                } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+              >
+                <div className="flex bg-[--colors-success] p-4 rounded-l-lg">
+                  <Icons.CheckCircle className="text-[--colors-white]" />
+                </div>
+                <div className="flex-1 w-0 p-2">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0 pt-0.5"></div>
+                    <div className="ml-3 flex-1">
+                      <p className="text-sm font-medium text-[--colors-text]">
+                        Transaction Submitted!
+                      </p>
+                      <p className="mt-1 text-sm text-[--colors-text]">
+                        Your transaction has been sent!
+                      </p>
+                      {/* <a
+                            href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
+                            className="mt-1 text-sm text-[--colors-primary]"
+                            target="_blank"
+                          >
+                            View on BscScan:{" "}
+                            {getEllipsisTxt(transaction.transactionHash)}
+                          </a> */}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex">
+                  <button
+                    onClick={() => toast.dismiss(t.id)}
+                    className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
+                  >
+                    <Icons.X className="text-[--colors-primary]" />
+                  </button>
+                </div>
+              </div>
+            ));
+            getApprove();
+          }
+          if (transactionToken.status === "reverted") {
+            setIsApproveLoading(false);
+            toast.custom((t) => (
+              <div
+                className={`${
+                  t.visible ? "animate-enter" : "animate-leave"
+                } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+              >
+                <div className="flex bg-[--colors-failure] p-4 rounded-l-lg">
+                  <Icons.XCircle className="text-[--colors-white]" />
+                </div>
+                <div className="flex-1 w-0 p-2">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0 pt-0.5"></div>
+                    <div className="ml-3 flex-1">
+                      <p className="text-sm font-medium text-[--colors-text]">
+                        Transaction did not submit!
+                      </p>
+                      <p className="mt-1 text-sm text-[--colors-text]">
+                        Your transaction has not been sent!
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex">
+                  <button
+                    onClick={() => toast.dismiss(t.id)}
+                    className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
+                  >
+                    <Icons.X className="text-[--colors-primary]" />
+                  </button>
+                </div>
+              </div>
+            ));
+          }
+        }
+      }
+    } catch (error) {
+      setIsApproveLoading(false);
+      console.log(error);
+    }
+  };
+
+  const handleClick = async () => {
+    setIsLoading(true);
+    try {
+      const { request } = await publicClient.simulateContract({
+        account: address,
+        address: CONSTANTS.ADDRESS.NFT,
+        abi: CONSTANTS.ABI.NFT,
+        functionName: "mint",
+        args: [address, quantity],
+      });
+      if (request) {
+        const hash = await walletClient?.writeContract(request);
+
+        if (hash) {
+          const transaction = await publicClient.waitForTransactionReceipt({
+            hash,
+          });
+          toast.custom((t) => (
+            <div
+              className={`${
+                t.visible ? "animate-enter" : "animate-leave"
+              } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+            >
+              <div className="flex bg-[--colors-success] p-4 rounded-l-lg">
+                <Icons.CheckCircle className="text-[--colors-white]" />
+              </div>
+              <div className="flex-1 w-0 p-2">
+                <div className="flex items-start">
+                  <div className="flex-shrink-0 pt-0.5"></div>
+                  <div className="ml-3 flex-1">
+                    <p className="text-sm font-medium text-[--colors-text]">
+                      Transaction Submitted!
+                    </p>
+                    <p className="mt-1 text-sm text-[--colors-text]">
+                      Your transaction has been sent!
+                    </p>
+                    {/* <a
+                          href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
+                          className="mt-1 text-sm text-[--colors-primary]"
+                          target="_blank"
+                        >
+                          View on BscScan:{" "}
+                          {getEllipsisTxt(transaction.transactionHash)}
+                        </a> */}
+                  </div>
+                </div>
+              </div>
+              <div className="flex">
+                <button
+                  onClick={() => toast.dismiss(t.id)}
+                  className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
+                >
+                  <Icons.X className="text-[--colors-primary]" />
+                </button>
+              </div>
+            </div>
+          ));
+
+          if (transaction?.status === "success") {
+            setIsLoading(false);
+
+            toast.custom((t) => (
+              <div
+                className={`${
+                  t.visible ? "animate-enter" : "animate-leave"
+                } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+              >
+                <div className="flex bg-[--colors-success] p-4 rounded-l-lg">
+                  <Icons.CheckCircle className="text-[--colors-white]" />
+                </div>
+                <div className="flex-1 w-0 p-2">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0 pt-0.5"></div>
+                    <div className="ml-3 flex-1">
+                      <p className="text-sm font-medium text-[--colors-text]">
+                        Success!
+                      </p>
+                      <p className="mt-1 text-sm text-[--colors-text]">
+                        entered
+                      </p>
+                      <a
+                        href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
+                        className="mt-1 text-sm text-[--colors-primary]"
+                        target="_blank"
+                      >
+                        View on BscScan:{" "}
+                        {getEllipsisTxt(transaction.transactionHash)}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex">
+                  <button
+                    onClick={() => toast.dismiss(t.id)}
+                    className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
+                  >
+                    <Icons.X className="text-[--colors-primary]" />
+                  </button>
+                </div>
+              </div>
+            ));
+          }
+          if (transaction?.status === "reverted") {
+            setIsLoading(false);
+            toast.custom((t) => (
+              <div
+                className={`${
+                  t.visible ? "animate-enter" : "animate-leave"
+                } max-w-md w-full bg-[--colors-backgroundAlt] shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+              >
+                <div className="flex bg-[--colors-failure] p-4 rounded-l-lg">
+                  <Icons.XCircle className="text-[--colors-white]" />
+                </div>
+                <div className="flex-1 w-0 p-2">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0 pt-0.5"></div>
+                    <div className="ml-3 flex-1">
+                      <p className="text-sm font-medium text-[--colors-text]">
+                        Error!
+                      </p>
+                      <p className="mt-1 text-sm text-[--colors-text]">
+                        position entered
+                      </p>
+                      <a
+                        href={`https://testnet.bscscan.com/tx/${transaction.transactionHash}`}
+                        className="mt-1 text-sm text-[--colors-failure]"
+                        target="_blank"
+                      >
+                        View on BscScan:{" "}
+                        {getEllipsisTxt(transaction.transactionHash)}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex">
+                  <button
+                    onClick={() => toast.dismiss(t.id)}
+                    className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-start justify-end text-sm font-medium focus:outline-none"
+                  >
+                    <Icons.X className="text-[--colors-primary]" />
+                  </button>
+                </div>
+              </div>
+            ));
+          }
+        }
+      }
+    } catch (error) {
+      setIsLoading(false);
+      console.log(error);
+    }
+  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -117,17 +410,41 @@ const MintNFTs = () => {
           className="mint_desc"
           style={{ display: "flex", justifyContent: "space-between" }}
         >
-          <Button
-            onClick={handleClick}
-            className="metaportal_fn_button"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <span style={{ margin: "0 10px" }}>UNBOX</span>
-          </Button>
+          {isClient &&
+            (!isConnected ? (
+              <Button
+                className="w-full bg-[--colors-primary] text-[--colors-white] hover:bg-[--colors-primary] hover:opacity-[0.8] rounded-2xl"
+                type="button"
+                disabled
+              >
+                Please Connect Wallet
+              </Button>
+            ) : approveValue < quantity * 300 ? (
+              <>
+                <Button
+                  className="w-full bg-[--colors-primary] text-[--colors-white] hover:bg-[--colors-primary] hover:opacity-[0.8] rounded-2xl"
+                  type="button"
+                  disabled={isApproveLoading}
+                  onClick={approveHandler}
+                  isLoading={isApproveLoading}
+                >
+                  Approve
+                </Button>
+              </>
+            ) : (
+              <div>
+                <Button
+                  className="w-full bg-[--colors-primary] text-[--colors-white] hover:bg-[--colors-primary] hover:opacity-[0.8] rounded-2xl"
+                  type="button"
+                  disabled={isLoading}
+                  onClick={handleClick}
+                  isLoading={isLoading}
+                >
+                  Unbox
+                </Button>
+              </div>
+            ))}
+
           <p
             style={{ marginTop: "0", marginLeft: "20px" }}
             className="text-[--colors-textSub]"

@@ -23,7 +23,7 @@ export const COLLECTIONS = [
     statistics: {
       totalItems: "9,999",
       totalOwners: "2,214",
-      floorPrice: "0.01",
+      floorPrice: "300",
       totalVolume: "1,000",
     },
     quantity: 1,
