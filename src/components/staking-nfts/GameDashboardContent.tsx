@@ -15,8 +15,15 @@ export interface metadata {
   edition: number;
   date?: number;
 }
+import ListNFTs from "./ListNFTs";
 
-const GameDashboardContent = () => {
+interface IGameDashboardContent {
+  isShowListNFTsMobile: boolean;
+}
+
+const GameDashboardContent: React.FC<IGameDashboardContent> = ({
+  isShowListNFTsMobile,
+}) => {
   const [reward, setReward] = useState<string>("0.0");
   const { address } = useAccount();
 
@@ -94,6 +101,34 @@ const GameDashboardContent = () => {
   }, [address]);
 
   const claimReward = () => {};
+
+  const renderContent = () => {
+    if (isShowListNFTsMobile)
+      return (
+        <div className="block md:hidden">
+          <ListNFTs />
+        </div>
+      );
+
+    return (
+      <div className="flex flex-wrap max-h-[656px] overflow-y-auto pt-3 gap-2">
+        {Array(3)
+          .fill(0)
+          .map((item, index) => (
+            <LayoutItemContent
+              key={index}
+              // image={item.image}
+              // description={item.description}
+              // title={item.title}
+              // dna={item.dna}
+              // date={item.date}
+              // tokenId={item.tokenId}
+            />
+          ))}
+      </div>
+    );
+  };
+
   return (
     <div className="md:px-24 md:grow md:pt-10">
       <div className="hidden md:block text-4xl text-[--colors-textSub] font-bold">
@@ -119,19 +154,7 @@ const GameDashboardContent = () => {
           </div>
         </div>
 
-        <div className="flex flex-wrap max-h-[656px] overflow-y-auto pt-3 gap-2">
-          {NFTs.map((item, index) => (
-            <LayoutItemContent
-              key={index}
-              image={item.image}
-              description={item.description}
-              title={item.title}
-              dna={item.dna}
-              date={item.date}
-              tokenId={item.tokenId}
-            />
-          ))}
-        </div>
+        {renderContent()}
       </div>
     </div>
   );
