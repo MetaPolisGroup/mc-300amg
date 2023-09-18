@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Button from "../ui/Button";
-import { CONSTANTS } from "@/constants";
+import { CONSTANTS, CURRENCY_UNIT } from "@/constants";
 import Input from "../ui/Input";
 import { formatInputField } from "@/utils/format-inputField";
 import { useAccount, useWalletClient } from "wagmi";
@@ -346,7 +346,7 @@ const MintNFTs = () => {
                 <h4>Price</h4>
                 <div className="text-2xl flex justify-between">
                   <span>{CONSTANTS.COLLECTIONS?.statistics.floorPrice}</span>
-                  <span>BNB</span>
+                  <span>{CURRENCY_UNIT}</span>
                   {/* <select style={{ border: "none" }} onChange={selectCurrent}>
                         <option value="BNB">BNB</option>
                         <option value="BUSD">BUSD</option>
@@ -400,7 +400,7 @@ const MintNFTs = () => {
                         : 0) * quantity
                     ).toFixed(2)}
                   </span>
-                  <span> BNB + GAS</span>
+                  <span> {CURRENCY_UNIT} + GAS</span>
                 </h3>
               </div>
             </li>

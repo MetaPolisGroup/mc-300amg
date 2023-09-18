@@ -1,12 +1,26 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
+import { Address } from "viem";
 
 const TokenFaucet = () => {
+  const [addressValue, setAddressValue] = useState<Address>();
+
+  const changeAddressHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    if (value.trim().length !== 0 && value !== undefined) {
+      setAddressValue(addressValue);
+    }
+  };
+
+  const onSubmit = () => {
+    setAddressValue(undefined);
+  };
+
   return (
     <>
-      <h1 className="text-[--colors-textSub] text-xl mt-6">Token Faucet</h1>
+      <h1 className="text-[--colors-textSub] text-4xl mt-6">Token Faucet</h1>
       <div className=" min-h-[50vh] md:min-h-screen flex flex-col justify-center md:px-96">
         <h2 className="text-[--colors-textSub] text-xl">
           Ethereum ERC20 Token Faucet
@@ -18,8 +32,15 @@ const TokenFaucet = () => {
           <label htmlFor="address" className="text-[--colors-textSub]">
             Address
           </label>
-          <Input className="text-white px-2" />
-          <Button variant="success">Submit</Button>
+          <Input
+            className="text-[--colors-textSub] px-2"
+            placeholder="0x0000"
+            onChange={changeAddressHandler}
+            value={addressValue}
+          />
+          <Button variant="success" onClick={onSubmit}>
+            Submit
+          </Button>
         </form>
       </div>
     </>
