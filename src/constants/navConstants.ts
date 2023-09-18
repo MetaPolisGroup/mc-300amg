@@ -54,6 +54,18 @@ const NAV_HEADER = [
     link: "/mint",
     items: [],
   },
+  {
+    id: nanoid(),
+    title: "Staking NFTs",
+    link: "/staking-nfts",
+    items: [],
+  },
+  {
+    id: nanoid(),
+    title: "Token Faucet",
+    link: "/faucet",
+    items: [],
+  },
 ];
 
 export const NAV_SUB_HEADER = [
