@@ -6,10 +6,10 @@ import SliderBannerGame from "@/components/sliderBannerGame";
 
 export default function Home() {
   return (
-    <main className="bg-[--colors-background] overflow-hidden min-h-[85vh]">
+    <main className="bg-[--colors-background] overflow-hidden">
       {/* <SliderBannerGame /> */}
 
-      <div className="px-4 flex flex-col items-center lg:flex-row justify-between md:px-28">
+      <div className="px-4 flex flex-col items-center lg:flex-row justify-between md:px-28 pb-3">
         <div className="flex flex-col gap-3 md:gap-10 w-full lg:w-1/2">
           <h1 className="text-[#28C38B] text-3xl md:text-6xl font-semibold">
             Unlimited & Advanced Defi Playground
