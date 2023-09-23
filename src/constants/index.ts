@@ -7,6 +7,7 @@ import {
   tokenAddr,
   diceAddr,
   nftAddr,
+  faucetAddr,
 } from "./address/index";
 import {
   predictionABI,
@@ -14,6 +15,7 @@ import {
   tokenABI,
   diceABI,
   nftABI,
+  faucetABI,
 } from "./abi/index";
 import { COLLECTIONS } from "./collections-data";
 
@@ -30,6 +32,7 @@ export const CONSTANTS = {
     MARKET: marketAddr[CURRENT_NETWORK],
     DICE: diceAddr[CURRENT_NETWORK],
     NFT: nftAddr[CURRENT_NETWORK],
+    FAUCET: faucetAddr[CURRENT_NETWORK],
   },
   ABI: {
     TOKEN: tokenABI[CURRENT_NETWORK],
@@ -37,6 +40,7 @@ export const CONSTANTS = {
     MARKET: marketABI[CURRENT_NETWORK],
     DICE: diceABI[CURRENT_NETWORK],
     NFT: nftABI[CURRENT_NETWORK],
+    FAUCET: faucetABI[CURRENT_NETWORK],
   },
   AMOUNT_REQUIRED: AMOUNT_MINIMUM_REQUIRED[CURRENCY_UNIT].VALUE,
   CHAIN: chain[CURRENT_NETWORK],
