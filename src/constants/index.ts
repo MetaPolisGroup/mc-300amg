@@ -19,7 +19,7 @@ import {
 } from "./abi/index";
 import { COLLECTIONS } from "./collections-data";
 
-const CURRENT_NETWORK = ChainType.BSCTESTNET;
+const CURRENT_NETWORK = ChainType.BASETESTNET;
 
 export const CURRENCY_UNIT = "PRX";
 

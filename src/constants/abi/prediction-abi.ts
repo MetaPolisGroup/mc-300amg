@@ -1340,5 +1340,6 @@ const predictionAbi = `[
 
 export const predictionABI = {
   [ChainType.BSCTESTNET]: JSON.parse(predictionAbi),
+  [ChainType.BASETESTNET]: JSON.parse(predictionAbi),
   [ChainType.BSC]: JSON.parse(predictionAbi),
 };

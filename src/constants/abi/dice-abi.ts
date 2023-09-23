@@ -1126,5 +1126,6 @@ const rawDiceABI = `[
 
 export const diceABI = {
   [ChainType.BSCTESTNET]: JSON.parse(rawDiceABI),
+  [ChainType.BASETESTNET]: JSON.parse(rawDiceABI),
   [ChainType.BSC]: JSON.parse(rawDiceABI),
 };

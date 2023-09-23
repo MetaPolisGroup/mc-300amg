@@ -445,5 +445,6 @@ const rawTokenABI = `[
 
 export const tokenABI = {
   [ChainType.BSCTESTNET]: JSON.parse(rawTokenABI),
+  [ChainType.BASETESTNET]: JSON.parse(rawTokenABI),
   [ChainType.BSC]: JSON.parse(rawTokenABI),
 };

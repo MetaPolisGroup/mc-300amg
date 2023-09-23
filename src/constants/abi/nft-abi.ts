@@ -1207,5 +1207,6 @@ const rawNftABI = `[
 
 export const nftABI = {
   [ChainType.BSCTESTNET]: JSON.parse(rawNftABI),
+  [ChainType.BASETESTNET]: JSON.parse(rawNftABI),
   [ChainType.BSC]: JSON.parse(rawNftABI),
 };
