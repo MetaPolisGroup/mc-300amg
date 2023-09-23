@@ -48,7 +48,7 @@ export const chain: {
   },
 
   baseTestnet: {
-    id: 97,
+    id: 84531,
     name: "Base",
     network: "Base Testnet",
     nativeCurrency: {
