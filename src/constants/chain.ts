@@ -47,6 +47,29 @@ export const chain: {
     testnet: true,
   },
 
+  baseTestnet: {
+    id: 97,
+    name: "Base",
+    network: "Base Testnet",
+    nativeCurrency: {
+      decimals: 18,
+      name: "ETH",
+      symbol: "ETH",
+    },
+    rpcUrls: {
+      default: {
+        http: ["https://base-goerli.publicnode.com"],
+      },
+      public: {
+        http: ["https://base-goerli.publicnode.com"],
+      },
+    },
+    blockExplorers: {
+      default: { name: "Basescan", url: "https://goerli-explorer.base.org" },
+    },
+    testnet: true,
+  },
+
   //   bsc: {
   //     id: 56,
   //     name: "BSC",
