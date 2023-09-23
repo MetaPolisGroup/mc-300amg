@@ -8,6 +8,11 @@ const providerRPC = {
     rpc: "https://data-seed-prebsc-1-s1.binance.org:8545/",
     chainId: 97,
   },
+  [ChainType.BASETESTNET]: {
+    name: "baseTestnet",
+    rpc: "https://base-goerli.publicnode.com",
+    chainId: 84531,
+  },
   [ChainType.BSC]: {
     name: "bscMainnet",
     rpc: "https://bsc-dataseed.binance.org/",
