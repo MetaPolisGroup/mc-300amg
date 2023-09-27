@@ -25,7 +25,7 @@ const LayoutItemContent: FC<any> = ({
   }, []);
 
   return (
-    <div className="rounded-xl h-52 px-3 py-5 flex text-white bg-yellow-400 w-full lg:w-[49.55%]">
+    <div className="rounded-xl h-52 px-3 py-5 flex text-white bg-[--colors-primary] w-full lg:w-[49.55%]">
       <Image src={image} width={160} height={160} alt="img" />
 
       <div className="flex justify-between flex-grow ml-3 flex-col">
