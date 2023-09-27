@@ -5,7 +5,7 @@ import { metadata } from "./ListNFTs";
 
 const LayoutItem: FC<metadata> = ({ image, name, edition, description }) => {
   return (
-    <div className="flex rounded-[10px] h-[200px] py-5 px-[10px] text-[#fff] relative mb-2 bg-[#ffb800]">
+    <div className="flex rounded-[10px] h-[200px] py-5 px-[10px] text-[#fff] relative mb-2 bg-[--colors-primary]">
       <Image
         alt=""
         width={120}
@@ -24,10 +24,11 @@ const LayoutItem: FC<metadata> = ({ image, name, edition, description }) => {
         </p>
         <div className="w-full flex justify-center items-center gap-1">
           <button
-            className="h-7 rounded font-bold text-xs pt-0 pb-0 w-full bg-white text-green-700 border-[1px] border-solid border-[#36a920] mb-[5px] mt-auto hover:text-white hover:bg-green-700"
+            className="h-7 rounded font-bold text-xs pt-0 pb-0 w-full bg-white text-green-700 border-[1px] border-solid border-[#36a920] mb-[5px] mt-auto hover:text-white hover:bg-green-700 disabled:opacity-70 disabled:cursor-not-allowed"
             // loading={loadingStaking}
             // onClick={() => staking()}
             // block
+            disabled={true}
           >
             Start Staking
           </button>
