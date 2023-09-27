@@ -112,7 +112,7 @@ const GameDashboardContent: React.FC<IGameDashboardContent> = ({
 
     return (
       <div className="flex flex-wrap max-h-[656px] overflow-y-auto pt-3 gap-2">
-        {Array(3)
+        {Array(0)
           .fill(0)
           .map((item, index) => (
             <LayoutItemContent
@@ -125,6 +125,18 @@ const GameDashboardContent: React.FC<IGameDashboardContent> = ({
               // tokenId={item.tokenId}
             />
           ))}
+
+        {/* {NFTs.map((item, index) => (
+          <LayoutItemContent
+            key={index}
+            image={item.image}
+            description={item.description}
+            title={item.title}
+            dna={item.dna}
+            date={item.date}
+            tokenId={item.tokenId}
+          />
+        ))} */}
       </div>
     );
   };
