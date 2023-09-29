@@ -757,6 +757,8 @@
   --colors-market: #a1a0ca;
   --colors-market-bold: #746db2;
   --colors-market-text: #f4eeff;
+  --colors-input-dex: #1f2639;
+
   --colors-gradient-market: linear-gradient(135deg, #a1a0ca 0%, #473999 100%);
   --colors-gradientBubblegum: linear-gradient(139.73deg, #313d5c, #3d2a54);
   --colors-gradientInverseBubblegum: linear-gradient(
@@ -831,6 +833,8 @@
   --colors-market: #a1a0ca;
   --colors-market-bold: #746db2;
   --colors-market-text: #746db2;
+  --colors-input-dex: #f0f0f0;
+
   --colors-gradient-market: linear-gradient(135deg, #a1a0ca 0%, #473999 100%);
   --colors-gradientBubblegum: linear-gradient(139.73deg, #e5fdff, #f3efff);
   --colors-gradientInverseBubblegum: linear-gradient(

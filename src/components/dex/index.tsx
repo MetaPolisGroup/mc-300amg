@@ -84,6 +84,7 @@ const Dex = () => {
             <Icons.Settings className="cursor-pointer hover:rotate-90" />
           </Popover>
         </div>
+
         <div className={classes.boxInput}>
           <Input
             placeholder="0"
@@ -91,8 +92,13 @@ const Dex = () => {
             onChange={handleChangeAmount}
           />
           <Input placeholder="0" value={tokenTwoAmount} disabled />
+
           <div className={classes.switchButton}>
             <Icons.ArrowDown onClick={handleSwitchToken} />
+          </div>
+
+          <div className="text-sm font-semibold opacity-60 absolute top-[6px] left-[15px] select-none">
+            Your pay
           </div>
           <div
             className={classes.assetOne}
@@ -107,6 +113,10 @@ const Dex = () => {
             />
             {tokenOne.ticker}
             <Icons.ChevronDown />
+          </div>
+
+          <div className="text-sm font-semibold opacity-60 absolute top-[108px] left-[15px] select-none">
+            Your receive
           </div>
           <div
             className={classes.assetTwo}
@@ -129,7 +139,7 @@ const Dex = () => {
             !tokenOneAmount ? classes.swapButtonDisabled : ""
           }`}
         >
-          Swap
+          Connect Wallet
         </div>
       </section>
 
