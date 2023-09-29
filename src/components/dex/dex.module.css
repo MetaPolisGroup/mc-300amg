@@ -1,0 +1,143 @@
+.boxInput :global(.ant-input) {
+  background-color: #1f2639 !important;
+  color: white !important;
+  border-width: 0px !important;
+  height: 96px !important;
+  margin-bottom: 5px;
+  font-size: 35px;
+  border-radius: 12px !important;
+}
+
+.boxInput :global(.ant-input)::placeholder {
+  color: #5f6783 !important;
+}
+
+.boxInput {
+  position: relative;
+}
+
+.assetOne,
+.assetTwo {
+  position: absolute;
+  min-width: 50px;
+  height: 30px;
+  background-color: #3a4157;
+  border-radius: 100px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 5px;
+  font-weight: bold;
+  font-size: 17px;
+  padding-right: 8px;
+  color: white;
+}
+
+.assetOne {
+  top: 36px;
+  right: 20px;
+}
+
+.assetTwo {
+  top: 135px;
+  right: 20px;
+}
+
+.assetOne:hover,
+.assetTwo:hover {
+  cursor: pointer;
+}
+
+.assetLogo {
+  height: 22px;
+  margin-left: 5px;
+}
+
+.switchButton {
+  background-color: #3a4157;
+  width: 25px;
+  height: 25px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  border-radius: 8px;
+  position: absolute;
+  top: 86px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #5f6783;
+  border: 3px solid var(--colors-backgroundAlt3);
+  font-size: 12px;
+  transition: 0.3s;
+}
+
+.switchButton:hover {
+  color: white;
+  cursor: pointer;
+}
+
+.modalContent {
+  border-top: 1px solid #e9eaeb;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tokenChoice {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.tokenChoice:hover {
+  cursor: pointer;
+  background-color: #e9eaeb;
+}
+
+.tokenName {
+  margin-left: 10px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.tokenTicker {
+  margin-left: 10px;
+  font-size: 13px;
+  font-weight: 300;
+  color: #51596f;
+}
+
+.swapButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--colors-primary);
+  width: calc(100%);
+  height: 55px;
+  font-size: 20px;
+  border-radius: 12px;
+  color: var(--colors-white);
+  font-weight: bold;
+  transition: 0.3s;
+  margin-top: 8px;
+}
+
+.swapButtonDisabled {
+  background-color: var(--colors-primary);
+  opacity: 0.4;
+  color: var(--colors-white);
+}
+
+.swapButtonDisabled:hover {
+  cursor: not-allowed !important;
+  background-color: var(--colors-primary);
+}
+
+.swapButton:hover {
+  cursor: pointer;
+  background-color: var(--colors-primary);
+}

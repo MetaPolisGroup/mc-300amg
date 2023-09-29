@@ -2,6 +2,12 @@
 const nextConfig = {
   images: {
     domains: ["myipfs.mypinata.cloud"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.moralis.io",
+      },
+    ],
   },
 };
 

@@ -727,6 +727,7 @@
   --colors-backgroundDisabled: #3c3742;
   --colors-backgroundAlt: #27262c;
   --colors-backgroundAlt2: rgba(39, 38, 44, 0.7);
+  --colors-backgroundAlt3: #000;
   --colors-cardBorder: #383241;
   --colors-contrast: #fff;
   --colors-dropdown: #1e1d20;
@@ -799,6 +800,7 @@
   --colors-backgroundDisabled: #e9eaeb;
   --colors-backgroundAlt: #fff;
   --colors-backgroundAlt2: hsla(0, 0%, 100%, 0.7);
+  --colors-backgroundAlt3: #fff;
   --colors-cardBorder: #e7e3eb;
   --colors-contrast: #191326;
   --colors-dropdown: #f6f6f6;
