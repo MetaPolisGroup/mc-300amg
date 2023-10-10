@@ -72,7 +72,7 @@ export const Icons = {
       viewBox="0 0 240 65"
       color="text"
       xmlns="http://www.w3.org/2000/svg"
-      class="sc-231a1e38-0 dPwWVs"
+      className="sc-231a1e38-0 dPwWVs"
     >
       <g filter="url(#filter0_i)">
         <path
